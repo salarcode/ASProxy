@@ -1,0 +1,3 @@
+The LogSystem's logs will place here.
+This folder should has write permission.
+To enable LogSystem in web.config file change LogSystemEnabled value to true.

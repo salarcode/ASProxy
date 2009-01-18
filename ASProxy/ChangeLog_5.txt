@@ -1,0 +1,22 @@
+Version 5.0
+
+File change log:
+* Interface:
+	default.aspx
+	cookieman.aspx
+	images.aspx
+	scripts/ajaxwrapper_core.js
+	scripts/asproxyencoder.js
+	scripts/versionchecker.js
+	
+* Code files:
+	Configurations\SiteExceptions.cs
+	DataManagement\AjaxEngine.cs
+	DataManagement\ASProxyEngine.cs
+	DataProcessor\HTML\HtmlProcessor.cs
+	DataProcessor\JavaScript\JSReplacer.cs
+	DataProcessor\JavaScript\JSProcessor.cs
+	DataProcessor\JavaScript\JSReplacer.cs
+	General\Common.cs
+	General\Definitions.cs
+	General\Consts.cs
