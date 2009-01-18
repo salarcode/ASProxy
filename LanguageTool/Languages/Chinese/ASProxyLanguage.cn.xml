@@ -1,0 +1,110 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<root>
+	<Details>
+		<Translator>ASProxy (name@email.com)</Translator>
+		<LastUpdate>2008/12/14</LastUpdate>
+		<ASProxyVersion>5</ASProxyVersion>
+		<Language>Chinese (ZH-CN)</Language>
+		<Direction>ltr</Direction>
+		<TextFormat>[{0}]</TextFormat>
+	</Details>
+	<Page filename="default.aspx">
+		<Item replacement="PageTitle">用ASProxy冲浪</Item>
+		<Item replacement="PageHeader">用ASProxy冲浪</Item>
+		<Item replacement="btnDisplay">显示</Item>
+		<Item replacement="chkUTF8">强制使用UTF-8编码</Item>
+		<Item replacement="chkOrginalUrl">原始网址</Item>
+		<Item replacement="chkBackImage">背景</Item>
+		<Item replacement="chkRemoveScripts">移除脚本</Item>
+		<Item replacement="chkProcessScripts">脚本</Item>
+		<Item replacement="chkDisplayImages">图片</Item>
+		<Item replacement="chkCookies">Cookies</Item>
+		<Item replacement="lnkMoreOpt">选项</Item>
+		<Item replacement="chkIFrame">内置帧页面</Item>
+		<Item replacement="chkPageTitle">显示页标题</Item>
+		<Item replacement="chkForms">处理表单</Item>
+		<Item replacement="chkProcessLinks">连接</Item>
+		<Item replacement="chkCompression">压缩回复内容</Item>
+		<Item replacement="CookieManager">Cookie管理</Item>
+		<Item replacement="DownloadTool">下载工具</Item>
+		<Item replacement="ImageDisplayer">图片显示</Item>
+		<Item replacement="GetFreeVersion">
+			<![CDATA[拥有你自己的 <a asproxydone="2" href="?decode=1&amp;url=aHR0cDovL2FzcHJveHkuc291cmNlZm9yZ2UubmV0B64Coded!" target="_blank">ASProxy</a>.它是免费的.]]>
+		</Item>
+	</Page>
+	<Page filename="download.aspx">
+		<Item replacement="PageTitle">通过ASProxy下载文件</Item>
+		<Item replacement="PageHeader">用ASProxy冲浪</Item>
+		<Item replacement="VersionFamily">ASProxy第5版本</Item>
+		<Item replacement="ReturnHome">返回首页</Item>
+		<Item replacement="EnterUrl">输入一个有效的文件地址并下载!</Item>
+		<Item replacement="btnDisplay">下载</Item>
+		<Item replacement="DownloadLinkDescription">如果你的浏览器不支持自动下载，请点击下面的连接进行下载.</Item>
+		<Item replacement="DownloadLink">下载连接</Item>
+		<Item replacement="AdditionalComment">我们将在后续版本中支持尽可能多类型的文件下载功能!</Item>
+	</Page>
+	<Page filename="images.aspx">
+		<Item replacement="PageTitle">通过ASProxy浏览图片</Item>
+		<Item replacement="PageHeader">用ASProxy冲浪</Item>
+		<Item replacement="VersionFamily">ASProxy第5版本</Item>
+		<Item replacement="ReturnHome">返回首页</Item>
+		<Item replacement="EnterUrl">输入一个有效的图片地址并查看它!</Item>
+		<Item replacement="btnDisplay">显示</Item>
+	</Page>
+	<Page filename="cookieman.aspx">
+		<Item replacement="PageTitle">管理由ASProxy储存在你机器上的cookie</Item>
+		<Item replacement="PageHeader">管理由ASProxy储存在你机器上的cookie</Item>
+		<Item replacement="VersionFamily">ASProxy第5版本</Item>
+		<Item replacement="ReturnHome">返回首页</Item>
+		<Item replacement="Description">
+			<![CDATA[警告,如果储存的cookie过多, ASProxy 或许不能正常加载,<br />
+			你可以尝试清除由 ASProxy 生成的cookie.]]>
+		</Item>
+		<Item replacement="Row">行</Item>
+		<Item replacement="Details">详细内容</Item>
+		<Item replacement="Options">选项</Item>
+		<Item replacement="Delete">删除</Item>
+		<Item replacement="Edit">编辑</Item>
+	</Page>
+	<Page filename="login.aspx">
+		<Item replacement="PageTitle">请登陆后访问</Item>
+		<Item replacement="PageHeader">输入用户名密码后进行访问</Item>
+		<Item replacement="UserName">用户名:</Item>
+		<Item replacement="Password">密  码:</Item>
+		<Item replacement="RememberMe">记住我的登陆.</Item>
+		<Item replacement="LogIn">登陆</Item>
+		<Item replacement="LoginFailed">登陆失败.请重新登陆.</Item>
+		<Item replacement="UserNameRequired">用户名不能为空.</Item>
+		<Item replacement="PasswordRequired">密码不能为空.</Item>
+	</Page>
+	<Page filename="authorization.aspx">
+		<Item replacement="PageTitle">你所访问的网站需要登陆认证</Item>
+		<Item replacement="Description">
+			<![CDATA[你所访问的资源需要认证. 请你输入用户名和密码.<br />
+			你所输入的用户名和密码不予保存，下次登陆仍需输入.]]>
+		</Item>
+		<Item replacement="VersionFamily">ASProxy第5版本</Item>
+		<Item replacement="PageHeader">登陆需要认证的网站</Item>
+		<Item replacement="UserName">用户名:</Item>
+		<Item replacement="Password">密  码:</Item>
+		<Item replacement="LogIn">登陆</Item>
+		<Item replacement="LoginFailed">登陆失败.请重新登陆.</Item>
+		<Item replacement="UserNameRequired">用户名不能为空.</Item>
+		<Item replacement="PasswordRequired">密码不能为空.</Item>
+	</Page>
+	<Page filename="serverconfig.aspx">
+		<Item replacement="PageTitle">ASProxyServer配置</Item>
+		<Item replacement="PageHeader">ASProxyServer配置选项</Item>
+		<Item replacement="ServerIP">当前服务器IP地址:</Item>
+		<Item replacement="ProxyState">代理状态:</Item>
+		<Item replacement="LastError">最新错误消息:</Item>
+		<Item replacement="ProxyPort">代理端口:</Item>
+		<Item replacement="AdminPassword">管理密码:</Item>
+		<Item replacement="StartProxy">开始代理</Item>
+		<Item replacement="StopProxy">停止代理</Item>
+		<Item replacement="ForceStop">强制停止</Item>
+		<Item replacement="ForceStopComment">
+			<![CDATA[我们不推荐使用本选项.]]>
+		</Item>
+	</Page>
+</root>

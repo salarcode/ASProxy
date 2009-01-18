@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<root>
+	<Details>
+		<Translator>ASProxy (name@email.com)</Translator>
+		<LastUpdate>2009/01/01</LastUpdate>
+		<ASProxyVersion>5</ASProxyVersion>
+		<Language>Dutch (NL-NL)</Language>
+		<Direction>ltr</Direction>
+		<TextFormat>[{0}]</TextFormat>
+	</Details>
+	<Page filename="default.aspx">
+		<Item replacement="PageTitle">Browse het web met ASProxy</Item>
+		<Item replacement="PageHeader">Browse het web met ASProxy</Item>
+		<Item replacement="btnDisplay">Weergave</Item>
+		<Item replacement="chkUTF8">Forceer UTF-8</Item>
+		<Item replacement="chkOrginalUrl">Originele URLs</Item>
+		<Item replacement="chkBackImage">Achtergronden</Item>
+		<Item replacement="chkRemoveScripts">Verwijder scripts</Item>
+		<Item replacement="chkProcessScripts">Scripts gebruiken</Item>
+		<Item replacement="chkDisplayImages">Afbeeldingen</Item>
+		<Item replacement="chkCookies">Cookies</Item>
+		<Item replacement="lnkMoreOpt">Opties</Item>
+		<Item replacement="chkIFrame">Inline frames</Item>
+		<Item replacement="chkPageTitle">Pagina titel weergeven</Item>
+		<Item replacement="chkForms">Formulieren gebruiken</Item>
+		<Item replacement="chkProcessLinks">Links</Item>
+		<Item replacement="chkCompression">Comprimeer respons</Item>
+		<Item replacement="CookieManager">Cookie Beheer</Item>
+		<Item replacement="DownloadTool">Download Tool</Item>
+		<Item replacement="ImageDisplayer">Afbeeldingen Weergeven</Item>
+		<Item replacement="GetFreeVersion">
+			<![CDATA[Have your own <a asproxydone="2" href="?decode=1&amp;url=aHR0cDovL2FzcHJveHkuc291cmNlZm9yZ2UubmV0B64Coded!" target="_blank">ASProxy</a>. Hte is gratis.]]>
+		</Item>
+	</Page>
+	<Page filename="download.aspx">
+		<Item replacement="PageTitle">Download your file with ASProxy</Item>
+		<Item replacement="PageHeader">Browse het web met ASProxy</Item>
+		<Item replacement="VersionFamily">ASProxy 5 familie</Item>
+		<Item replacement="ReturnHome">Terug naar startpagina</Item>
+		<Item replacement="EnterUrl">Geef een geldige bestands-url om te downloaden!</Item>
+		<Item replacement="btnDisplay">Download het</Item>
+		<Item replacement="DownloadLinkDescription">Klik op onderstaande link als geen download-dialoog verschijnt.</Item>
+		<Item replacement="DownloadLink">Download link</Item>
+		<Item replacement="AdditionalComment">Het is mogelijk om afgebroken downloads te hervatten.</Item>
+	</Page>
+	<Page filename="images.aspx">
+		<Item replacement="PageTitle">Bekijk afbeeldingen met ASProxy</Item>
+		<Item replacement="PageHeader">Browse het web met ASProxy</Item>
+		<Item replacement="VersionFamily">ASProxy 5 familie</Item>
+		<Item replacement="ReturnHome">Terug naar startpagina</Item>
+		<Item replacement="EnterUrl">Geef een geldige afbeeldings-url om weer te geven!</Item>
+		<Item replacement="btnDisplay">Weergeven</Item>
+	</Page>
+	<Page filename="cookieman.aspx">
+		<Item replacement="PageTitle">Beheer opgeslagen ASProxy cookies</Item>
+		<Item replacement="PageHeader">Beheer opgeslagen ASProxy cookies</Item>
+		<Item replacement="VersionFamily">ASProxy 5 familie</Item>
+		<Item replacement="ReturnHome">Terug naar startpagina</Item>
+		<Item replacement="Description">
+			<![CDATA[Warning, if your stored cookies increases a lot, ASProxy may can't load,<br />
+			In this case remove ASProxy stored cookies from your browser.]]>
+		</Item>
+		<Item replacement="Row">Rijen</Item>
+		<Item replacement="Details">Details</Item>
+		<Item replacement="Options">Optiesons</Item>
+		<Item replacement="Delete">Verwijder</Item>
+		<Item replacement="Edit">Aanpassen</Item>
+	</Page>
+	<Page filename="login.aspx">
+		<Item replacement="PageTitle">Login om toegang te krijgen</Item>
+		<Item replacement="PageHeader">Login om toegang te krijgen</Item>
+		<Item replacement="UserName">Naam:</Item>
+		<Item replacement="Password">Wachtwoord:</Item>
+		<Item replacement="RememberMe">Naam onthouden.</Item>
+		<Item replacement="LogIn">Inloggen</Item>
+		<Item replacement="LoginFailed">Inlogpoging mislukt. Probeer het opnieuw.</Item>
+		<Item replacement="UserNameRequired">Gebruikersnaam is verplicht.</Item>
+		<Item replacement="PasswordRequired">Wachtwoord is verplicht.</Item>
+	</Page>
+	<Page filename="authorization.aspx">
+		<Item replacement="PageTitle">Autorisatie is noodzakelijk voor deze site</Item>
+		<Item replacement="Description">
+			<![CDATA[Deze pagina vereist autorisatie. Geef een gebruikersnaam en wachtwoord.<br />
+			Deze gegevens worden in het geheugen opgeslagen en zullen niet meer beschikbaar zijn na deze sessie.]]>
+		</Item>
+		<Item replacement="VersionFamily">ASProxy 5 familie</Item>
+		<Item replacement="PageHeader">Inloggen is vereist voor op pagina</Item>
+		<Item replacement="UserName">Naam:</Item>
+		<Item replacement="Password">Wachtwoord:</Item>
+		<Item replacement="LogIn">Inloggen</Item>
+		<Item replacement="LoginFailed">Inlogpoging mislukt. Probeer het opnieuw.</Item>
+		<Item replacement="UserNameRequired">Gebruikersnaam is verplicht.</Item>
+		<Item replacement="PasswordRequired">Wachtwoord is verplicht.</Item>
+	</Page>
+	<Page filename="serverconfig.aspx">
+		<Item replacement="PageTitle">ASProxyServer configuratie</Item>
+		<Item replacement="PageHeader">ASProxyServer Opties</Item>
+		<Item replacement="ServerIP">Huidige server IP adres:</Item>
+		<Item replacement="ProxyState">Proxy status:</Item>
+		<Item replacement="LastError">Laatste foutmelding:</Item>
+		<Item replacement="ProxyPort">Proxy poort:</Item>
+		<Item replacement="AdminPassword">Admin wachtwoord:</Item>
+		<Item replacement="StartProxy">Start proxy</Item>
+		<Item replacement="StopProxy">Stop proxy</Item>
+		<Item replacement="ForceStop">Forceer stoppen</Item>
+		<Item replacement="ForceStopComment">
+			<![CDATA[For some reasons in asp.net, we need to terminate application suddenly to make ASProxyServer to work.<br />
+			Warning: This option teminates ASP.NET processes. It's not recommend.]]>
+		</Item>
+	</Page>
+</root>
