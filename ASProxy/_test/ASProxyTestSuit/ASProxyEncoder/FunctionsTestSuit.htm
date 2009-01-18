@@ -1,0 +1,829 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" >
+<head>
+    <title>ASProxyEncoder Functions Test Suit</title>
+    <script type="text/javascript">
+		__ASProxyEncodeUrl=1;
+		__ASProxyOriginalUrlEnabled=1;
+		__ASProxyLinksEnabled=0;
+		__ASProxyImagesEnabled=0;
+		__ASProxyBackImagesEnabled=0;
+		__ASProxyFormsEnabled=0;
+		__ASProxyFramesEnabled=0;
+		
+		__ReqUrlFull				= 'http://blocked.com:8080/sub/hi/tester.html?param=1&hi=2';
+		__ReqUrlNoParam				= 'http://blocked.com:8080/sub/hi/tester.html';
+		__ReqUrlDir					= 'http://blocked.com:8080/sub/hi/';
+		__ReqUrlBaseDir				= 'http://blocked.com:8080/';
+		__ASProxyDefaultPagePath	= 'http://site.com:8080/asproxy/default.aspx'; //or 'http://site.com/default.aspx';
+		__ASProxySiteBaseDir		= 'http://site.com:8080/asproxy/';// or 'http://site.com/';
+		__ASProxySiteHostBaseDir    = 'http://site.com/';
+		__ASProxyDefaultPage		= 'default.aspx';
+		__B64Unknowner				= "B64Coded!";
+		__ReqCookieName				= "localhost_Cookies"; // Cookie name used in javascript cookie operations
+
+		//__UseASProxyAbsoluteUrl		=true;	
+
+		__WLocHash="";
+		__WLocHost="blocked.com:8080";
+		__WLocHostname="blocked.com";
+		__WLocPathname="/sub/hi/tester.html"
+		__WLocSearch='?param=1&hi=2';
+		__WLocPort="8080";
+		__WLocProtocol="http:";
+
+    </script>
+    <script type="text/javascript" src="/ASProxy/scripts/base64encoder.js"></script>
+    <script type="text/javascript" src="/ASProxy/scripts/asproxyencoder.js"></script>
+    <style type="text/css">
+		body{font-size:small;}
+    </style>
+</head>
+<body style="">
+<h2>Attention, this test suit shouldn't run in ASProxy. This is a stand alone test.</h2>
+<h2>
+Welcome to ASProxyEncoder functions test suit.</h2>
+<b>Author: Salar Khalilzadeh</b><br />
+<b>Update: 2009-01-06</b>
+
+<script type="text/javascript">
+function TestSuccess(resultLableID,testFunction,expected,acceptable)
+{
+    var result= document.getElementById(resultLableID);
+	var success=true;
+	var errorMessage='';
+	var extMessage='';
+	
+	var testVal=null;
+	try{
+		//testVal=eval(testFunction);
+		testVal=testFunction;
+	}
+	catch(e){success=false;errorMessage=e;}
+	
+	if(success && testVal==expected)
+		success=true;
+	else
+		success=false;
+	
+	if(success==false && (errorMessage==null || errorMessage==""))
+		errorMessage=testVal;
+	
+	if(acceptable!=null && success==false)
+		if(testVal==acceptable)
+			extMessage=' Acceptable anyway!'.fontcolor('green');
+	
+	if(success)
+		result.innerHTML=(' Success with: '+testVal).fontcolor('green');
+	else
+		result.innerHTML=(' Failed with: '+errorMessage).fontcolor('red')+ (' expected: '+expected).fontcolor('lightsalmon');
+	
+	result.innerHTML=result.innerHTML+extMessage;
+}
+
+// Testing for block of javascript
+function TestBlockSuccess(resultLableID,testFunction,expected)
+{
+    var result= document.getElementById(resultLableID);
+	var success=true;
+	var errorMessage='';
+	
+	var testVal=null;
+	try{
+		//testVal=eval(testFunction);
+		testVal=testFunction();
+	}
+	catch(e){success=false;errorMessage=e;}
+	
+	if(success && testVal==expected)
+		success=true;
+	else
+		success=false;
+	
+	if(success==false && (errorMessage==null || errorMessage==""))
+		errorMessage=testVal;
+		
+	
+	if(success)
+		result.innerHTML=(' Success with: '+testVal).fontcolor('green');
+	else
+		result.innerHTML=(' Failed with: '+errorMessage+ ' expected: '+expected).fontcolor('red');
+}
+
+</script>
+
+<br />
+<div id="SmallFunctionsTesting">
+<h3>Testing IsSelfBookmarkUrl</h3>
+Test1 no input:<span id="IsSelfBookmarkUrl_1"></span><br />
+<script type="text/javascript">
+TestSuccess('IsSelfBookmarkUrl_1',_ASProxy.IsSelfBookmarkUrl(''),false);
+</script>
+
+Test2 current location with bookmark:<span id="IsSelfBookmarkUrl_2"></span><br />
+<script type="text/javascript">
+TestSuccess('IsSelfBookmarkUrl_2',_ASProxy.IsSelfBookmarkUrl(window.location.href+'#'),true);
+</script>
+
+Test3 bookmark:<span id="IsSelfBookmarkUrl_3"></span><br />
+<script type="text/javascript">
+TestSuccess('IsSelfBookmarkUrl_3',_ASProxy.IsSelfBookmarkUrl('#'),true);
+</script>
+
+Test4 bookmark:<span id="IsSelfBookmarkUrl_4"></span><br />
+<script type="text/javascript">
+TestSuccess('IsSelfBookmarkUrl_4',_ASProxy.IsSelfBookmarkUrl('#bookmarkIt'),true);
+</script>
+
+Test5 bookmark:<span id="IsSelfBookmarkUrl_5"></span><br />
+<script type="text/javascript">
+TestSuccess('IsSelfBookmarkUrl_5',_ASProxy.IsSelfBookmarkUrl(null),false);
+</script>
+
+
+<h3>Testing IsVirtualUrl</h3>
+IsVirtualUrl test1: <span id="IsVirtualUrl_1"></span><br />
+<script type="text/javascript">
+TestSuccess('IsVirtualUrl_1',_ASProxy.IsVirtualUrl('data:base64'),false);
+</script>
+
+IsVirtualUrl test2: <span id="IsVirtualUrl_2"></span><br />
+<script type="text/javascript">
+TestSuccess('IsVirtualUrl_2',_ASProxy.IsVirtualUrl('/google.htm'),true);
+</script>
+
+IsVirtualUrl test3: <span id="IsVirtualUrl_3"></span><br />
+<script type="text/javascript">
+TestSuccess('IsVirtualUrl_3',_ASProxy.IsVirtualUrl('mailto:test@mail.com'),false);
+</script>
+
+IsVirtualUrl test4: <span id="IsVirtualUrl_4"></span><br />
+<script type="text/javascript">
+TestSuccess('IsVirtualUrl_4',_ASProxy.IsVirtualUrl('httpS://localhost:2391/ASProxy/'),false);
+</script>
+
+IsVirtualUrl test5: <span id="IsVirtualUrl_5"></span><br />
+<script type="text/javascript">
+TestSuccess('IsVirtualUrl_5',_ASProxy.IsVirtualUrl('Google.com'),true);
+</script>
+
+IsVirtualUrl test6: <span id="IsVirtualUrl_6"></span><br />
+<script type="text/javascript">
+TestSuccess('IsVirtualUrl_6',_ASProxy.IsVirtualUrl(null),true);
+</script>
+
+
+<h3>Testing IsEncodedByASProxy</h3>
+IsEncodedByASProxy test1 <span id="IsEncodedByASProxy_1"></span><br />
+<script type="text/javascript">
+TestSuccess('IsEncodedByASProxy_1',_ASProxy.IsEncodedByASProxy('default.aspx?decode=1&url=go.com'),true);
+</script>
+
+IsEncodedByASProxy test2 <span id="IsEncodedByASProxy_2"></span><br />
+<script type="text/javascript">
+TestSuccess('IsEncodedByASProxy_2',_ASProxy.IsEncodedByASProxy('/go/default.aspx?decode=1&url=go.com'),false);
+</script>
+
+IsEncodedByASProxy test3 <span id="IsEncodedByASProxy_3"></span><br />
+<script type="text/javascript">
+TestSuccess('IsEncodedByASProxy_3',_ASProxy.IsEncodedByASProxy('default.aspx'),false);
+</script>
+
+IsEncodedByASProxy test4 <span id="IsEncodedByASProxy_4"></span><br />
+<script type="text/javascript">
+TestSuccess('IsEncodedByASProxy_4',_ASProxy.IsEncodedByASProxy('getjs.aspx?decode=0&go=here'),true);
+</script>
+
+IsEncodedByASProxy test5 <span id="IsEncodedByASProxy_5"></span><br />
+<script type="text/javascript">
+TestSuccess('IsEncodedByASProxy_5',_ASProxy.IsEncodedByASProxy(''),false);
+</script>
+
+IsEncodedByASProxy test6 <span id="IsEncodedByASProxy_6"></span><br />
+<script type="text/javascript">
+TestSuccess('IsEncodedByASProxy_6',_ASProxy.IsEncodedByASProxy(null),false);
+</script>
+
+
+<h3>Testing IsClientSideUrl</h3>
+IsClientSideUrl test1 <span id="IsClientSideUrl_1"></span><br />
+<script type="text/javascript">
+TestSuccess('IsClientSideUrl_1',_ASProxy.IsClientSideUrl('javascript:void(0);'),true);
+</script>
+
+IsClientSideUrl test2 <span id="IsClientSideUrl_2"></span><br />
+<script type="text/javascript">
+TestSuccess('IsClientSideUrl_2',_ASProxy.IsClientSideUrl('mailto:test@mail.com'),true);
+</script>
+
+IsClientSideUrl test3 <span id="IsClientSideUrl_3"></span><br />
+<script type="text/javascript">
+TestSuccess('IsClientSideUrl_3',_ASProxy.IsClientSideUrl('/google.htm'),false);
+</script>
+
+IsClientSideUrl test4 <span id="IsClientSideUrl_4"></span><br />
+<script type="text/javascript">
+TestSuccess('IsClientSideUrl_4',_ASProxy.IsClientSideUrl('http://google.com/go.htm?why=1'),false);
+</script>
+
+IsClientSideUrl test5 <span id="IsClientSideUrl_5"></span><br />
+<script type="text/javascript">
+TestSuccess('IsClientSideUrl_5',_ASProxy.IsClientSideUrl('page.html'),false);
+</script>
+
+IsClientSideUrl test6 <span id="IsClientSideUrl_6"></span><br />
+<script type="text/javascript">
+TestSuccess('IsClientSideUrl_6',_ASProxy.IsClientSideUrl(null),false);
+</script>
+
+
+<h3>Testing ReturnBookmarkPart</h3>
+ReturnBookmarkPart test1 <span id="ReturnBookmarkPart_1"></span><br />
+<script type="text/javascript">
+TestSuccess('ReturnBookmarkPart_1',_ASProxy.ReturnBookmarkPart("page.html"),'');
+</script>
+
+ReturnBookmarkPart test2 <span id="ReturnBookmarkPart_2"></span><br />
+<script type="text/javascript">
+TestSuccess('ReturnBookmarkPart_2',_ASProxy.ReturnBookmarkPart("http://page.html?hh=1&ok=22"),'');
+</script>
+
+ReturnBookmarkPart test3 <span id="ReturnBookmarkPart_3"></span><br />
+<script type="text/javascript">
+TestSuccess('ReturnBookmarkPart_3',_ASProxy.ReturnBookmarkPart("http://page.html?hh=1&ok=22#"),'#');
+</script>
+
+ReturnBookmarkPart test4 <span id="ReturnBookmarkPart_4"></span><br />
+<script type="text/javascript">
+TestSuccess('ReturnBookmarkPart_4',_ASProxy.ReturnBookmarkPart("http://page.html?hh=1&ok=22#ok=9090"),'#ok=9090');
+</script>
+
+ReturnBookmarkPart test5 <span id="Span1"></span><br />
+<script type="text/javascript">
+TestSuccess('ReturnBookmarkPart_4',_ASProxy.ReturnBookmarkPart(null),"");
+</script>
+
+
+
+
+<h3>Testing RemoveBookmarkPart</h3>
+RemoveBookmarkPart test1 <span id="RemoveBookmarkPart_1"></span><br />
+<script type="text/javascript">
+TestSuccess('RemoveBookmarkPart_1',_ASProxy.RemoveBookmarkPart('page.html'),'page.html');
+</script>
+
+RemoveBookmarkPart test2 <span id="RemoveBookmarkPart_2"></span><br />
+<script type="text/javascript">
+TestSuccess('RemoveBookmarkPart_2',_ASProxy.RemoveBookmarkPart("http://page.html?hh=1&ok=22"),'http://page.html?hh=1&ok=22');
+</script>
+
+RemoveBookmarkPart test3 <span id="RemoveBookmarkPart_3"></span><br />
+<script type="text/javascript">
+TestSuccess('RemoveBookmarkPart_3',_ASProxy.RemoveBookmarkPart("http://page.html?hh=1&ok=22#"),'http://page.html?hh=1&ok=22');
+</script>
+
+RemoveBookmarkPart test4 <span id="RemoveBookmarkPart_4"></span><br />
+<script type="text/javascript">
+TestSuccess('RemoveBookmarkPart_4',_ASProxy.RemoveBookmarkPart("http://page.html?hh=1&ok=22#ok=9090"),'http://page.html?hh=1&ok=22');
+</script>
+
+RemoveBookmarkPart test5 <span id="RemoveBookmarkPart_5"></span><br />
+<script type="text/javascript">
+TestSuccess('RemoveBookmarkPart_5',_ASProxy.RemoveBookmarkPart("http://page.htm#ok"),'http://page.htm');
+</script>
+
+RemoveBookmarkPart test6 <span id="RemoveBookmarkPart_6"></span><br />
+<script type="text/javascript">
+TestSuccess('RemoveBookmarkPart_6',_ASProxy.RemoveBookmarkPart(null),null);
+</script>
+
+
+
+
+<h3>Testing JoinUrls</h3>
+JoinUrls test1 <span id="JoinUrls_1"></span><br />
+<script type="text/javascript">
+TestSuccess('JoinUrls_1',_ASProxy.JoinUrls("http://go/sub","http://go","page.htm"),"http://go/sub/page.htm");
+</script>
+
+JoinUrls test2 <span id="JoinUrls_2"></span><br />
+<script type="text/javascript">
+TestSuccess('JoinUrls_2',_ASProxy.JoinUrls("http://go/sub/","http://go","page.htm"),"http://go/sub/page.htm");
+</script>
+
+JoinUrls test3 <span id="JoinUrls_3"></span><br />
+<script type="text/javascript">
+TestSuccess('JoinUrls_3',_ASProxy.JoinUrls("http://go/sub/","http://go","/page.htm"),"http://go/page.htm",'http://go/./page.htm');
+</script>
+
+JoinUrls test4 <span id="JoinUrls_4"></span><br />
+<script type="text/javascript">
+TestSuccess('JoinUrls_4',_ASProxy.JoinUrls("http://go/sub/","http://go/","/page.htm"),"http://go/page.htm",'http://go/./page.htm');
+</script>
+
+JoinUrls test5 <span id="JoinUrls_5"></span><br />
+<script type="text/javascript">
+TestSuccess('JoinUrls_5',_ASProxy.JoinUrls("http://go/sub/","http://go","/page.htm"),"http://go/page.htm",'http://go/./page.htm');
+</script>
+
+JoinUrls test6 <span id="JoinUrls_6"></span><br />
+<script type="text/javascript">
+TestSuccess('JoinUrls_6',_ASProxy.JoinUrls("http://go/sub","http://go","/page.htm"),"http://go/page.htm",'http://go/./page.htm');
+</script>
+
+JoinUrls test7 <span id="JoinUrls_7"></span><br />
+<script type="text/javascript">
+TestSuccess('JoinUrls_7',_ASProxy.JoinUrls("http://go/sub","http://go","./page.htm"),"http://go/sub/page.htm",'http://go/sub/./page.htm');
+</script>
+
+JoinUrls test8 <span id="JoinUrls_8"></span><br />
+<script type="text/javascript">
+TestSuccess('JoinUrls_8',_ASProxy.JoinUrls("http://go/sub","http://go","../page.htm"),"http://go/page.htm",'http://go/sub/../page.htm');
+</script>
+
+</div>
+
+<h3>Testing CorrectLocalUrlToOrginal</h3>
+<div id="CorrectLocalUrlToOrginal">
+<!-----------------1--------------------->
+CorrectLocalUrlToOrginal test1 <span id="CorrectLocalUrlToOrginal_1"></span><br />
+<script type="text/javascript">
+__ReqUrlNoParam				= 'http://blocked.com:8080/sub/hi/tester.html';
+__ReqUrlDir					= 'http://blocked.com:8080/sub/hi/';
+__ReqUrlBaseDir				= 'http://blocked.com:8080/';
+__ASProxyDefaultPagePath	= 'http://proxy.com/asproxy/default.aspx'; //or 'http://site.com/default.aspx';
+__ASProxySiteBaseDir		= 'http://proxy.com/asproxy/';// or 'http://site.com/';
+__ASProxySiteHostBaseDir    = 'http://proxy.com/';
+
+TestSuccess('CorrectLocalUrlToOrginal_1',
+	_ASProxy.CorrectLocalUrlToOrginal("http://proxy.com/page.aspx?param1=11"),
+	"http://blocked.com:8080/page.aspx?param1=11");
+</script>
+
+<!-----------------2--------------------->
+CorrectLocalUrlToOrginal test2 <span id="CorrectLocalUrlToOrginal_2"></span><br />
+<script type="text/javascript">
+__ReqUrlNoParam				= 'http://blocked.com:8080/sub/hi/tester.html';
+__ReqUrlDir					= 'http://blocked.com:8080/sub/hi/';
+__ReqUrlBaseDir				= 'http://blocked.com:8080/';
+__ASProxyDefaultPagePath	= 'http://proxy.com/asproxy/default.aspx'; //or 'http://site.com/default.aspx';
+__ASProxySiteBaseDir		= 'http://proxy.com/asproxy/';// or 'http://site.com/';
+__ASProxySiteHostBaseDir    = 'http://proxy.com/';
+
+TestSuccess('CorrectLocalUrlToOrginal_2',
+	_ASProxy.CorrectLocalUrlToOrginal("http://proxy.com/asproxy/default.aspx?param1=11"),
+	"http://blocked.com:8080/sub/hi/tester.html?param1=11");
+</script>
+
+<!-----------------2.1--------------------->
+CorrectLocalUrlToOrginal test2.1 <span id="CorrectLocalUrlToOrginal_2_1"></span><br />
+<script type="text/javascript">
+__ReqUrlNoParam				= 'http://blocked.com:8080/sub/hi/tester.html';
+__ReqUrlDir					= 'http://blocked.com:8080/sub/hi/';
+__ReqUrlBaseDir				= 'http://blocked.com:8080/';
+__ASProxyDefaultPagePath	= 'http://proxy.com/asproxy/default.aspx'; //or 'http://site.com/default.aspx';
+__ASProxySiteBaseDir		= 'http://proxy.com/asproxy/';// or 'http://site.com/';
+__ASProxySiteHostBaseDir    = 'http://proxy.com/';
+
+TestSuccess('CorrectLocalUrlToOrginal_2_1',
+	_ASProxy.CorrectLocalUrlToOrginal("http://proxy.com/asproxy/default.aspx"),
+	"http://blocked.com:8080/sub/hi/tester.html");
+</script>
+
+<!-----------------2.2--------------------->
+CorrectLocalUrlToOrginal test2.2 <span id="CorrectLocalUrlToOrginal_2_2"></span><br />
+<script type="text/javascript">
+__ReqUrlNoParam				= 'http://blocked.com:8080/sub/hi/tester.html';
+__ReqUrlDir					= 'http://blocked.com:8080/sub/hi/';
+__ReqUrlBaseDir				= 'http://blocked.com:8080/';
+__ASProxyDefaultPagePath	= 'http://proxy.com/asproxy/default.aspx'; //or 'http://site.com/default.aspx';
+__ASProxySiteBaseDir		= 'http://proxy.com/asproxy/';// or 'http://site.com/';
+__ASProxySiteHostBaseDir    = 'http://proxy.com/';
+
+TestSuccess('CorrectLocalUrlToOrginal_2_2',
+	_ASProxy.CorrectLocalUrlToOrginal("http://proxy.com/asproxy/"),
+	"http://blocked.com:8080/sub/hi/");
+</script>
+
+<!-----------------2.3--------------------->
+CorrectLocalUrlToOrginal test2.3 <span id="CorrectLocalUrlToOrginal_2_3"></span><br />
+<script type="text/javascript">
+__ReqUrlNoParam				= 'http://blocked.com:8080/sub/hi/tester.html';
+__ReqUrlDir					= 'http://blocked.com:8080/sub/hi/';
+__ReqUrlBaseDir				= 'http://blocked.com:8080/';
+__ASProxyDefaultPagePath	= 'http://proxy.com/asproxy/default.aspx'; //or 'http://site.com/default.aspx';
+__ASProxySiteBaseDir		= 'http://proxy.com/asproxy/';// or 'http://site.com/';
+__ASProxySiteHostBaseDir    = 'http://proxy.com/';
+
+TestSuccess('CorrectLocalUrlToOrginal_2_3',
+	_ASProxy.CorrectLocalUrlToOrginal("http://proxy.com/"),
+	"http://blocked.com:8080/");
+</script>
+
+<!-----------------3--------------------->
+CorrectLocalUrlToOrginal test3 <span id="CorrectLocalUrlToOrginal_3"></span><br />
+<script type="text/javascript">
+__ReqUrlNoParam				= 'http://blocked.com:8080/sub/hi/tester.html';
+__ReqUrlDir					= 'http://blocked.com:8080/sub/hi/';
+__ReqUrlBaseDir				= 'http://blocked.com:8080/';
+__ASProxyDefaultPagePath	= 'http://proxy.com/asproxy/default.aspx'; //or 'http://site.com/default.aspx';
+__ASProxySiteBaseDir		= 'http://proxy.com/asproxy/';// or 'http://site.com/';
+__ASProxySiteHostBaseDir    = 'http://proxy.com/';
+
+TestSuccess('CorrectLocalUrlToOrginal_3',
+	_ASProxy.CorrectLocalUrlToOrginal("http://proxy.com/asproxy/?param1=11"),
+	"http://blocked.com:8080/sub/hi/?param1=11");
+</script>
+
+<!-----------------4--------------------->
+CorrectLocalUrlToOrginal test4 <span id="CorrectLocalUrlToOrginal_4"></span><br />
+<script type="text/javascript">
+__ReqUrlNoParam				= 'http://blocked.com:8080/sub/hi/tester.html';
+__ReqUrlDir					= 'http://blocked.com:8080/sub/hi/';
+__ReqUrlBaseDir				= 'http://blocked.com:8080/';
+__ASProxyDefaultPagePath	= 'http://proxy.com/asproxy/default.aspx'; //or 'http://site.com/default.aspx';
+__ASProxySiteBaseDir		= 'http://proxy.com/asproxy/';// or 'http://site.com/';
+__ASProxySiteHostBaseDir    = 'http://proxy.com/';
+
+TestSuccess('CorrectLocalUrlToOrginal_4',
+	_ASProxy.CorrectLocalUrlToOrginal("http://proxy.com/asproxy/otherpage.html?param1=11"),
+	"http://blocked.com:8080/sub/hi/otherpage.html?param1=11");
+</script>
+
+<!-----------------5--------------------->
+CorrectLocalUrlToOrginal test5 <span id="CorrectLocalUrlToOrginal_5"></span><br />
+<script type="text/javascript">
+__ReqUrlNoParam				= 'http://blocked.com:8080/sub/hi/tester.html';
+__ReqUrlDir					= 'http://blocked.com:8080/sub/hi/';
+__ReqUrlBaseDir				= 'http://blocked.com:8080/';
+__ASProxyDefaultPagePath	= 'http://proxy.com/asproxy/default.aspx'; //or 'http://site.com/default.aspx';
+__ASProxySiteBaseDir		= 'http://proxy.com/asproxy/';// or 'http://site.com/';
+__ASProxySiteHostBaseDir    = 'http://proxy.com/';
+
+TestSuccess('CorrectLocalUrlToOrginal_5',
+	_ASProxy.CorrectLocalUrlToOrginal("/otherpage.html?param1=11"),
+	"http://blocked.com:8080/otherpage.html?param1=11");
+</script>
+
+<!-----------------6--------------------->
+CorrectLocalUrlToOrginal test6 <span id="CorrectLocalUrlToOrginal_6"></span><br />
+<script type="text/javascript">
+__ReqUrlNoParam				= 'http://blocked.com:8080/sub/hi/tester.html';
+__ReqUrlDir					= 'http://blocked.com:8080/sub/hi/';
+__ReqUrlBaseDir				= 'http://blocked.com:8080/';
+__ASProxyDefaultPagePath	= 'http://proxy.com/asproxy/default.aspx'; //or 'http://site.com/default.aspx';
+__ASProxySiteBaseDir		= 'http://proxy.com/asproxy/';// or 'http://site.com/';
+__ASProxySiteHostBaseDir    = 'http://proxy.com/';
+
+TestSuccess('CorrectLocalUrlToOrginal_6',
+	_ASProxy.CorrectLocalUrlToOrginal("otherpage.html?param1=11"),
+	"http://blocked.com:8080/sub/hi/otherpage.html?param1=11");
+</script>
+
+<!-----------------7--------------------->
+CorrectLocalUrlToOrginal test7 <span id="CorrectLocalUrlToOrginal_7"></span><br />
+<script type="text/javascript">
+__ReqUrlNoParam				= 'http://blocked.com:8080/sub/hi/tester.html';
+__ReqUrlDir					= 'http://blocked.com:8080/sub/hi/';
+__ReqUrlBaseDir				= 'http://blocked.com:8080/';
+__ASProxyDefaultPagePath	= 'http://proxy.com/asproxy/default.aspx'; //or 'http://site.com/default.aspx';
+__ASProxySiteBaseDir		= 'http://proxy.com/asproxy/';// or 'http://site.com/';
+__ASProxySiteHostBaseDir    = 'http://proxy.com/';
+
+TestSuccess('CorrectLocalUrlToOrginal_7',
+	_ASProxy.CorrectLocalUrlToOrginal("./otherpage.html?param1=11"),
+	"http://blocked.com:8080/sub/hi/otherpage.html?param1=11");
+</script>
+
+<!-----------------8--------------------->
+CorrectLocalUrlToOrginal test8 <span id="CorrectLocalUrlToOrginal_8"></span><br />
+<script type="text/javascript">
+__ReqUrlNoParam				= 'http://blocked.com:8080/sub/hi/tester.html';
+__ReqUrlDir					= 'http://blocked.com:8080/sub/hi/';
+__ReqUrlBaseDir				= 'http://blocked.com:8080/';
+__ASProxyDefaultPagePath	= 'http://proxy.com/asproxy/default.aspx'; //or 'http://site.com/default.aspx';
+__ASProxySiteBaseDir		= 'http://proxy.com/asproxy/';// or 'http://site.com/';
+__ASProxySiteHostBaseDir    = 'http://proxy.com/';
+
+TestSuccess('CorrectLocalUrlToOrginal_8',
+	_ASProxy.CorrectLocalUrlToOrginal("../otherpage.html?param1=11"),
+	"http://blocked.com:8080/sub/hi/../otherpage.html?param1=11");
+</script>
+
+<!-----------------9--------------------->
+CorrectLocalUrlToOrginal test9 <span id="CorrectLocalUrlToOrginal_9"></span><br />
+<script type="text/javascript">
+__ReqUrlNoParam				= 'http://blocked.com:8080/sub/hi/tester.html';
+__ReqUrlDir					= 'http://blocked.com:8080/sub/hi/';
+__ReqUrlBaseDir				= 'http://blocked.com:8080/';
+__ASProxyDefaultPagePath	= 'http://proxy.com/asproxy/default.aspx'; //or 'http://site.com/default.aspx';
+__ASProxySiteBaseDir		= 'http://proxy.com/asproxy/';// or 'http://site.com/';
+__ASProxySiteHostBaseDir    = 'http://proxy.com/';
+
+TestSuccess('CorrectLocalUrlToOrginal_9',
+	_ASProxy.CorrectLocalUrlToOrginal("http://blocked.com:8080/sub/hi/tester.html?param1=11"),
+	"http://blocked.com:8080/sub/hi/tester.html?param1=11");
+</script>
+</div>
+
+<h3>Testing CorrectLocalUrlToOrginal with JoingUrls together</h3>
+<div id="CorrectLocalUrlToOrginal_and_JoingUrls">
+<script type="text/javascript">
+function CorrectJoinUrlsTest(url){
+	url=_ASProxy.CorrectLocalUrlToOrginal(url);
+	if(_ASProxy.IsVirtualUrl(url))
+		url=_ASProxy.JoinUrls(__ReqUrlDir,__ReqUrlBaseDir,url);
+	return url;
+}
+</script>
+
+<!-----------------1--------------------->
+Correct_JoinUrls test 1 <span id="Correct_JoinUrls_1"></span><br />
+<script type="text/javascript">
+__ReqUrlNoParam				= 'http://blocked.com:8080/sub/hi/tester.html';
+__ReqUrlDir					= 'http://blocked.com:8080/sub/hi/';
+__ReqUrlBaseDir				= 'http://blocked.com:8080/';
+__ASProxyDefaultPagePath	= 'http://proxy.com/asproxy/default.aspx'; //or 'http://site.com/default.aspx';
+__ASProxySiteBaseDir		= 'http://proxy.com/asproxy/';// or 'http://site.com/';
+__ASProxySiteHostBaseDir    = 'http://proxy.com/';
+
+TestSuccess('Correct_JoinUrls_1',
+	CorrectJoinUrlsTest('tester.html?param1=11'),
+	"http://blocked.com:8080/sub/hi/tester.html?param1=11");
+</script>
+
+<!-----------------2--------------------->
+Correct_JoinUrls test2 <span id="Correct_JoinUrls_2"></span><br />
+<script type="text/javascript">
+__ReqUrlNoParam				= 'http://blocked.com:8080/sub/hi/tester.html';
+__ReqUrlDir					= 'http://blocked.com:8080/sub/hi/';
+__ReqUrlBaseDir				= 'http://blocked.com:8080/';
+__ASProxyDefaultPagePath	= 'http://proxy.com/asproxy/default.aspx'; //or 'http://site.com/default.aspx';
+__ASProxySiteBaseDir		= 'http://proxy.com/asproxy/';// or 'http://site.com/';
+__ASProxySiteHostBaseDir    = 'http://proxy.com/';
+
+TestSuccess('Correct_JoinUrls_2',
+	CorrectJoinUrlsTest("http://proxy.com/page.aspx?param1=11"),
+	"http://blocked.com:8080/page.aspx?param1=11");
+</script>
+
+<!-----------------3--------------------->
+Correct_JoinUrls test3 <span id="Correct_JoinUrls_3"></span><br />
+<script type="text/javascript">
+__ReqUrlNoParam				= 'http://blocked.com:8080/sub/hi/tester.html';
+__ReqUrlDir					= 'http://blocked.com:8080/sub/hi/';
+__ReqUrlBaseDir				= 'http://blocked.com:8080/';
+__ASProxyDefaultPagePath	= 'http://proxy.com/asproxy/default.aspx'; //or 'http://site.com/default.aspx';
+__ASProxySiteBaseDir		= 'http://proxy.com/asproxy/';// or 'http://site.com/';
+__ASProxySiteHostBaseDir    = 'http://proxy.com/';
+
+TestSuccess('Correct_JoinUrls_3',
+	CorrectJoinUrlsTest("http://proxy.com/asproxy/default.aspx?param1=11"),
+	"http://blocked.com:8080/sub/hi/tester.html?param1=11");
+</script>
+
+<!-----------------4--------------------->
+Correct_JoinUrls test4 <span id="Correct_JoinUrls_4"></span><br />
+<script type="text/javascript">
+__ReqUrlNoParam				= 'http://blocked.com:8080/sub/hi/tester.html';
+__ReqUrlDir					= 'http://blocked.com:8080/sub/hi/';
+__ReqUrlBaseDir				= 'http://blocked.com:8080/';
+__ASProxyDefaultPagePath	= 'http://proxy.com/asproxy/default.aspx'; //or 'http://site.com/default.aspx';
+__ASProxySiteBaseDir		= 'http://proxy.com/asproxy/';// or 'http://site.com/';
+__ASProxySiteHostBaseDir    = 'http://proxy.com/';
+
+TestSuccess('Correct_JoinUrls_4',
+	CorrectJoinUrlsTest("http://proxy.com/asproxy/default.aspx"),
+	"http://blocked.com:8080/sub/hi/tester.html");
+</script>
+
+<!-----------------5--------------------->
+Correct_JoinUrls test5 <span id="Correct_JoinUrls_5"></span><br />
+<script type="text/javascript">
+__ReqUrlNoParam				= 'http://blocked.com:8080/sub/hi/tester.html';
+__ReqUrlDir					= 'http://blocked.com:8080/sub/hi/';
+__ReqUrlBaseDir				= 'http://blocked.com:8080/';
+__ASProxyDefaultPagePath	= 'http://proxy.com/asproxy/default.aspx'; //or 'http://site.com/default.aspx';
+__ASProxySiteBaseDir		= 'http://proxy.com/asproxy/';// or 'http://site.com/';
+__ASProxySiteHostBaseDir    = 'http://proxy.com/';
+
+TestSuccess('Correct_JoinUrls_5',
+	CorrectJoinUrlsTest("http://proxy.com/asproxy/"),
+	"http://blocked.com:8080/sub/hi/");
+</script>
+
+<!-----------------6--------------------->
+Correct_JoinUrls test6 <span id="Correct_JoinUrls_6"></span><br />
+<script type="text/javascript">
+__ReqUrlNoParam				= 'http://blocked.com:8080/sub/hi/tester.html';
+__ReqUrlDir					= 'http://blocked.com:8080/sub/hi/';
+__ReqUrlBaseDir				= 'http://blocked.com:8080/';
+__ASProxyDefaultPagePath	= 'http://proxy.com/asproxy/default.aspx'; //or 'http://site.com/default.aspx';
+__ASProxySiteBaseDir		= 'http://proxy.com/asproxy/';// or 'http://site.com/';
+__ASProxySiteHostBaseDir    = 'http://proxy.com/';
+
+TestSuccess('Correct_JoinUrls_6',
+	CorrectJoinUrlsTest("http://proxy.com/"),
+	"http://blocked.com:8080/");
+</script>
+
+<!-----------------7--------------------->
+Correct_JoinUrls test7 <span id="Correct_JoinUrls_7"></span><br />
+<script type="text/javascript">
+__ReqUrlNoParam				= 'http://blocked.com:8080/sub/hi/tester.html';
+__ReqUrlDir					= 'http://blocked.com:8080/sub/hi/';
+__ReqUrlBaseDir				= 'http://blocked.com:8080/';
+__ASProxyDefaultPagePath	= 'http://proxy.com/asproxy/default.aspx'; //or 'http://site.com/default.aspx';
+__ASProxySiteBaseDir		= 'http://proxy.com/asproxy/';// or 'http://site.com/';
+__ASProxySiteHostBaseDir    = 'http://proxy.com/';
+
+TestSuccess('Correct_JoinUrls_7',
+	CorrectJoinUrlsTest("http://proxy.com/asproxy/?param1=11"),
+	"http://blocked.com:8080/sub/hi/?param1=11");
+</script>
+
+<!-----------------8--------------------->
+Correct_JoinUrls test8 <span id="Correct_JoinUrls_8"></span><br />
+<script type="text/javascript">
+__ReqUrlNoParam				= 'http://blocked.com:8080/sub/hi/tester.html';
+__ReqUrlDir					= 'http://blocked.com:8080/sub/hi/';
+__ReqUrlBaseDir				= 'http://blocked.com:8080/';
+__ASProxyDefaultPagePath	= 'http://proxy.com/asproxy/default.aspx'; //or 'http://site.com/default.aspx';
+__ASProxySiteBaseDir		= 'http://proxy.com/asproxy/';// or 'http://site.com/';
+__ASProxySiteHostBaseDir    = 'http://proxy.com/';
+
+TestSuccess('Correct_JoinUrls_8',
+	CorrectJoinUrlsTest("http://proxy.com/asproxy/otherpage.html?param1=11"),
+	"http://blocked.com:8080/sub/hi/otherpage.html?param1=11");
+</script>
+
+<!-----------------9--------------------->
+Correct_JoinUrls test9 <span id="Correct_JoinUrls_9"></span><br />
+<script type="text/javascript">
+__ReqUrlNoParam				= 'http://blocked.com:8080/sub/hi/tester.html';
+__ReqUrlDir					= 'http://blocked.com:8080/sub/hi/';
+__ReqUrlBaseDir				= 'http://blocked.com:8080/';
+__ASProxyDefaultPagePath	= 'http://proxy.com/asproxy/default.aspx'; //or 'http://site.com/default.aspx';
+__ASProxySiteBaseDir		= 'http://proxy.com/asproxy/';// or 'http://site.com/';
+__ASProxySiteHostBaseDir    = 'http://proxy.com/';
+
+TestSuccess('Correct_JoinUrls_9',
+	CorrectJoinUrlsTest("/otherpage.html?param1=11"),
+	"http://blocked.com:8080/otherpage.html?param1=11","http://blocked.com:8080/./otherpage.html?param1=11");
+</script>
+
+<!-----------------10--------------------->
+Correct_JoinUrls test10 <span id="Correct_JoinUrls_10"></span><br />
+<script type="text/javascript">
+__ReqUrlNoParam				= 'http://blocked.com:8080/sub/hi/tester.html';
+__ReqUrlDir					= 'http://blocked.com:8080/sub/hi/';
+__ReqUrlBaseDir				= 'http://blocked.com:8080/';
+__ASProxyDefaultPagePath	= 'http://proxy.com/asproxy/default.aspx'; //or 'http://site.com/default.aspx';
+__ASProxySiteBaseDir		= 'http://proxy.com/asproxy/';// or 'http://site.com/';
+__ASProxySiteHostBaseDir    = 'http://proxy.com/';
+
+TestSuccess('Correct_JoinUrls_10',
+	CorrectJoinUrlsTest("otherpage.html?param1=11"),
+	"http://blocked.com:8080/sub/hi/otherpage.html?param1=11");
+</script>
+
+<!-----------------11--------------------->
+Correct_JoinUrls test11 <span id="Correct_JoinUrls_11"></span><br />
+<script type="text/javascript">
+__ReqUrlNoParam				= 'http://blocked.com:8080/sub/hi/tester.html';
+__ReqUrlDir					= 'http://blocked.com:8080/sub/hi/';
+__ReqUrlBaseDir				= 'http://blocked.com:8080/';
+__ASProxyDefaultPagePath	= 'http://proxy.com/asproxy/default.aspx'; //or 'http://site.com/default.aspx';
+__ASProxySiteBaseDir		= 'http://proxy.com/asproxy/';// or 'http://site.com/';
+__ASProxySiteHostBaseDir    = 'http://proxy.com/';
+
+TestSuccess('Correct_JoinUrls_11',
+	CorrectJoinUrlsTest("./otherpage.html?param1=11"),
+	"http://blocked.com:8080/sub/hi/otherpage.html?param1=11","http://blocked.com:8080/sub/hi/./otherpage.html?param1=11");
+</script>
+
+<!-----------------12--------------------->
+Correct_JoinUrls test12 <span id="Correct_JoinUrls_12"></span><br />
+<script type="text/javascript">
+__ReqUrlNoParam				= 'http://blocked.com:8080/sub/hi/tester.html';
+__ReqUrlDir					= 'http://blocked.com:8080/sub/hi/';
+__ReqUrlBaseDir				= 'http://blocked.com:8080/';
+__ASProxyDefaultPagePath	= 'http://proxy.com/asproxy/default.aspx'; //or 'http://site.com/default.aspx';
+__ASProxySiteBaseDir		= 'http://proxy.com/asproxy/';// or 'http://site.com/';
+__ASProxySiteHostBaseDir    = 'http://proxy.com/';
+
+TestSuccess('Correct_JoinUrls_12',
+	CorrectJoinUrlsTest("../otherpage.html?param1=11"),
+	"http://blocked.com:8080/sub/otherpage.html?param1=11","http://blocked.com:8080/sub/hi/../otherpage.html?param1=11");
+</script>
+
+<!-----------------13--------------------->
+Correct_JoinUrls test13 <span id="Correct_JoinUrls_13"></span><br />
+<script type="text/javascript">
+__ReqUrlNoParam				= 'http://blocked.com:8080/sub/hi/tester.html';
+__ReqUrlDir					= 'http://blocked.com:8080/sub/hi/';
+__ReqUrlBaseDir				= 'http://blocked.com:8080/';
+__ASProxyDefaultPagePath	= 'http://proxy.com/asproxy/default.aspx'; //or 'http://site.com/default.aspx';
+__ASProxySiteBaseDir		= 'http://proxy.com/asproxy/';// or 'http://site.com/';
+__ASProxySiteHostBaseDir    = 'http://proxy.com/';
+
+TestSuccess('Correct_JoinUrls_13',
+	CorrectJoinUrlsTest("http://blocked.com:8080/sub/hi/tester.html?param1=11"),
+	"http://blocked.com:8080/sub/hi/tester.html?param1=11");
+</script>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h3>Testing B64UnknownerRemover</h3>
+B64UnknownerRemover test1 <span id="B64UnknownerRemover_1"></span><br />
+<script type="text/javascript">
+TestSuccess('B64UnknownerRemover_1',_ASProxy.B64UnknownerRemover("StringB64Coded!"),"String");
+</script>
+
+B64UnknownerRemover test2 <span id="B64UnknownerRemover_2"></span><br />
+<script type="text/javascript">
+TestSuccess('B64UnknownerRemover_2',_ASProxy.B64UnknownerRemover("B64Coded!-B64Coded!"),"B64Coded!-");
+</script>
+
+B64UnknownerRemover test3 <span id="B64UnknownerRemover_3"></span><br />
+<script type="text/javascript">
+TestSuccess('B64UnknownerRemover_3',_ASProxy.B64UnknownerRemover("http://go/sub/"),"http://go/sub/");
+</script>
+
+B64UnknownerRemover test4 <span id="B64UnknownerRemover_4"></span><br />
+<script type="text/javascript">
+TestSuccess('B64UnknownerRemover_4',_ASProxy.B64UnknownerRemover("String"),"String");
+</script>
+
+B64UnknownerRemover test5 <span id="B64UnknownerRemover_5"></span><br />
+<script type="text/javascript">
+TestSuccess('B64UnknownerRemover_5',_ASProxy.B64UnknownerRemover(null),null);
+</script>
+
+
+
+<h3>Testing B64UnknownerAdd</h3>
+B64UnknownerAdd test1 <span id="B64UnknownerAdd_1"></span><br />
+<script type="text/javascript">
+TestSuccess('B64UnknownerAdd_1',_ASProxy.B64UnknownerAdd("StringB64Coded!"),"StringB64Coded!");
+</script>
+
+B64UnknownerAdd test2 <span id="B64UnknownerAdd_2"></span><br />
+<script type="text/javascript">
+TestSuccess('B64UnknownerAdd_2',_ASProxy.B64UnknownerAdd("urlB64Coded!url"),"urlB64Coded!urlB64Coded!");
+</script>
+
+B64UnknownerAdd test3 <span id="B64UnknownerAdd_3"></span><br />
+<script type="text/javascript">
+TestSuccess('B64UnknownerAdd_3',_ASProxy.B64UnknownerAdd("http://go/sub/"),"http://go/sub/B64Coded!");
+</script>
+
+B64UnknownerAdd test4 <span id="B64UnknownerAdd_4"></span><br />
+<script type="text/javascript">
+TestSuccess('B64UnknownerAdd_4',_ASProxy.B64UnknownerAdd("String"),"StringB64Coded!");
+</script>
+
+B64UnknownerAdd test5 <span id="B64UnknownerAdd_5"></span><br />
+<script type="text/javascript">
+TestSuccess('B64UnknownerAdd_5',_ASProxy.B64UnknownerAdd(null),"B64Coded!");
+</script>
+
+
+<h3>Testing CorrectLocalUrlToOrginalCheck</h3>
+<span id="span29"></span><br />
+<script type="text/javascript">
+</script>
+
+
+
+<h3>Testing ASProxyEncodeElements</h3>
+<span id="span41"></span><br />
+<script type="text/javascript">
+</script>
+
+
+<h3>Testing ASProxyEncoder</h3>
+<span id="span45"></span><br />
+<script type="text/javascript">
+</script>
+
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,13 @@
+XMLHttpRequest Test
+http://www.mnot.net/javascript/xmlhttprequest/
+
+XMLHttpRequest Caching Tests
+http://www.mnot.net/javascript/xmlhttprequest/cache.html
+
+
+Opera labs XMLHttpRequest Test
+http://tc.labs.opera.com/apis/XMLHttpRequest/autorun-basic.htm
+
+
+AJAX - XMLHttpRequest test IE7
+http://wafel.com/~gim/test_ajax_ie7.html

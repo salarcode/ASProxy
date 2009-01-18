@@ -1,0 +1,175 @@
+<html xmlns="http://www.w3.org/1999/xhtml" >
+<head>
+    <title>AjaxWrapper Test Page</title>
+</head>
+<body>
+	<h2>Warning, this page should run in ASProxy. It can work without it, but designed to be tested in ASProxy.</h2>
+
+
+	<script type="text/javascript">
+	function Display(resultLableID,msg,success)
+	{
+		var result= document.getElementById(resultLableID);
+		if(success)
+			result.innerHTML+=(msg).fontcolor('green');
+		else
+			result.innerHTML+=(msg).fontcolor('red');
+		result.innerHTML+="<br />";
+
+	}
+	</script>
+	<!-- ================================================ -->
+	<h3>Test3: Async request event test</h3>
+	<div id="lblTest3Event"></div>
+	<script type="text/javascript">
+	function Test3Async(){
+		document.getElementById("lblTest3Event").innerHTML="";
+		var ajax=new XMLHttpRequest();
+		
+		ajax.onreadystatechange=function ()
+		{
+		    //if(ajax.readyState==4)
+			    Display("lblTest3Event","onReadyStateChange  readyState=="+ajax.readyState+" TEST 3!!! "+ajax.responseText,true);
+		}
+		
+		ajax.open("GET","JQueryAjaxTest/Internal/ajax-test.html",true);
+		ajax.send(null);
+	}
+	</script>
+	<button onclick="Test3Async()">AJAX Test 3</button> 
+
+	<!-- ================================================ -->
+	<h3>Test4: sync request event test</h3>
+	<div id="lblTest4Event"></div>
+	<script type="text/javascript">
+	function Test4Async(){
+		document.getElementById("lblTest4Event").innerHTML="";
+		var ajax=new XMLHttpRequest();
+		
+		ajax.onreadystatechange=function ()
+		{
+		    //if(ajax.readyState==4)
+			    Display("lblTest4Event","onReadyStateChange  readyState=="+ajax.readyState+" TEST 4!!! "+ajax.responseText,true);
+		}
+		
+		ajax.open("GET","JQueryAjaxTest/Internal/ajax-test.html");
+		ajax.send(null);
+		alert("Request should be done now!");
+	}
+	</script>
+	<button onclick="Test4Async()">AJAX Test 4</button> 
+
+	<!-- ================================================ -->
+	<h3>Test5: sync request event test</h3>
+	<div id="lblTest5Event"></div>
+	<script type="text/javascript">
+	function Test5Async(){
+		document.getElementById("lblTest5Event").innerHTML="";
+		var ajax=new XMLHttpRequest();
+		
+		ajax.open("GET","JQueryAjaxTest/Internal/ajax-test.html");
+		ajax.onreadystatechange=function ()
+		{
+		    //if(ajax.readyState==4)
+			Display("lblTest5Event","onReadyStateChange  readyState=="+ajax.readyState+" TEST 5!!! "+ajax.responseText,true);
+		}
+		
+		ajax.send(null);
+		alert("Request should be done now!");
+	}
+	</script>
+	<button onclick="Test5Async()">AJAX Test 5</button> 
+
+	<!-- ================================================ -->
+	<h3>Test1: Async request event test</h3>
+	<div id="lblAsyncEventTest"></div>
+	<script type="text/javascript">
+	function Test1Async()
+	{
+		document.getElementById("lblAsyncEventTest").innerHTML="";
+		var ajax=new XMLHttpRequest();
+		
+		function DisplayState(){
+			return " readyState="+ajax.readyState+" status="+ajax.status+" responseText="+ajax.responseText;
+		}
+		ajax.onreadystatechange=function (){
+			Display("lblAsyncEventTest","onReadyStateChange"+DisplayState(),true);
+		}
+		
+		ajax.onload=function (){
+			Display("lblAsyncEventTest","onload"+DisplayState(),true);
+		}
+		
+		ajax.onsend=function (){
+			Display("lblAsyncEventTest","onsend"+DisplayState(),true);
+		}
+		
+		ajax.onerror=function (){
+			Display("lblAsyncEventTest","onerror"+DisplayState(),true);
+		}
+		
+		ajax.onprogress=function (){
+			Display("lblAsyncEventTest","onprogress"+DisplayState(),true);
+		}
+		
+		ajax.ontimeout=function (){
+			Display("lblAsyncEventTest","ontimeout"+DisplayState(),true);
+		}
+		
+		ajax.onuploadprogress=function (){
+			Display("lblAsyncEventTest","onuploadprogress"+DisplayState(),true);
+		}
+		
+		ajax.open("GET","/ASProxy/ajax.ashx?decode=1&ajaxurl=aHR0cDovL2xvY2FsaG9zdDoyMzc5L0FTUHJveHkvX3Rlc3QvQVNQcm94eVRlc3RTdWl0L0FqYXhXcmFwcGVyL0pRdWVyeUFqYXhUZXN0L0ludGVybmFsL2FqYXgtdGVzdC50eHQ=B64Coded!&method=GET",true);
+		ajax.send("Test");
+	}
+	</script>
+	<button onclick="Test1Async()">AJAX Async</button> 
+
+	<!-- ================================================ -->
+	<h3>Test2: Sync request event test</h3>
+	<div id="lblSyncEventTest"></div>
+	<script type="text/javascript">
+	function Test1Sync()
+	{
+		document.getElementById("lblSyncEventTest").innerHTML="";
+		var ajax=new XMLHttpRequest();
+		
+		function DisplayState(){
+			return " readyState="+ajax.readyState+" status="+ajax.status+" responseText="+ajax.responseText;
+		}
+		ajax.onreadystatechange=function (){
+			Display("lblSyncEventTest","onReadyStateChange"+DisplayState(),true);
+		}
+		
+		ajax.onload=function (){
+			Display("lblSyncEventTest","onload"+DisplayState(),true);
+		}
+		
+		ajax.onerror=function (){
+			Display("lblSyncEventTest","onerror"+DisplayState(),true);
+		}
+		
+		ajax.onprogress=function (){
+			Display("lblSyncEventTest","onprogress"+DisplayState(),true);
+		}
+		
+		ajax.ontimeout=function (){
+			Display("lblSyncEventTest","ontimeout"+DisplayState(),true);
+		}
+		
+		ajax.onuploadprogress=function (){
+			Display("lblSyncEventTest","onuploadprogress"+DisplayState(),true);
+		}
+
+		ajax.open("GET","/ASProxy/ajax.ashx?decode=1&ajaxurl=aHR0cDovL2xvY2FsaG9zdDoyMzc5L0FTUHJveHkvX3Rlc3QvQVNQcm94eVRlc3RTdWl0L0FqYXhXcmFwcGVyL0pRdWVyeUFqYXhUZXN0L0ludGVybmFsL2FqYXgtdGVzdC50eHQ=B64Coded!&method=GET",false);
+		ajax.send(null);
+	}
+	</script>
+	
+	<button onclick="Test1Sync()">AJAX Sync</button>
+	
+	<!-- ================================================ -->
+
+</body>
+</html>

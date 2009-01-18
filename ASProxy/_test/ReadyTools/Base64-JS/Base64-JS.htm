@@ -1,0 +1,32 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" >
+<head>
+    <title>Javascript Base64</title>
+    <script src="base64.js" type="text/javascript"></script>
+</head>
+<body>
+	
+<script language="javascript" type="text/javascript">
+function EncodeClick() {
+document.getElementById('txtEncodeResult').value=_Base64_encode(document.getElementById('txtEncode').value);
+}
+function DecodeClick() {
+document.getElementById('txtDecodeResult').value=_Base64_decode(document.getElementById('txtDecode').value);
+}
+</script>
+
+<input onclick="EncodeClick()" type="button"
+	value="Encode" /><br />
+<input id="txtEncode" type="text" style="width: 850px" />
+<textarea id="txtEncodeResult" cols="50" rows="10" style="width: 850px" ></textarea>
+
+<br /><br />
+<input onclick="DecodeClick()" type="button"
+	value="Decode" /><br />
+<input id="txtDecode" type="text" style="width: 850px" />
+<textarea cols="50" rows="10" id="txtDecodeResult" style="width: 850px">
+</textarea>
+
+	
+</body>
+</html>

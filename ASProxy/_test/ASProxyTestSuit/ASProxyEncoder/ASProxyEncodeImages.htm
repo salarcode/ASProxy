@@ -1,0 +1,142 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" >
+<head>
+    <title>ASProxyEncoder::ASProxyEncodeImages Test Suit</title>
+    <script type="text/javascript">
+		__ASProxyEncodeUrl=1;
+		__ASProxyOriginalUrlEnabled=0;
+		__ASProxyLinksEnabled=0;
+		__ASProxyImagesEnabled=1;
+		__ASProxyBackImagesEnabled=0;
+		__ASProxyFormsEnabled=0;
+		__ASProxyFramesEnabled=0;
+	
+		__ReqUrlFull				= 'http://localhost:3000/ASProxy/_test/ASProxyTestSuit/ASProxyEncoder/ASProxyEncodeImages.htm?param=1&hi=2';
+		__ReqUrlNoParam				= 'http://localhost:3000/ASProxy/_test/ASProxyTestSuit/ASProxyEncoder/ASProxyEncodeImages.htm';
+		__ReqUrlDir					= 'http://localhost:3000/ASProxy/_test/ASProxyTestSuit/ASProxyEncoder/';
+		__ReqUrlBaseDir				= 'http://localhost:3000/';
+		__ASProxyDefaultPagePath	= 'http://localhost:3000/ASProxy/default.aspx'; //or 'http://site.com/default.aspx';
+		__ASProxySiteBaseDir		= 'http://localhost:3000/ASProxy/';// or 'http://site.com/';
+		__ASProxySiteHostBaseDir    = 'http://localhost:3000/';
+		__ASProxyDefaultPage		= 'default.aspx';
+		__B64Unknowner				= "B64Coded!";
+		
+		__WLocHash="";
+		__WLocHost="blocked.com:8080";
+		__WLocHostname="blocked.com";
+		__WLocPathname="/sub/hi/tester.html"
+		__WLocSearch='?param=1&hi=2';
+		__WLocPort="8080";
+		__WLocProtocol="http:";
+		
+		// We are in debug mode, so it should use abolute URLs!
+		__UseASProxyAbsoluteUrl		= true;
+    </script>
+    <script type="text/javascript" src="/ASProxy/scripts/base64encoder.js"></script>
+    <script type="text/javascript" src="/ASProxy/scripts/asproxyencoder.js"></script>
+    <style type="text/css">
+		body{font-size:small;}
+		img{border:solid 1px red;}
+    </style>
+</head>
+<body style=""><h2>
+Welcome to ASProxyEncodeImages test suit</h2>
+<b>Author: Salar Khalilzadeh</b><br />
+<b>Update: 2008-12-08</b>
+<br />
+Images will refresh after a few seconds, so don't be quick.
+
+<script type="text/javascript">
+function GetRandomImage(){
+	var rndImages=new Array('Internal/anim-walk.gif','Internal/asproxy.png','Internal/moon.png'
+	,'Internal/repeat-back.gif','Internal/waiting.gif');
+	var rnd=Math.random();
+	if(rnd>.85)
+		return rndImages[4];
+	else if(rnd>.7)
+		return rndImages[3];
+	else if(rnd>.55)
+		return rndImages[2];
+	else if(rnd>.2)
+		return rndImages[1];
+	else
+		return rndImages[0];
+}
+</script>
+
+<h3>Dynamic images: Detecting created images</h3>
+<script type="text/javascript">
+function Test_CreateImageObject(){
+	var div=document.getElementById('divDynamicImagesHolder');
+	var imgFormat="<img src='[src]' alt='Error - Can''t load image!' />";
+	imgFormat=imgFormat.replace('[src]',GetRandomImage());
+	div.innerHTML+=imgFormat;
+}
+</script>
+<div style="overflow:visible; width:100%;" id="divDynamicImagesHolder"></div>
+<button onclick="Test_CreateImageObject()">Create random image</button>
+<p>Click on this button to create a new image. The image should automatically encode by this function</p>
+
+<h3>Test: Static image, late change by javascript</h3>
+<script type="text/javascript">
+function Test_ImgLateChange(){
+	var img=document.getElementById('testImgLateChange');
+	img.src=GetRandomImage();
+}
+</script>
+<img src="Internal/asproxy.png" id="testImgLateChange" onclick="Test_ImgLateChange()" alt="Error - Can't load image!" />
+<br />
+Click on image to change it to a random image. Or <a href="#" onclick="Test_ImgLateChange()">Click here!</a>
+<br />
+
+<h3>Test: Image change by Javascript</h3>
+Flag: <img id="testImgFlag" src="" alt="Error - Can't load flag image!" style="display:none" /><br />
+<a href="#" onclick="Test_ChangeFlag()">Change Flag</a>
+<script type="text/javascript">
+function Test_ChangeFlag(){
+	var imgFlag=document.getElementById('testImgFlag');
+	var flagSrcPatt='Internal/flags/{0}.png';
+
+	var rnd=Math.random();
+	var f="us";
+	if(rnd>=1)
+		f="az";
+	else if(rnd>.8)
+		f="jp";
+	else if(rnd>.7)
+		f="uz";
+	else if(rnd>.6)
+		f="bo";
+	else if(rnd>.5)
+		f="kg";
+	else if(rnd>.4)
+		f="kz";
+	else if(rnd>.3)
+		f="it";
+	else if(rnd>.2)
+		f="mo";
+	else if(rnd>.1)
+		f="nu";
+	else if(rnd>.0)
+		f="as";
+
+	imgFlag.src=flagSrcPatt.replace('{0}',f);
+	imgFlag.style.display='';
+}
+</script>
+<p>
+There is no image at first, actually it is unvisible. The event should change the source of image and ASProxy should detect it!
+</p>
+
+<h3>Special test: Detecting changed image</h3>
+<img asproxydone="1" encodedurl="dumpvalue" src="Internal/moon.png" alt="Error - Can't load image!" />
+<p>
+This image is marked as already decoded, but the value is changed and ASProxy should detect the change and display the new image.
+</p>
+
+<h3>Special test2: Do not monitor for changes!</h3>
+<img asproxydone="2" src="This Is a Broken images address.jpg" alt="Success - Image should not be displayed!" />
+
+
+</body>
+</html>

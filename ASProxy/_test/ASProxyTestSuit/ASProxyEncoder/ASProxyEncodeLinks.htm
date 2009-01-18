@@ -1,0 +1,41 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" >
+<head>
+    <title>ASProxyEncoder::ASProxyEncodeLinks Test Suit</title>
+    <script type="text/javascript">
+		__ASProxyEncodeUrl=1;
+		__ASProxyOriginalUrlEnabled=1;
+		__ASProxyLinksEnabled=1;
+		__ASProxyImagesEnabled=1;
+		__ASProxyBackImagesEnabled=1;
+		__ASProxyFormsEnabled=1;
+		__ASProxyFramesEnabled=1;
+	
+		__ReqUrlFull				= 'http://blocked.com:8080/sub/hi/tester.html?param=1&hi=2';
+		__ReqUrlNoParam				= 'http://blocked.com:8080/sub/hi/tester.html';
+		__ReqUrlDir					= 'http://blocked.com:8080/sub/hi/';
+		__ReqUrlBaseDir				= 'http://blocked.com:8080/';
+		__ASProxyDefaultPagePath	= 'http://site.com:8080/asproxy/default.aspx'; //or 'http://site.com/default.aspx';
+		__ASProxySiteBaseDir		= 'http://site.com:8080/asproxy/';// or 'http://site.com/';
+		__ASProxySiteHostBaseDir    = 'http://site.com/';
+		__ASProxyDefaultPage		= 'default.aspx';
+		__B64Unknowner				= "B64Coded!";
+ 		
+ 		__WLocHash="";
+		__WLocHost="blocked.com:8080";
+		__WLocHostname="blocked.com";
+		__WLocPathname="/sub/hi/tester.html"
+		__WLocSearch='?param=1&hi=2';
+		__WLocPort="8080";
+		__WLocProtocol="http:";
+   </script>
+    <script type="text/javascript" src="/ASProxy/scripts/base64encoder.js"></script>
+    <script type="text/javascript" src="/ASProxy/scripts/asproxyencoder.js"></script>
+    <style type="text/css">
+		body{font-size:small;}
+    </style>
+</head>
+<body>
+
+</body>
+</html>

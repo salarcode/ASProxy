@@ -1,0 +1,215 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN">
+<HTML><HEAD>
+<META name="GENERATOR" content="IBM NetObjects TopPage V4.0.3  for Windows">
+<TITLE>Javajascipt &amp; Cookies Enabled Test</TITLE><link rel=stylesheet href="/noodlebib/noodlebib.css" type="text/css"><script language="JavaScript1.2" src="/noodlebib/javascripts/nb6.js"></script></HEAD>
+<BODY BGCOLOR=white TEXT=black>
+<h2>Attention, this test suit can run with ASProxy or without it. Use it to test cookies support.</h2>
+
+<TABLE BORDER=0 WIDTH=100% cellpadding=10><TR><TD align="center" class="maintitle"><FONT face="Verdana" size="-1"><B> How to Enable Cookies and Javascript</B></FONT></td></TR></TABLE><P>
+
+<CENTER><TABLE CELLSPACING=0 CELLPADDING=5 WIDTH="90%" BORDER=1><TR>
+      <TD class="gen" align="left"><FONT face="Verdana" size="-1">Both cookies and javascript must be enabled
+      in your browser. If one of these features
+      is disabled, you won't be able to use
+      VenueSystems.com.
+      If either of the tests below fail,
+      please
+      follow the instructions on this page.
+      </FONT>
+      <center><TABLE WIDTH=50% BORDER=0>
+<TR><TD class="quote">
+<FONT face="Verdana" size="-1"><b>Javascript test:</b>&nbsp;
+<script language="JavaScript">
+document.write("<font color=\"#00AA00\">passed</font>");
+</script></FONT>
+<noscript>
+<FONT color="#FF0000" face="Verdana" size="-1">failed</font>
+</noscript>
+<br>
+<FONT face="Verdana" size="-1"><b>Cookies test:</b>&nbsp;
+
+<script language="Javascript">
+document.cookie = "CookieTest=Enabled";
+
+var allcookies = document.cookie;
+var pos = allcookies.indexOf("CookieTest=");
+if (pos != -1) {
+	var start = pos + 11;
+	var end = allcookies.indexOf(";", start);
+	if (end == -1) end = allcookies.length;
+	var value = allcookies.substring(start,end);
+	value = unescape(value);
+
+	if (value == "Enabled") {
+		document.write("<font color=\"#00AA00\">passed</font>");
+	} else {
+		document.write("<font color=\"#FF0000\">failed</font>");
+	}
+}
+</script></FONT>
+<noscript>
+<FONT color="#FF0000" face="Verdana" size="-1">failed</font><FONT face="Verdana" size="-1"> (test again after you enable javascript
+            in your browser)
+</FONT></noscript>
+</TR>
+</TABLE>
+</center>
+<p>
+<FONT face="Verdana" size="-1"><span class="title2">How to Enable Cookies (PC)</span></FONT>
+
+<ol>
+<li><FONT face="Verdana" size="-1"><b>Internet Explorer 6.x</b></FONT><br>
+        <FONT face="Verdana" size="-1">
+Select 'Internet Options...' from the 'Tools'
+        menu. Select the 'Privacy' tab. 
+Click the 'Advanced...' button. Make sure
+        the 'Override automatic cookie handling'
+        check box is checked. 
+Select the 'Accept' option button under 'First
+        Party Cookies'. 
+Select the 'Accept' option button under 'Third
+        Party Cookies'.</FONT>
+
+
+<li><FONT face="Verdana" size="-1"><b>Netscape 8.x</b></FONT><br>
+        <FONT face="Verdana" size="-1">Select 'Options...' from the 'Tools' menu.
+        Click 'Site Controls' in the left menu. Select
+        'venuesystems.com' from the 'My Settings'
+        list. Select 'I trust this site' under 'Master
+        Settings' or be sure 'Allow Cookies' is checked
+        under 'Web Features'.</FONT> 
+
+<li><FONT face="Verdana" size="-1"><b>Netscape 6.x, 7.x</b></FONT><br>
+        <FONT face="Verdana" size="-1">
+Select 'Preferences...' from the 'Edit' menu.
+        
+Click 'Privacy & Security' in the left window
+        pane under 'Category'. 
+Click 'Cookies' in the expanded menu. 
+Select the 'Enable all cookies' option button.</FONT> 
+
+<li><FONT face="Verdana" size="-1"><b>Firefox 1.x</b></FONT><br>
+        <FONT face="Verdana" size="-1">Select 'Options...' from the 'Tools' menu.
+        Click 'Privacy' in the left menu. Expand
+        the 'Cookies' section. Check 'allow sites
+        to set cookies' and be sure <FONT face="Verdana" size="-1">venuesystems.com</FONT> is not listed under 'Exceptions'.</FONT> 
+
+</ol>
+
+<p>
+<FONT face="Verdana" size="-1"><span class="title2">How to Enable Cookies (Mac)</span></FONT>
+
+<ol>
+<li><FONT face="Verdana" size="-1"><b>Internet Explorer 5.x (OS 9)</b></FONT><br>
+        <FONT face="Verdana" size="-1">
+Select 'Preferences...' from the 'Edit' menu.
+        Double-click on 'Receiving Files', then scroll
+        down and click on 'Cookies'.
+Next to the words 'When receiving cookies'
+        choose 'Never ask'.</FONT>
+
+<li><FONT face="Verdana" size="-1"><b>Internet Explorer 5.x (OS X)</b></FONT><br>
+        <FONT face="Verdana" size="-1">
+Select 'Preferences...' from the 'Explorer'
+        menu. Double-click on 'Receiving Files',
+        then scroll down and click on 'Cookies'.
+Next to the words 'When receiving cookies'
+        choose 'Never ask'.</FONT>
+
+<li><FONT face="Verdana" size="-1"><b>Netscape 6.x, 7.x (OS 9)</b></FONT><br>
+        <FONT face="Verdana" size="-1">
+Select 'Preferences...' from the 'Edit' menu.
+        
+Click 'Privacy & Security' in the left window
+        pane under 'Category'. 
+Click 'Cookies' in the expanded menu. 
+Select the 'Enable all cookies' option button.</FONT> 
+
+<li><FONT face="Verdana" size="-1"><b>Netscape 7.x (OS X)</b></FONT><br>
+        <FONT face="Verdana" size="-1">
+Select 'Preferences...' from the 'Netscape'
+        menu. Double-click on 'Privacy & security'.
+Select 'Cookies'. Make sure 'Enable all cookies'
+        is checked.</FONT>
+
+<li><FONT face="Verdana" size="-1"><b>Safari 1.x</b></FONT><br>
+        <FONT face="Verdana" size="-1">
+Select 'Preferences...' from the 'Safari'
+        menu. Click 'Security'.
+Check 'Accept cookies only from sites you
+        navigate to'.</FONT> 
+
+</ol>
+
+<p>
+
+<FONT face="Verdana" size="-1"><span class="title2">How to Enable Javascript (PC)</span></FONT>
+
+<ol>
+<li><FONT face="Verdana" size="-1"><b>Internet Explorer 6.x</b></FONT><br>
+        <FONT face="Verdana" size="-1">
+Select 'Internet Options...' from the 'Tools'
+        menu. Click the 'Security' tab and then click
+        the 'Custom Level' button.
+Find the 'Scripting' category and click 'Enable'
+        under 'Active Scripting'.</FONT>
+
+<li><FONT face="Verdana" size="-1"><b>Netscape 8.x</b></FONT><br>
+        <FONT face="Verdana" size="-1">
+Select 'Options...' from the 'Tools' menu.
+        
+Click 'Site Controls' in the left menu. 
+Select 'noodletools.com' from the 'My Settings'
+        list. 
+Select 'I trust this site' under 'Master
+        Settings' or be sure 'Enable Javascript/VBScript'
+        is checked under 'Web Features'.</FONT> 
+
+<li><FONT face="Verdana" size="-1"><b>Netscape 6.x, 7.x</b></FONT><br>
+        <FONT face="Verdana" size="-1">
+Select 'Preferences...' from the 'Edit' menu.
+Click "Advanced" and then click on the "Enable
+        JavaScript for Navigator" check box.</FONT>
+
+<li><FONT face="Verdana" size="-1"><b>Firefox 1.x</b></FONT><br>
+        <FONT face="Verdana" size="-1">
+Select 'Options...' from the 'Tools' menu.
+        
+Click 'Web Features' in the left menu. 
+Check 'Enable JavaScript'.</FONT> 
+
+
+</ol>
+<p>
+
+<FONT face="Verdana" size="-1"><span class="title2">How to Enable Javascript (Mac)</span></FONT>
+<ol>
+<li><FONT face="Verdana" size="-1"><b>Internet Explorer 5.x</b></FONT><br>
+        <FONT face="Verdana" size="-1">
+Select 'Preferences...' from the 'Edit' menu.
+        Under 'Web Browser', select 'Web Content'.
+        
+In the 'Active Content' section, check the
+        'Enable scripting' checkbox.</FONT>
+
+<li><FONT face="Verdana" size="-1"><b>Netscape 6.x, 7.x</b></FONT><br>
+        <FONT face="Verdana" size="-1">
+Select 'Preferences...' from the 'Edit' menu.
+        Double-click the 'Advanced' option in left
+        panel.
+Find the 'Enable Javascript for' section
+        on the right panel.
+Check the checkbox for 'Navigator'</FONT> 
+
+<li><FONT face="Verdana" size="-1"><b>Safari 1.x</b></FONT><br>
+        <FONT face="Verdana" size="-1">
+Select 'Preferences...' from the 'Safari'
+        menu. Click 'Security'.
+Check 'Enable JavaScript'.</FONT> 
+
+</ol>
+
+</td>
+    </tr></table></center>
+
+</BODY></HTML>

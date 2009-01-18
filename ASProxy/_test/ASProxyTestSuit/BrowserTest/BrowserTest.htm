@@ -1,0 +1,460 @@
+<html><head>
+<meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
+
+  <title>Browser Test</title>
+  <style>
+input.results {
+	border: 0;
+}
+SPAN.white {
+   color : #FFFFFF; 
+}
+SPAN.black {
+   color : #000000; 
+   font-family : arial, helvetica, sans-serif;  
+}
+
+body, table, td {
+   font-family : arial, helvetica, sans-serif;  
+   font-size:10pt;
+}
+  </style>
+<script type="text/javascript" language="Javascript">
+var JSver = "1.0";
+var popupWindow = null;
+function testPopup() {
+popupWindow = "failed";
+var w = window.open('','','height=200,width=200');
+popupWindow = w;
+if (w) w.close();
+}
+</script>
+<script type="text/javascript" language="JavaScript1.1">
+JSver = "1.1"
+</script>
+<script type="text/javascript" language="JavaScript1.2">
+JSver = "1.2"
+</script>
+<script type="text/javascript" language="JavaScript1.3">
+JSver = "1.3"
+</script>
+<script type="text/javascript" language="JavaScript1.4">
+JSver = "1.4"
+</script>
+<script type="text/javascript" language="JavaScript1.5">
+JSver = "1.5"
+</script>
+
+<script language="JavaScript1.2">
+function mailresults()
+{
+msg = "Submit only if you're experiencing a problem at our site!\r\n\r\nDear Support,\r\n\r\nMy system environment is:\r\n\r\n";
+msg += "    User Agent: " + UA + "\r\n";
+msg += "    Browser: " + Component + " " + version + "\r\n";
+msg += "    Platform: " + platform + ", " + languagesq[lang] + "\r\n";
+msg += "    JavaScript version: " + JSver + "\r\n";
+msg += "    Cookies: " + document.browsertest.cookies.value + "\r\n";
+msg += "    Online: " + document.browsertest.online.value + "\r\n";
+msg += "    Supported Browser: " + document.browsertest.version.value + "\r\n\r\n";
+msg += "I'm experiencing problems on: ** ENTER WEB SITE NAME **\r\n";
+msg += "My username on this web site is: ** ENTER WEB SITE USERNAME **\r\n";
+msg += "\r\nI'm experiencing the following problem:\r\n\r\n** ENTER YOUR PROBLEM HERE **\r\n";
+window.location = "mail" + "to:" + "support" + "@" + "dancesoft.com?" + "Subject=Browser%20Trouble&Body=" + escape(msg);
+
+}
+function performTest( )
+{
+    testPopup();
+	var jsresult = document.browsertest.javascript.value;
+    document.browsertest.javascript.value = "";
+	document.browsertest.popups.value = "";
+    document.browsertest.cookies.value = "";
+	document.browsertest.online.value = "";
+    document.browsertest.version.value = "";
+    //alert("The browser test is complete.\nClick OK to view the results.");
+    document.browsertest.popups.value = (popupWindow == "failed" || popupWindow == null) ? "FAILED":"Passed";
+	document.browsertest.javascript.value = jsresult;
+    document.browsertest.cookies.value = cookiesEnabled();
+	document.browsertest.online.value = navigator.onLine ? "Passed":"FAILED";
+    document.browsertest.version.value = isSupportedBrowser();
+    //document.browsertest.css.value = cssEnabled( );
+}
+
+function cookiesEnabled( ) {
+    document.cookie = "test=cookiesEnabled";
+    var pos = document.cookie.indexOf( "test=" );
+    if( pos == -1 )
+    {
+        //alert( "Please enable cookies and then press Reload to try again." );
+        return "FAILED";
+    }
+    return "Passed";
+}
+
+function cssEnabled( )
+{
+    if( "" + document.layers["cssTest"] == "undefined" )
+    {
+        //alert( "Please enable style sheets and then press Reload to try again." );
+        return "FAILED";
+    }
+    else
+        return "Passed";
+}
+
+function isSupportedBrowser() {
+  if (OS == "macppc")
+  {
+  	if (MSIE50())
+	{
+		//alert("IE 5.0 and earlier versons on the Mac are very buggy and freeze.  We recommend IE 5.1 or later.");
+  		return "FAILED";
+	}
+	return "Passed";
+  }
+  
+  if (version >= 5.0)
+    return "Passed";
+  //alert("Unsupported browser!!!");
+  return "FAILED";
+}
+
+function isMSIE() {
+  return (navigator.appName == "Microsoft Internet Explorer");
+}
+
+function isMSIEMin() {
+  return (version >= 5.0);
+}
+
+function MSIE50() {
+  return (version <= 5.0);
+}
+
+function isNav() {
+  return (navigator.appName == "Netscape");
+}
+
+function isNavMin() {
+    return (version >= 6.00);
+}
+
+function stylesEnabled() {
+    return true;
+}
+
+languagesq = new Object;
+languagesq["un"] = "Unknown language";
+languagesq["cn"] = "Chinese (simp.) language";
+languagesq["cs"] = "Czech language";
+languagesq["da"] = "Danish language";
+languagesq["de"] = "German language";
+languagesq["el"] = "Greek language";
+languagesq["en"] = "English language";
+languagesq["es"] = "Spanish language";
+languagesq["fc"] = "French (Canada) language";
+languagesq["fi"] = "Finnish language";
+languagesq["fr"] = "French language";
+languagesq["hu"] = "Hungarian language";
+languagesq["it"] = "Italian language";
+languagesq["ja"] = "Japanese language";
+languagesq["ko"] = "Korean language";
+languagesq["nl"] = "Dutch language";
+languagesq["no"] = "Norwegian language";
+languagesq["pl"] = "Polish language";
+languagesq["pt"] = "Brazilian Portuguese language";
+languagesq["ru"] = "Russian language";
+languagesq["sv"] = "Swedish language";
+languagesq["tr"] = "Turkish language";
+languagesq["tw"] = "Chinese (trad.) language";
+languagesq["uk"] = "English (UK) language";
+languagesq["de-de"] = "German language"
+languagesq["en-gb"] = "English (UK) language";
+languagesq["en-us"] = "English language";
+languagesq["es-es"] = "Spanish language";
+languagesq["fr-fr"] = "French language";
+languagesq["ja-jp"] = "Japanese language";
+
+lang = "un";
+Component = "Unknown browser";
+platform = "Unknown platform";
+OS = "";
+version = parseFloat(navigator.appVersion);
+UA = navigator.userAgent;
+ua = navigator.userAgent.toLowerCase();
+
+// Language
+if (((start = ua.indexOf("[")) > 0) && 
+    ((end = ua.indexOf("]")) == (ua.indexOf("[") + 3))){
+  language = ua.substring(start+1, end);
+} else if (navigator.language) {
+  language = navigator.language.toLowerCase();
+} else if (navigator.userLanguage) {
+  language = navigator.userLanguage.toLowerCase();
+}
+if (languagesq[language]) {
+  lang = language;
+}
+
+// OS
+if (((ua.indexOf("ppc") > 0) && (ua.indexOf("mac") > 0))
+    || (ua.indexOf("mac_power") > 0)) {
+//  if (ua.indexOf("os x")) {
+//    OS = "macosx";
+//  } else {
+    OS = "macppc";
+//  }
+} else if ((ua.indexOf("linux 2.2") > 0)
+	   || (ua.indexOf("netscape6") && ua.indexOf("linux") > 0)) {
+  OS = "linux2.2";
+} else if (ua.indexOf("win") > 0) {
+  OS = "win32";
+}
+
+// Other info
+start = UA.indexOf('(') + 1;
+end = UA.indexOf(')');
+str = UA.substring(start, end);
+info = str.split('; ');
+
+if (ua.indexOf('msie') != -1) {
+  platform = info[2];
+  Component = navigator.appName;
+  str = info[1].substring(5, info[1].length);
+  version = parseFloat(str);
+} else if ((start = ua.indexOf("netscape6")) > 0) {
+  if (info[0].toLowerCase() == "windows") {
+    platform = info[2];
+  } else {
+    platform = info[0] + " " + info[2];
+  }
+  Component = "Netscape";
+  version = ua.substring(start+10, ua.length);
+  if ((start = version.indexOf("b")) > 0 ) {
+    pr = version.substring(start+1,version.length);
+    str = version.substring(0,version.indexOf("b"));
+    version = str + " Preview Release " + pr;
+  }
+} else {
+  if(info[2]) {
+    if (info[0].toLowerCase() == "windows") {
+      platform = info[2];
+    } else {
+      platform = info[0] + " " + info[2];
+    }
+  } else {
+    platform = info[0];
+  }
+  if (ua.indexOf("gecko") > 0 || ua.indexOf("mozilla") > 0) {
+    Component = "Mozilla";
+  } else if (ua.indexOf("nav") > 0) {
+    Component = "Netscape Navigator";
+  } else {
+    Component = "Netscape Communicator";
+  }
+}
+// Some formatting
+if (platform.indexOf("NT") != -1)
+{
+	if (platform.indexOf("5.0") != -1)
+		platform = "Windows 2000";
+	else if (platform.indexOf("5.1") != -1)
+		platform = "Windows XP";
+}
+if (parseInt(version) == parseFloat(version)) {
+  version = version + ".0";
+}
+
+
+
+</script>
+
+</head><body onload="performTest()">
+
+<h2 align="center"><font color="#006699">Browser Test</font></h2>
+
+<form name="browsertest">
+
+<div align="center">
+  
+</div>
+
+
+<noscript>
+      <tr>
+      <td><strong>Browser name:</strong></td>
+      <td><b>FAILED</b></td>
+      </tr>
+      
+      <tr>
+      <td><strong>Browser version:</strong></td>
+      <td><b>FAILED</b></td>
+      </tr>
+      
+      <tr>
+      <td><strong>JavaScript version:</strong></td>
+      <td><b>FAILED</b></td>
+      </tr>
+      <tr>
+      <td><strong>JavaScript enabled:</strong></td>
+      <td><input class="results" type="text" name="javascript" size=10 value="FAILED"></td>
+      </tr></noscript>
+  <table border="0">
+  <tbody><tr>
+    <th align="center" bgcolor="#006699"><font color="#ffffff">Test Performed</font></th>
+    <th align="center" bgcolor="#006699"><font color="#ffffff">Result</font></th>
+  </tr>
+  <tr><td colspan="2"><hr></td></tr>
+    
+    <tr>
+<script type="text/javascript" language="Javascript">
+document.write("<tr><td><strong>"  + "User Agent:</strong></td><td nowrap>" + UA + "</td></tr>");
+document.write("<tr><td><strong>"  + "Browser:</strong></td><td>"   + Component + " " + version + "</td></tr>");
+document.write("<tr><td><strong>"  + "Platform:</strong></td><td>"   + platform + ", " + languagesq[lang] + "</td></tr>");
+document.write("<tr><td><strong>"  + "JavaScript version:</strong></td><td>"  + JSver + "</td></tr>");
+    </script></tr><tr><td><strong>User Agent:</strong></td><td nowrap="nowrap">Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.9.0.3) Gecko/2008092417 Firefox/3.0.3</td></tr><tr><td><strong>Browser:</strong></td><td>Mozilla 5.0</td></tr><tr><td><strong>Platform:</strong></td><td>Windows XP, English language</td></tr><tr><td><strong>JavaScript version:</strong></td><td>1.5</td></tr>
+  <script>
+    //<!--
+    document.writeln("<TR><TD><strong>JavaScript enabled:</strong>" +
+        "</td><td><input class='results' type=text " +
+        "name='javascript' size=10 value='Passed'></td></tr>");
+    //-->
+    </script><tr><td><strong>JavaScript enabled:</strong></td><td><input class="results" name="javascript" size="10" value="Passed" type="text"></td></tr>
+
+    <tr>
+      <td><strong>Popups enabled:</strong></td>
+      <td><input class="results" name="popups" size="10" value="Not Tested" type="text"></td>
+    </tr>
+    <tr>
+    <td><strong>Cookies enabled:</strong></td>
+    <td>
+      <input class="results" name="cookies" size="10" value="Not Tested" type="text"> </td>
+  </tr>       
+      <tr>
+          <td><strong>Browser Online:</strong></td>
+          <td><input class="results" name="online" size="10" value="Not Tested" type="text"></td>
+      </tr>
+  <tr>
+    <td><strong>Supported Browser:</strong></td>
+    <td>
+      <input class="results" name="version" size="10" value="Not Tested" type="text"> </td>
+  </tr>
+  <!--<TR>
+    <TD>Style Sheets:</TD>
+    <TD ALIGN="center">
+      <INPUT TYPE="text" NAME="css" SIZE=10 value="Not Tested">
+    </TD>
+  </TR> -->
+  <tr>
+    <td><strong>CSS enabled:</strong></td>
+    <td><font size="2" color="white" face="arial,helvetica,sans-serif"><span class="black">Passed</span></font><font size="2" color="black" face="arial,helvetica,sans-serif"><span class="white" style="font-size: 1px;">FAILED</span></font> </td>
+  </tr>
+</tbody></table>
+
+<p></p><input value="Mail results to Dancesoft Support Staff" onclick="javascript:mailresults();" type="button">
+</form><p></p>
+
+<table width="600" border="1" cellpadding="4" cellspacing="0">
+  <tbody><tr>
+    <th bgcolor="#006699" nowrap="nowrap"><font color="#ffffff">If this problem is indicated: </font></th>
+    <th bgcolor="#006699"><font color="#ffffff">Follow this Solution:</font></th>
+  </tr>
+      <tr>
+    <td valign="top">Unsupported Browser.</td>
+    <td>
+      We recommend using the <strong>most recent version</strong> of your favorite browser for the best web experience. To upgrade your web browser, choose one of the following links:
+      <ul>
+
+        <li>
+		<a href="http://www.microsoft.com/windows/ie/" target="_blank">Microsoft Internet Explorer (Windows only)</a></li>
+        <li><a href="http://www.mozilla.org/">
+		Mozilla Firefox</a> (<strong>Our favorite!</strong> Our staff uses Firefox.) </li>
+
+        <li><a href="http://www.apple.com/safari/">Apple Safari (Mac OS X or later only)</a></li>
+      </ul>
+      <p>Tip: Got a pre OS X Mac? Use <strong>Firefox</strong>.</p></td>
+  </tr>
+  <tr>
+    <td valign="top">
+      <p><nobr>JavaScript Failed</nobr></p>
+      <p><nobr>or</nobr></p>
+      <p><nobr>No response when the </nobr>"Test" button is clicked</p></td>
+    <td>JavaScript is either disabled, or your web browser is ancient. First make sure that JavaScript is 
+    enabled:
+      <ul>
+      <li><b>Netscape Navigator</b>: click <b>Edit</b> from your browser's menu bar, then select <b>Preferences</b>.
+          Click the <b>Advanced</b> category and be sure that "Enable JavaScript" is checked. Click OK to return to this Browser Test, then <a href="http://www.dancesoft.com/browsertest.htm">reload</a> this page.</li>
+      
+	  <li>            <b>Microsoft Internet Explorer</b>: click<b> Tools</b> from your browser's menu bar, then select <b>Internet Options</b>.
+              Select the <b>Security</b> tab, then click the <b>Custom Level</b> button. Scroll down to the <b>Scripting</b> options
+          and Enable <b>Active Scripting</b>. Click OK twice to return to this Browser Test, then <a href="http://www.dancesoft.com/browsertest.htm">reload</a> this page.</li>
+      <li><b>Mozilla Firefox</b>: click<b> Tools</b> from your browser's menu bar, then select <b> Options</b>. Select the <b>Web Features</b> section, then make sure <b>Enable Javascript</b><b></b> is checked. Click OK  to return to this Browser Test, then <a href="http://www.dancesoft.com/browsertest.htm">reload</a> this page.</li>
+      </ul>    
+      <p>If these don't help, see <strong>Unsupported Browser</strong> below. </p>
+      <p><i>Be sure to re-run the Test if you have made any changes to your browser's settings. </i>        </p>
+    </td>
+  </tr>
+  <tr>
+    <td valign="top" nowrap="nowrap">Popups not enabled.</td>
+    <td><p>You have a <strong>Popup Blocker </strong>
+and it is not working properly. It is blocking all popups including
+"good" popups. Our site uses only "good" (user initiated) popups such
+as when you wish to send an e-mail.</p>
+      <p>Please do one of the following:</p>
+      <ul>
+        <li><strong>Enable</strong> popups for our site. (Since there are hundreds of different <strong>Popup Blocker</strong>s on the market, we cannot supply detailed instructions here. Check your icon tray - it way appear there); or</li>
+        <li><strong>Remove</strong>
+your popup blocker entirely and switch to one of the latest browsers
+(below). All the latest browsers include a free popup blocker that work
+properly (they all allow "good" popups but stop "bad" popups.)</li>
+      </ul></td>
+  </tr>
+  <tr>
+    <td valign="top" nowrap="nowrap">Cookies  not enabled.</td>
+    <td>Please make sure that cookies are enabled:<br>        <ul>
+      <li><b>AOL: </b>Instructions are at <a href="http://webmaster.info.aol.com/cookieguide.html"></a><b><a href="http://webmaster.info.aol.com/cookieguide.html">http://webmaster.info.aol.com/cookieguide.html</a></b></li>
+      <li><b>Netscape 
+            Navigator 6.x</b>: click <b>Edit</b> from your browser's menu bar, then select <b>Preferences</b>.
+                Click the <b>Advanced</b> category. Click the  arrow 
+            next to <b>Advanced</b> to view the sub-options and select <b>Cookies</b>.
+Be sure that either "Enable all cookies" or "Enable cookies for the
+originating web site only" is selected. Click OK to return to this
+Browser Test, then <a href="http://www.dancesoft.com/browsertest.htm">reload</a> this page.      </li>
+      <li><b>Netscape Navigator 4.x</b>: click <b>Edit</b> from your browser's menu bar, then select <b>Preferences</b>.
+            Click the <b>Advanced</b> category. Be sure that either "Accept all 
+        cookies" or "Accept only cookies that get sent back to the originating 
+        server" is selected. Click OK to return to this Browser Test,
+            then <a href="http://www.dancesoft.com/browsertest.htm">reload</a> this page.          </li>
+      <li><b>Microsoft Internet Explorer 6.x</b>: Click<b> Tools</b> from your browser's menu bar, then select <b>Internet Options</b>.
+            Select the <b>Privacy</b> tab, then move the slider on the left <i>down</i> 
+        until it says <b>
+        Accept All Cookies</b>. Click OK  to return to this Browser Test, then
+            <a href="http://www.dancesoft.com/browsertest.htm">reload</a> this page.          </li>
+      <li><b>Microsoft Internet Explorer 5.x</b>: Click<b> Tools</b> from your browser's menu bar, then select <b>Internet Options</b>.
+            Select the <b>Security</b> tab, then click the <b>Custom Level</b> button. Scroll down to the <b>Cookies</b> options and set "Allow cookies that are stored on your computer" to Enable 
+        and "Allow per-session cookies" to Enable. Click OK twice to return to this Browser Test, then <a href="http://www.dancesoft.com/browsertest.htm">reload</a> this page.          </li>
+      <li><b>Microsoft Internet Explorer 4.x</b>: Click<b> Views</b> from your browser's menu bar, then select <b>Internet Options</b>.
+            Select the <b>Advanced</b> tab. Scroll down to the <b>Cookies</b> options
+            within the Security section. Select "Always accept cookies". Click OK to return to this Browser Test, then <a href="http://www.dancesoft.com/browsertest.htm">reload</a> this page.
+            <br>
+            <i>Be sure to re-run the Test if you have made any changes to your browser's settings.            </i>          </li>
+    </ul>
+    </td>
+  </tr>
+
+  <tr>
+    <td valign="top">CSS not enabled</td>
+    <td>CSS (<i>Cascading Style Sheets</i>) must be 
+    enabled. As far as we know, only Netscape 4.x allows you to turn CSS on 
+    and off:
+      <ul>
+        <li><b>Netscape Navigator</b>: click <b>Edit</b> from your browser's menu bar, then select 
+            <b>Preferences</b>.
+          Click the <b>Advanced</b> category and be sure that "Enable style sheets" is checked. Click OK to return to this Browser Test, then <a href="http://www.dancesoft.com/browsertest.htm">reload</a> this page.     </li>
+      </ul>
+    </td>
+  </tr>
+</tbody></table>
+
+
+</body></html>

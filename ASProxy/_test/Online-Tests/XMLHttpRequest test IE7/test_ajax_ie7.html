@@ -1,0 +1,156 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html><head>
+
+    
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<title>AJAX - XMLHttpRequest test IE7</title>
+	<style type="text/css">
+		body { background-color: #803000; color: #ffc0a0; }
+		img { border: 0px; }
+		#formula,#source { font-family: "Verdana", "Helvetica", "Arial", sans-serif; font-size:large; }
+		a,a:link { color: white; text-decoration: none; }
+		a:hover,a:active { color: #ffd0b0; border-color: #ffd0b0; border-width: 0px 0px 1px 0px; border-style: dotted; }
+		textarea { background-color: #ffe0d0; color: #803000; border: 1px solid white; font-family: "Courier New", monospace; }
+	</style>
+	<script type="text/javascript">
+		<!--
+		function getdatafromXML(xml) {
+			var str = '';
+			xml = xml.documentElement;
+			if (xml == null) {
+				alert('Something went wrong\nEmpty XML response\n');
+				return;
+			}
+			for (i=0; i<xml.childNodes.length; i++)
+			{
+				if (xml.childNodes[i].nodeName == "Content") {
+					for (j=0; j<xml.childNodes[i].childNodes.length; j++) {
+						//  const unsigned short      CDATA_SECTION_NODE             = 4;
+						if (xml.childNodes[i].childNodes[j].nodeType == 4)
+							str += xml.childNodes[i].childNodes[j].data;
+					}
+				}
+			}
+			return str;
+		}
+		var req;
+		function procReq() {
+			if (req.readyState == 4) {
+				if (req.status == 200) {
+					ldiv = document.getElementById('formula');
+					ldiv.innerHTML = getdatafromXML(req.responseXML);
+				} else {
+					alert('XMLHttpRequest\'s working, but failed');
+				}
+			}
+		}
+		function xmlreq() {
+			if (window.XMLHttpRequest) {
+				req = new XMLHttpRequest();
+				req.onreadystatechange = procReq;
+				req.open('GET', 'http://wafel.com/~gim/test_ajax_ie7.xml', true);
+				req.send(null);
+			} else {
+				alert('THIS BROWSER SUX!\nIt doesn\'t support XMLHttpRequest');
+			}
+		}
+		-->
+	</script>
+    </head><body>
+		<div id="head"><h1>AJAX - XMLHttpRequest test IE7</h1></div>
+		<form action="http://wafel.com/~gim/test_ajax_ie7.html" method="get">
+		<div id="formula"> This is just a test!<br>
+			Greeetings!<br>
+		 Follow the white <a href="http://google.com/search?q=follow%20the%20white%20rabbit">hat!</a>
+		</div>
+		<div id="source">
+			Source code of this page:<br>
+			<textarea cols="100" rows="70">&lt;html&gt;
+    &lt;head&gt;
+	&lt;title&gt;AJAX - XMLHttpRequest test IE7&lt;/title&gt;
+	&lt;style type="text/css"&gt;
+		body { background-color: #803000; color: #ffc0a0; }
+		#formula { font-family: "Verdana", "Helvetica", "Arial", sans-serif; font-size:large; }
+		a,a:link { color: white; text-decoration: none; }
+		a:hover,a:active { color: #ffd0b0; border-color: #ffd0b0; border-width: 0px 0px 1px 0px; border-style: dotted; }
+	&lt;/style&gt;
+	&lt;script type="text/javascript"&gt;
+		&lt;!--
+		function getdatafromXML(xml) {
+			var str = '';
+			xml = xml.documentElement;
+			if (xml == null) {
+				alert('Something went wrong\nEmpty XML response\n');
+				return;
+			}
+			for (i=0; i&lt;xml.childNodes.length; i++)
+			{
+				if (xml.childNodes[i].nodeName == "Content") {
+					for (j=0; j&lt;xml.childNodes[i].childNodes.length; j++) {
+						//  const unsigned short      CDATA_SECTION_NODE             = 4;
+						if (xml.childNodes[i].childNodes[j].nodeType == 4)
+							str += xml.childNodes[i].childNodes[j].data;
+					}
+				}
+			}
+			return str;
+		}
+		var req;
+		function procReq() {
+			if (req.readyState == 4) {
+				if (req.status == 200) {
+					ldiv = document.getElementById('formula');
+					ldiv.innerHTML = getdatafromXML(req.responseXML);
+				} else {
+					alert('XMLHttpRequest\'s working, but failed');
+				}
+			}
+		}
+		function xmlreq() {
+			if (window.XMLHttpRequest) {
+				req = new XMLHttpRequest();
+				req.onreadystatechange = procReq;
+				req.open('GET', 'http://wafel.com/~gim/test_ajax_ie7.xml', true);
+				req.send(null);
+			} else {
+				alert('THIS BROWSER SUX!\nIt doesn\'t support XMLHttpRequest');
+			}
+		}
+		--&gt;
+	&lt;/script&gt;
+    &lt;/head&gt;
+	&lt;body&gt;
+		&lt;div id="head"&gt;&lt;h1&gt;AJAX - XMLHttpRequest test IE7&lt;/h1&gt;&lt;/div&gt;
+		&lt;div id="formula"&gt;
+			&lt;form action="http://wafel.com/~gim/test_ajax_ie7.html" method="get"&gt;
+				&lt;input type="button" onclick="xmlreq();" value="TEST ME!" /&gt;
+			&lt;/form&gt;
+		&lt;/div&gt;
+	&lt;/body&gt;
+&lt;/html&gt;
+			</textarea><br>
+			Source of test_ajax_ie7.xml:<br>
+			<textarea cols="100" rows="20">&lt;?xml version="1.0" encoding="UTF-8" ?&gt; 
+&lt;Container&gt;
+	&lt;Content type="text/html"&gt;
+		&lt;![CDATA[ This is just a test!&lt;br /&gt;
+			Greeetings!&lt;br /&gt;
+		]]&gt;
+	&lt;/Content&gt;
+	&lt;Somethingelse type="text/html"&gt;
+		&lt;![CDATA[ Roses are #ff0000, violets are #0000ff,&lt;br /&gt;
+			All my base are belong to you.
+		]]&gt;
+	&lt;/Somethingelse&gt;
+	&lt;Content type="text/html"&gt;
+		&lt;![CDATA[ Follow the white &lt;a href="http://google.com/search?q=follow the white rabbit"&gt;hat!&lt;/a&gt;
+		]]&gt;
+	&lt;/Content&gt;
+&lt;/Container&gt;
+			</textarea>
+		</div>
+	</form>
+	<p>
+	<a href="http://validator.w3.org/check?uri=referer"><img src="test_ajax_ie7_files/valid-xhtml11.png" alt="Valid XHTML 1.1" width="88" height="31"></a>
+	</p>
+	</body></html>

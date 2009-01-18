@@ -1,0 +1,6 @@
+Cookie Tester
+http://www.html-kit.com/tools/cookietester/
+
+
+How to Enable Cookies and Javascript
+http://venuesystems.com/vstest.htm

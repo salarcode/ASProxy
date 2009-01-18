@@ -1,0 +1,75 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" >
+<head>
+    <title>ASProxyEncoder::ASProxyJSCookie Test Suit</title>
+    <script type="text/javascript">
+		__ASProxyEncodeUrl=0;
+		__ASProxyOriginalUrlEnabled=0;
+		__ASProxyLinksEnabled=0;
+		__ASProxyImagesEnabled=0;
+		__ASProxyBackImagesEnabled=0;
+		__ASProxyFormsEnabled=0;
+		__ASProxyFramesEnabled=0;
+	
+		__ReqUrlFull				= 'http://blocked.com:8080/sub/hi/tester.html?param=1&hi=2';
+		__ReqUrlNoParam				= 'http://blocked.com:8080/sub/hi/tester.html';
+		__ReqUrlDir					= 'http://blocked.com:8080/sub/hi/';
+		__ReqUrlBaseDir				= 'http://blocked.com:8080/';
+		__ASProxyDefaultPagePath	= 'http://site.com:8080/asproxy/default.aspx'; //or 'http://site.com/default.aspx';
+		__ASProxySiteBaseDir		= 'http://site.com:8080/asproxy/';// or 'http://site.com/';
+		__ASProxySiteHostBaseDir    = 'http://site.com:8080/';
+		__ASProxyDefaultPage		= 'default.aspx';
+		__B64Unknowner				= "B64Coded!";
+		__ReqCookieName				= "localhost_Cookies"; // Cookie name used in javascript cookie operations
+
+		__WLocHash="";
+		__WLocHost="blocked.com:8080";
+		__WLocHostname="blocked.com";
+		__WLocPathname="/sub/hi/tester.html"
+		__WLocSearch='?param=1&hi=2';
+		__WLocPort="8080";
+		__WLocProtocol="http:";
+    </script>
+    <script type="text/javascript" src="/ASProxy/scripts/base64encoder.js"></script>
+    <script type="text/javascript" src="/ASProxy/scripts/asproxyencoder.js"></script>
+    <style type="text/css">
+		body{font-size:small;}
+    </style>
+</head>
+<body>
+<h2>Welcome to ASProxyJSCookie test suit</h2>
+<b>Author: Salar Khalilzadeh</b><br />
+<b>Update: 2008-12-13</b>
+<br />
+<br />
+<h3>Current cookie state</h3>
+<script type="text/javascript">
+document.write("Current cookie: "+document.cookie);
+</script>
+
+<h3>Test1: Applying cookie by value</h3>
+<script type="text/javascript">
+document.cookie=ASProxyJSCookie("Test1" + "=" + escape("Success") + "; expires=Fri, 31 Dec 2099 23:59:59 GMT;");
+document.write("Current cookie: "+document.cookie);
+</script>
+
+<h3>Test2: Applying cookie without value</h3>
+<script type="text/javascript">
+document.cookie=ASProxyJSCookie("Test2=; expires=Fri, 31 Dec 2099 23:59:59 GMT;");
+document.write("Current cookie: "+document.cookie);
+</script>
+
+<h3>Test3: Modify existing cookie</h3>
+<script type="text/javascript">
+document.cookie=ASProxyJSCookie("Test2=Success; expires=Fri, 31 Dec 2099 23:59:59 GMT;");
+document.write("Current cookie: "+document.cookie);
+</script>
+
+<h3>Test3: Check case sensitive</h3>
+<script type="text/javascript">
+document.cookie=ASProxyJSCookie("test2=SuccessCaseSensitive; expires=Fri, 31 Dec 2099 23:59:59 GMT;");
+document.write("Current cookie: "+document.cookie);
+</script>
+
+</body>
+</html>

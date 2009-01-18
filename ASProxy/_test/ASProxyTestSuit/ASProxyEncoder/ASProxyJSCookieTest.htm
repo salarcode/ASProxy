@@ -1,0 +1,55 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<title>ASProxyEncoder::ASProxyJSCookie Test</title>
+</head>
+<body>
+
+	<script type="text/javascript" language="javascript">
+ 	
+//Please check the following javascript:
+
+
+var test_domain=document.domain;
+
+// Cookie Detection code - do not remove. - Mad
+
+// detect if cookies are being blocked: set, then check.
+var test_cookieName = "seeker"; // Make this unique so we can remove it later.
+var test_expires = new Date();
+
+test_expires.setFullYear(test_expires.getFullYear()+1); // testing persistent cookies
+
+//CleanUpTestCookie(test_cookieName); // Don't get false positive..
+
+// Add a path if you want to. Drop in expires for session cookie test..
+document.cookie = test_cookieName + "=test; expires=" + test_expires.toGMTString() + "; domain=" + test_domain;
+
+// Now look for it..
+var test_cookieString = document.cookie || "";
+var test_cookies = test_cookieString.split(';');
+var test_found = 0;
+for (var i in test_cookies) {
+var cookie = test_cookies[i];
+var dough = cookie.split('=');
+alert(test_cookies.length);
+if (dough[0] == test_cookieName)
+ { test_found = 1; break; }
+}
+//alert("=");
+// Clean up after ourselves..
+//CleanUpTestCookie(test_cookieName);
+
+// If not found, cookies are turned off or blocked somehow.
+if (test_found != 1)
+{
+alert('hello! '+' test_domain= '+test_domain+'   \n '+document.cookie);
+//NotifyUserAboutBlockedCookies();
+}else
+ alert("found");
+
+
+	</script>
+
+</body>
+</html>
