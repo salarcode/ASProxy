@@ -39,7 +39,7 @@
 		<Item replacement="ReturnHome">Return to main page</Item>
 		<Item replacement="EnterUrl">Enter a valid file url address to download it!</Item>
 		<Item replacement="btnDisplay">Download it</Item>
-		<Item replacement="DownloadLinkDescription">If your borwser does not prompt download dialog click the link blow.</Item>
+		<Item replacement="DownloadLinkDescription">If your borwser does not prompt download dialog click the link below.</Item>
 		<Item replacement="DownloadLink">Download link</Item>
 		<Item replacement="AdditionalComment">It is possible to download everything with resume-support feature!</Item>
 	</Page>
