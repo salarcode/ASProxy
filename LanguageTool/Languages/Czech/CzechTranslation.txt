@@ -1,4 +1,0 @@
-﻿Czech translation
-Local name : Čeština 
-Translator : Michal Baťha
-Last update: 2008/06/16
