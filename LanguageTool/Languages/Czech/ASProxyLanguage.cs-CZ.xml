@@ -2,13 +2,41 @@
 <root>
 	<Details>
 		<Translator>Michal Baťha (michal[.]batha[at]gamil.com)</Translator>
-		<LastUpdate>2008/06/16</LastUpdate>
+		<LastUpdate>2009/01/23</LastUpdate>
 		<ASProxyVersion>5</ASProxyVersion>
 		<Language>Čeština (cs-CZ)</Language>
 		<Direction>ltr</Direction>
 		<TextFormat>[{0}]</TextFormat>
 	</Details>
 	<Page filename="default.aspx">
+		<Item replacement="PageTitle">Surfuje to internetu s ASProxy</Item>
+		<Item replacement="PageHeader">Surfuje to internetu s ASProxy</Item>
+		<Item replacement="btnDisplay">Zobrazit</Item>
+		<Item replacement="chkUTF8">Vynutit UTF-8</Item>
+		<Item replacement="chkOrginalUrl">Původní URLs</Item>
+		<Item replacement="chkBackImage">Pozadí</Item>
+		<Item replacement="chkRemoveScripts">Odstranit skripty</Item>
+		<Item replacement="chkProcessScripts">Skripty</Item>
+		<Item replacement="chkDisplayImages">Obrázky</Item>
+		<Item replacement="chkCookies">Cookies</Item>
+		<Item replacement="lnkMoreOpt">Nastavení</Item>
+		<Item replacement="chkIFrame">Vložené rámy</Item>
+		<Item replacement="chkPageTitle">Zobrazit titulek stránky</Item>
+		<Item replacement="chkForms">Zpracovat formuláře</Item>
+		<Item replacement="chkProcessLinks">Odkazy</Item>
+		<Item replacement="chkCompression">Komprimovat odpověď</Item>
+		<Item replacement="CookieManager">Správce cookies</Item>
+		<Item replacement="DownloadTool">Stahovací nástroj</Item>
+		<Item replacement="ImageDisplayer">Prohlížeč obrázků</Item>
+		<Item replacement="GetFreeVersion">
+			<![CDATA[Mějte svou vlastní <a asproxydone="2" href="?decode=1&amp;url=aHR0cDovL2FzcHJveHkuc291cmNlZm9yZ2UubmV0B64Coded!" target="_blank">ASProxy</a>. Je zdarma.]]>
+		</Item>
+		<Item replacement="UrlIsEmpty">Please enter an url.</Item>
+		<Item replacement="JsIsDisabled">
+			<![CDATA[Warning, the JavaScript is disabled so this form will not perform any more.<br />Please enable JavaScript or <a asproxydone="2" href="noscript.aspx">use this page</a>.]]>
+		</Item>
+	</Page>
+	<Page filename="noscript.aspx">
 		<Item replacement="PageTitle">Surfuje to internetu s ASProxy</Item>
 		<Item replacement="PageHeader">Surfuje to internetu s ASProxy</Item>
 		<Item replacement="btnDisplay">Zobrazit</Item>

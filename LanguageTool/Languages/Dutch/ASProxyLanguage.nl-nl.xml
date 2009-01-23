@@ -31,6 +31,34 @@
 		<Item replacement="GetFreeVersion">
 			<![CDATA[Have your own <a asproxydone="2" href="?decode=1&amp;url=aHR0cDovL2FzcHJveHkuc291cmNlZm9yZ2UubmV0B64Coded!" target="_blank">ASProxy</a>. Hte is gratis.]]>
 		</Item>
+		<Item replacement="UrlIsEmpty">Please enter a url.</Item>
+		<Item replacement="JsIsDisabled">
+			<![CDATA[Warning, the JavaScript is disabled so this form will not perform any more.<br />Please enable JavaScript or <a asproxydone="2" href="noscript.aspx">use this page</a>.]]>
+		</Item>
+	</Page>
+	<Page filename="noscript.aspx">
+		<Item replacement="PageTitle">Browse het web met ASProxy</Item>
+		<Item replacement="PageHeader">Browse het web met ASProxy</Item>
+		<Item replacement="btnDisplay">Weergave</Item>
+		<Item replacement="chkUTF8">Forceer UTF-8</Item>
+		<Item replacement="chkOrginalUrl">Originele URLs</Item>
+		<Item replacement="chkBackImage">Achtergronden</Item>
+		<Item replacement="chkRemoveScripts">Verwijder scripts</Item>
+		<Item replacement="chkProcessScripts">Scripts gebruiken</Item>
+		<Item replacement="chkDisplayImages">Afbeeldingen</Item>
+		<Item replacement="chkCookies">Cookies</Item>
+		<Item replacement="lnkMoreOpt">Opties</Item>
+		<Item replacement="chkIFrame">Inline frames</Item>
+		<Item replacement="chkPageTitle">Pagina titel weergeven</Item>
+		<Item replacement="chkForms">Formulieren gebruiken</Item>
+		<Item replacement="chkProcessLinks">Links</Item>
+		<Item replacement="chkCompression">Comprimeer respons</Item>
+		<Item replacement="CookieManager">Cookie Beheer</Item>
+		<Item replacement="DownloadTool">Download Tool</Item>
+		<Item replacement="ImageDisplayer">Afbeeldingen Weergeven</Item>
+		<Item replacement="GetFreeVersion">
+			<![CDATA[Have your own <a asproxydone="2" href="?decode=1&amp;url=aHR0cDovL2FzcHJveHkuc291cmNlZm9yZ2UubmV0B64Coded!" target="_blank">ASProxy</a>. Hte is gratis.]]>
+		</Item>
 	</Page>
 	<Page filename="download.aspx">
 		<Item replacement="PageTitle">Download your file with ASProxy</Item>

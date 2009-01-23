@@ -2,13 +2,41 @@
 <root>
 	<Details>
 		<Translator>ASProxy (name@email.com)</Translator>
-		<LastUpdate>2009/01/01</LastUpdate>
+		<LastUpdate>2009/01/23</LastUpdate>
 		<ASProxyVersion>5</ASProxyVersion>
 		<Language>English (EN-US)</Language>
 		<Direction>ltr</Direction>
 		<TextFormat>[{0}]</TextFormat>
 	</Details>
 	<Page filename="default.aspx">
+		<Item replacement="PageTitle">Surf the web with ASProxy</Item>
+		<Item replacement="PageHeader">Surf the web with ASProxy</Item>
+		<Item replacement="btnDisplay">Display</Item>
+		<Item replacement="chkUTF8">Force UTF-8</Item>
+		<Item replacement="chkOrginalUrl">Original URLs</Item>
+		<Item replacement="chkBackImage">Backgrounds</Item>
+		<Item replacement="chkRemoveScripts">Remove scripts</Item>
+		<Item replacement="chkProcessScripts">Process scripts</Item>
+		<Item replacement="chkDisplayImages">Images</Item>
+		<Item replacement="chkCookies">Cookies</Item>
+		<Item replacement="lnkMoreOpt">Options</Item>
+		<Item replacement="chkIFrame">Inline frames</Item>
+		<Item replacement="chkPageTitle">Display page title</Item>
+		<Item replacement="chkForms">Process forms</Item>
+		<Item replacement="chkProcessLinks">Links</Item>
+		<Item replacement="chkCompression">Compress response</Item>
+		<Item replacement="CookieManager">Cookie Manager</Item>
+		<Item replacement="DownloadTool">Download Tool</Item>
+		<Item replacement="ImageDisplayer">Image Displayer</Item>
+		<Item replacement="GetFreeVersion">
+			<![CDATA[Have your own <a asproxydone="2" href="?decode=1&amp;url=aHR0cDovL2FzcHJveHkuc291cmNlZm9yZ2UubmV0B64Coded!" target="_blank">ASProxy</a>. It's free.]]>
+		</Item>
+		<Item replacement="UrlIsEmpty">Please enter a url.</Item>
+		<Item replacement="JsIsDisabled">
+			<![CDATA[Warning, the JavaScript is disabled so this form will not perform any more.<br />Please enable JavaScript or <a asproxydone="2" href="noscript.aspx">use this page</a>.]]>
+		</Item>
+	</Page>
+	<Page filename="noscript.aspx">
 		<Item replacement="PageTitle">Surf the web with ASProxy</Item>
 		<Item replacement="PageHeader">Surf the web with ASProxy</Item>
 		<Item replacement="btnDisplay">Display</Item>

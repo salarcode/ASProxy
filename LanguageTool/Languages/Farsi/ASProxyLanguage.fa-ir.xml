@@ -2,7 +2,7 @@
 <root>
 	<Details>
 		<Translator>ASProxy (name@email.com)</Translator>
-		<LastUpdate>2008/12/14</LastUpdate>
+		<LastUpdate>2009/01/23</LastUpdate>
 		<ASProxyVersion>5</ASProxyVersion>
 		<Language>Persian (fa-ir)</Language>
 		<Direction>rtl</Direction>
@@ -29,7 +29,35 @@
 		<Item replacement="DownloadTool">ابزار دانلود</Item>
 		<Item replacement="ImageDisplayer">نمايش دهنده تصوير</Item>
 		<Item replacement="GetFreeVersion">
-			<![CDATA[با استفاده از <a asproxydone="2" href="?decode=1&amp;url=aHR0cDovL2FzcHJveHkuc291cmNlZm9yZ2UubmV0B64Coded!" target="_blank">ASProxy</a> برای خودتان پراکسی شخصی رایگان داشته باشید.]]>
+			<![CDATA[با استفاده از <a asproxydone="2" href="?decode=1&amp;url=aHR0cDovL2FzcHJveHkuc291cmNlZm9yZ2UubmV0B64Coded!" target="_blank">ASProxy</a> برای خود پراکسی شخصی رایگان داشته باشید.]]>
+		</Item>
+		<Item replacement="UrlIsEmpty">Please enter a url.</Item>
+		<Item replacement="JsIsDisabled">
+			<![CDATA[هشدار، JavaScript در مرورگر شما غیر فعال است. در این حالت این فرم غیر قابل استفاده خواهد بود.<br />لطفا JavaScript را فعال کرده و یا اینکه <a asproxydone="2" href="noscript.aspx">از این صفحه</a> استفاده کنید.]]>
+		</Item>
+	</Page>
+	<Page filename="noscript.aspx">
+		<Item replacement="PageTitle">Surf the web with ASProxy</Item>
+		<Item replacement="PageHeader">Surf the web with ASProxy</Item>
+		<Item replacement="btnDisplay">نمايش</Item>
+		<Item replacement="chkUTF8">استفاده از UTF-8</Item>
+		<Item replacement="chkOrginalUrl">نمايش مسير اصلي</Item>
+		<Item replacement="chkBackImage">پس زمينه ها</Item>
+		<Item replacement="chkRemoveScripts">حذف اسكريپت ها</Item>
+		<Item replacement="chkProcessScripts">اسكريپت ها</Item>
+		<Item replacement="chkDisplayImages">تصاوير</Item>
+		<Item replacement="chkCookies">كوكي ها</Item>
+		<Item replacement="lnkMoreOpt">تنظيمات</Item>
+		<Item replacement="chkIFrame">فريم ها</Item>
+		<Item replacement="chkPageTitle">نمايش عنوان صفحه</Item>
+		<Item replacement="chkForms">فرم ها</Item>
+		<Item replacement="chkProcessLinks">لينك ها</Item>
+		<Item replacement="chkCompression">فشرده سازي</Item>
+		<Item replacement="CookieManager">مديريت كوكي ها</Item>
+		<Item replacement="DownloadTool">ابزار دانلود</Item>
+		<Item replacement="ImageDisplayer">نمايش دهنده تصوير</Item>
+		<Item replacement="GetFreeVersion">
+			<![CDATA[با استفاده از <a asproxydone="2" href="?decode=1&amp;url=aHR0cDovL2FzcHJveHkuc291cmNlZm9yZ2UubmV0B64Coded!" target="_blank">ASProxy</a> برای خود پراکسی شخصی رایگان داشته باشید.]]>
 		</Item>
 	</Page>
 	<Page filename="download.aspx">

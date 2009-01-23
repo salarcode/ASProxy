@@ -2,13 +2,41 @@
 <root>
 	<Details>
 		<Translator>ASProxy (name@email.com)</Translator>
-		<LastUpdate>2008/12/14</LastUpdate>
+		<LastUpdate>2009/01/23</LastUpdate>
 		<ASProxyVersion>5</ASProxyVersion>
 		<Language>Chinese (ZH-CN)</Language>
 		<Direction>ltr</Direction>
 		<TextFormat>[{0}]</TextFormat>
 	</Details>
 	<Page filename="default.aspx">
+		<Item replacement="PageTitle">用ASProxy冲浪</Item>
+		<Item replacement="PageHeader">用ASProxy冲浪</Item>
+		<Item replacement="btnDisplay">显示</Item>
+		<Item replacement="chkUTF8">强制使用UTF-8编码</Item>
+		<Item replacement="chkOrginalUrl">原始网址</Item>
+		<Item replacement="chkBackImage">背景</Item>
+		<Item replacement="chkRemoveScripts">移除脚本</Item>
+		<Item replacement="chkProcessScripts">脚本</Item>
+		<Item replacement="chkDisplayImages">图片</Item>
+		<Item replacement="chkCookies">Cookies</Item>
+		<Item replacement="lnkMoreOpt">选项</Item>
+		<Item replacement="chkIFrame">内置帧页面</Item>
+		<Item replacement="chkPageTitle">显示页标题</Item>
+		<Item replacement="chkForms">处理表单</Item>
+		<Item replacement="chkProcessLinks">连接</Item>
+		<Item replacement="chkCompression">压缩回复内容</Item>
+		<Item replacement="CookieManager">Cookie管理</Item>
+		<Item replacement="DownloadTool">下载工具</Item>
+		<Item replacement="ImageDisplayer">图片显示</Item>
+		<Item replacement="GetFreeVersion">
+			<![CDATA[拥有你自己的 <a asproxydone="2" href="?decode=1&amp;url=aHR0cDovL2FzcHJveHkuc291cmNlZm9yZ2UubmV0B64Coded!" target="_blank">ASProxy</a>.它是免费的.]]>
+		</Item>
+		<Item replacement="UrlIsEmpty">Please enter a url.</Item>
+		<Item replacement="JsIsDisabled">
+			<![CDATA[Warning, the JavaScript is disabled so this form will not perform any more.<br />Please enable JavaScript or <a asproxydone="2" href="noscript.aspx">use this page</a>.]]>
+		</Item>
+	</Page>
+	<Page filename="noscript.aspx">
 		<Item replacement="PageTitle">用ASProxy冲浪</Item>
 		<Item replacement="PageHeader">用ASProxy冲浪</Item>
 		<Item replacement="btnDisplay">显示</Item>
