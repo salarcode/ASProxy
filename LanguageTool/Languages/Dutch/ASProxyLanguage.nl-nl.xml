@@ -29,11 +29,11 @@
 		<Item replacement="DownloadTool">Download Tool</Item>
 		<Item replacement="ImageDisplayer">Afbeeldingen Weergeven</Item>
 		<Item replacement="GetFreeVersion">
-			<![CDATA[Have your own <a asproxydone="2" href="?decode=1&amp;url=aHR0cDovL2FzcHJveHkuc291cmNlZm9yZ2UubmV0B64Coded!" target="_blank">ASProxy</a>. Hte is gratis.]]>
+			<![CDATA[Download je eigen <a asproxydone="2" href="?decode=1&amp;url=aHR0cDovL2FzcHJveHkuc291cmNlZm9yZ2UubmV0B64Coded!" target="_blank">ASProxy</a>. Hte is gratis.]]>
 		</Item>
-		<Item replacement="UrlIsEmpty">Please enter a url.</Item>
+		<Item replacement="UrlIsEmpty">Geef een geldige URL.</Item>
 		<Item replacement="JsIsDisabled">
-			<![CDATA[Warning, the JavaScript is disabled so this form will not perform any more.<br />Please enable JavaScript or <a asproxydone="2" href="noscript.aspx">use this page</a>.]]>
+			<![CDATA[Let op: JavaScript is uitgeschakeld waardoor dit formulier niet werkt.<br />Schakel JavaScript weer in of gebruik <a asproxydone="2" href="noscript.aspx">deze pagina</a>.]]>
 		</Item>
 	</Page>
 	<Page filename="noscript.aspx">
