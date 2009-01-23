@@ -31,7 +31,7 @@
 		<Item replacement="GetFreeVersion">
 			<![CDATA[با استفاده از <a asproxydone="2" href="?decode=1&amp;url=aHR0cDovL2FzcHJveHkuc291cmNlZm9yZ2UubmV0B64Coded!" target="_blank">ASProxy</a> برای خود پراکسی شخصی رایگان داشته باشید.]]>
 		</Item>
-		<Item replacement="UrlIsEmpty">Please enter a url.</Item>
+		<Item replacement="UrlIsEmpty">هیچ آدرسی وارد نشده است</Item>
 		<Item replacement="JsIsDisabled">
 			<![CDATA[هشدار، JavaScript در مرورگر شما غیر فعال است. در این حالت این فرم غیر قابل استفاده خواهد بود.<br />لطفا JavaScript را فعال کرده و یا اینکه <a asproxydone="2" href="noscript.aspx">از این صفحه</a> استفاده کنید.]]>
 		</Item>
