@@ -2,17 +2,18 @@
 // Last update: 2009-01-02 coded by Salar Khalilzadeh //
 
 var _UpgradeLabel="lblVersionNotifier";
-var _ASProxyDownload="http://asproxy.sourceforge.net/download.html";
+//var _ASProxyDownload="http://asproxy.sourceforge.net/download.html";
 
 function _ApplyScript(){
 var _scriptUrl="http://asproxy.sourceforge.net/update/newVersionNotifier.js";
+
 if(typeof _ASProxyVersion=='undefined') return;
 
 // Do not check new version when user is browsing pages
 if(typeof _ASProxy!='undefined') return;
 
 document.write('<script type="text/javascript" src="'+_scriptUrl+'"></script>');
-document.write('<script type="text/javascript">_ASProxyCheckNewVersion();</script>');
+document.write('<script type="text/javascript" defer="defer">_ASProxyCheckNewVersion();</script>');
 }
 
 function _ASProxyCheckNewVersion(){
@@ -23,7 +24,7 @@ if(typeof _ASProxyVersion=='undefined') return;
 if(typeof _ASProxyLatestVersion=='undefined') return;
 
 if(_ASProxyLatestVersion>_ASProxyVersion)
-	_displayLabel.innerHTML="<a style='color:Maroon' title='ASProxy new version is available, please upgrade today.' href='"+_ASProxyDownload+"'>New version available "+_ASProxyLatestVersion+"</a>";
+	_displayLabel.innerHTML="<a style='color:Maroon' title='ASProxy new version is available, please upgrade today.' href='"+_ASProxyDownload+"'>New version is available "+_ASProxyLatestVersion+"</a>";
 }
 
 // run

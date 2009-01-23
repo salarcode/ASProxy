@@ -1,10 +1,10 @@
 ****************************************
-ASProxy       :version 5.0 Beta 5
-Last update   :2009/01/11
+ASProxy       :version 5.0
+Last update   :2009/01/23
 Official site :http://asproxy.sourceforge.net/
 
 ASProxy is an ASP.NET Web Proxy.
-A powerful web proxy is in your hands NOW! Feel its power!
+A powerful web proxy is in your hands! Feel its power!
 
 ****************************************
 Install notes:
@@ -22,17 +22,42 @@ Installing to a subdirectory:
 Important:
 	Be sure that your server supports ASP.NET 2 and then set your server ASP.NET version to 2.0.50727.
 
+Applying language:
+	Open "ASProxyLanguage.exe" application which is located in LanguageTool folder.
+	Set "Language XML" to the language xml file which you want to be applied.
+	Set "ASProxy folder" to the source folder. Note that you should use source package. If you use compiled package nothing will happen.
+	Click "Start" button.
+
 Changing interface:
 	If you don't like default interface, there is some. Go and get them right here: http://asproxy.sourceforge.net/download.html
-	To install an inteface, please read instructions with the package. It is easy.
+	To install an interface, please read instructions with the package. It is easy.
 
 ****************************************
 Version History
 
-Version 5.0
+Version 5.0 2009/01/23
+* AJAX is fully supported. Even more than your browser!
+* AJAX cookies are supported.
+* Javascript cookies are supported.
+* ASProxy Language Tool is added to support language localization. Now ASProxy can be translated to any language very easily.
+* Default page is redesigned. Javascript form is used instead of asp.net forms. However classic form is available in noscript.aspx.
+* Dynamically changed or created frames is supported.
+* ASProxyEncoder (Dynamic content coder, "asproxyencoder.js" file) is recoded and some bugs are fixed.
+* Characters after Base64 unknowner in urls will be ignored. This can help to prevent bad generated urls by javascript in some sites.
 * Favicons are partially supported.
+* New custom errors provides more details about errors.
+* A little string processing improvement.
+* Lots of test suits are written and are available in source code package in "_test" directory.
+  These tests includes: AjaxWrapper, JQueryAjax, ASProxyEncoder all functions, JS DOM Speed test, JSParser and etc.
+* Version notifier is added to default.aspx. If a new version is available a small link to download will appear. To disable this, remove script 'versionchecker.js' from end of page.
+* Dynamically changed or created frames is supported.
+* Javascript forms action is supported.
+* Base64 hash problem with (~) character is fixed. Base64 adds a (+) character to url for (~) character and browser indicates that this is a space, but it is not. That is because some sites was broken!
+* Original URLs float bar bug in frames is fixed.
+* Javascript parser (JSParser) bug is fixed.
 
-Version 5.0 Beta
+
+Version 5.0 Beta releases
 
 Beta 5 2009/01/06:
 * AJAX cookies are supported.

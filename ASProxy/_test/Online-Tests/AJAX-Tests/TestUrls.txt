@@ -11,3 +11,7 @@ http://tc.labs.opera.com/apis/XMLHttpRequest/autorun-basic.htm
 
 AJAX - XMLHttpRequest test IE7
 http://wafel.com/~gim/test_ajax_ie7.html
+
+
+wurfl ajax tst : ajax support javascript
+http://ajax.mobiletech.mobi/

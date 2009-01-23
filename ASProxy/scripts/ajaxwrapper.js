@@ -413,4 +413,4 @@ Object.extend(XMLHttpRequest.prototype, {
 
 // BUGFIX: Firefox with Firebug bugfix
 if(_OriginalXMLHttpRequest && _OriginalXMLHttpRequest.wrapped)
-    XMLHttpRequest.prototype.wrapped = _OriginalXMLHttpRequest.wrapped;
+    XMLHttpRequest.wrapped = _OriginalXMLHttpRequest.wrapped;

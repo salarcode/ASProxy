@@ -19,21 +19,22 @@ namespace SalarSoft.ASProxy
 		private string fDocType = "";
 		private string fPageInitializerCodes = "";
 
-		private const string javaScriptStatusMainCode = "<div id='__ASProxyOriginalURL' dir='ltr' style='display:block;font-family:verdana;color:black;font-size:11px;padding:2px 5px 2px 5px;position:absolute;left:0px;top:0px;width:98%;background:whitesmoke none;border:solid 2px black;overflow: visible;z-index:999999999;visibility:hidden;text-align:left;'></div>";
+		private const string javaScriptStatusMainCode = "<div id='__ASProxyOriginalURL' dir='ltr' style='display:block;font-family:verdana;color:black;font-size:11px;padding:2px 5px 2px 5px;margin:0;position:absolute;left:0px;top:0px;width:98%;background:whitesmoke none;border:solid 2px black;overflow: visible;z-index:999999999;visibility:hidden;text-align:left;'></div>";
 		private const string javaScriptStatusCode =
 				"<script language='javascript' type='text/javascript'>" +
-				"var _document=window.parent.document;" +
+				"var _wparent=window.parent ? window.parent : window;" +
+				"var _document=_wparent.document;" +
 				"var ASProxyOriginalURL=_document.getElementById('__ASProxyOriginalURL');" +
-				//"if(ASProxyOriginalURL==null){_document=window.parent.document; ASProxyOriginalURL=_document.getElementById('__ASProxyOriginalURL');}" +
+				//"if(ASProxyOriginalURL==null){_document=_wparent.document; ASProxyOriginalURL=_document.getElementById('__ASProxyOriginalURL');}" +
 				"var ASProxyUnvisibleHide;" +
 				"function ORG_Position_(){var topValue='0';topValue=_document.body.scrollTop+'';" +
-				"if(topValue=='0' || topValue=='undefined')topValue=window.scrollY+'';" +
+				"if(topValue=='0' || topValue=='undefined')topValue=_wparent.scrollY+'';" +
 				"if(topValue=='0' || topValue=='undefined')topValue=_document.documentElement.scrollTop+'';" +
 				"if(topValue!='undefined')ASProxyOriginalURL.style.top=topValue+'px';}" +
-				"function ORG_IN_(obj){ORG_Position_();var attrib=obj.attributes['originalurl'];if(attrib!=null)attrib=attrib.value; else attrib=null;if(attrib!='undefined' && attrib!='' && attrib!=null){window.clearTimeout(ASProxyUnvisibleHide);ASProxyOriginalURL.innerHTML='URL: <span style=\"color:maroon;\">'+attrib+'</span>';ASProxyOriginalURL.style.visibility='visible';}}" +
-				"function ORG_OUT_(){ASProxyOriginalURL.innerHTML='URL: ';window.clearTimeout(ASProxyUnvisibleHide);ASProxyUnvisibleHide=window.setTimeout('ORG_HIDE_IT()',500);}" +
+				"function ORG_IN_(obj){ORG_Position_();var attrib=obj.attributes['originalurl'];if(attrib!=null)attrib=attrib.value; else attrib=null;if(attrib!='undefined' && attrib!='' && attrib!=null){_wparent.clearTimeout(ASProxyUnvisibleHide);ASProxyOriginalURL.innerHTML='URL: <span style=\"color:maroon;\">'+attrib+'</span>';ASProxyOriginalURL.style.visibility='visible';}}" +
+				"function ORG_OUT_(){ASProxyOriginalURL.innerHTML='URL: ';_wparent.clearTimeout(ASProxyUnvisibleHide);ASProxyUnvisibleHide=_wparent.setTimeout('ORG_HIDE_IT()',500);}" +
 				"function ORG_HIDE_IT(){ASProxyOriginalURL.style.visibility='hidden';ASProxyOriginalURL.innerHTML='';}" +
-				"window.onscroll=ORG_Position_;" +
+				"_wparent.onscroll=ORG_Position_;" +
 				"</script>";
 
 

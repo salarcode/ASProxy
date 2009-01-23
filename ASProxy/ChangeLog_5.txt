@@ -5,6 +5,7 @@ File change log:
 	default.aspx
 	cookieman.aspx
 	images.aspx
+	noscript.aspx
 	scripts/ajaxwrapper_core.js
 	scripts/asproxyencoder.js
 	scripts/versionchecker.js

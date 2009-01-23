@@ -59,10 +59,10 @@ namespace SalarSoft.ASProxy
 				return;
 			HttpRequest userRequest = HttpContext.Current.Request;
 			HttpWebResponse webResponse = (HttpWebResponse)httpResponse;
-			int defaultCookieTimeout=20;
+			int defaultCookieTimeout = 20;
 
-			if(HttpContext.Current.Session!=null)
-				defaultCookieTimeout=HttpContext.Current.Session.Timeout;
+			if (HttpContext.Current.Session != null)
+				defaultCookieTimeout = HttpContext.Current.Session.Timeout;
 
 			string hostName = webResponse.ResponseUri.Host;
 			Uri webUri = webResponse.ResponseUri;
@@ -147,7 +147,11 @@ namespace SalarSoft.ASProxy
 
 
 				// Get expiration date
-				expireDate = Internal.FindMaximumExpireDate(cookieColl, defaultExpireDate);
+				//expireDate = Internal.FindMaximumExpireDate(cookieColl, defaultExpireDate);
+
+				// Since V5.0: To prevent cookie storage overflow, it should store cookies at most 5 days
+				expireDate = DateTime.Now.AddDays(5);
+
 
 				// Decode cookies to url wellknown string
 				cookieText = HttpUtility.UrlEncode(cookieText);
@@ -356,8 +360,8 @@ namespace SalarSoft.ASProxy
 
 				container.Add(cookieUrl, collection);
 				string cookieHeader = container.GetCookieHeader(cookieUrl);
-				
-				if(string.IsNullOrEmpty(cookieHeader))
+
+				if (string.IsNullOrEmpty(cookieHeader))
 					return container.GetCookieHeader(new Uri(cookieUrl.Scheme + "://cookies." + cookieUrl.Authority));
 
 				return cookieHeader;

@@ -165,7 +165,7 @@ void ApplyFramesetResults(ASProxyEngine resutls)
 .ASProxyCheckBox{display:inline;border-width:0px;background-color:#F8F8F8;padding:0px;margin:0px 0px 0px 0px;float:none;height:auto !important;}
 </style></head><body>
 <script language="javascript" type="text/javascript">
-var _ASProxyVersion="5.0";
+var _ASProxyVersion="5.0 ";
 function toggleOpt(lnk){var trMoreOpt=document.getElementById('trMoreOpt'); if (trMoreOpt.style.display=='none'){trMoreOpt.style.display='';lnk.innerHTML='[lnkMoreOpt]...<small>&lt;</small>';
 }else{trMoreOpt.style.display='none';lnk.innerHTML='[lnkMoreOpt]...<small>&gt;</small>';}}
 </script>
@@ -254,7 +254,7 @@ function _Page_SubmitForm(){
 	_Page_SaveOptions();
 	var url=_MainPage.Page.UrlBox.value;
 	if(url!='') _Page_Navigate(url);
-	else alert('Please enter a url address.');
+	else alert('[UrlIsEmpty]');
 }
 
 function _Page_Navigate(url){
@@ -271,7 +271,7 @@ function _Page_Navigate(url){
 <div id="ASProxyMain" dir="[Direction]">
 <table id="ASProxyMainTable" style="width: 100%; ">
 <tr><td style="padding:0px; margin:0px;"><table style="width: 100%;border-width:0px;" cellpadding="0" cellspacing="0">
-<tr><td class="Sides"><a href="." asproxydone="2">ASProxy 5.0 RC1</a></td><td style="font-size:small;"><strong>[PageHeader]</strong></td><td class="Sides">powered by SalarSoft</td></tr>
+<tr><td class="Sides"><a href="." asproxydone="2">ASProxy 5.0</a></td><td style="font-size:small;"><strong>[PageHeader]</strong></td><td class="Sides">powered by SalarSoft</td></tr>
 </table></td></tr><tr><td><!--This is ASProxy powered by SalarSoft. --><input name="txtUrl" type="text" size="60" id="txtUrl" dir="ltr" style="width:450px;" onkeydown="_Page_HandleTextKey(event)" value="<%=_ToDisplayUrl%>"/>
 <input type="submit" name="btnASProxyDisplayButton" value="[btnDisplay]" id="btnASProxyDisplayButton" class="Button" style="height: 22px" onclick="_Page_SubmitForm()" />&nbsp;<br />
 <span class="ASProxyCheckBox"><input id="chkUTF8" type="checkbox" name="chkUTF8" onclick="_Page_SaveOptions()"/><label for="chkUTF8">[chkUTF8]</label></span>&nbsp;<span class="ASProxyCheckBox"><input id="chkOrginalUrl" type="checkbox" name="chkOrginalUrl" checked="checked" onclick="_Page_SaveOptions()"/><label for="chkOrginalUrl">[chkOrginalUrl]</label></span>&nbsp;<span class="ASProxyCheckBox"><input id="chkBackImage" type="checkbox" name="chkBackImage" checked="checked" onclick="_Page_SaveOptions()" /><label for="chkBackImage">[chkBackImage]</label></span>&nbsp;<span class="ASProxyCheckBox"><input id="chkRemoveScripts" type="checkbox" name="chkRemoveScripts" onclick="_Page_SaveOptions()"/><label for="chkRemoveScripts">[chkRemoveScripts]</label></span>&nbsp;<span class="ASProxyCheckBox"><input id="chkDisplayImages" type="checkbox" name="chkDisplayImages" checked="checked" onclick="_Page_SaveOptions()"/><label for="chkDisplayImages">[chkDisplayImages]</label></span>&nbsp;<span class="ASProxyCheckBox"><input id="chkCookies" type="checkbox" name="chkCookies" checked="checked" onclick="_Page_SaveOptions()"/><label for="chkCookies">[chkCookies]</label></span>&nbsp;<span class="ASProxyCheckBox"><input id="chkCompression" type="checkbox" name="chkCompression" onclick="_Page_SaveOptions()"/><label for="chkCompression">[chkCompression]</label></span>&nbsp;<a asproxydone="2" id="lnkMoreOpt" href="javascript:void(0);" onclick="toggleOpt(this);">[lnkMoreOpt]...<small>&gt;</small></a></td>
@@ -285,11 +285,11 @@ _Page_SetOptions();
 <%if (_HasError){ %>
 <span title="Error message" style="color:Red; font-weight:bold; font-family:Tahoma; font-size:10pt;"><%=_ErrorMessage%></span>
 <%} %>
-<noscript style="color:Maroon;font-weight:bold; font-family:Tahoma; font-size:11pt;">Warning, the JavaScript is disabled so will not perform any more.<br />Please enable JavaScript or <a asproxydone="2" href="noscript.aspx">use this page</a>. </noscript>
+<noscript style="color:Maroon;font-weight:bold; font-family:Tahoma; font-size:11pt;">[JsIsDisabled]</noscript>
 </div>
-<script type="text/javascript" src="scripts/versionchecker.js"></script>
 </body></html>
 
 <div style="position: relative; left: 0px; top: 5px; width: 100%; height:auto;">
 <%=_ResponseContent%>
 </div>
+<script type="text/javascript" src="scripts/versionchecker.js"></script>
