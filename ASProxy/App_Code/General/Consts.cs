@@ -8,7 +8,7 @@ namespace SalarSoft.ASProxy
 		public const int RequestTimeOut = 60000;//1 min
 		public const int RequestFormReadWriteTimeOut = 70000;//110 seconds
 		public const string ASProxyName = "ASProxy";
-		public const string ASProxyVersion = "5.0";
+		public const string ASProxyVersion = "5.1";
 		public const string ASProxyAgentVersion = "ASProxy/" + ASProxyVersion + "";
 
 		public const string ASProxyProjectUrl = "http://asproxy.sourceforge.net";
