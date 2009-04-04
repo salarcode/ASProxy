@@ -471,10 +471,6 @@ namespace SalarSoft.ASProxy
 			if (string.IsNullOrEmpty(temp) == false)
 				ResponseInfo.Headers[HttpResponseHeader.LastModified] = temp;
 
-			temp = httpResponse.Headers[HttpResponseHeader.LastModified];
-			if (string.IsNullOrEmpty(temp) == false)
-				ResponseInfo.Headers[HttpResponseHeader.LastModified] = temp;
-
 
 			temp = httpResponse.Headers[HttpResponseHeader.Expires];
 			if (string.IsNullOrEmpty(temp) == false)

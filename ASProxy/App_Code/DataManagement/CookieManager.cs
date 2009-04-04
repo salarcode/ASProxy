@@ -356,6 +356,7 @@ namespace SalarSoft.ASProxy
 				for (int i = 0; i < collection.Count; i++)
 				{
 					collection[i].Domain = host;
+                    collection[i].Value = HttpUtility.UrlEncode(collection[i].Value);
 				}
 
 				container.Add(cookieUrl, collection);

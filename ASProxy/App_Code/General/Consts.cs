@@ -25,7 +25,7 @@ namespace SalarSoft.ASProxy
 		public const string Dir_UpdateSources = "UpdateSources";
 
 		/// <summary>
-		/// The default page variable is static and can change during application execution
+		/// The default page variable is static and can be changed during application execution
 		/// </summary>
 		public static string DefaultPage = "default.aspx";
 		public const string AJAXHandler = "ajax.ashx";

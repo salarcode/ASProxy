@@ -3,6 +3,10 @@
 <script RunAt="server">
 	void Application_Start(object sender, EventArgs e)
 	{
+        // Since V5.1, Some site didn't implement Expect 100-Continue behavior .
+        // The Expect 100-Continue behavior is fully described in IETF RFC 2616 Section 10.1.1. 
+        System.Net.ServicePointManager.Expect100Continue = false;
+        
 		//SalarSoft.ASProxy.ASProxyExceptions.LogException(new Exception(), "Application_Start");
 		if (SalarSoft.ASProxy.ASProxyConfig.ASProxyAutoUpdateEnabled)
 		{

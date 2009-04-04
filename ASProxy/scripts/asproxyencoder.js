@@ -174,7 +174,6 @@ for(i=0;i<elementsArray.length;i++){
 	else
 		propValue=propValueFull;
 
-	
 	// is element already coded?
 	if(_ASProxy.IsEncodedByASProxy(propValue)==false){
 

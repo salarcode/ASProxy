@@ -346,7 +346,7 @@ namespace SalarSoft.ASProxy
 					// Locate dot position after a part
 					dotPos = Performance.IndexOfMatchCase(ref source, dot, result.Start);
 
-					// There is not dot around here?!!
+					// There is no dot around here?!!
 					if (dotPos == -1)
 					{
 						// result.Start = result.Start; // Same
@@ -987,7 +987,7 @@ namespace SalarSoft.ASProxy
 						if (countQuote % 2 == 0 && countApostrophe % 2 == 0
 							&& (countStartParenthesis == countEndParenthesis)
 
-							// BUGFIX: v5 it forgotted brace characters!
+							// BUGFIX: v5 was forget brace characters!
 							&& (countLeftBrace == countRightBrace))
 						{
 							propertySetEnd = i;
