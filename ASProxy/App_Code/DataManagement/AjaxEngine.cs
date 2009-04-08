@@ -389,14 +389,14 @@ namespace SalarSoft.ASProxy
 				currentRequest = UrlProvider.EncodeUrl(currentRequest);
 			}
 
-			// Apply current page as referrer url for redirect url
-			currentPage = UrlBuilder.AddUrlQuery(currentPage, Consts.qRedirect, currentRequest);
-
 			// If address exists in current page address it will automatically replaced
 			currentPage = UrlBuilder.AddUrlQuery(currentPage, Consts.qUrlAddress, redirectUrl);
 
 			// Apply decode option
 			currentPage = UrlBuilder.AddUrlQuery(currentPage, Consts.qDecode, Convert.ToByte(_Options.EncodeUrl).ToString());
+
+			// Apply current page as referrer url for redirect url
+            currentPage = UrlBuilder.AddUrlQueryToEnd(currentPage, Consts.qRedirect, currentRequest);
 
 			// If page is marked as posted back, remark it as no post back
 			if (currentPage.IndexOf(Consts.qWebMethod) != -1)

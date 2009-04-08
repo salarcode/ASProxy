@@ -63,29 +63,42 @@ namespace SalarSoft.ASProxy
 
 		public static string AddUrlQuery(string url, string query, string val)
 		{
-			if (url.IndexOf(query + "=", 0) > -1)
+            // If already exists
+            if (url.IndexOf(query + "=", 0) > -1)
 				return ReplaceUrlQuery(url, query, val);
-			string fullquery = query + "=" + val;
+			
+            // Full query
+            string fullquery = query + "=" + val;
 			int place = -1;
-			place = url.IndexOf('?', 0);
+
+            // Check if there is any query before
+            place = url.IndexOf('?', 0);
 			if (place > -1)
 				return url.Insert(place + 1, fullquery + "&");
 
-			place = url.IndexOf('#', 0);
+            // Check if there is bookmark before
+            place = url.IndexOf('#', 0);
 			if (place > -1)
 				return url.Insert(place, fullquery + "?");
+
 			return url + "?" + fullquery;
 		}
 
 		public static string AddUrlQueryToEnd(string url, string query, string val)
 		{
-			if (url.IndexOf(query + "=", 0) > -1)
+			// If already exists
+            if (url.IndexOf(query + "=", 0) > -1)
 				return ReplaceUrlQuery(url, query, val);
+
+            // full query
 			string fullquery = query + "=" + val;
 			int place = -1;
+
+            // Check if there is any query before
 			place = url.IndexOf('?', 0);
 			if (place > -1)
 			{
+                // Check if there is bookmark before
 				int bookPlace = url.IndexOf('#', 0);
 				if (bookPlace > -1)
 				{
@@ -96,9 +109,11 @@ namespace SalarSoft.ASProxy
 					return url + "&" + fullquery;
 			}
 
-			place = url.IndexOf('#', 0);
+            // Check if there is bookmark before
+            place = url.IndexOf('#', 0);
 			if (place > -1)
 				return url.Insert(place, fullquery + "?");
+
 			return url + "?" + fullquery;
 		}
 
