@@ -123,7 +123,9 @@ namespace SalarSoft.ASProxy
 			result += "\nHttp method: " + req.HttpMethod;
 			result += "\nIs authenticated: " + req.IsAuthenticated.ToString();
 			result += "\nIs secure connection: " + req.IsSecureConnection.ToString();
-			result += "\nIs local: " + req.IsLocal.ToString();
+            result += "\nIs local: " + req.IsLocal.ToString();
+            result += "\ndotNet Runtime: " + Environment.Version.ToString();
+            result += "\nServer OS Version: " + Environment.OSVersion.ToString();
 
 			if (ex is WebException || ex is HttpException)
 			{
