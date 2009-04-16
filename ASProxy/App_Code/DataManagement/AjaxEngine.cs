@@ -203,17 +203,15 @@ namespace SalarSoft.ASProxy
 						RequestInfo.RequestUrl = redirLocation;
 					}
 
-
-					// initializing new DataCore
-					string userAgent = _CurrentContext.Request.UserAgent;
-					if (userAgent == null)
-						userAgent = GlobalConsts.ASProxyUserAgent;
+                    // Generated user agent
+                    // Since v5.1
+                    string userAgent = Common.GenerateUserAgent(_CurrentContext);
 
 					if (_WebData != null)
 						_WebData.Dispose();
 
+					// initializing new DataCore
 					_WebData = new WebDataCore(RequestInfo.RequestUrl, userAgent);
-
 
 					// Apply credentials
 					if (string.IsNullOrEmpty(RequestInfo.Username) == false)

@@ -142,10 +142,15 @@ namespace SalarSoft.ASProxy
 				if (ex is WebException)
 				{
 					WebException webEx = (WebException)ex;
-					if (webEx.Response != null && webEx.Response is HttpWebResponse)
-					{
-						return ((HttpWebResponse)webEx.Response).StatusCode;
-					}
+                    if (webEx.Response != null && webEx.Response is HttpWebResponse)
+                    {
+                        return ((HttpWebResponse)webEx.Response).StatusCode;
+                    }
+                    //else
+                    //{
+                    //    // since v5.1: Added to save more info
+                    //    return (HttpStatusCode)(-(int)webEx.Status);
+                    //}
 				}
 				else if (ex is HttpException)
 				{

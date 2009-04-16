@@ -223,14 +223,15 @@ namespace SalarSoft.ASProxy
 					}
 					else
 					{
-						// initializing new DataCore
-						string userAgent = HttpContext.Current.Request.UserAgent;
-						if (string.IsNullOrEmpty(userAgent))
-							userAgent = GlobalConsts.ASProxyUserAgent;
 
-						if (_WebData != null)
+                        // Generated user agent
+                        // Since v5.1
+                        string userAgent = Common.GenerateUserAgent(HttpContext.Current);
+
+                        if (_WebData != null)
 							_WebData.Dispose();
 
+						// initializing new DataCore
 						_WebData = new WebDataCore(RequestInfo.RequestUrl, userAgent);
 					}
 
@@ -274,7 +275,6 @@ namespace SalarSoft.ASProxy
 				SetResponseInformation();
 			}
 		}
-
 
 		/// <summary>
 		/// Execute the request and apply the results directly to response.
@@ -527,30 +527,86 @@ namespace SalarSoft.ASProxy
 			}
 		}
 
-		/// <summary>
-		/// Gets last error status code if available
-		/// </summary>
-		public HttpStatusCode LastErrorStatusCode()
-		{
-			if (_LastException != null)
-			{
-				if (_LastException is WebException)
-				{
-					WebException webEx = (WebException)_LastException;
-					if (webEx.Response != null && webEx.Response is HttpWebResponse)
-					{
-						return ((HttpWebResponse)webEx.Response).StatusCode;
-					}
-				}
-				else if (_LastException is HttpException)
-				{
-					return (HttpStatusCode)((HttpException)_LastException).GetHttpCode();
-				}
-			}
-			return HttpStatusCode.InternalServerError;
-		}
+        /// <summary>
+        /// Gets last error status code if available
+        /// </summary>
+        public HttpStatusCode LastErrorStatusCode()
+        {
+            if (_LastException != null)
+            {
+                if (_LastException is WebException)
+                {
+                    WebException webEx = (WebException)_LastException;
+                    if (webEx.Response != null && webEx.Response is HttpWebResponse)
+                    {
+                        return ((HttpWebResponse)webEx.Response).StatusCode;
+                    }
+                }
+                else if (_LastException is HttpException)
+                {
+                    return (HttpStatusCode)((HttpException)_LastException).GetHttpCode();
+                }
+            }
+            return HttpStatusCode.InternalServerError;
+        }
 
-		public void Dispose()
+        /// <summary>
+        /// Gets last error status code if available
+        /// </summary>
+        /// <since>v5.1</since>
+        public int LastErrorStatusDetailedCode()
+        {
+            if (_LastException != null)
+            {
+                if (_LastException is WebException)
+                {
+                    WebException webEx = (WebException)_LastException;
+                    if (webEx.Response != null && webEx.Response is HttpWebResponse)
+                    {
+                        return (int)((HttpWebResponse)webEx.Response).StatusCode;
+                    }
+                    else
+                    {
+                        // Added to save more info
+                        return -(int)webEx.Status;
+                    }
+                }
+                else if (_LastException is HttpException)
+                {
+                    return (int)((HttpStatusCode)((HttpException)_LastException).GetHttpCode());
+                }
+            }
+            return (int)HttpStatusCode.InternalServerError;
+        }
+
+        /// <summary>
+        /// Gets last error status code if available
+        /// </summary>
+        public string LastErrorStatusString()
+        {
+            if (_LastException != null)
+            {
+                if (_LastException is WebException)
+                {
+                    WebException webEx = (WebException)_LastException;
+                    if (webEx.Response != null && webEx.Response is HttpWebResponse)
+                    {
+                        return ((HttpWebResponse)webEx.Response).StatusCode.ToString();
+                    }
+                    else
+                    {
+                        return webEx.Status.ToString();
+                    }
+                }
+                else if (_LastException is HttpException)
+                {
+                    return ((HttpStatusCode)((HttpException)_LastException).GetHttpCode()).ToString();
+                }
+            }
+            return HttpStatusCode.InternalServerError.ToString();
+        }
+
+        public void Dispose()
 		{
 			if (_WebData != null)
 				_WebData.Dispose();

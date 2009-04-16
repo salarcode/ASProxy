@@ -5,8 +5,7 @@
 <!-- #include file = "bin\default.aspx.inc.config" -->
 <head runat="server">
 <title runat="server">[PageTitle]</title>
-<meta content='Surf the web invisibly using ASProxy power. A Powerfull web proxy is in your hands.'	name='description' />
-<meta content='ASProxy,free,anonymous proxy,anonymous,proxy,asp.net,surfing,filter,antifilter,anti filter' name='keywords' />
+<!-- Surf the web invisibly using ASProxy power. A Powerfull web proxy is in your hands. -->
 <style type="text/css">
 #ASProxyMain{width:99.5%;display:block;padding:1px;;margin:0px;border:2px solid #000000;text-align: center;}
 #ASProxyMain table{margin:0; padding:0px;}

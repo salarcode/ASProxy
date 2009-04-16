@@ -6,30 +6,31 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
 <script runat="server">
-	Bitmap GetErrorImage()
+	Bitmap GetErrorImage(string errorCode)
 	{
 		const string text = "Error!";
 		Font textfont = new Font("Tahoma", 10);
 		int txtwith;
 		txtwith = text.Length * text.Length;
-		Bitmap bmp = new System.Drawing.Bitmap(txtwith, textfont.Height, System.Drawing.Imaging.PixelFormat.Format16bppRgb565);
+		Bitmap bmp = new System.Drawing.Bitmap(txtwith, (textfont.Height)*2, System.Drawing.Imaging.PixelFormat.Format16bppRgb565);
 		
 		Graphics graphicImage = Graphics.FromImage(bmp);
 
 		graphicImage.Clear(Color.White);
-		graphicImage.DrawString(text, textfont, Brushes.Black, new Point(0, 0));
+        graphicImage.DrawString(text, textfont, Brushes.Black, new Point(0, 0));
+        graphicImage.DrawString(errorCode, textfont, Brushes.Red, new Point(0, textfont.Height));
 
 		graphicImage.Dispose();
 
 		return bmp;
 	}
 
-    public void ShowError()
+    public void ShowError(int errorCode)
     {
         SalarSoft.ASProxy.Common.ClearASProxyRespnseHeader(Response);
         Response.ClearContent();
         Response.ContentType = "image/gif";
-        Bitmap bmp = GetErrorImage();
+        Bitmap bmp = GetErrorImage(errorCode.ToString());
 
         bmp.Save(Response.OutputStream, System.Drawing.Imaging.ImageFormat.Gif);
         bmp.Dispose();
@@ -45,22 +46,24 @@
 				if (LogSystem.Enabled)
 					LogSystem.Log(LogEntity.Error, results.RequestInfo.RequestUrl, results.LastErrorMessage);
 
-				ShowError();
+
+                ShowError(results.LastErrorStatusDetailedCode());
 
 				Response.StatusDescription = results.LastErrorMessage;
-				Response.StatusCode = (int)results.LastErrorStatusCode();
+                Response.StatusCode = (int)results.LastErrorStatusCode();
 				
 				Response.End();
 				return;
 			}
 		}
-		catch (ThreadAbortException) { }
+		catch (ThreadAbortException) {}
 		catch (Exception ex)
 		{
 			if (LogSystem.Enabled)
 				LogSystem.Log(LogEntity.Error, results.RequestInfo.RequestUrl, ex.Message);
 
-			ShowError();
+            ShowError((int)results.LastErrorStatusDetailedCode());
+            
 			Response.End();
 			return;
 		}
@@ -97,7 +100,7 @@
             if (LogSystem.Enabled)
                 LogSystem.Log(LogEntity.Error, Request.Url, ex.Message);
 
-            ShowError();
+            ShowError(500);
 			Response.End();
 			return;
         }

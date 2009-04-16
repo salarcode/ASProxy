@@ -1,6 +1,6 @@
 ****************************************
-ASProxy       :version 5.0
-Last update   :2009/01/23
+ASProxy       :version 5.1
+Last update   :2009/04/14
 Official site :http://asproxy.sourceforge.net/
 
 ASProxy is an ASP.NET Web Proxy.
@@ -34,6 +34,11 @@ Changing interface:
 
 ****************************************
 Version History
+
+Version 5.1 2009/04/14
+* Image error now with error code.
+* Incomplete implementation of Http/1.1 Expect 100-Continue behavior is supported.
+* Original url problem in subdirecotry fixed.
 
 Version 5.0 2009/01/23
 * AJAX is fully supported. Even more than your browser!

@@ -91,6 +91,9 @@
             //	So i used GetBuffer()!!
             //********************************************//
             download.ProcessDownload(data.ResponseData.GetBuffer(), url, filename);
+
+            //ApplicationInstance.CompleteRequest();
+            
             Response.End();
         }
         catch (System.Threading.ThreadAbortException)
