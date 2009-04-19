@@ -4,12 +4,58 @@ using System.Collections.Specialized;
 using System.IO;
 using System.Text;
 using System.Web;
+using System.Net;
 
 namespace SalarSoft.ASProxy
 {
     public class Common
     {
         #region public static
+
+        public static int GetErrorDetailedCode(Exception exception)
+        {
+            if (exception != null)
+            {
+                if (exception is WebException)
+                {
+                    WebException webEx = (WebException)exception;
+                    if (webEx.Response != null && webEx.Response is HttpWebResponse)
+                    {
+                        return (int)((HttpWebResponse)webEx.Response).StatusCode;
+                    }
+                    else
+                    {
+                        // Added to save more info
+                        return -(int)webEx.Status;
+                    }
+                }
+                else if (exception is HttpException)
+                {
+                    return (int)((HttpStatusCode)((HttpException)exception).GetHttpCode());
+                }
+            }
+            return (int)HttpStatusCode.InternalServerError;
+        }
+
+        public static HttpStatusCode GetErrorCode(Exception exception)
+        {
+            if (exception != null)
+            {
+                if (exception is WebException)
+                {
+                    WebException webEx = (WebException)exception;
+                    if (webEx.Response != null && webEx.Response is HttpWebResponse)
+                    {
+                        return ((HttpWebResponse)webEx.Response).StatusCode;
+                    }
+                }
+                else if (exception is HttpException)
+                {
+                    return (HttpStatusCode)((HttpException)exception).GetHttpCode();
+                }
+            }
+            return HttpStatusCode.InternalServerError;
+        }
 
         public static string GenerateUserAgent(HttpContext context)
         {

@@ -1,6 +1,6 @@
 ﻿// ASProxy Dynamic Encoder
 // ASProxy encoder for dynamically created objects //
-// Last update: 2009-01-17 coded by Salar Khalilzadeh //
+// Last update: 2009-04-19 coded by Salar Khalilzadeh //
 
 //__ASProxyEncodeUrl=1;
 //__ASProxyOriginalUrlEnabled=1;
@@ -35,6 +35,13 @@ var _OriginalWindowOpen=window.open;
 var _OriginalLocationReplace=window.location.replace;
 var _OriginalLocationAssign=window.location.assign;
 
+_ASProxy.pgImages='images.ashx';
+_ASProxy.pgGetAny='getany.ashx';
+_ASProxy.pgGetHtml='gethtml.ashx';
+_ASProxy.pgGetJS='getjs.ashx';
+_ASProxy.pgGetCss='getcss.ashx';
+_ASProxy.pgSownload='download.ashx';
+_ASProxy.pgAuthorization='authorization.aspx';
 
 // public: encodes urls
 // type: content type
@@ -53,11 +60,11 @@ function ASProxyEncoder(url,type,addFormMethod,formMethod,notCorrectLocalUrl){
 
 	var asproxyBasePath;
 	if(type==1)
-		asproxyBasePath='images.aspx';
+		asproxyBasePath=_ASProxy.pgImages;
 	else if(type==2)
-		asproxyBasePath='getany.aspx';
+		asproxyBasePath=_ASProxy.pgGetAny;
 	else if(type==3)
-		asproxyBasePath='gethtml.aspx';
+		asproxyBasePath=_ASProxy.pgGetHtml;
 	else
 		asproxyBasePath=__ASProxyDefaultPage;
 	
@@ -509,7 +516,9 @@ function ASProxyEncodeInputImages()
 // Internal functions
 
 // private: Is url already encoded
-_ASProxy.EncodedUrls=new Array(__ASProxyDefaultPage+"?decode=","images.aspx?decode=","getjs.aspx?decode=","getcss.aspx?decode=","gethtml.aspx?decode=","download.aspx?decode=","authorization.aspx?decode=","getany.aspx?decode=");
+_ASProxy.EncodedUrls=new Array(__ASProxyDefaultPage+"?decode=",_ASProxy.pgImages+"?decode="
+    ,_ASProxy.pgGetJS+"?decode=",_ASProxy.pgGetCss+"?decode=",_ASProxy.pgGetHtml+"?decode="
+    ,_ASProxy.pgSownload+"?decode=",_ASProxy.pgAuthorization+"?decode=",_ASProxy.pgGetAny+"?decode=");
 _ASProxy.IsEncodedByASProxy = function(url)
 {
 	if(url==null) return false;

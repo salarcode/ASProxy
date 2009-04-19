@@ -8,7 +8,7 @@ namespace SalarSoft.ASProxy
 		public const int RequestTimeOut = 60000;//1 min
 		public const int RequestFormReadWriteTimeOut = 70000;//110 seconds
 		public const string ASProxyName = "ASProxy";
-		public const string ASProxyVersion = "5.1";
+		public const string ASProxyVersion = "5.2";
 		public const string ASProxyAgentVersion = "ASProxy/" + ASProxyVersion + "";
 
 		public const string ASProxyProjectUrl = "http://asproxy.sourceforge.net";
@@ -29,13 +29,13 @@ namespace SalarSoft.ASProxy
 		/// </summary>
 		public static string DefaultPage = "default.aspx";
 		public const string AJAXHandler = "ajax.ashx";
-		public const string ImagesPage = "images.aspx";
-		public const string DownloadPage = "download.aspx";
+        public const string ImagesPage = "images.ashx";//"images.aspx";
+        public const string DownloadPage = "download.ashx";//"download.aspx";
 		public const string AuthorizationPage = "authorization.aspx";
-		public const string DirectHtmlPage = "gethtml.aspx";
-		public const string DirectCSSPage = "getcss.aspx";
-		public const string DirectJSPage = "getjs.aspx";
-		public const string DirectDataPage = "getany.aspx";
+        public const string DirectHtmlPage = "gethtml.ashx";
+        public const string DirectCSSPage = "getcss.ashx";
+        public const string DirectJSPage = "getjs.ashx";
+        public const string DirectDataPage = "getany.ashx";
 
 		public const string JSASProxyEncoder = Dir_Scripts + "/" + "asproxyencoder.js";
 		public const string JSBase64 = Dir_Scripts + "/" + "base64encoder.js";

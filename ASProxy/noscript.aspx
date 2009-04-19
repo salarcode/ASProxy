@@ -21,7 +21,7 @@
 .ASProxyCheckBox{display:inline;border-width:0px;background-color:#F8F8F8;padding:0px;margin:0px 0px 0px 0px;float:none;height:auto !important;}
 </style></head><body>
 <script language="javascript" type="text/javascript">
-var _ASProxyVersion="5.1";
+var _ASProxyVersion="<%=GlobalConsts.ASProxyVersion %>";
 function toggleOpt(lnk){var trMoreOpt=document.getElementById('trMoreOpt'); if (trMoreOpt.style.display=='none'){trMoreOpt.style.display='';lnk.innerHTML='[lnkMoreOpt]...<small>&lt;</small>';
 }else{trMoreOpt.style.display='none';lnk.innerHTML='[lnkMoreOpt]...<small>&gt;</small>';}}
 </script>
@@ -29,11 +29,11 @@ function toggleOpt(lnk){var trMoreOpt=document.getElementById('trMoreOpt'); if (
 <div id="ASProxyMain" dir="[Direction]">
 <table id="ASProxyMainTable" style="width: 100%; ">
 <tr><td style="padding:0px; margin:0px;"><table style="width: 100%;border-width:0px;" cellpadding="0" cellspacing="0">
-<tr><td class="Sides"><a href="." asproxydone="2">ASProxy 5.1</a></td><td style="font-size:small;"><strong>[PageHeader]</strong></td><td class="Sides">powered by SalarSoft</td></tr>
+<tr><td class="Sides"><a href="." asproxydone="2">ASProxy <%=GlobalConsts.ASProxyVersion %></a></td><td style="font-size:small;"><strong>[PageHeader]</strong></td><td class="Sides">powered by SalarSoft</td></tr>
 </table></td></tr><tr><td><!--This is ASProxy powered by SalarSoft. --><asp:TextBox ID="txtUrl" runat="server" Columns="60" dir="ltr" Width="450px"></asp:TextBox><asp:Button ID="btnASProxyDisplayButton" runat="server" Style="height: 22px" CssClass="Button" OnClick="btnDisplay_Click" Text="[btnDisplay]" />&nbsp;<br />
 <asp:CheckBox CssClass="ASProxyCheckBox" ID="chkUTF8" runat="server" Checked="False" Text="[chkUTF8]" />&nbsp;<asp:CheckBox CssClass="ASProxyCheckBox" ID="chkOrginalUrl" runat="server" Checked="True" Text="[chkOrginalUrl]" />&nbsp;<asp:CheckBox CssClass="ASProxyCheckBox" ID="chkBackImage" runat="server" Checked="False" Text="[chkBackImage]" />&nbsp;<asp:CheckBox CssClass="ASProxyCheckBox" ID="chkRemoveScripts" runat="server" Text="[chkRemoveScripts]" />&nbsp;<asp:CheckBox CssClass="ASProxyCheckBox" ID="chkDisplayImages" runat="server" Checked="True" Text="[chkDisplayImages]" />&nbsp;<asp:CheckBox CssClass="ASProxyCheckBox" ID="chkCookies" runat="server" Checked="True" Text="[chkCookies]" />&nbsp;<asp:CheckBox CssClass="ASProxyCheckBox" ID="chkCompression" runat="server" Checked="False" Text="[chkCompression]" />&nbsp;<a asproxydone="2" id="lnkMoreOpt" href="javascript:void(0);" onclick="toggleOpt(this);">[lnkMoreOpt]...<small>&gt;</small></a></td>
 </tr><tr id="trMoreOpt" style="display: none;"><td id="tdMoreOpt"><asp:CheckBox CssClass="ASProxyCheckBox" ID="chkIFrame" runat="server" Checked="False" Text="[chkIFrame]" />&nbsp;<asp:CheckBox CssClass="ASProxyCheckBox" ID="chkPageTitle" runat="server" Text="[chkPageTitle]" />&nbsp;<asp:CheckBox CssClass="ASProxyCheckBox" ID="chkForms" runat="server" Checked="True" Text="[chkForms]" />&nbsp;<asp:CheckBox CssClass="ASProxyCheckBox" ID="chkProcessLinks" runat="server" Checked="True" Text="[chkProcessLinks]" />&nbsp;<asp:CheckBox CssClass="ASProxyCheckBox" ID="chkProcessScripts" runat="server" Checked="True" Text="[chkProcessScripts]" /></td></tr>
-<tr><td><a asproxydone="2" href="cookieman.aspx" target="_blank">[CookieManager]</a>&nbsp;&nbsp;<a asproxydone="2" href="download.aspx" target="_blank">[DownloadTool]</a>&nbsp;&nbsp;<a asproxydone="2" href="images.aspx" target="_blank">[ImageDisplayer]</a>&nbsp;&nbsp;[GetFreeVersion]&nbsp;&nbsp;<span id="lblVersionNotifier"></span></td>
+<tr><td><a asproxydone="2" href="cookieman.aspx" target="_blank">[CookieManager]</a>&nbsp;&nbsp;<a asproxydone="2" href="download.aspx" target="_blank">[DownloadTool]</a>&nbsp;&nbsp;[GetFreeVersion]&nbsp;&nbsp;<span id="lblVersionNotifier"></span></td>
 </tr></table><asp:Label ID="lblErrorMsg" runat="server" EnableTheming="False" EnableViewState="False" Font-Bold="True" Font-Names="Tahoma" Font-Size="10pt" ForeColor="Red" Text="Error message" ToolTip="Error message" Visible="False"></asp:Label>
 </div>
 <asp:Literal ID="ltrBeforeContent" runat="server" EnableViewState="false"></asp:Literal>

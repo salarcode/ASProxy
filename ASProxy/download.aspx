@@ -6,180 +6,32 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
 <script runat="server">
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <Added>Since V4.1</Added>
-    private string GetRedirectEncodedUrlForASProxyPages(string asproxyPage, string currentRequest, bool encodeUrl)
+protected void btnDisplay_Click(object sender, EventArgs e)
+{
+    try
     {
-        // Encode redirect page if needed
-        if (encodeUrl)
-        {
-            currentRequest = UrlProvider.EncodeUrl(currentRequest);
-        }
+        txtUrl.Text = UrlProvider.CorrectInputUrl(txtUrl.Text);
 
-        // Apply current page as referrer url for redirect url
-        asproxyPage = UrlBuilder.AddUrlQuery(asproxyPage, Consts.qUrlAddress, currentRequest);
+        string downurl = UrlProvider.AddArgumantsToUrl(FilesConsts.DownloadPage, txtUrl.Text, true);
+        lnkDownload.NavigateUrl = downurl;
+        lnkDownload.Visible = true;
+        lblDownloadTip.Visible = true;
 
-        // Apply decode option
-        asproxyPage = UrlBuilder.AddUrlQuery(asproxyPage, Consts.qDecode, Convert.ToByte(encodeUrl).ToString());
-
-        // If page is marked as posted back, remark it as no post back
-        if (asproxyPage.IndexOf(Consts.qWebMethod) != -1)
-            asproxyPage = UrlBuilder.RemoveQuery(asproxyPage, Consts.qWebMethod);
-
-        return asproxyPage;
+        lblAutoPrompt.Text = string.Format(lblAutoPrompt.Text, downurl);
+        lblAutoPrompt.Visible = true;
     }
-
-    public void DoDownload(string url)
+    catch (ThreadAbortException)
     {
-        WebDataCore data = null;
-        ResumableDownload download = null;
-        try
-        {
-
-            data = new WebDataCore(url, Request.UserAgent);
-            data.Execute();
-            if (data.Status == LastActivityStatus.Error)
-            {
-                if (LogSystem.Enabled)
-                    LogSystem.Log(LogEntity.Error, url, data.ErrorMessage);
-
-                lblErrorMsg.Text = data.ErrorMessage;
-                lblErrorMsg.Visible = true;
-                return;
-            }
-
-            if (data.ResponseInfo.AutoRedirect)
-            {
-                if (data.ResponseInfo.AutoRedirectionType == AutoRedirectType.ASProxyPages)
-                {
-                    // Encoded url needed
-                    string newLocation = GetRedirectEncodedUrlForASProxyPages(data.ResponseInfo.AutoRedirectLocation, url, true);
-                    Response.Redirect(newLocation);
-                    
-                    return;
-                }
-                else
-                    throw new NotSupportedException("Auto redirection not supported in download page.");
-            }
-
-            Response.ClearContent();
-            SalarSoft.ASProxy.Common.ClearASProxyRespnseHeader(Response);
-            Response.ContentType = "application/octet-stream";
-
-            download = new ResumableDownload();
-            download.ClearResponseData();
-            download.ContentType = "application/octet-stream";
-            string filename;
-            //====Get file name====
-            if (string.IsNullOrEmpty(data.ResponseInfo.ContentFilename) == false)
-                filename = data.ResponseInfo.ContentFilename;
-            else
-                filename = System.IO.Path.GetFileName(url);
-
-
-            // Log download status
-            if (LogSystem.Enabled)
-                LogSystem.Log(LogEntity.DownloadRequested, url, filename, data.ResponseData.GetBuffer().Length.ToString());
-
-            //********************************************//
-            //	Important note!
-            //	MemoryStream.ToArray() is slower than MemoryStream.GetBuffer()
-            //	Because the MemoryStream.ToArray function returns a copy of stream content,
-            //  but MemoryStream.GetBuffer() returns a refrence of stream contents.
-            //	So i used GetBuffer()!!
-            //********************************************//
-            download.ProcessDownload(data.ResponseData.GetBuffer(), url, filename);
-
-            //ApplicationInstance.CompleteRequest();
-            
-            Response.End();
-        }
-        catch (System.Threading.ThreadAbortException)
-        {
-        }
-        catch (Exception err)
-        {
-            if (LogSystem.Enabled)
-                LogSystem.Log(LogEntity.Error, url, err.Message);
-            
-            Response.ContentType = "text/html";
-            Response.AddHeader("ContentType", "text/html");
-
-            lblErrorMsg.Text = err.Message;
-            lblErrorMsg.Visible = true;
-        }
-        finally
-        {
-            if (download != null)
-                download.Dispose();
-            if (data != null)
-                data.Dispose();
-        }
-
     }
-
-    protected void Page_Load(object sender, EventArgs e)
+    catch (Exception err)
     {
-        bool decode = false;
-        string url = "";
-        if (!Page.IsPostBack)
-        {
-            try
-            {
-                UrlProvider.GetUrlArguments(Page.Request.QueryString, out decode, out url);
-				if (!string.IsNullOrEmpty(url))
-				{
-                    if (decode)
-                        url = UrlProvider.DecodeUrl(url);
-                    txtUrl.Text = url;
-                    DoDownload(url);
-                }
-            }
-            catch (ThreadAbortException)
-            {
-            }
-            catch (Exception err)
-            {
-                if (LogSystem.Enabled)
-                    LogSystem.Log(LogEntity.Error, Request.Url.ToString(), err.Message);
-                
-                ASProxyExceptions.LogException(err, "Error while downloading: " + url);
-                lblErrorMsg.Text = err.Message;
-                lblErrorMsg.Visible = true;
-                return;
-            }
-        }
+        if (LogSystem.Enabled)
+            LogSystem.Log(LogEntity.Error, Request.Url.ToString(), err.Message);
+        
+        lblErrorMsg.Text = err.Message;
+        lblErrorMsg.Visible = true;
     }
-
-
-    protected void btnDisplay_Click(object sender, EventArgs e)
-    {
-        try
-        {
-            txtUrl.Text = UrlProvider.CorrectInputUrl(txtUrl.Text);
-
-            string downurl = UrlProvider.AddArgumantsToUrl(FilesConsts.DownloadPage, txtUrl.Text, true);
-            lnkDownload.NavigateUrl = downurl;
-            lnkDownload.Visible = true;
-            lblDownloadTip.Visible = true;
-
-            lblAutoPrompt.Text = string.Format(lblAutoPrompt.Text, downurl);
-            lblAutoPrompt.Visible = true;
-        }
-        catch (ThreadAbortException)
-        {
-        }
-        catch (Exception err)
-        {
-            if (LogSystem.Enabled)
-                LogSystem.Log(LogEntity.Error, Request.Url.ToString(), err.Message);
-            
-            lblErrorMsg.Text = err.Message;
-            lblErrorMsg.Visible = true;
-        }
-    }
+}
 </script>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
