@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Options>
+  <ForceEncoding>False</ForceEncoding>
+  <RemoveScripts>False</RemoveScripts>
+  <RemoveImages>False</RemoveImages>
+  <HttpCompression>False</HttpCompression>
+  <EncodeUrl>True</EncodeUrl>
+  <Cookies>True</Cookies>
+  <Images>True</Images>
+  <Scripts>True</Scripts>
+  <Links>True</Links>
+  <IFrame>True</IFrame>
+  <FrameSet>True</FrameSet>
+  <SubmitForms>True</SubmitForms>
+  <CssLink>True</CssLink>
+  <EmbedObjects>True</EmbedObjects>
+  <OrginalUrl>True</OrginalUrl>
+  <PageTitle>True</PageTitle>
+  <DocType>True</DocType>
+</Options>

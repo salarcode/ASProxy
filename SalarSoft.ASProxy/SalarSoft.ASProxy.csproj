@@ -1,0 +1,142 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.21022</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{B3B14BA8-D028-4B01-92B6-36D2E7F6CCB5}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>SalarSoft.ASProxy</RootNamespace>
+    <AssemblyName>SalarSoft.ASProxy</AssemblyName>
+    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>
+    </DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="BuiltIn\DataManagement\ASProxyCredentialCache.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="BuiltIn\DataManagement\ASProxyEngine.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="BuiltIn\DataManagement\CookieManager.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="BuiltIn\DataManagement\ResumableDownload.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="BuiltIn\DataManagement\WebData.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="BuiltIn\DataProcessor\CSS\CSSParser.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="BuiltIn\DataProcessor\CSS\CSSProcessor.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="BuiltIn\DataProcessor\CSS\CSSReplacer.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="BuiltIn\DataProcessor\HtmlRegex\RegexHtmlProcessor.cs" />
+    <Compile Include="BuiltIn\DataProcessor\HTML\HtmlParser.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="BuiltIn\DataProcessor\HTML\HtmlProcessor.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="BuiltIn\DataProcessor\HTML\HtmlReplacer.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="BuiltIn\DataProcessor\JavaScript\JSParser.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="BuiltIn\DataProcessor\JavaScript\JSProcessor.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="BuiltIn\DataProcessor\JavaScript\JSReplacer.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="BuiltIn\DataProcessor\Processors.cs" />
+    <Compile Include="BuiltIn\LogSystem\LogSystem.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="BuiltIn\Plugins\AjaxEngine.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Configurations\Configurations.cs" />
+    <Compile Include="Configurations\HttpCompressor.cs" />
+    <Compile Include="Configurations\Provider.cs" />
+    <Compile Include="Definitions\Enumerations.cs" />
+    <Compile Include="Definitions\RequestInfo.cs" />
+    <Compile Include="Definitions\ResponseInfo.cs" />
+    <Compile Include="Definitions\TextRange.cs" />
+    <Compile Include="Definitions\UserOptions.cs" />
+    <Compile Include="Exposed\ExCookieManager.cs" />
+    <Compile Include="Exposed\ExDataParser.cs" />
+    <Compile Include="Exposed\ExDataProcessor.cs" />
+    <Compile Include="Exposed\ExEngine.cs" />
+    <Compile Include="Exposed\ExWebData.cs" />
+    <Compile Include="Exposed\ExJSProcessor.cs" />
+    <Compile Include="Exposed\ExCssProcessor.cs" />
+    <Compile Include="Exposed\Interfaces\IJSProcessor.cs" />
+    <Compile Include="Exposed\Interfaces\ICssProcessor.cs" />
+    <Compile Include="Exposed\Interfaces\ICredentialCache.cs" />
+    <Compile Include="Exposed\Interfaces\ICookieManager.cs" />
+    <Compile Include="Exposed\Interfaces\IDataParser.cs" />
+    <Compile Include="Exposed\Interfaces\IDataProcessor.cs" />
+    <Compile Include="Exposed\Interfaces\IEngine.cs" />
+    <Compile Include="Exposed\Interfaces\IHtmlProcessor.cs" />
+    <Compile Include="Exposed\Interfaces\IWebData.cs" />
+    <Compile Include="Exposed\Interfaces\IExeptionHandled.cs" />
+    <Compile Include="Exposed\ExLogSystem.cs" />
+    <Compile Include="Exposed\ExCredentialCache.cs" />
+    <Compile Include="Exposed\Interfaces\ILogSystem.cs" />
+    <Compile Include="Exposed\ExHtmlProcessor.cs" />
+    <Compile Include="General\Common.cs" />
+    <Compile Include="General\Consts.cs" />
+    <Compile Include="Configurations\Systems.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Utility\ASProxyPagesFormat.cs" />
+    <Compile Include="Utility\StringStream.cs" />
+    <Compile Include="Utility\HtmlTags.cs" />
+    <Compile Include="Utility\StringCompare.cs" />
+    <Compile Include="Utility\UrlBuilder.cs" />
+    <Compile Include="Utility\UrlProvider.cs" />
+    <Compile Include="Utility\WebMethods.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

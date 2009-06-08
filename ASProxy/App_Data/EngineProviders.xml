@@ -1,0 +1,22 @@
+﻿<?xml version="1.0"?>
+<ASPorxyProviders active="Default">
+  
+  <provider name="Default">
+    <add name="IEngine" className="SalarSoft.ASProxy.BuiltIn.ASProxyEngine"></add>
+    <add name="IWebData" className="SalarSoft.ASProxy.BuiltIn.WebData"></add>
+    <add name="ICredentialCache" className="SalarSoft.ASProxy.BuiltIn.ASProxyCredentialCache"></add>
+    <add name="ILogSystem" className="SalarSoft.ASProxy.BuiltIn.LogSystem"></add>
+    <add name="ICookieManager" className="SalarSoft.ASProxy.BuiltIn.CookieManager"></add>
+    <add name="ICssProcessor" className="SalarSoft.ASProxy.BuiltIn.CSSProcessor"></add>
+    <add name="IJSProcessor" className="SalarSoft.ASProxy.BuiltIn.JSProcessor"></add>
+    <add name="IHtmlProcessor-----" className="SalarSoft.ASProxy.BuiltIn.HtmlProcessor"></add>
+
+    <add name="IHtmlProcessor" className="SalarSoft.ASProxy.BuiltIn.RegexHtmlProcessor"></add>
+    <add name="IHtmlProcessor___" className="SalarSoft.ASProxy.RegExHtmlProcessor"></add>
+  </provider>
+
+  <provider name="Custom">
+    <add name="" className=""></add>
+  </provider>
+  
+</ASPorxyProviders>

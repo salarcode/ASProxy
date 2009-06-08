@@ -1,0 +1,55 @@
+﻿<?xml version="1.0"?>
+<Configurations>
+
+  <providers>
+    <!--Enables third party plugins to overwite the base classes.-->
+    <engine canBeOverwritten="true" />
+    
+    <!--Enables plugins-->
+    <plugins enabled="true" />
+  </providers>
+
+  <webData maxContentLength="-1"
+           requestTimeout="60000"
+           RequestReadWriteTimeOut="70000"
+           SendSignature="true">
+    
+  </webData>
+  
+  <!--Used in private proxy feature to prevent strangers to access to proxy-->
+  <authentication enabled="false">
+    <user userName="admin" password="admin" pages="true" images="true" downloads="true"></user>
+  </authentication>
+
+  <!--Enables auto update-->
+  <autoUpdate updateInfoUrl="http://asproxy.sourceforge.net/update/autoupdate.xml"
+              engine="true" plugins="true">
+  </autoUpdate>
+
+  <!-- Logs user activites to specfied location-->
+  <logSystem maxFileSize="5120" fileFormat="yyy-MM-dd">
+    
+    <!--Browsing activities-->
+    <activityLog enabled="false" location="~/App_Data/DailyLog/{0}.log"
+                  pages="false" images="false">
+    </activityLog>
+    
+    <!--error log-->
+    <errorLog enabled="false" location="~/App_Data/ErrorLog/{0}.log" />
+  </logSystem>
+
+  <!--
+  If web server is behind a network proxy or firewall, you should config it here to pass
+  direct, SystemDefault, Custom
+  -->
+  <netProxy mode="Direct">
+    <custom address="0.0.0.0" port="8080" authentication="false">
+      <authentication userName="" password="" />
+    </custom>
+  </netProxy>
+  
+  <customConfig>
+    <!--<config name="" value=""></config>-->
+  </customConfig>
+  
+</Configurations>
