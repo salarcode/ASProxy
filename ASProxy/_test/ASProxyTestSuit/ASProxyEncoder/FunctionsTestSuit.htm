@@ -524,6 +524,7 @@ TestSuccess('CorrectLocalUrlToOrginal_9',
 	_ASProxy.CorrectLocalUrlToOrginal("http://blocked.com:8080/sub/hi/tester.html?param1=11"),
 	"http://blocked.com:8080/sub/hi/tester.html?param1=11");
 </script>
+
 </div>
 
 <h3>Testing CorrectLocalUrlToOrginal with JoingUrls together</h3>
@@ -731,17 +732,26 @@ TestSuccess('Correct_JoinUrls_13',
 	CorrectJoinUrlsTest("http://blocked.com:8080/sub/hi/tester.html?param1=11"),
 	"http://blocked.com:8080/sub/hi/tester.html?param1=11");
 </script>
+
+<!-----------------14--------------------->
+Correct_JoinUrls test14 <span id="Correct_JoinUrls_14"></span><br />
+<script type="text/javascript">
+__ReqUrlFull="http://www.google.com/";
+__ReqUrlNoParam="http://www.google.com/";
+__ReqUrlDir="http://www.google.com/";
+__ReqUrlBaseDir="http://www.google.com/";
+
+__ASProxySiteBaseDir="http://aspspider.info/joftak";
+__ASProxySiteHostBaseDir="http://aspspider.info";
+__ASProxyDefaultPagePath="http://aspspider.info/joftak/default.aspx";
+
+TestSuccess('Correct_JoinUrls_14',
+	CorrectJoinUrlsTest("/intl/en_ALL/images/logo.gif"),
+	"http://www.google.com/intl/en_ALL/images/logo.gif","http://www.google.com/./intl/en_ALL/images/logo.gif");
+// http://localhost:3000/ASProxy/default.aspx?decode=1&url=aHR0cDovL3d3dy5nb29nbGUuY29tLw==B64Coded!
+</script>
+
 </div>
-
-
-
-
-
-
-
-
-
-
 
 
 

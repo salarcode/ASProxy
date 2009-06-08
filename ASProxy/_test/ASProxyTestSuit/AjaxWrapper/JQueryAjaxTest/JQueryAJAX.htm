@@ -1,92 +1,64 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-	<title>JQueryAJAX Test Page</title>
+    <title>JQueryAJAX Test Page</title>
 </head>
 <body>
-	<h2>Warning, this page should run in ASProxy. It can work without it, but designed to be tested in ASProxy.</h2>
+    <h2>
+        Warning, this page should run in ASProxy. It can work without it, but designed to
+        be tested in ASProxy.</h2>
 
-	<script src="jquery-1.2.6.js" type="text/javascript"></script>
+    <script src="jquery-1.2.6.js" type="text/javascript"></script>
 
-	<h2>
-		<a href="/docs/Demos/">Demos</a> &raquo; AJAX Plugin</h2>
-	<p>
-		This page demonstrates some quick examples of the new <a href="http://jquery.com/docs/ajax/">
-			AJAX Plugin</a> for jQuery.</p>
-	<button onclick="test1();test2();test3();">
-		All tests again</button>
-	<fieldset>
-		<legend>Loaded from an HTML File</legend>
-		<div id="html">
-		</div>
-	</fieldset>
-	<button onclick="test1()">
-		Test again</button>
-
-
-
-
-
-
-
-
-
-
-
-	<br />
-	<strong>Code:</strong>
-	<pre>$("div#html").load("Internal/ajax-test.html");</pre>
-	<fieldset>
-		<legend>Loaded from a Text File</legend>
-		<div id="txt">
-		</div>
-	</fieldset>
-	<button onclick="test2()">
-		Test again</button>
+    <h2>
+        <a href="/docs/Demos/">Demos</a> &raquo; AJAX Plugin</h2>
+    <p>
+        This page demonstrates some quick examples of the new <a href="http://jquery.com/docs/ajax/">
+            AJAX Plugin</a> for jQuery.</p>
+    <button onclick="test1();test2();test3();">
+        All tests again</button>
+    
+    
+    <fieldset>
+        <legend>Loaded from an HTML File</legend>
+        <div id="html">
+        </div>
+    </fieldset>
+    <button onclick="test1()">
+        Test again</button>
+    <br />
+    <strong>Code:</strong>
+    <pre>$("div#html").load("Internal/ajax-test.html");</pre>
 
 
 
 
+    <fieldset>
+        <legend>Loaded from a Text File</legend>
+        <div id="txt">
+        </div>
+    </fieldset>
+    <button onclick="test2()">
+        Test again</button>
+    <br />
+    <strong>Code:</strong>
+<pre>$.get("Internal/ajax-test.txt",function(txt){
+$("div#txt").html("&lt;h1>"+txt+"&lt;/h1>");});</pre>
 
 
 
+    <fieldset>
+        <legend>Loaded from a Dynamic HTML File</legend>
+        <div id="dhtml">
+        </div>
+    </fieldset>
+    <button onclick="test3()">
+        Test again</button>
+    <br />
+    <strong>Code:</strong>
+    <pre>$("div#dhtml").load("/ASProxy/ajax.ashx",{name:"John"});</pre>
 
-	<br />
-	<strong>Code:</strong>
-	<pre>$.get("Internal/ajax-test.txt",function(txt){
-  $("div#txt").html("&lt;h1>"+txt+"&lt;/h1>");});
-</pre>
-	<fieldset>
-		<legend>Loaded from a Dynamic HTML File</legend>
-		<div id="dhtml">
-		</div>
-	</fieldset>
-	<button onclick="test3()">
-		Test again</button>
-
-
-
-
-
-
-
-
-
-
-
-
-
-	<br />
-	<strong>Code:</strong>
-	<pre>$("div#dhtml").load("/ASProxy/ajax.ashx",{name:"John"});</pre>
-	
-	
-	
-	
-	
-	
-	
-	<script type="text/javascript">
+<script type="text/javascript">
 function test1(){
 $("div#html").load("Internal/ajax-test.html");
 }
@@ -97,8 +69,9 @@ $.get("Internal/ajax-test.txt",function(txt){
 });
 }
 function test3(){
-$("div#dhtml").load("Internal/ajax-test.html" ,{limit: 25}, function(){
-   alert("Internal/ajax-test.html Loaded!");
+$("div#dhtml").load("Internal/ajax-test.ashx" ,{limit: 25}, function(){
+   //alert("Internal/ajax-test.ashx Loaded!");
+   $("div#dhtml").append("<br/>Internal/ajax-test.ashx Loaded!");
  });
 }
 
@@ -106,7 +79,7 @@ $("div#dhtml").load("Internal/ajax-test.html" ,{limit: 25}, function(){
 test1();
 test2();
 test3();
-	</script>
+</script>
 
 </body>
 </html>

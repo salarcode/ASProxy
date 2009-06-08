@@ -120,7 +120,7 @@
 			Display("lblAsyncEventTest","onuploadprogress"+DisplayState(),true);
 		}
 		
-		ajax.open("GET","/ASProxy/ajax.ashx?decode=1&ajaxurl=aHR0cDovL2xvY2FsaG9zdDoyMzc5L0FTUHJveHkvX3Rlc3QvQVNQcm94eVRlc3RTdWl0L0FqYXhXcmFwcGVyL0pRdWVyeUFqYXhUZXN0L0ludGVybmFsL2FqYXgtdGVzdC50eHQ=B64Coded!&method=GET",true);
+		ajax.open("GET","/ASProxy/ajax.ashx?dec=0&ajaxurl=http://localhost:3000/ASProxy/_test/ASProxyTestSuit/AjaxWrapper/JQueryAjaxTest/Internal/ajax-test.txt&method=GET",true);
 		ajax.send("Test");
 	}
 	</script>
@@ -162,7 +162,7 @@
 			Display("lblSyncEventTest","onuploadprogress"+DisplayState(),true);
 		}
 
-		ajax.open("GET","/ASProxy/ajax.ashx?decode=1&ajaxurl=aHR0cDovL2xvY2FsaG9zdDoyMzc5L0FTUHJveHkvX3Rlc3QvQVNQcm94eVRlc3RTdWl0L0FqYXhXcmFwcGVyL0pRdWVyeUFqYXhUZXN0L0ludGVybmFsL2FqYXgtdGVzdC50eHQ=B64Coded!&method=GET",false);
+		ajax.open("GET","/ASProxy/ajax.ashx?dec=0&ajaxurl=http://localhost:3000/ASProxy/_test/ASProxyTestSuit/AjaxWrapper/JQueryAjaxTest/Internal/ajax-test.txt&method=GET",false);
 		ajax.send(null);
 	}
 	</script>

@@ -1,19 +1,22 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 10.00
 # Visual Studio 2008
-Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "ASProxy", "ASProxy\", "{4EF12307-4E96-4CBD-A7CB-A64A8BC73FCB}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SalarSoft.ASProxy", "SalarSoft.ASProxy\SalarSoft.ASProxy.csproj", "{B3B14BA8-D028-4B01-92B6-36D2E7F6CCB5}"
+EndProject
+Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "ASProxy", "ASProxy\", "{77259228-316C-4500-8C64-D9E332438EA6}"
 	ProjectSection(WebsiteProperties) = preProject
 		TargetFramework = "2.0"
+		ProjectReferences = "{B3B14BA8-D028-4B01-92B6-36D2E7F6CCB5}|SalarSoft.ASProxy.dll;"
 		Debug.AspNetCompiler.VirtualPath = "/ASProxy"
 		Debug.AspNetCompiler.PhysicalPath = "ASProxy\"
-		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\"
+		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\ASProxy\"
 		Debug.AspNetCompiler.Updateable = "true"
 		Debug.AspNetCompiler.ForceOverwrite = "true"
 		Debug.AspNetCompiler.FixedNames = "false"
 		Debug.AspNetCompiler.Debug = "True"
 		Release.AspNetCompiler.VirtualPath = "/ASProxy"
 		Release.AspNetCompiler.PhysicalPath = "ASProxy\"
-		Release.AspNetCompiler.TargetPath = "PrecompiledWeb\"
+		Release.AspNetCompiler.TargetPath = "PrecompiledWeb\ASProxy\"
 		Release.AspNetCompiler.Updateable = "true"
 		Release.AspNetCompiler.ForceOverwrite = "true"
 		Release.AspNetCompiler.FixedNames = "false"
@@ -22,13 +25,67 @@ Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "ASProxy", "ASProxy\", "{4EF
 		VWDDynamicPort = "false"
 	EndProjectSection
 EndProject
+Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "ASProxyPrev", "ASProxyPrev\", "{4A25D347-4245-4C16-B4D9-111650F21EAE}"
+	ProjectSection(WebsiteProperties) = preProject
+		TargetFramework = "2.0"
+		Debug.AspNetCompiler.VirtualPath = "/ASProxyPrev"
+		Debug.AspNetCompiler.PhysicalPath = "ASProxyPrev\"
+		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\ASProxyPrev\"
+		Debug.AspNetCompiler.Updateable = "true"
+		Debug.AspNetCompiler.ForceOverwrite = "true"
+		Debug.AspNetCompiler.FixedNames = "false"
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.VirtualPath = "/ASProxyPrev"
+		Release.AspNetCompiler.PhysicalPath = "ASProxyPrev\"
+		Release.AspNetCompiler.TargetPath = "PrecompiledWeb\ASProxyPrev\"
+		Release.AspNetCompiler.Updateable = "true"
+		Release.AspNetCompiler.ForceOverwrite = "true"
+		Release.AspNetCompiler.FixedNames = "false"
+		Release.AspNetCompiler.Debug = "False"
+		VWDPort = "4000"
+		VWDDynamicPort = "false"
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|.NET = Debug|.NET
+		Debug|Any CPU = Debug|Any CPU
+		Debug|Mixed Platforms = Debug|Mixed Platforms
+		Release|.NET = Release|.NET
+		Release|Any CPU = Release|Any CPU
+		Release|Mixed Platforms = Release|Mixed Platforms
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{4EF12307-4E96-4CBD-A7CB-A64A8BC73FCB}.Debug|.NET.ActiveCfg = Debug|.NET
-		{4EF12307-4E96-4CBD-A7CB-A64A8BC73FCB}.Debug|.NET.Build.0 = Debug|.NET
+		{B3B14BA8-D028-4B01-92B6-36D2E7F6CCB5}.Debug|.NET.ActiveCfg = Debug|Any CPU
+		{B3B14BA8-D028-4B01-92B6-36D2E7F6CCB5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B3B14BA8-D028-4B01-92B6-36D2E7F6CCB5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B3B14BA8-D028-4B01-92B6-36D2E7F6CCB5}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{B3B14BA8-D028-4B01-92B6-36D2E7F6CCB5}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{B3B14BA8-D028-4B01-92B6-36D2E7F6CCB5}.Release|.NET.ActiveCfg = Release|Any CPU
+		{B3B14BA8-D028-4B01-92B6-36D2E7F6CCB5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B3B14BA8-D028-4B01-92B6-36D2E7F6CCB5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B3B14BA8-D028-4B01-92B6-36D2E7F6CCB5}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{B3B14BA8-D028-4B01-92B6-36D2E7F6CCB5}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{77259228-316C-4500-8C64-D9E332438EA6}.Debug|.NET.ActiveCfg = Debug|.NET
+		{77259228-316C-4500-8C64-D9E332438EA6}.Debug|.NET.Build.0 = Debug|.NET
+		{77259228-316C-4500-8C64-D9E332438EA6}.Debug|Any CPU.ActiveCfg = Debug|.NET
+		{77259228-316C-4500-8C64-D9E332438EA6}.Debug|Mixed Platforms.ActiveCfg = Debug|.NET
+		{77259228-316C-4500-8C64-D9E332438EA6}.Debug|Mixed Platforms.Build.0 = Debug|.NET
+		{77259228-316C-4500-8C64-D9E332438EA6}.Release|.NET.ActiveCfg = Debug|.NET
+		{77259228-316C-4500-8C64-D9E332438EA6}.Release|.NET.Build.0 = Debug|.NET
+		{77259228-316C-4500-8C64-D9E332438EA6}.Release|Any CPU.ActiveCfg = Debug|.NET
+		{77259228-316C-4500-8C64-D9E332438EA6}.Release|Mixed Platforms.ActiveCfg = Debug|.NET
+		{77259228-316C-4500-8C64-D9E332438EA6}.Release|Mixed Platforms.Build.0 = Debug|.NET
+		{4A25D347-4245-4C16-B4D9-111650F21EAE}.Debug|.NET.ActiveCfg = Debug|.NET
+		{4A25D347-4245-4C16-B4D9-111650F21EAE}.Debug|.NET.Build.0 = Debug|.NET
+		{4A25D347-4245-4C16-B4D9-111650F21EAE}.Debug|Any CPU.ActiveCfg = Debug|.NET
+		{4A25D347-4245-4C16-B4D9-111650F21EAE}.Debug|Mixed Platforms.ActiveCfg = Debug|.NET
+		{4A25D347-4245-4C16-B4D9-111650F21EAE}.Debug|Mixed Platforms.Build.0 = Debug|.NET
+		{4A25D347-4245-4C16-B4D9-111650F21EAE}.Release|.NET.ActiveCfg = Debug|.NET
+		{4A25D347-4245-4C16-B4D9-111650F21EAE}.Release|.NET.Build.0 = Debug|.NET
+		{4A25D347-4245-4C16-B4D9-111650F21EAE}.Release|Any CPU.ActiveCfg = Debug|.NET
+		{4A25D347-4245-4C16-B4D9-111650F21EAE}.Release|Mixed Platforms.ActiveCfg = Debug|.NET
+		{4A25D347-4245-4C16-B4D9-111650F21EAE}.Release|Mixed Platforms.Build.0 = Debug|.NET
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -8,10 +8,10 @@
 	{
 		try
 		{
-			SalarSoft.ASProxy.JSProcessor js = new SalarSoft.ASProxy.JSProcessor(null);
-			js.Options.Scripts = true;
-			js.Options.RemoveScripts = false;
-			txtResult.Text = js.Execute(txtJSCode.Text);
+            SalarSoft.ASProxy.BuiltIn.JSProcessor js = new SalarSoft.ASProxy.BuiltIn.JSProcessor();
+            //js.UserOptions.Scripts = true;
+			//js.UserOptions.RemoveScripts = false;
+			//txtResult.Text = js.Execute(txtJSCode.Text);
 
 		}
 		catch (Exception ex)
