@@ -25,27 +25,6 @@ Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "ASProxy", "ASProxy\", "{772
 		VWDDynamicPort = "false"
 	EndProjectSection
 EndProject
-Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "ASProxyPrev", "ASProxyPrev\", "{4A25D347-4245-4C16-B4D9-111650F21EAE}"
-	ProjectSection(WebsiteProperties) = preProject
-		TargetFramework = "2.0"
-		Debug.AspNetCompiler.VirtualPath = "/ASProxyPrev"
-		Debug.AspNetCompiler.PhysicalPath = "ASProxyPrev\"
-		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\ASProxyPrev\"
-		Debug.AspNetCompiler.Updateable = "true"
-		Debug.AspNetCompiler.ForceOverwrite = "true"
-		Debug.AspNetCompiler.FixedNames = "false"
-		Debug.AspNetCompiler.Debug = "True"
-		Release.AspNetCompiler.VirtualPath = "/ASProxyPrev"
-		Release.AspNetCompiler.PhysicalPath = "ASProxyPrev\"
-		Release.AspNetCompiler.TargetPath = "PrecompiledWeb\ASProxyPrev\"
-		Release.AspNetCompiler.Updateable = "true"
-		Release.AspNetCompiler.ForceOverwrite = "true"
-		Release.AspNetCompiler.FixedNames = "false"
-		Release.AspNetCompiler.Debug = "False"
-		VWDPort = "4000"
-		VWDDynamicPort = "false"
-	EndProjectSection
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|.NET = Debug|.NET
@@ -54,6 +33,9 @@ Global
 		Release|.NET = Release|.NET
 		Release|Any CPU = Release|Any CPU
 		Release|Mixed Platforms = Release|Mixed Platforms
+		Trace|.NET = Trace|.NET
+		Trace|Any CPU = Trace|Any CPU
+		Trace|Mixed Platforms = Trace|Mixed Platforms
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{B3B14BA8-D028-4B01-92B6-36D2E7F6CCB5}.Debug|.NET.ActiveCfg = Debug|Any CPU
@@ -66,6 +48,11 @@ Global
 		{B3B14BA8-D028-4B01-92B6-36D2E7F6CCB5}.Release|Any CPU.Build.0 = Release|Any CPU
 		{B3B14BA8-D028-4B01-92B6-36D2E7F6CCB5}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{B3B14BA8-D028-4B01-92B6-36D2E7F6CCB5}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{B3B14BA8-D028-4B01-92B6-36D2E7F6CCB5}.Trace|.NET.ActiveCfg = Trace|Any CPU
+		{B3B14BA8-D028-4B01-92B6-36D2E7F6CCB5}.Trace|Any CPU.ActiveCfg = Trace|Any CPU
+		{B3B14BA8-D028-4B01-92B6-36D2E7F6CCB5}.Trace|Any CPU.Build.0 = Trace|Any CPU
+		{B3B14BA8-D028-4B01-92B6-36D2E7F6CCB5}.Trace|Mixed Platforms.ActiveCfg = Trace|Any CPU
+		{B3B14BA8-D028-4B01-92B6-36D2E7F6CCB5}.Trace|Mixed Platforms.Build.0 = Trace|Any CPU
 		{77259228-316C-4500-8C64-D9E332438EA6}.Debug|.NET.ActiveCfg = Debug|.NET
 		{77259228-316C-4500-8C64-D9E332438EA6}.Debug|.NET.Build.0 = Debug|.NET
 		{77259228-316C-4500-8C64-D9E332438EA6}.Debug|Any CPU.ActiveCfg = Debug|.NET
@@ -76,16 +63,11 @@ Global
 		{77259228-316C-4500-8C64-D9E332438EA6}.Release|Any CPU.ActiveCfg = Debug|.NET
 		{77259228-316C-4500-8C64-D9E332438EA6}.Release|Mixed Platforms.ActiveCfg = Debug|.NET
 		{77259228-316C-4500-8C64-D9E332438EA6}.Release|Mixed Platforms.Build.0 = Debug|.NET
-		{4A25D347-4245-4C16-B4D9-111650F21EAE}.Debug|.NET.ActiveCfg = Debug|.NET
-		{4A25D347-4245-4C16-B4D9-111650F21EAE}.Debug|.NET.Build.0 = Debug|.NET
-		{4A25D347-4245-4C16-B4D9-111650F21EAE}.Debug|Any CPU.ActiveCfg = Debug|.NET
-		{4A25D347-4245-4C16-B4D9-111650F21EAE}.Debug|Mixed Platforms.ActiveCfg = Debug|.NET
-		{4A25D347-4245-4C16-B4D9-111650F21EAE}.Debug|Mixed Platforms.Build.0 = Debug|.NET
-		{4A25D347-4245-4C16-B4D9-111650F21EAE}.Release|.NET.ActiveCfg = Debug|.NET
-		{4A25D347-4245-4C16-B4D9-111650F21EAE}.Release|.NET.Build.0 = Debug|.NET
-		{4A25D347-4245-4C16-B4D9-111650F21EAE}.Release|Any CPU.ActiveCfg = Debug|.NET
-		{4A25D347-4245-4C16-B4D9-111650F21EAE}.Release|Mixed Platforms.ActiveCfg = Debug|.NET
-		{4A25D347-4245-4C16-B4D9-111650F21EAE}.Release|Mixed Platforms.Build.0 = Debug|.NET
+		{77259228-316C-4500-8C64-D9E332438EA6}.Trace|.NET.ActiveCfg = Debug|.NET
+		{77259228-316C-4500-8C64-D9E332438EA6}.Trace|.NET.Build.0 = Debug|.NET
+		{77259228-316C-4500-8C64-D9E332438EA6}.Trace|Any CPU.ActiveCfg = Debug|.NET
+		{77259228-316C-4500-8C64-D9E332438EA6}.Trace|Mixed Platforms.ActiveCfg = Debug|.NET
+		{77259228-316C-4500-8C64-D9E332438EA6}.Trace|Mixed Platforms.Build.0 = Debug|.NET
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
