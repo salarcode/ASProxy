@@ -15,6 +15,18 @@ public class Download : IHttpHandler, System.Web.SessionState.IReadOnlySessionSt
     {
         try
         {
+			if (Configurations.Authentication.Enabled)
+			{
+				if (!Configurations.Authentication.HasPermission(context.User.Identity.Name,
+					Configurations.AuthenticationConfig.UserPermission.Images))
+				{
+					context.Response.StatusCode = (int)System.Net.HttpStatusCode.Forbidden;
+					context.Response.ContentType = "text/html";
+					context.Response.Write("You do not have access to downloads. Ask site administrator to grant permission.");
+					return;
+				}
+			}
+
             if (UrlProvider.IsASProxyAddressUrlIncluded(context.Request.QueryString))
             {
                 DownloadUrl(context);
@@ -94,7 +106,7 @@ public class Download : IHttpHandler, System.Web.SessionState.IReadOnlySessionSt
             if (engine.LastStatus == LastStatus.Error)
             {
                 if (Systems.LogSystem.ErrorLogEnabled)
-                    Systems.LogSystem.LogError(engine.RequestInfo.RequestUrl, engine.LastErrorMessage);
+					Systems.LogSystem.LogError(engine.LastException, engine.RequestInfo.RequestUrl, engine.LastErrorMessage);
 
                 context.Response.Clear();
                 SalarSoft.ASProxy.Common.ClearASProxyRespnseHeader(context.Response);
@@ -140,7 +152,7 @@ public class Download : IHttpHandler, System.Web.SessionState.IReadOnlySessionSt
         catch (Exception ex)
         {
             if (Systems.LogSystem.ErrorLogEnabled)
-                Systems.LogSystem.LogError(engine.RequestInfo.RequestUrl, ex.Message);
+                Systems.LogSystem.LogError(ex, engine.RequestInfo.RequestUrl, ex.Message);
 
             context.Response.Clear();
             SalarSoft.ASProxy.Common.ClearASProxyRespnseHeader(context.Response);

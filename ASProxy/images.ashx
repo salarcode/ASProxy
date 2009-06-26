@@ -14,6 +14,15 @@ public class Images : IHttpHandler, System.Web.SessionState.IReadOnlySessionStat
     {
         try
         {
+			if (Configurations.Authentication.Enabled)
+			{
+				if (!Configurations.Authentication.HasPermission(context.User.Identity.Name,
+					Configurations.AuthenticationConfig.UserPermission.Images))
+				{
+					ShowError(context, "NoAccess");
+					return;
+				}
+			}
             if (UrlProvider.IsASProxyAddressUrlIncluded(context.Request.QueryString))
             {
                 IEngine engine = (IEngine)Provider.CreateProviderInstance(ProviderType.IEngine);
@@ -60,7 +69,7 @@ public class Images : IHttpHandler, System.Web.SessionState.IReadOnlySessionStat
             if (engine.LastStatus == LastStatus.Error)
             {
                 if (Systems.LogSystem.ErrorLogEnabled)
-                    Systems.LogSystem.LogError(engine.RequestInfo.RequestUrl, engine.LastErrorMessage);
+					Systems.LogSystem.LogError(engine.LastException, engine.RequestInfo.RequestUrl, engine.LastErrorMessage);
 
 
                 ShowError(context, Common.GetExceptionHttpDetailedErrorCode(engine.LastException));
@@ -77,7 +86,7 @@ public class Images : IHttpHandler, System.Web.SessionState.IReadOnlySessionStat
         catch (Exception)
         {
             if (Systems.LogSystem.ErrorLogEnabled)
-                Systems.LogSystem.LogError(engine.RequestInfo.RequestUrl, engine.LastErrorMessage);
+				Systems.LogSystem.LogError(engine.LastException, engine.RequestInfo.RequestUrl, engine.LastErrorMessage);
 
             ShowError(context, Common.GetExceptionHttpDetailedErrorCode(engine.LastException));
 
@@ -93,8 +102,8 @@ public class Images : IHttpHandler, System.Web.SessionState.IReadOnlySessionStat
 
     Bitmap GetErrorImage(string errorCode)
     {
-        const string text = "Error!";
-        Font textfont = new Font("Tahoma", 10);
+        const string text = " Error!";
+        Font textfont = new Font("Tahoma", 8);
         int txtwith;
         txtwith = text.Length * text.Length;
         Bitmap bmp = new System.Drawing.Bitmap(txtwith, (textfont.Height) * 2, System.Drawing.Imaging.PixelFormat.Format16bppRgb565);
@@ -110,16 +119,27 @@ public class Images : IHttpHandler, System.Web.SessionState.IReadOnlySessionStat
         return bmp;
     }
 
-    public void ShowError(HttpContext context, int errorCode)
-    {
-        SalarSoft.ASProxy.Common.ClearASProxyRespnseHeader(context.Response);
-        context.Response.ClearContent();
-        context.Response.ContentType = "image/gif";
-        Bitmap bmp = GetErrorImage(errorCode.ToString());
+	public void ShowError(HttpContext context, int errorCode)
+	{
+		SalarSoft.ASProxy.Common.ClearASProxyRespnseHeader(context.Response);
+		context.Response.ClearContent();
+		context.Response.ContentType = "image/gif";
+		Bitmap bmp = GetErrorImage(errorCode.ToString());
 
-        bmp.Save(context.Response.OutputStream, System.Drawing.Imaging.ImageFormat.Gif);
-        bmp.Dispose();
-    }
+		bmp.Save(context.Response.OutputStream, System.Drawing.Imaging.ImageFormat.Gif);
+		bmp.Dispose();
+	}
+
+	public void ShowError(HttpContext context, string errorMsg)
+	{
+		SalarSoft.ASProxy.Common.ClearASProxyRespnseHeader(context.Response);
+		context.Response.ClearContent();
+		context.Response.ContentType = "image/gif";
+		Bitmap bmp = GetErrorImage(errorMsg);
+
+		bmp.Save(context.Response.OutputStream, System.Drawing.Imaging.ImageFormat.Gif);
+		bmp.Dispose();
+	}
 
 
 

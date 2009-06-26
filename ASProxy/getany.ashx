@@ -8,77 +8,96 @@ using SalarSoft.ASProxy.Exposed;
 
 public class GetAny : IHttpHandler, System.Web.SessionState.IReadOnlySessionState
 {
-    public void ProcessRequest(HttpContext context)
-    {
-        IEngine engine = null;
-        try
-        {
-            if (UrlProvider.IsASProxyAddressUrlIncluded(context.Request.QueryString))
-            {
-                engine = (IEngine)Provider.CreateProviderInstance(ProviderType.IEngine);
-                engine.UserOptions = UserOptions.ReadFromRequest();
+	public void ProcessRequest(HttpContext context)
+	{
+		IEngine engine = null;
+		try
+		{
+			if (UrlProvider.IsASProxyAddressUrlIncluded(context.Request.QueryString))
+			{
+				engine = (IEngine)Provider.CreateProviderInstance(ProviderType.IEngine);
+				engine.UserOptions = UserOptions.ReadFromRequest();
 
-                // should detect automatically
-                engine.DataTypeToProcess = DataTypeToProcess.AutoDetect;
-                engine.RequestInfo.SetContentType(MimeContentType.application);
+				// should detect automatically
+				engine.DataTypeToProcess = DataTypeToProcess.AutoDetect;
+				engine.RequestInfo.SetContentType(MimeContentType.application);
 
-                // Initializing the engine
-                engine.Initialize(context.Request);
-                engine.ExecuteHandshake();
+				// Initializing the engine
+				engine.Initialize(context.Request);
+				engine.ExecuteHandshake();
 
-                // Execute the response
-                engine.ExecuteToResponse(context.Response);
+				if (!string.IsNullOrEmpty(engine.ResponseInfo.ContentType))
+				{
+					// gets mime type of content type
+					MimeContentType mime = Common.StringToContentType(engine.ResponseInfo.ContentType);
 
-                if (engine.LastStatus == LastStatus.Error)
-                {
-                    if (Systems.LogSystem.ErrorLogEnabled)
-                        Systems.LogSystem.LogError(engine.RequestInfo.RequestUrl, engine.LastErrorMessage);
+					if (Configurations.Authentication.Enabled &&
+						(mime == MimeContentType.image_gif || mime == MimeContentType.image_jpeg))
+					{
+						if (!Configurations.Authentication.HasPermission(context.User.Identity.Name,
+							Configurations.AuthenticationConfig.UserPermission.Images))
+						{
+							context.Response.StatusCode = (int)System.Net.HttpStatusCode.Forbidden;
+							context.Response.ContentType = "text/html";
+							context.Response.Write("You do not have access to see images. Ask site administrator to grant permission.");
+							return;
+						}
+					}
+				}
 
-                    context.Response.Clear();
-                    SalarSoft.ASProxy.Common.ClearASProxyRespnseHeader(context.Response);
+				// Execute the response
+				engine.ExecuteToResponse(context.Response);
 
-                    context.Response.StatusDescription = engine.LastErrorMessage;
-                    context.Response.StatusCode = (int)Common.GetExceptionHttpErrorCode(engine.LastException);
+				if (engine.LastStatus == LastStatus.Error)
+				{
+					if (Systems.LogSystem.ErrorLogEnabled)
+						Systems.LogSystem.LogError(engine.LastException, engine.RequestInfo.RequestUrl, engine.LastErrorMessage);
 
-                    // END
-                    context.ApplicationInstance.CompleteRequest();
-                }
-            }
-            else
-            {
-                context.Response.StatusCode = (int)System.Net.HttpStatusCode.NotFound; ;
-                context.Response.ContentType = "text/html";
-                context.Response.StatusDescription = "No url is specified.";
-                context.Response.Write("No url is specified.");
-            }
-        }
-        catch (ThreadAbortException) { }
-        catch (Exception ex)
-        {
-            if (Systems.LogSystem.ErrorLogEnabled)
-                Systems.LogSystem.LogError(context.Request.Url.ToString(), ex.Message);
+					context.Response.Clear();
+					SalarSoft.ASProxy.Common.ClearASProxyRespnseHeader(context.Response);
 
-            context.Response.Clear();
-            Common.ClearASProxyRespnseHeader(context.Response);
+					context.Response.StatusDescription = engine.LastErrorMessage;
+					context.Response.StatusCode = (int)Common.GetExceptionHttpErrorCode(engine.LastException);
 
-            context.Response.StatusDescription = ex.Message;
-            context.Response.StatusCode = (int)Common.GetExceptionHttpErrorCode(engine.LastException);
+					// END
+					context.ApplicationInstance.CompleteRequest();
+				}
+			}
+			else
+			{
+				context.Response.StatusCode = (int)System.Net.HttpStatusCode.NotFound; ;
+				context.Response.ContentType = "text/html";
+				context.Response.StatusDescription = "No url is specified.";
+				context.Response.Write("No url is specified.");
+			}
+		}
+		catch (ThreadAbortException) { }
+		catch (Exception ex)
+		{
+			if (Systems.LogSystem.ErrorLogEnabled)
+				Systems.LogSystem.LogError(ex, context.Request.Url.ToString(), ex.Message);
 
-            // END
-            context.ApplicationInstance.CompleteRequest();
-        }
-        finally
-        {
-            if (engine != null)
-                engine.Dispose();
-        }
-    }
+			context.Response.Clear();
+			Common.ClearASProxyRespnseHeader(context.Response);
 
-    public bool IsReusable
-    {
-        get
-        {
-            return false;
-        }
-    }
+			context.Response.StatusDescription = ex.Message;
+			context.Response.StatusCode = (int)Common.GetExceptionHttpErrorCode(engine.LastException);
+
+			// END
+			context.ApplicationInstance.CompleteRequest();
+		}
+		finally
+		{
+			if (engine != null)
+				engine.Dispose();
+		}
+	}
+
+	public bool IsReusable
+	{
+		get
+		{
+			return false;
+		}
+	}
 }

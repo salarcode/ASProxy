@@ -9,71 +9,74 @@ using SalarSoft.ASProxy.BuiltIn.Plugins;
 public class ajax : IHttpHandler
 {
 
-    public void ProcessRequest(HttpContext context)
-    {
-        AjaxEngine engine = new AjaxEngine();
-        try
-        {
-            engine.DataTypeToProcess = DataTypeToProcess.None;
-            
-            //TODO: Test content type affect
-            //engine.RequestInfo.ContentType = MimeContentType.application;
+	public void ProcessRequest(HttpContext context)
+	{
+		AjaxEngine engine = new AjaxEngine();
+		try
+		{
+			engine.DataTypeToProcess = DataTypeToProcess.None;
 
-            // load options
-            engine.UserOptions = UserOptions.ReadFromRequest();
+			//TODO: Test content type affect
+			//engine.RequestInfo.ContentType = MimeContentType.application;
 
-            // initilize
-            engine.Initialize(context.Request);
+			// load options
+			engine.UserOptions = UserOptions.ReadFromRequest();
 
-            // initialize the request
-            engine.ExecuteHandshake();
+			// initilize
+			engine.Initialize(context.Request);
 
-            // test for error
-            if (engine.LastStatus == LastStatus.Error)
-            {
-                if (Systems.LogSystem.ErrorLogEnabled)
-                    Systems.LogSystem.LogError(engine.RequestInfo.RequestUrl, engine.LastErrorMessage);
+			// initialize the request
+			engine.ExecuteHandshake();
 
-                context.Response.Write(engine.LastErrorMessage);
-                context.Response.StatusDescription = engine.LastErrorMessage;
-                context.Response.StatusCode = (int)Common.GetExceptionHttpErrorCode(engine.LastException);
-                return;
-            }
+			// test for error
+			if (engine.LastStatus == LastStatus.Error)
+			{
+				if (Systems.LogSystem.ErrorLogEnabled)
+					Systems.LogSystem.LogError(engine.LastException, engine.RequestInfo.RequestUrl, engine.LastErrorMessage);
 
-            // execute the request
-            engine.ExecuteToResponse(context.Response);
+				context.Response.Write(engine.LastErrorMessage);
+				context.Response.StatusDescription = engine.LastErrorMessage;
+				context.Response.StatusCode = (int)Common.GetExceptionHttpErrorCode(engine.LastException);
+				return;
+			}
 
-            // test for error
-            if (engine.LastStatus == LastStatus.Error)
-            {
-                if (Systems.LogSystem.ErrorLogEnabled)
-                    Systems.LogSystem.LogError(engine.RequestInfo.RequestUrl, engine.LastErrorMessage);
+			// execute the request
+			engine.ExecuteToResponse(context.Response);
 
-                context.Response.Write(engine.LastErrorMessage);
-                context.Response.StatusDescription = engine.LastErrorMessage;
-                context.Response.StatusCode = (int)Common.GetExceptionHttpErrorCode(engine.LastException);
-                return;
-            }
+			// test for error
+			if (engine.LastStatus == LastStatus.Error)
+			{
+				if (Systems.LogSystem.ErrorLogEnabled)
+					Systems.LogSystem.LogError(engine.LastException, engine.RequestInfo.RequestUrl, engine.LastErrorMessage);
+					//Systems.LogSystem.LogError(engine.RequestInfo.RequestUrl, engine.LastErrorMessage);
 
-        }
-        catch (System.Threading.ThreadAbortException) { }
-        catch (Exception ex)
-        {
-            if (Systems.LogSystem.ErrorLogEnabled)
-                Systems.LogSystem.LogError(engine.RequestInfo.RequestUrl, engine.LastErrorMessage);
+				context.Response.Write(engine.LastErrorMessage);
+				context.Response.StatusDescription = engine.LastErrorMessage;
+				context.Response.StatusCode = (int)Common.GetExceptionHttpErrorCode(engine.LastException);
+				return;
+			}
 
-            context.Response.Write(ex.Message);
-            context.Response.StatusDescription = ex.Message;
-            context.Response.StatusCode = (int)Common.GetExceptionHttpErrorCode(engine.LastException);
-        }
-    }
+		}
+		catch (System.Threading.ThreadAbortException) { }
+		catch (Exception ex)
+		{
+			if (Systems.LogSystem.ErrorLogEnabled)
+				//Systems.LogSystem.LogError(engine.RequestInfo.RequestUrl, engine.LastErrorMessage);
+				Systems.LogSystem.LogError(engine.LastException, engine.RequestInfo.RequestUrl, engine.LastErrorMessage);
 
-    public bool IsReusable
-    {
-        get
-        {
-            return false;
-        }
-    }
+
+			context.Response.Write(ex.Message);
+			context.Response.StatusDescription = ex.Message;
+			context.Response.StatusCode = (int)Common.GetExceptionHttpErrorCode(engine.LastException);
+		}
+	}
+
+	public bool IsReusable
+	{
+		get
+		{
+			return false;
+		}
+	}
 
 }

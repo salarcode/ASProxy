@@ -32,7 +32,7 @@ public class GetAny : IHttpHandler, System.Web.SessionState.IReadOnlySessionStat
                 if (engine.LastStatus == LastStatus.Error)
                 {
                     if (Systems.LogSystem.ErrorLogEnabled)
-                        Systems.LogSystem.LogError(engine.RequestInfo.RequestUrl, engine.LastErrorMessage);
+						Systems.LogSystem.LogError(engine.LastException , engine.RequestInfo.RequestUrl, engine.LastErrorMessage);
 
                     context.Response.Clear();
                     SalarSoft.ASProxy.Common.ClearASProxyRespnseHeader(context.Response);
@@ -57,7 +57,7 @@ public class GetAny : IHttpHandler, System.Web.SessionState.IReadOnlySessionStat
         catch (Exception ex)
         {
             if (Systems.LogSystem.ErrorLogEnabled)
-                Systems.LogSystem.LogError(context.Request.Url.ToString(), ex.Message);
+                Systems.LogSystem.LogError(ex, context.Request.Url.ToString(), ex.Message);
 
             context.Response.Clear();
             Common.ClearASProxyRespnseHeader(context.Response);

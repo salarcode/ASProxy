@@ -1,5 +1,5 @@
 ﻿// ASProxy AJAX Wrapper Core
-// Last update: 2009-05-11 coded by Salar Khalilzadeh //
+// Last update: 2009-06-26 coded by Salar Khalilzadeh //
 
 // Global
 var _AJAXWrapperHandler="ajax.ashx";
@@ -125,17 +125,12 @@ Object.extend(XMLHttpRequest.prototype, {
 			_caller._updateProperties();
 			
 			// BUGFIX: ajax wrapper raises two useless states event
-//			if(this.readyState==0 || this.readyState==1)
-//			{
-//				// Ignore these states only for HTTP requests
-//				if(_ASProxy.IsClientSideUrl(_caller._reqUrl)==false)
-//					return;
-//			}
-//			if(this.readyState == 3 ||this.readyState == 4)
-//			{
-//				// error!!
-//				//this.readyState=this.readyState;
-//			}
+			//if(this.readyState==0 || this.readyState==1)
+			//{
+			//	// Ignore these states only for HTTP requests
+			//	if(_ASProxy.IsClientSideUrl(_caller._reqUrl)==false)
+			//		return;
+			//}
 
 			if(_caller.onreadystatechange!=null)
 				_caller.onreadystatechange(eventArgs);
@@ -263,7 +258,7 @@ Object.extend(XMLHttpRequest.prototype, {
 	send: function(content) {
 		var asproxyAJAXH = this._EncodeArray(this._headers);
 		this._ajax.setRequestHeader("X-ASProxy-AJAX-Headers",asproxyAJAXH);
-		this._ajax.setRequestHeader("X-ASProxy-AJAX-Referrer",__ReqUrlFull);
+		this._ajax.setRequestHeader("X-ASProxy-AJAX-Referrer",_reqInfo.pageUrl);
 
 		// BUGFIX: Safari - fails sending documents created/modified dynamically, so an explicit serialization required
 		// BUGFIX: IE - rewrites any custom mime-type to "text/xml" in case an XMLNode is sent
@@ -283,7 +278,7 @@ Object.extend(XMLHttpRequest.prototype, {
 	sendAsBinary: function(content) {
 		var asproxyAJAXH = this._EncodeArray(this._headers);
 		this._ajax.setRequestHeader("X-ASProxy-AJAX-Headers",asproxyAJAXH);
-		this._ajax.setRequestHeader("X-ASProxy-AJAX-Referrer",__ReqUrlFull);
+		this._ajax.setRequestHeader("X-ASProxy-AJAX-Referrer",_reqInfo.pageUrl);
 		
 		this._refresh();
 		this._ajax.sendAsBinary(content);
@@ -390,13 +385,13 @@ Object.extend(XMLHttpRequest.prototype, {
 		url=_ASProxy.CorrectLocalUrlToOrginal(url);
 
 		if(_ASProxy.IsVirtualUrl(url))
-			url=_ASProxy.JoinUrls(__ReqUrlDir,__ReqUrlBaseDir,url);
+			url=_ASProxy.JoinUrls(url,_reqInfo.pagePath,_reqInfo.rootUrl);
 
 		var asproxyBasePath=_AJAXWrapperHandler;
-		asproxyBasePath+='?dec='+__ASProxyEncodeUrl+'&ajaxurl=';
+		asproxyBasePath+='?dec='+(_userConfig.EncodeUrl+0)+'&ajaxurl=';
 
 		result=asproxyBasePath;
-		if(__ASProxyEncodeUrl)
+		if(_userConfig.EncodeUrl)
 			result+=_ASProxy.B64UnknownerAdd(_Base64_encode(url));
 		else
 			result+=url;

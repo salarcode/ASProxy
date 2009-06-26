@@ -2,20 +2,19 @@
 <%@ Import Namespace="SalarSoft.ASProxy" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <script runat="server">
+	const string authenticationCookie = "ASProxyUser";
+	const string sessionStateCookie = "ASProxySession";
 	
 	private HttpCookieCollection GetCookiesCollection()
 	{
-		string authenticationCookie = "ASProxyAuthentication";
-		string sessionStateCookie = "ASProxySessionID";
-        
 		HttpCookieCollection result = new HttpCookieCollection();
 		for (int i = 0; i < Request.Cookies.Count;i++)
 		{
 			HttpCookie cookie = Request.Cookies[i];
             if (cookie.Name != sessionStateCookie &&
                 cookie.Name != authenticationCookie &&
-                cookie.Name != Consts.FrontEndPresentation.CookieMasterName &&
-                cookie.Name != Consts.FrontEndPresentation.HttpCompressorCookieMasterName)
+                cookie.Name != Consts.FrontEndPresentation.UserOptionsCookieName &&
+                cookie.Name != Consts.FrontEndPresentation.HttpCompressorCookieName)
 			{
 				result.Add(cookie);
 			}
@@ -30,7 +29,7 @@
 		rptCookies.DataBind();
 	}
 
-	protected void rptCookies_ItemDataBound(object sender, RepeaterItemEventArgs e)
+	protected void rptCookies_ItemDataBound__(object sender, RepeaterItemEventArgs e)
 	{
 		if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
 		{
@@ -43,12 +42,33 @@
 	{
 		Button btn = (Button)source;
 		string cookieName = btn.CommandArgument;
-		
-		HttpCookie cookie = Response.Cookies[cookieName];
-		cookie.Expires = DateTime.Now.AddYears(-10);
-		
-		Response.Cookies.Add(cookie);
-		Response.Redirect(Request.Url.ToString(), false);
+
+		if (btn.CommandName == "DeleteCookie")
+		{
+			HttpCookie cookie = Response.Cookies[cookieName];
+			cookie.Expires = DateTime.Now.AddYears(-10);
+
+			Response.Cookies.Add(cookie);
+			Response.Redirect(Request.Url.ToString(), false);
+		}
+	}
+	
+	protected void rptCookies_btnClearCookies(object source, EventArgs e)
+	{
+		Button btn = (Button)source;
+		string cmdName = btn.CommandName;
+
+		if (cmdName == "ClearCookies")
+		{
+			HttpCookieCollection reqCookies = GetCookiesCollection();
+			for (int i = 0; i < reqCookies.Count; i++)
+			{
+				HttpCookie cookie = reqCookies[i];
+				cookie.Expires = DateTime.Now.AddYears(-10);
+				Response.Cookies.Add(cookie);
+			}
+			Response.Redirect(Request.Url.ToString(), false);
+		}
 	}
 </script>
 <html xmlns="http://www.w3.org/1999/xhtml" >
@@ -77,8 +97,8 @@ Input{ border:solid 1px gray;font-size:8pt;}
 </table>
 <p style="text-align:center"><a href="default.aspx">[ReturnHome]</a></p>
 <p style="text-align: center">[Description]</p>
-
-<asp:Repeater ID="rptCookies" runat="server" OnItemDataBound="rptCookies_ItemDataBound">
+<%--OnItemDataBound="rptCookies_ItemDataBound"--%>
+<asp:Repeater ID="rptCookies" runat="server" >
 <HeaderTemplate>
 <table class="Cookies_Table" style="width: 100%;">
 <tr class="Cookies_HederRow">
@@ -88,18 +108,22 @@ Input{ border:solid 1px gray;font-size:8pt;}
 </tr>
 <tr><td>&nbsp;</td><td>&nbsp;</td><td>Name</td><td>Path</td><td>Expires</td><td>Value</td></tr>
 </HeaderTemplate>
+<FooterTemplate>
+<tr><th colspan="6" align="justify">
+<asp:Button ID="btnClearCookies" runat="server" OnClick="rptCookies_btnClearCookies" CommandName="ClearCookies" Text="[ClearCookies]" />
+</th></tr>
+</table></FooterTemplate>
 
 <ItemTemplate>
 <tr>
 	<td class="Cookies_FirstCell"><%#Container.ItemIndex+1%></td>
-	<td><asp:Button ID="btnDelete" runat="server" OnClick="rptCookies_btnDelete" CommandName="DeleteCookie" Text="[Delete]" /></td>
+	<td><asp:Button ID="btnDelete" runat="server" OnClick="rptCookies_btnDelete" CommandName="DeleteCookie" CommandArgument="<%#Container.DataItem.ToString() %>" Text="[Delete]" /></td>
 	<td style="word-break:break-all;"><%#Request.Cookies[Container.DataItem.ToString()].Name%></td>
 	<td><%#Request.Cookies[Container.DataItem.ToString()].Path%></td>
 	<td><%#Request.Cookies[Container.DataItem.ToString()].Expires%></td>
 	<td style="word-break:break-all;"><%#Request.Cookies[Container.DataItem.ToString()].Value%></td>
 </tr>
 </ItemTemplate>
-<FooterTemplate></table></FooterTemplate>
 </asp:Repeater>
 </form>
 </body></html>

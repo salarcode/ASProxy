@@ -17,7 +17,7 @@ public class GetCss : IHttpHandler, System.Web.SessionState.IReadOnlySessionStat
             if (UrlProvider.IsASProxyAddressUrlIncluded(context.Request.QueryString))
             {
                 engine = (IEngine)Provider.CreateProviderInstance(ProviderType.IEngine);
-                engine.UserOptions = UserOptions.ReadFromRequest();
+				engine.UserOptions = UserOptions.ReadFromRequest();
 
                 engine.DataTypeToProcess = DataTypeToProcess.Css;
                 engine.RequestInfo.SetContentType (MimeContentType.text_css);

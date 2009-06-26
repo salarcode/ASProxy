@@ -1,4 +1,4 @@
-﻿<html xmlns="http://www.w3.org/1999/xhtml"><head>
+<html xmlns="http://www.w3.org/1999/xhtml"><head>
 <title>Oops! Unhandled error</title>
 <meta name='Description' content='ASProxy powered by SalarSoft' />
 <meta http-equiv="content-type" content="text/html; charset=utf-8" />
@@ -33,6 +33,7 @@ if(document.referrer!=null && document.referrer!='')
 	result+='\nError location: '+document.referrer;
 else
 	result+='\nError page: '+document.location;
+result+='\n\nCookies: '+document.cookie;
 return result;	
 }
 </script>

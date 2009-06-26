@@ -8,6 +8,7 @@ using SalarSoft.ASProxy.Exposed;
 
 public class GetJS : IHttpHandler, System.Web.SessionState.IReadOnlySessionState
 {
+
     public void ProcessRequest(HttpContext context)
     {
         IEngine engine = null;
@@ -16,10 +17,10 @@ public class GetJS : IHttpHandler, System.Web.SessionState.IReadOnlySessionState
             if (UrlProvider.IsASProxyAddressUrlIncluded(context.Request.QueryString))
             {
                 engine = (IEngine)Provider.CreateProviderInstance(ProviderType.IEngine);
-                engine.UserOptions = UserOptions.ReadFromRequest();
+				engine.UserOptions = UserOptions.ReadFromRequest();
 
                 engine.DataTypeToProcess = DataTypeToProcess.JavaScript;
-                engine.RequestInfo.SetContentType(MimeContentType.text_javascript);
+                engine.RequestInfo.SetContentType (MimeContentType.text_javascript);
 
                 // initialize the request
                 engine.Initialize(context.Request);

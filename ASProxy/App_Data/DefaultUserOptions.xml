@@ -1,20 +1,20 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Options>
-  <ForceEncoding>False</ForceEncoding>
-  <RemoveScripts>False</RemoveScripts>
-  <RemoveImages>False</RemoveImages>
-  <HttpCompression>False</HttpCompression>
-  <EncodeUrl>True</EncodeUrl>
-  <Cookies>True</Cookies>
-  <Images>True</Images>
-  <Scripts>True</Scripts>
-  <Links>True</Links>
-  <IFrame>True</IFrame>
-  <FrameSet>True</FrameSet>
-  <SubmitForms>True</SubmitForms>
-  <CssLink>True</CssLink>
-  <EmbedObjects>True</EmbedObjects>
-  <OrginalUrl>True</OrginalUrl>
-  <PageTitle>True</PageTitle>
-  <DocType>True</DocType>
+  <ForceEncoding changeable="true">False</ForceEncoding>
+	<RemoveScripts changeable="true">False</RemoveScripts>
+	<RemoveImages changeable="true">False</RemoveImages>
+	<HttpCompression changeable="true">False</HttpCompression>
+	<EncodeUrl changeable="true">True</EncodeUrl>
+	<Cookies changeable="true">True</Cookies>
+	<Images changeable="true">True</Images>
+	<Scripts changeable="true">True</Scripts>
+	<Links changeable="true">True</Links>
+	<IFrame changeable="true">True</IFrame>
+	<FrameSet changeable="true">True</FrameSet>
+	<SubmitForms changeable="true">True</SubmitForms>
+	<CssLink changeable="true">True</CssLink>
+	<EmbedObjects changeable="true">True</EmbedObjects>
+	<OrginalUrl changeable="true">True</OrginalUrl>
+	<PageTitle changeable="true">True</PageTitle>
+	<DocType changeable="true">True</DocType>
 </Options>

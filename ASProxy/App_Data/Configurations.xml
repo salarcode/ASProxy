@@ -6,14 +6,19 @@
     <engine canBeOverwritten="true" />
     
     <!--Enables plugins-->
-    <plugins enabled="true" />
+		<plugins enabled="true">
+			<diabledPlugins>
+				<plugin name=""></plugin>
+			</diabledPlugins>
+		</plugins>
   </providers>
-
+	
   <webData maxContentLength="-1"
            requestTimeout="60000"
-           RequestReadWriteTimeOut="70000"
-           SendSignature="true">
-    
+           requestReadWriteTimeOut="70000"
+           sendSignature="true"
+					 preferredLocalEncoding="windows-1256">
+		<userAgent mode="Default" custom="ASProxy (compatible; Mozilla/5.0;)" />
   </webData>
   
   <!--Used in private proxy feature to prevent strangers to access to proxy-->
@@ -21,17 +26,28 @@
     <user userName="admin" password="admin" pages="true" images="true" downloads="true"></user>
   </authentication>
 
+	
+	<userAccessControl enabled="false">
+		<blocked>
+			<ip value="78.110.175.11" />
+			<range low="78.110.175.13" high="78.110.175.13" />
+		</blocked>
+		<allow>
+			<ip value="196.40.10.246" />
+		</allow>
+	</userAccessControl>
+
   <!--Enables auto update-->
   <autoUpdate updateInfoUrl="http://asproxy.sourceforge.net/update/autoupdate.xml"
               engine="true" plugins="true">
   </autoUpdate>
 
   <!-- Logs user activites to specfied location-->
-  <logSystem maxFileSize="5120" fileFormat="yyy-MM-dd">
+  <logSystem maxFileSize="5120" fileFormat="yyyy-MM-dd">
     
     <!--Browsing activities-->
     <activityLog enabled="false" location="~/App_Data/DailyLog/{0}.log"
-                  pages="false" images="false">
+                  pages="true" images="false">
     </activityLog>
     
     <!--error log-->

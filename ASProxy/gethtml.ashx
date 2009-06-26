@@ -13,7 +13,18 @@ public class GetHtml : IHttpHandler, System.Web.SessionState.IReadOnlySessionSta
         IEngine engine = null;
         try
         {
-            if (UrlProvider.IsASProxyAddressUrlIncluded(context.Request.QueryString))
+			if (Configurations.Authentication.Enabled)
+			{
+				if (!Configurations.Authentication.HasPermission(context.User.Identity.Name,
+					Configurations.AuthenticationConfig.UserPermission.Pages))
+				{
+					context.Response.ContentType = "text/html";
+					context.Response.Write("You do not have access to browse pages. Ask site administrator to grant permission.");
+					context.Response.StatusCode = (int)System.Net.HttpStatusCode.Forbidden;
+					return;
+				}
+			}
+			if (UrlProvider.IsASProxyAddressUrlIncluded(context.Request.QueryString))
             {
                 engine = (IEngine)Provider.CreateProviderInstance(ProviderType.IEngine);
                 engine.UserOptions = UserOptions.ReadFromRequest();
@@ -31,7 +42,7 @@ public class GetHtml : IHttpHandler, System.Web.SessionState.IReadOnlySessionSta
                 if (engine.LastStatus == LastStatus.Error)
                 {
                     if (Systems.LogSystem.ErrorLogEnabled)
-                        Systems.LogSystem.LogError(engine.RequestInfo.RequestUrl, engine.LastErrorMessage);
+						Systems.LogSystem.LogError(engine.LastException, engine.RequestInfo.RequestUrl, engine.LastErrorMessage);
 
                     context.Response.Clear();
                     SalarSoft.ASProxy.Common.ClearASProxyRespnseHeader(context.Response);
@@ -52,15 +63,15 @@ public class GetHtml : IHttpHandler, System.Web.SessionState.IReadOnlySessionSta
 
         }
         catch (ThreadAbortException) { }
-        catch (Exception err)
+		catch (Exception ex)
         {
             if (Systems.LogSystem.ErrorLogEnabled)
-                Systems.LogSystem.LogError(context.Request.Url.ToString(), err.Message);
+                Systems.LogSystem.LogError(ex, context.Request.Url.ToString(), ex.Message);
 
             context.Response.Clear();
             SalarSoft.ASProxy.Common.ClearASProxyRespnseHeader(context.Response);
             context.Response.ContentType = "text/html";
-            context.Response.Write("<center><b><font color='red'>Error: " + err.Message + "</font></b></center>");
+			context.Response.Write("<center><b><font color='red'>Error: " + ex.Message + "</font></b></center>");
             context.Response.StatusCode = (int)Common.GetExceptionHttpErrorCode(engine.LastException);
 
             context.ApplicationInstance.CompleteRequest();

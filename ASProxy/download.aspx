@@ -26,7 +26,7 @@
         catch (Exception ex)
         {
             if (Systems.LogSystem.ErrorLogEnabled)
-                Systems.LogSystem.LogError(Request.Url.ToString(), ex.Message);
+                Systems.LogSystem.LogError(ex, Request.Url.ToString(), ex.Message);
 
             lblErrorMsg.Text = ex.Message;
             lblErrorMsg.Visible = true;
