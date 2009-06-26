@@ -5,94 +5,99 @@ using SalarSoft.ASProxy.Exposed;
 
 namespace SalarSoft.ASProxy.BuiltIn
 {
-    public class CSSProcessor : ExCssProcessor 
-    {
-        #region variables
-        #endregion
+	public class CSSProcessor : ExCssProcessor
+	{
+		#region variables
+		private UserOptions _UserOptions;
+		#endregion
 
-        #region properties
-        #endregion
+		#region public methods
+		public CSSProcessor()
+		{
+			_UserOptions = CurrentContext.UserOptions;
+		}
 
-        #region public methods
-        public override string Execute()
-        {
-            Encoding _encoding;
-            string resultCodes = StringStream.GetString(WebData.ResponseData,
-                                    UserOptions.ForceEncoding,
-                                    out _encoding);
-            ContentEncoding = _encoding;
-
-            IWebData webData = (IWebData)WebData;
-
-            // Execute the result
-            Execute(ref resultCodes,
-                webData.ResponseInfo.ResponseUrl,
-                webData.ResponseInfo.ResponseRootUrl);
-
-            // the result
-            return resultCodes;
-        }
-
-        public override void Execute(ref string codes, string pageUrl, string rootUrl)
-        {
-            try
-            {
-                //string urlPagePath = "";
-                //urlPagePath = UrlProvider.AddSlashToEnd(UrlProvider.GetUrlPagePath(responsePageUrl));
-                //string pageUrlWithoutParameters = UrlProvider.GetPagePathWithoutParameters(responsePageUrl);
-
-                // ASProxy pages url formats generator
-                ASProxyPagesFormat pages = new ASProxyPagesFormat(UserOptions);
-
-                // this is page path, used in processing relative paths in source html
-                // for example the pageRootUrl for "http://Site.com/users/profile.aspx" will be "http://Site.com/users/"
-                string pagePath;
-
-                // the page Url without any query parameter, used in processing relative query parameters
-                // the pageUrlNoQuery for "http://Site.com/profile.aspx?uid=90" will be "http://Site.com/profile.aspx"
-                string pageUrlNoQuery;
+		public override string Execute()
+		{
+			Encoding _encoding;
+			string resultCodes = StringStream.GetString(
+				WebData.ResponseData,
+				WebData.ResponseInfo.ContentType, 
+				_UserOptions.ForceEncoding,
+				false,
+				out _encoding);
+			ContentEncoding = _encoding;
 
 
-                // Gets page Url without any query parameter
-                pageUrlNoQuery = UrlProvider.GetPageAbsolutePath(pageUrl);
+			if (_UserOptions.Images)
+			{
 
-                // gets page root Url
-                pagePath = UrlProvider.GetPagePath(pageUrl);
+				// Page url. E.G. http://Site.com/users/profile.aspx?uid=90
+				string pageUrl = WebData.ResponseInfo.ResponseUrl;
 
-                if (UserOptions.Images)
-                {
-                    // For @Import rule
-                    CSSReplacer.ReplaceCSSClassStyleUrl(ref codes,
-                        pageUrlNoQuery,
-                        pages.PageCss,
-                        pagePath,
-                        rootUrl,
-                        UserOptions.EncodeUrl, 
-                        true);
+				// this is page path, used in processing relative paths in source html
+				// for example the pageRootUrl for "http://Site.com/users/profile.aspx" will be "http://Site.com/users/"
+				// gets page root Url
+				string pagePath = UrlProvider.GetPagePath(pageUrl);
 
-                    // For backgrounds
-                    CSSReplacer.ReplaceCSSClassStyleUrl(ref codes,
-                        pageUrlNoQuery,
-                        pages.PageAnyType,
-                        pagePath,
-                        rootUrl, 
-                        UserOptions.EncodeUrl, 
-                        false);
-                }
+				// the page Url without any query parameter, used in processing relative query parameters
+				// the pageUrlNoQuery for "http://Site.com/profile.aspx?uid=90" will be "http://Site.com/profile.aspx"
+				// Gets page Url without any query parameter
+				string pageUrlNoQuery = UrlProvider.GetPageAbsolutePath(pageUrl);
 
-            }
-            catch (Exception ex)
-            {
-                // error logs
-                if (Systems.LogSystem.ErrorLogEnabled)
-                    Systems.LogSystem.LogError(ex, pageUrl);
 
-                codes = "/* ASProxy has some errors! \n"
-                    + ex.Message + " */"
-                    + codes;
-            }
-        }
-        #endregion
+				// Execute the result
+				Execute(ref resultCodes,
+					pageUrl,
+					pageUrlNoQuery,
+					pagePath,
+					WebData.ResponseInfo.ResponseRootUrl);
+			}
 
-    }
+			// the result
+			return resultCodes;
+		}
+
+		public override void Execute(ref string codes, string pageUrl, string pageUrlNoQuery, string pagePath, string rootUrl)
+		{
+			try
+			{
+				// ASProxy pages url formats generator
+				ASProxyPagesFormat pages = new ASProxyPagesFormat(_UserOptions.EncodeUrl);
+
+				// For @Import rule
+				CSSReplacer.ReplaceCSSClassStyleUrl(ref codes,
+					pageUrlNoQuery,
+					pages.PageAnyType,
+					pagePath,
+					rootUrl,
+					_UserOptions.EncodeUrl,
+					true);
+
+				// For backgrounds
+				CSSReplacer.ReplaceCSSClassStyleUrl(ref codes,
+					pageUrlNoQuery,
+					pages.PageAnyType,
+					pagePath,
+					rootUrl,
+					_UserOptions.EncodeUrl,
+					false);
+			}
+			catch (Exception ex)
+			{
+				// error logs
+				if (Systems.LogSystem.ErrorLogEnabled)
+					Systems.LogSystem.LogError(ex, pageUrl);
+				
+				LastStatus = LastStatus.ContinueWithError;
+				LastErrorMessage = "ASProxy has some errors!";
+
+				codes = "/* ASProxy has some errors! \n"
+					+ ex.Message + " */"
+					+ codes;
+			}
+		}
+		#endregion
+
+	}
 }

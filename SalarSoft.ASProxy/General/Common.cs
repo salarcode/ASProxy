@@ -161,8 +161,8 @@ namespace SalarSoft.ASProxy
         {
             HttpCookieCollection cool = response.Cookies;
 
-            HttpCookie cookie = response.Cookies[Consts.FrontEndPresentation.HttpCompressorCookieMasterName];
-            string encode = cookie["CompressEncoding"];
+            HttpCookie cookie = response.Cookies[Consts.FrontEndPresentation.HttpCompressorCookieName];
+			string encode = cookie[Consts.FrontEndPresentation.HttpCompressEncoding];
             response.ClearHeaders();
 
             if (string.IsNullOrEmpty(encode))

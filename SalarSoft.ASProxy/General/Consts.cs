@@ -15,6 +15,8 @@ namespace SalarSoft.ASProxy
         {
             public const string ASProxyName = "ASProxy";
             public const string ASProxyVersion = "5.2pre";
+
+			public const string ContextUserOptionsKey = "ContextUserOptions";
         }
 
         /// <summary>
@@ -41,8 +43,9 @@ namespace SalarSoft.ASProxy
         /// </summary>
         public class FrontEndPresentation
         {
-            public const string CookieMasterName = "SalarSoft.ASProxy";
-            public const string HttpCompressorCookieMasterName = "SalarSoft.ASProxy.HttpCompressor";
+            public const string UserOptionsCookieName = "ASProxyConfig";
+			public const string HttpCompressorCookieName = "HttpCompressor";
+			public const string HttpCompressEncoding = "CompressEncoding";
 
         }
 
@@ -78,44 +81,21 @@ namespace SalarSoft.ASProxy
         /// </summary>
         public class ClientContent
         {
-            public const string JSEncoder_ASproxyOriginalUrlEnabled = "__ASProxyOriginalUrlEnabled";
-            public const string JSEncoder_ASproxyLinksEnabled = "__ASProxyLinksEnabled";
-            public const string JSEncoder_ASproxyImagesEnabled = "__ASProxyImagesEnabled";
-            public const string JSEncoder_ASProxyFormsEnabled = "__ASProxyFormsEnabled";
-            public const string JSEncoder_ASProxyFramesEnabled = "__ASProxyFramesEnabled";
-            public const string JSEncoder_ASProxyEncodeUrl = "__ASProxyEncodeUrl";
-            public const string JSEncoder_Base64Unknowner = "__B64Unknowner";
-            public const string JSEncoder_ASProxyDefaultPage = "__ASProxyDefaultPage";
+			public const string JSEncoder_UserConfig = "_userConfig={{EncodeUrl:{0}, OrginalUrl:{1}, Links:{2}, Images:{3}, Forms:{4}, Frames:{5}, Cookies:{6}, RemScripts:{7} }};";
+			public const string JSEncoder_RequestInfo = @"_reqInfo={{pageUrl:""{0}"", pageUrlNoQuery:""{1}"", pagePath:""{2}"", rootUrl:""{3}"", cookieName:'{4}', ASProxyUrl:""{5}"", ASProxyPath:""{6}"", ASProxyRoot:""{7}"", ASProxyPageName:'{8}', UrlUnknowner:'{9}'}};";
+			public const string JSEncoder_RequestLocation = @"_reqInfo.location={{ Hash:'{0}', Host:""{1}"", Hostname:""{2}"", Pathname:""{3}"", Search:""{4}"", Port:'{5}', Protocol:'{6}' }};";
 
-            public const string JSEncoder_RequestCookieName = "__ReqCookieName";
-            public const string JSEncoder_RequestUrlBaseDir = "__ReqUrlBaseDir";
-            public const string JSEncoder_RequestUrlDir = "__ReqUrlDir";
-            public const string JSEncoder_RequestUrlNoParam = "__ReqUrlNoParam";
-            public const string JSEncoder_RequestUrlFull = "__ReqUrlFull";
-
-            public const string JSEncoder_ReqLocBookmark = "__WLocHash";
-            public const string JSEncoder_ReqLocHost = "__WLocHost";
-            public const string JSEncoder_ReqLocHostname = "__WLocHostname";
-            public const string JSEncoder_ReqLocPathname = "__WLocPathname";
-            public const string JSEncoder_ReqLocQueries = "__WLocSearch";
-            public const string JSEncoder_ReqLocPort = "__WLocPort";
-            public const string JSEncoder_ReqLocProtocol = "__WLocProtocol";
-
-            public const string JSEncoder_ASProxySiteBaseDir = "__ASProxySiteBaseDir";
-            public const string JSEncoder_ASProxyDefaultPagePath = "__ASProxyDefaultPagePath";
-            public const string JSEncoder_ASProxySiteHostBaseDir = "__ASProxySiteHostBaseDir";
-
-
-            public const string JSEncoder_ASProxyEncoderMethodName = "ASProxyEncoder";
-            public const string JSEncoder_ASProxySetCookieMethodName = "ASProxySetCookie";
-            public const string JSEncoder_ASProxyGetCookieMethodName = "ASProxyGetCookie";
-            public const string JSEncoder_ASProxyWindowLocOverrider = "_WindowLocation";
-
+			public const string JSEncoder_ASProxyEncoderMethodName = "__UrlEncoder";
+			public const string JSEncoder_ASProxySetCookieMethodName = "__CookieSet";
+			public const string JSEncoder_ASProxyGetCookieMethodName = "__CookieGet";
+			public const string JSEncoder_ASProxyWindowLocOverrider = "_WindowLocation";
 
             public const string attrAlreadyEncodedAttribute = "asproxydone";
-            public const string attrAlreadyEncodedValue = "1";
-            public const string attrAlreadyEncodedAttributeWithValue = " " + attrAlreadyEncodedAttribute + "=" + attrAlreadyEncodedValue + " ";
-        }
+			public const string attrAlreadyEncodedValue = "1";
+			public const string attrAlreadyEncodedIgnore = "2";
+			public const string attrAlreadyEncodedAttributeWithValue = " " + attrAlreadyEncodedAttribute + "=" + attrAlreadyEncodedValue + " ";
+			public const string attrAlreadyEncodedAttributeIgnore = " " + attrAlreadyEncodedAttribute + "='" + attrAlreadyEncodedIgnore + "' ";
+		}
 
         /// <summary>
         /// Files consts
@@ -128,19 +108,19 @@ namespace SalarSoft.ASProxy
             public static string DefaultPage = "default.aspx";
 
             public const string Dir_Scripts = "scripts";
-            public const string Dir_Bin = "bin";
+			public const string Dir_AppData = "App_Data";
             public const string Dir_UpdateSources = "UpdateSources";
 
             public const string AJAXHandler = "ajax.ashx";
             public const string PageDefault = "default.aspx";
             public const string PageAnyType = "getany.ashx";
-            public const string PageImages = "images.ashx";//"images.aspx";
             public const string PageDownload = "download.ashx";//"download.aspx";
             public const string PageAuthorization = "authorization.aspx";
             public const string PageDirectHtml = "gethtml.ashx";
-            public const string PageDirectCSS = "getcss.ashx";
+            //public const string PageDirectCSS = "getcss.ashx";
             public const string PageDirectJS = "getjs.ashx";
-            public const string PageDirectData = "getdata.ashx";
+            public const string PageImages = "images.ashx";//"images.aspx";
+            //public const string PageDirectData = "getdata.ashx";
 
             public const string JSASProxyEncoder = Dir_Scripts + "/" + "asproxyencoder.js";
             public const string JSBase64 = Dir_Scripts + "/" + "base64encoder.js";

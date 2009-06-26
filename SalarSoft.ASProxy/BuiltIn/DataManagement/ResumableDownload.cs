@@ -10,7 +10,6 @@ namespace SalarSoft.ResumableDownload
 	/// http://www.devx.com
 	/// 
 	/// Optimization and convertion by SalarSoft
-	/// http://www.softprojects.org
 	/// </summary>
 	public class ResumableDownload:IDisposable
 	{

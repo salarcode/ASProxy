@@ -1,0 +1,9 @@
+Version 5.1 -> 5.2
+
+File change log:
+
+* Interfaces:
+	All interface files are changed.
+	
+* Code files:
+	All source codes are changed.

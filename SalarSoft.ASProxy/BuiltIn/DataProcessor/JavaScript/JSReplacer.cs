@@ -54,7 +54,8 @@ namespace SalarSoft.ASProxy.BuiltIn
 				JSProcessor processor = new JSProcessor();
 
 				// Process the script content
-				processor.Execute(ref scriptContent,null,null);
+				processor.Execute(ref scriptContent,
+                    null, null, null, null);
 
 
 				// Replace the new style

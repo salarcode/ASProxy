@@ -18,7 +18,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DefineConstants>DEBUG</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
@@ -31,7 +31,18 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Trace|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\Trace\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
+    <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.cs</CodeAnalysisModuleSuppressionsFile>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
   <ItemGroup>
+    <Reference Include="ICSharpCode.SharpZipLib, Version=0.84.0.0, Culture=neutral, PublicKeyToken=1b03e6acf1164f73" />
     <Reference Include="System" />
     <Reference Include="System.configuration" />
     <Reference Include="System.Data" />
@@ -46,7 +57,7 @@
     <Compile Include="BuiltIn\DataManagement\ASProxyEngine.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="BuiltIn\DataManagement\CookieManager.cs">
+    <Compile Include="BuiltIn\DataManagement\CookieManager_Old.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="BuiltIn\DataManagement\ResumableDownload.cs">
@@ -91,6 +102,8 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Configurations\Configurations.cs" />
+    <Compile Include="Configurations\CurrentContext.cs" />
+    <Compile Include="Configurations\CustomErrors.cs" />
     <Compile Include="Configurations\HttpCompressor.cs" />
     <Compile Include="Configurations\Provider.cs" />
     <Compile Include="Definitions\Enumerations.cs" />
@@ -119,17 +132,30 @@
     <Compile Include="Exposed\ExCredentialCache.cs" />
     <Compile Include="Exposed\Interfaces\ILogSystem.cs" />
     <Compile Include="Exposed\ExHtmlProcessor.cs" />
+    <Compile Include="Exposed\PluginInterfaces\IPluginCredentialCache.cs" />
+    <Compile Include="Exposed\PluginInterfaces\IPluginCSSProcessor.cs" />
+    <Compile Include="Exposed\PluginInterfaces\IPluginHtmlProcessor.cs" />
+    <Compile Include="Exposed\PluginInterfaces\IPluginJSProcessor.cs" />
+    <Compile Include="Exposed\PluginInterfaces\IPluginLogSystem.cs" />
+    <Compile Include="Exposed\PluginInterfaces\IPluginWebData.cs" />
+    <Compile Include="Exposed\PluginInterfaces\IPluginEngine.cs" />
+    <Compile Include="Exposed\PluginInterfaces\IPluginCookieManager.cs" />
     <Compile Include="General\Common.cs" />
     <Compile Include="General\Consts.cs" />
     <Compile Include="Configurations\Systems.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Update\Updater.cs" />
     <Compile Include="Utility\ASProxyPagesFormat.cs" />
+    <Compile Include="Utility\QValueList.cs" />
     <Compile Include="Utility\StringStream.cs" />
     <Compile Include="Utility\HtmlTags.cs" />
     <Compile Include="Utility\StringCompare.cs" />
     <Compile Include="Utility\UrlBuilder.cs" />
     <Compile Include="Utility\UrlProvider.cs" />
     <Compile Include="Utility\WebMethods.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="References\ICSharpCode.SharpZipLib.dll" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

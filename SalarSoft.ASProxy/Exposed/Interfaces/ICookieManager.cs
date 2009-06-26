@@ -11,8 +11,9 @@ namespace SalarSoft.ASProxy.Exposed
     /// </summary>
     public interface ICookieManager
     {
-        string GetCookieName(string url);
-        /// <summary>
+		string GetCookieName(Uri url);
+		string GetCookieName(string url);
+		/// <summary>
         /// Saves response cookies in a cookie collection
         /// </summary>
         void RestoreCookiesFromResponse(WebResponse webResponse, CookieCollection cookies);
@@ -20,7 +21,7 @@ namespace SalarSoft.ASProxy.Exposed
         /// <summary>
         /// Reads cookies from response and saves them all in user pc
         /// </summary>
-        void RestoreCookiesFromResponse(WebResponse webResponse);
+        void RestoreCookiesFromResponse(WebResponse webResponse, bool saveAsTemporary);
 
         /// <summary>
         /// Adds specified cookies to proxy request cookies collection

@@ -106,7 +106,8 @@ namespace SalarSoft.ASProxy
         public string Referrer;
         public string RequestMethod;
         public bool AcceptCookies;
-        public bool IsCertificated;
+		public bool TempCookies;
+		public bool IsCertificated;
         public bool PrrocessErrorPage;
         #endregion
 

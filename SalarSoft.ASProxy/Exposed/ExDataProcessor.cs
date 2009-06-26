@@ -13,7 +13,7 @@ namespace SalarSoft.ASProxy.Exposed
 	{
 		#region variables
 		private IWebData _webData;
-		private UserOptions _userOptions;
+		//private UserOptions _userOptions;
 		private Encoding _contentEncoding;
 		private string _pageInitializerCodes;
 		private LastStatus _lastStatus;
@@ -23,7 +23,7 @@ namespace SalarSoft.ASProxy.Exposed
 
 		#region properties
 		public IWebData WebData { get { return _webData; } set { _webData = value; } }
-		public UserOptions UserOptions { get { return _userOptions; } set { _userOptions = value; } }
+		//public UserOptions UserOptions { get { return _userOptions; } set { _userOptions = value; } }
 		public Encoding ContentEncoding { get { return _contentEncoding; } set { _contentEncoding = value; } }
 		public string PageInitializerCodes { get { return _pageInitializerCodes; } set { _pageInitializerCodes = value; } }
 		public LastStatus LastStatus { get { return _lastStatus; } set { _lastStatus = value; } }
@@ -33,7 +33,7 @@ namespace SalarSoft.ASProxy.Exposed
 
 		#region public methods
 		public abstract string Execute();
-		public abstract void Execute(ref string codes, string pageUrl, string rootUrl);
+		public abstract void Execute(ref string codes, string pageUrl, string pageUrlNoQuery,string pagePath, string rootUrl);
 		#endregion
 
 	}

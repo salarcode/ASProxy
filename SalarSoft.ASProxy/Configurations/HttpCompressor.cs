@@ -4,83 +4,97 @@ using System.Web;
 
 namespace SalarSoft.ASProxy
 {
-    public class HttpCompressor : IHttpModule
-    {
+	public class HttpCompressor : IHttpModule
+	{
 
-        public void Dispose()
-        {
-        }
+		public void Dispose()
+		{
+		}
 
-        public void Init(HttpApplication context)
-        {
-            context.BeginRequest += new EventHandler(context_BeginRequest);
-        }
+		public void Init(HttpApplication context)
+		{
+			context.BeginRequest += new EventHandler(context_BeginRequest);
+		}
 
-		/// <summary>
-		/// Add 
-		/// </summary>
-		/// <param name="response"></param>
-		/// <param name="encode"></param>
-        void AddToCookie(HttpResponse response, string encode)
-        {
-            HttpCookie cookie = response.Cookies[Consts.FrontEndPresentation.HttpCompressorCookieMasterName];
-            if (cookie == null)
-            {
-                cookie = new HttpCookie(Consts.FrontEndPresentation.HttpCompressorCookieMasterName);
-                response.Cookies.Add(cookie);
-            }
-            cookie.Values.Add("CompressEncoding", encode);
-        }
+		void AddToCookie(HttpResponse response, string encode)
+		{
+			HttpCookie cookie = response.Cookies[Consts.FrontEndPresentation.HttpCompressorCookieName];
+			if (cookie == null)
+			{
+				cookie = new HttpCookie(Consts.FrontEndPresentation.HttpCompressorCookieName);
+				response.Cookies.Add(cookie);
+			}
+			cookie.Values.Add(Consts.FrontEndPresentation.HttpCompressEncoding, encode);
+		}
 
-        bool compressHeader(HttpRequest request)
-        {
-            HttpCookie cookie = request.Cookies[Consts.FrontEndPresentation.CookieMasterName];
-            if (cookie == null)
-                return false;
+		bool IsCompressEnabled(HttpRequest request)
+		{
+			HttpCookie cookie = request.Cookies[Consts.FrontEndPresentation.UserOptionsCookieName];
+			if (cookie == null)
+				return false;
 
-            string compress = cookie["HttpCompression"];
-            
-            if (string.IsNullOrEmpty(compress))
-                return false;
+			string compress = cookie["HttpCompression"];
 
-            try
-            {
-                return (Convert.ToBoolean(compress));
-            }
-            catch
-            {
-                return false;
-            }
-        }
+			if (string.IsNullOrEmpty(compress))
+				return false;
 
-        void context_BeginRequest(object sender, EventArgs e)
-        {
-            HttpApplication app = (HttpApplication)sender;
-            HttpRequest request = app.Request;
-
-            if (compressHeader(request) == false)
-                return;
-
-            String acceptEncoding = request.Headers["Accept-Encoding"];
-            if (string.IsNullOrEmpty(acceptEncoding))
-                return;
-            acceptEncoding = acceptEncoding.ToLower();
+			try
+			{
+				return (Convert.ToBoolean(compress));
+			}
+			catch
+			{
+				return false;
+			}
+		}
 
 
-            if (acceptEncoding.Contains("gzip"))
-            {
-				// Compression with GZIP
-                app.Response.AddHeader("Content-Encoding", "gzip");
-                app.Response.Filter = new GZipStream(app.Response.Filter, CompressionMode.Compress);
-                AddToCookie(app.Response, "gzip");
-            }
-            else if (acceptEncoding.Contains("deflate"))
-            {
-				// Compression with DEFLATE
-                app.Response.AddHeader("Content-Encoding", "deflate");
-                app.Response.Filter = new DeflateStream(app.Response.Filter, CompressionMode.Compress);
-                AddToCookie(app.Response, "deflate");
-            }
-        }
-    }
+		void ApplyCompression(HttpRequest Request, HttpResponse Response)
+		{
+			if (IsCompressEnabled(Request) == false)
+				return;
+
+			/// load encodings from header
+			QValueList encodings = new QValueList(Request.Headers["Accept-Encoding"]);
+
+			/// get the types we can handle, can be accepted and
+			/// in the defined client preference
+			QValue preferred = encodings.FindPreferred("gzip", "deflate", "identity");
+
+			/// if none of the preferred values were found, but the
+			/// client can accept wildcard encodings, we'll default
+			/// to Gzip.
+			if (preferred.IsEmpty && encodings.AcceptWildcard && encodings.Find("gzip").IsEmpty)
+				preferred = new QValue("gzip");
+
+			// handle the preferred encoding
+			switch (preferred.Name)
+			{
+				case "gzip":
+					Response.AppendHeader("Content-Encoding", "gzip");
+					Response.Filter = new GZipStream(Response.Filter, CompressionMode.Compress);
+					AddToCookie(Response, "gzip");
+					break;
+				case "deflate":
+					Response.AppendHeader("Content-Encoding", "deflate");
+					Response.Filter = new DeflateStream(Response.Filter, CompressionMode.Compress);
+					AddToCookie(Response, "deflate");
+					break;
+				case "identity":
+				default:
+					break;
+			}
+
+		}
+
+		void context_BeginRequest(object sender, EventArgs e)
+		{
+			HttpApplication app = (HttpApplication)sender;
+			HttpRequest request = app.Request;
+			HttpResponse response = app.Response;
+
+			ApplyCompression(request, response);
+
+		}
+	}
 }

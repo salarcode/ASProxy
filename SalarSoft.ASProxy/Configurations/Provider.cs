@@ -74,18 +74,25 @@ namespace SalarSoft.ASProxy
             {
                 case ProviderType.IEngine:
                     return new ASProxyEngine();
+
                 case ProviderType.IWebData:
                     return new WebData();
+
                 case ProviderType.ICredentialCache:
                     return new ASProxyCredentialCache();
+
                 case ProviderType.ILogSystem:
                     return new LogSystem();
+
                 case ProviderType.ICookieManager:
                     return new CookieManager();
+
                 case ProviderType.IHtmlProcessor:
-                    return new HtmlProcessor();
+					return new RegexHtmlProcessor();
+
                 case ProviderType.ICssProcessor:
                     return new CSSProcessor();
+
                 case ProviderType.IJSProcessor:
                     return new JSProcessor();
             }

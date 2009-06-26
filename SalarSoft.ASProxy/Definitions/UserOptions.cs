@@ -9,14 +9,18 @@ namespace SalarSoft.ASProxy
     ///</summary>
     public struct UserOptions
     {
-        public bool Cookies;
+		private bool _LoadedFromSource;
+
+		public bool Cookies;
+		public bool TempCookies;
         public bool Images;
-        public bool Scripts;
+        //public bool Scripts;
         public bool Links;
-        public bool IFrame;
-        public bool FrameSet;
+        //public bool IFrame;
+        //public bool FrameSet;
+        public bool Frames;
         public bool SubmitForms;
-        public bool CssLink;
+        //public bool CssLink;
         public bool EmbedObjects;
         public bool HttpCompression;
         public bool EncodeUrl;
@@ -35,37 +39,48 @@ namespace SalarSoft.ASProxy
         /// </summary>
         public bool DocType;
 
+		public bool LoadedFromSource
+		{
+			get { return _LoadedFromSource; }
+			set { _LoadedFromSource = value; }
+		}
+
+
         /// <summary>
         /// Initialize a new instance of UserOptions with default value
         /// </summary>
         public static UserOptions LoadDefaults(bool def)
         {
             UserOptions result;
+			result._LoadedFromSource = false;
+
             result.HttpCompression = false;		// Disabled by default
             result.ForceEncoding = false;	// Disabled by default
             result.RemoveScripts = false;		// Disabled by default
             result.RemoveImages = false;			// Disabled by default
-            result.DocType = def;             // Disabled by default
+			result.TempCookies = false; // Disabled by default
+            result.DocType = def;            
             result.OrginalUrl = def;
             result.Images = def;
-            result.Scripts = def;
             result.Links = def;
-            result.IFrame = def;
-            result.FrameSet = def;
+			result.Frames = def;
             result.SubmitForms = def;
-            result.CssLink = def;
             result.EncodeUrl = def;
             result.EmbedObjects = def;
             result.Cookies = def;
             result.PageTitle = def;
-            return result;
+            //result.Scripts = def;
+            //result.IFrame = def;
+            //result.FrameSet = def;
+            //result.CssLink = def;
+			return result;
         }
 
         public void SaveToResponse()
         {
             HttpContext context = HttpContext.Current;
 
-            HttpCookie cookie = new HttpCookie(Consts.FrontEndPresentation.CookieMasterName);
+            HttpCookie cookie = new HttpCookie(Consts.FrontEndPresentation.UserOptionsCookieName);
             cookie.Expires = DateTime.Now.AddMonths(1);
 
             Type type = typeof(UserOptions);
@@ -84,7 +99,7 @@ namespace SalarSoft.ASProxy
             UserOptions result = LoadDefaults(true);
 
             HttpContext context = HttpContext.Current;
-            HttpCookie cookie = context.Request.Cookies[Consts.FrontEndPresentation.CookieMasterName];
+            HttpCookie cookie = context.Request.Cookies[Consts.FrontEndPresentation.UserOptionsCookieName];
             if (cookie == null)
                 return result;
 
@@ -93,6 +108,9 @@ namespace SalarSoft.ASProxy
 
             foreach (FieldInfo info in type.GetFields())
             {
+				if (info.Name == "_LoadedFromSource")
+					continue;
+
                 string cookievalue = cookie[info.Name];
 
                 // cookie has value?
@@ -110,6 +128,7 @@ namespace SalarSoft.ASProxy
             }
 
             result = (UserOptions)instance;
+			result._LoadedFromSource = true;
 
             return result;
         }
@@ -128,7 +147,10 @@ namespace SalarSoft.ASProxy
 
                 foreach (XmlNode node in baseNode.ChildNodes)
                 {
-                    FieldInfo info = optionType.GetField(node.Name);
+					if (node.Name == "_LoadedFromSource")
+						continue;
+
+					FieldInfo info = optionType.GetField(node.Name);
                     if (info.FieldType.IsEnum)
                         info.SetValue(result, Enum.Parse(info.FieldType, node.InnerText));
                     else
@@ -137,7 +159,8 @@ namespace SalarSoft.ASProxy
             }
             catch { }
 
-            return result;
+			result._LoadedFromSource = true;
+			return result;
         }
 
         public void SaveToXml(string xmlFile)

@@ -13,12 +13,11 @@ namespace SalarSoft.ASProxy.Exposed
 	{
 		string PageInitializerCodes { get; set; }
 		Encoding ContentEncoding { get; set; }
-		UserOptions UserOptions { get; set; }
+		//UserOptions UserOptions { get; set; }
 		IWebData WebData { get; set; }
 
 		string Execute();
 
-		void Execute(ref string codes, string pageUrl, string rootUrl);
-
+		void Execute(ref string codes, string pageUrl, string pageUrlNoQuery ,string pagePath, string rootUrl);
 	}
 }

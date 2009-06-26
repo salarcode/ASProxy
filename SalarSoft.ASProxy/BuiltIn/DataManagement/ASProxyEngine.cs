@@ -165,7 +165,7 @@ namespace SalarSoft.ASProxy.BuiltIn
                 dataProcessor.WebData = _webData;
 
                 // User options
-                dataProcessor.UserOptions = UserOptions;
+                //dataProcessor.UserOptions = UserOptions;
 
                 // executes the process
                 string response = dataProcessor.Execute();
@@ -210,7 +210,12 @@ namespace SalarSoft.ASProxy.BuiltIn
                 Encoding contentEncoding;
 
                 // Reads response stream to a string
-                string response = StringStream.GetString(_webData.ResponseData, UserOptions.ForceEncoding, out contentEncoding);
+                string response = StringStream.GetString(
+					_webData.ResponseData,
+					WebData.ResponseInfo.ContentType,
+					UserOptions.ForceEncoding,
+					false,
+					out contentEncoding);
 
                 ResponseInfo.ContentEncoding = contentEncoding;
                 ResponseInfo.ContentLength = response.Length;
@@ -270,7 +275,7 @@ namespace SalarSoft.ASProxy.BuiltIn
                 dataProcessor.WebData = _webData;
 
                 // User options
-                dataProcessor.UserOptions = UserOptions;
+                //dataProcessor.UserOptions = UserOptions;
 
                 // executes the process
                 string response = dataProcessor.Execute();
@@ -324,6 +329,7 @@ namespace SalarSoft.ASProxy.BuiltIn
 
                     MemoryStream mem = (MemoryStream)_webData.ResponseData;
                     mem.WriteTo(httpResponse.OutputStream);
+
                 }
                 else if (processType == DataTypeToProcess.None)
                 {
@@ -343,7 +349,12 @@ namespace SalarSoft.ASProxy.BuiltIn
                 {
                     Encoding contentEncoding;
                     // Reads response stream to a string
-                    string response = StringStream.GetString(_webData.ResponseData, UserOptions.ForceEncoding, out contentEncoding);
+                    string response = StringStream.GetString(
+						_webData.ResponseData,
+						WebData.ResponseInfo.ContentType,
+						UserOptions.ForceEncoding,
+						false,
+						out contentEncoding);
 
                     ResponseInfo.ContentEncoding = contentEncoding;
                     ResponseInfo.ContentLength = response.Length;
@@ -354,6 +365,9 @@ namespace SalarSoft.ASProxy.BuiltIn
                     // the content
                     httpResponse.Write(response);
                 }
+
+				// closes the respose
+				// httpResponse.OutputStream.Close();
             }
         }
 
@@ -408,7 +422,7 @@ namespace SalarSoft.ASProxy.BuiltIn
                 dataProcessor.WebData = _webData;
 
                 // User options
-                dataProcessor.UserOptions = UserOptions;
+                //dataProcessor.UserOptions = UserOptions;
 
                 // executes the process
                 string response = dataProcessor.Execute();
@@ -472,7 +486,12 @@ namespace SalarSoft.ASProxy.BuiltIn
                 {
                     Encoding contentEncoding;
                     // Reads response stream to a string
-                    string response = StringStream.GetString(_webData.ResponseData, UserOptions.ForceEncoding, out contentEncoding);
+                    string response = StringStream.GetString(
+						_webData.ResponseData,
+						WebData.ResponseInfo.ContentType,
+						UserOptions.ForceEncoding, 
+						false,
+						out contentEncoding);
 
                     ResponseInfo.ContentEncoding = contentEncoding;
                     ResponseInfo.ContentLength = response.Length;
@@ -531,14 +550,18 @@ namespace SalarSoft.ASProxy.BuiltIn
             httpResponse.AddHeader("Content-Type", ResponseInfo.ContentType);
 
             // ASProxy signature in request header
-            httpResponse.AddHeader("X-Powered-By", Consts.BackEndConenction.ASProxyAgentVersion);
-            httpResponse.AddHeader("X-Working-With", Consts.BackEndConenction.ASProxyAgentVersion);
+			if (Configurations.WebData.SendSignature)
+			{
+				httpResponse.AddHeader("X-Powered-By", Consts.BackEndConenction.ASProxyAgentVersion);
+				httpResponse.AddHeader("X-Working-With", Consts.BackEndConenction.ASProxyAgentVersion);
+			}
 
             // Set response content type 
             if (ResponseInfo.ContentEncoding != null)
             {
                 httpResponse.ContentEncoding = ResponseInfo.ContentEncoding;
-                httpResponse.Charset = ResponseInfo.ContentEncoding.BodyName;
+				// BUG: This causes "illegal character" in browsers
+                //httpResponse.Charset = ResponseInfo.ContentEncoding.BodyName;
             }
 
             // Write document text
@@ -718,8 +741,10 @@ namespace SalarSoft.ASProxy.BuiltIn
                     RequestInfo.PostDataString = httpRequest.Form.ToString();
 
                     // Some web sites encodes the url, and we need to decode it.
-                    // RequestInfo.PostedFormData = HttpUtility.UrlDecode(RequestInfo.PostedFormData);
-                    RequestInfo.PostDataString = HttpUtility.HtmlDecode(RequestInfo.PostDataString);
+                    //RequestInfo.PostDataString = HttpUtility.HtmlDecode(RequestInfo.PostDataString);
+
+					// the text should be docoded to be used
+					RequestInfo.PostDataString = HttpUtility.UrlDecode(RequestInfo.PostDataString);
                 }
                 else
                     RequestInfo.PostDataString = "";
