@@ -119,6 +119,9 @@ namespace SalarSoft.ASProxy.BuiltIn
 					throw;
 				}
 
+				// Check for response persmission set from "Administration UI"
+				ValidateResponse(webResponse);
+
 				// Response is successfull, continue to get data
 				FinalizeWebResponse(webResponse);
 
@@ -183,6 +186,22 @@ namespace SalarSoft.ASProxy.BuiltIn
 					webResponse.Close();
 			}
 		}
+
+		private void ValidateResponse(WebResponse webResponse)
+		{
+			// is max content lenght enabled
+			if (Configurations.WebData.MaxContentLength > 0)
+			{
+				// is response lenght bigger than allowed size
+				if (webResponse.ContentLength > Configurations.WebData.MaxContentLength)
+				{
+					// the request is not allowed
+					string exFormat = "Getting {0} bytes of data is more than allowed size, {1} bytes.";
+					throw new Exception(string.Format(exFormat, webResponse.ContentLength, Configurations.WebData.MaxContentLength));
+				}
+			}
+		}
+
 		protected override void ApplyCustomHeaders(WebRequest webRequest)
 		{
 			NameValueCollection headers = RequestInfo.CustomHeaders;
@@ -653,10 +672,14 @@ namespace SalarSoft.ASProxy.BuiltIn
 
 		protected virtual Encoding GetResponseEncoding(HttpWebResponse httpReponse, Encoding defaultEncoding)
 		{
+			string enc = httpReponse.CharacterSet;
 			try
 			{
-				// CharacterSet is only for HTTP
-				return Encoding.GetEncoding(httpReponse.CharacterSet);
+				if (!string.IsNullOrEmpty(enc))
+					// CharacterSet is only for HTTP
+					return Encoding.GetEncoding(httpReponse.CharacterSet);
+				else
+					return defaultEncoding;
 			}
 			catch
 			{

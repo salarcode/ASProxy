@@ -7,7 +7,7 @@
 	protected void btnASProxyDisplayButton_Click(object sender, EventArgs e)
 	{
 		txtUrl.Text = UrlProvider.CorrectInputUrl(txtUrl.Text);
-		string redir = UrlProvider.GetASProxyPageUrl(Consts.FilesConsts.DefaultPage, txtUrl.Text, true);
+		string redir = UrlProvider.GetASProxyPageUrl(Consts.FilesConsts.PageDefault_Dynamic, txtUrl.Text, true);
 		Response.Redirect(redir);
 	}
 
@@ -30,7 +30,7 @@
 			}
 			else
 			{
-                Response.Redirect(Consts.FilesConsts.DefaultPage, false);
+				Response.Redirect(Consts.FilesConsts.PageDefault_Dynamic, false);
 			}
 		}
 		catch (System.Threading.ThreadAbortException)
@@ -62,14 +62,14 @@
 
 				Systems.CredentialCache.AddCertification(url, wcLogin.UserName, wcLogin.Password);
 
-                string redir = UrlProvider.GetASProxyPageUrl(Consts.FilesConsts.DefaultPage, url, true);
+				string redir = UrlProvider.GetASProxyPageUrl(Consts.FilesConsts.PageDefault_Dynamic, url, true);
 				Response.Redirect(redir, true);
 
 				e.Authenticated = true;
 			}
 			else
 			{
-                Response.Redirect(Consts.FilesConsts.DefaultPage, false);
+				Response.Redirect(Consts.FilesConsts.PageDefault_Dynamic, false);
 			}
 		}
 		catch (System.Threading.ThreadAbortException)

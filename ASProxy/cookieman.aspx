@@ -1,31 +1,33 @@
 <%@ Page Language="C#" %>
+
 <%@ Import Namespace="SalarSoft.ASProxy" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
 <script runat="server">
 	const string authenticationCookie = "ASProxyUser";
 	const string sessionStateCookie = "ASProxySession";
-	
+
 	private HttpCookieCollection GetCookiesCollection()
 	{
 		HttpCookieCollection result = new HttpCookieCollection();
-		for (int i = 0; i < Request.Cookies.Count;i++)
+		for (int i = 0; i < Request.Cookies.Count; i++)
 		{
 			HttpCookie cookie = Request.Cookies[i];
-            if (cookie.Name != sessionStateCookie &&
-                cookie.Name != authenticationCookie &&
-                cookie.Name != Consts.FrontEndPresentation.UserOptionsCookieName &&
-                cookie.Name != Consts.FrontEndPresentation.HttpCompressorCookieName)
+			if (cookie.Name != sessionStateCookie &&
+				cookie.Name != authenticationCookie &&
+				cookie.Name != Consts.FrontEndPresentation.UserOptionsCookieName &&
+				cookie.Name != Consts.FrontEndPresentation.HttpCompressorCookieName)
 			{
 				result.Add(cookie);
 			}
 		}
 		return result;
 	}
-	
+
 	protected void Page_Load(object sender, EventArgs e)
 	{
 		rptCookies.DataSource = GetCookiesCollection();
-		
+
 		rptCookies.DataBind();
 	}
 
@@ -33,7 +35,7 @@
 	{
 		if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
 		{
-			Button btn =(Button) e.Item.FindControl("btnDelete");
+			Button btn = (Button)e.Item.FindControl("btnDelete");
 			btn.CommandArgument = e.Item.DataItem.ToString();
 		}
 	}
@@ -52,7 +54,7 @@
 			Response.Redirect(Request.Url.ToString(), false);
 		}
 	}
-	
+
 	protected void rptCookies_btnClearCookies(object source, EventArgs e)
 	{
 		Button btn = (Button)source;
@@ -71,59 +73,46 @@
 		}
 	}
 </script>
-<html xmlns="http://www.w3.org/1999/xhtml" >
+
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
 <title>[PageTitle]</title>
+<link href="theme/default/style.css" rel="stylesheet" type="text/css" />
 <style type="text/css">
-Body{ font-family:Tahoma; font-size:10pt;}
-Input{ border:solid 1px gray;font-size:8pt;}
-.Cookies_Table{ border:solid 2px black;}
-.Cookies_Table td{ border:solid 1px silver;}
-.Cookies_FirstCell{width:30px;text-align:center;}
-.Cookies_HederRow{background-color:WhiteSmoke; font-weight:bold;}
+.about h1{margin-top: 0px;padding-top: 5px;}
+.desc{overflow:auto;}
 </style>
 </head>
 <body>
 <form id="frmCookieMan" runat="server" dir="[Direction]">
-<table class="Cookies_Table" style="width: 100%; background-color: WhiteSmoke; ">
-<tr>
-	<td class="asproxy_td" style="width: 130px;">
-		[VersionFamily]</td>
-	<td style="text-align: center; font-weight: bold;">
-		[PageHeader]</td>
-	<td class="asproxy_td" style="width: 130px; font-size: 10pt;">
-		powered by SalarSoft</td>
-</tr>
-</table>
-<p style="text-align:center"><a href="default.aspx">[ReturnHome]</a></p>
-<p style="text-align: center">[Description]</p>
-<%--OnItemDataBound="rptCookies_ItemDataBound"--%>
-<asp:Repeater ID="rptCookies" runat="server" >
-<HeaderTemplate>
-<table class="Cookies_Table" style="width: 100%;">
-<tr class="Cookies_HederRow">
-<th class="Cookies_FirstCell">[Row]</th>
-<th style="width:50px">[Options]</th>
-<th colspan="4" dir="[Direction]" style="text-align:center;">[Details]</th>
-</tr>
-<tr><td>&nbsp;</td><td>&nbsp;</td><td>Name</td><td>Path</td><td>Expires</td><td>Value</td></tr>
-</HeaderTemplate>
-<FooterTemplate>
-<tr><th colspan="6" align="justify">
-<asp:Button ID="btnClearCookies" runat="server" OnClick="rptCookies_btnClearCookies" CommandName="ClearCookies" Text="[ClearCookies]" />
-</th></tr>
-</table></FooterTemplate>
-
-<ItemTemplate>
-<tr>
-	<td class="Cookies_FirstCell"><%#Container.ItemIndex+1%></td>
-	<td><asp:Button ID="btnDelete" runat="server" OnClick="rptCookies_btnDelete" CommandName="DeleteCookie" CommandArgument="<%#Container.DataItem.ToString() %>" Text="[Delete]" /></td>
-	<td style="word-break:break-all;"><%#Request.Cookies[Container.DataItem.ToString()].Name%></td>
-	<td><%#Request.Cookies[Container.DataItem.ToString()].Path%></td>
-	<td><%#Request.Cookies[Container.DataItem.ToString()].Expires%></td>
-	<td style="word-break:break-all;"><%#Request.Cookies[Container.DataItem.ToString()].Value%></td>
-</tr>
-</ItemTemplate>
-</asp:Repeater>
-</form>
-</body></html>
+<div class="header">
+<div id="logo">
+<h1><a asproxydone="2" href=".">ASProxy</a><span class="super"><%=Consts.General.ASProxyVersion %></span></h1>
+<h2>Surf the web with</h2></div>
+</div><div id="menu-wrap"><div id="menu"><ul><li><a asproxydone="2" href="." accesskey="1">Home</a></li>
+<li class="first"><a asproxydone="2" href="cookieman.aspx" accesskey="2">Cookie Manager</a></li>
+<li><a asproxydone="2" href="download.aspx" accesskey="3">Download Tool</a></li>
+<li><a asproxydone="2" href="surf.aspx?dec=1&amp;url=aHR0cDovL2FzcHJveHkuc291cmNlZm9yZ2UubmV0B64Coded!" target="_blank" accesskey="4">ASProxy Page</a></li>
+</ul></div></div><div id="content"><div class="content"><div class="about"><h1 class="title">Cookie Manager</h1>
+<div class="entry">Warning, if the number of ASProxy cookies increases, ASProxy may not be able to load,<br />
+In this case remove the cookies.</div></div></div>
+<div class="cookies"><asp:Repeater ID="rptCookies" runat="server"><HeaderTemplate>
+<table cellpadding="0" cellspacing="0" class="tblOptions" style="width: 100px;">
+<tr class="option"><th style="width: 50px">[Options]</th><th colspan="4" dir="[Direction]" style="text-align: center;">[Details]</th></tr><tr class="option"><td>&nbsp;</td><td>Name</td><td>Value</td></tr>
+</HeaderTemplate><FooterTemplate>
+<tr class="option">
+<th colspan="4" align="left">
+<asp:Button CssClass="button" ID="btnClearCookies" runat="server" OnClick="rptCookies_btnClearCookies" CommandName="ClearCookies" Text="[DeleteAllCookies]" />
+</th></tr></table></FooterTemplate><ItemTemplate>
+<tr class="option"><td>
+<asp:Button CssClass="button" ID="btnDelete" runat="server" OnClick="rptCookies_btnDelete" CommandName="DeleteCookie"
+CommandArgument="<%#Container.DataItem.ToString() %>" Text="[Delete]" />
+</td><td class="name" style="word-break: break-all;word-wrap:break-word;"><%#Request.Cookies[Container.DataItem.ToString()].Name%>
+</td><td class="desc" style="word-break: break-all;word-wrap:break-word;"><%#Request.Cookies[Container.DataItem.ToString()].Value%>
+</td></tr></ItemTemplate></asp:Repeater></div>
+</div><div id="links"><p><a asproxydone="2" href="cookieman.aspx" target="_blank">Cookie Manager</a> <a asproxydone="2"
+href="download.aspx" target="_blank">Download Tool</a> Have your own <a asproxydone="2"
+href="surf.aspx?dec=1&url=aHR0cDovL2FzcHJveHkuc291cmNlZm9yZ2UubmV0B64Coded!" target="_blank">ASProxy</a>. It's free.
+</p></div><div id="footer"><p>
+@2009 ASProxy <%=Consts.General.ASProxyVersion %>: powered by SalarSoft</p>
+</div></form></body></html>

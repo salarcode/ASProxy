@@ -275,15 +275,12 @@ namespace SalarSoft.ASProxy.BuiltIn
 				}
 
 				// Encode <embed> tags
-				if (_UserOptions.EmbedObjects)
-				{
-					HtmlReplacer.ReplaceEmbeds(ref codes,
-						pageUrlNoQuery,
-						pages.PageAnyType,
-						pagePath,
-						rootUrl,
-						_UserOptions.EncodeUrl);
-				}
+				HtmlReplacer.ReplaceEmbeds(ref codes,
+					pageUrlNoQuery,
+					pages.PageAnyType,
+					pagePath,
+					rootUrl,
+					_UserOptions.EncodeUrl);
 
 				// Encode <form> tags
 				if (_UserOptions.SubmitForms)
@@ -393,10 +390,10 @@ namespace SalarSoft.ASProxy.BuiltIn
 				pagePath,
 				rootUrl,
 				Systems.CookieManager.GetCookieName(pageUrl),
-				UrlProvider.JoinUrl(UrlProvider.GetAppAbsolutePath(), Consts.FilesConsts.DefaultPage),
+				UrlProvider.JoinUrl(UrlProvider.GetAppAbsolutePath(), Consts.FilesConsts.PageDefault_Dynamic),
 				UrlProvider.GetAppAbsolutePath(),
 				UrlProvider.GetAppAbsoluteBasePath(),
-				Consts.FilesConsts.DefaultPage,
+				Consts.FilesConsts.PageDefault_Dynamic,
 				Consts.Query.Base64Unknowner
 			);
 

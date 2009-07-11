@@ -77,7 +77,7 @@ namespace SalarSoft.ASProxy.BuiltIn
 			int valueStart, valueEnd;
 			const string strCSSUrlValue = "url(";
 
-			TextRange result = new TextRange(-1, -1);
+			TextRange result;// = new TextRange(-1, -1);
 			result.End = -1;
 			result.Start = -1;
 

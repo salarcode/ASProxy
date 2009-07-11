@@ -5,9 +5,8 @@ using System.Net;
 using System.Text;
 using System.Web;
 using SalarSoft.ASProxy.Exposed;
-using SalarSoft.ASProxy.BuiltIn;
 
-namespace SalarSoft.ASProxy.BuiltIn.Plugins
+namespace SalarSoft.ASProxy.BuiltIn
 {
     /// <summary>
     /// AJAX Engine plugin
@@ -85,6 +84,7 @@ namespace SalarSoft.ASProxy.BuiltIn.Plugins
         }
         protected override void ApplyWebDataRequestInfo(IWebData webData)
         {
+			// call base emthod
             base.ApplyWebDataRequestInfo(webData);
 
             // ajax headers

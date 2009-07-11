@@ -18,6 +18,7 @@ namespace SalarSoft.ASProxy
 		private static ProvidersConfig _providers;
 		private static WebDataConfig _webData;
 		private static AuthenticationConfig _authentication;
+		private static ImageCompressorConfig _imageCompressor;
 		private static AutoUpdateConfig _autoUpdate;
 		private static LogSystemConfig _logSystem;
 		private static NetProxyConfig _netProxy;
@@ -49,6 +50,11 @@ namespace SalarSoft.ASProxy
 		{
 			get { return Configurations._authentication; }
 			set { Configurations._authentication = value; }
+		}
+		public static ImageCompressorConfig ImageCompressor
+		{
+			get { return Configurations._imageCompressor; }
+			set { Configurations._imageCompressor = value; }
 		}
 		public static AutoUpdateConfig AutoUpdate
 		{
@@ -180,6 +186,9 @@ namespace SalarSoft.ASProxy
 
 				// authentication ------
 				_authentication.ReadFromXml(rootNode);
+
+				// authentication ------
+				_imageCompressor.ReadFromXml(rootNode);
 
 				// autoUpdate -------
 				_autoUpdate.ReadFromXml(rootNode);
@@ -457,6 +466,34 @@ namespace SalarSoft.ASProxy
 			}
 		}
 
+		public struct ImageCompressorConfig : IConfigSection
+		{
+			public bool Enabled;
+			public long Quality;
+
+			public void SaveToXml(XmlDocument xmlDoc, XmlNode rootNode)
+			{
+				XmlAttribute attribute;
+
+				XmlNode activeNode = xmlDoc.CreateElement("imageCompressor");
+				rootNode.AppendChild(activeNode);
+
+				attribute = xmlDoc.CreateAttribute("enabled");
+				attribute.Value = this.Enabled.ToString();
+				activeNode.Attributes.Append(attribute);
+
+				attribute = xmlDoc.CreateAttribute("quality");
+				attribute.Value = this.Quality.ToString();
+				activeNode.Attributes.Append(attribute);
+			}
+			public void ReadFromXml(XmlNode rootNode)
+			{
+				XmlNode node = rootNode.SelectSingleNode("imageCompressor"); ;
+
+				this.Enabled = Convert.ToBoolean(node.Attributes["enabled"].Value);
+				this.Quality = Convert.ToInt64(node.Attributes["quality"].Value);
+			}
+		}
 		public struct AutoUpdateConfig : IConfigSection
 		{
 			public string UpdateInfoUrl;

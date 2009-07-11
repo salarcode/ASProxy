@@ -21,11 +21,14 @@
 		<userAgent mode="Default" custom="ASProxy (compatible; Mozilla/5.0;)" />
   </webData>
   
-  <!--Used in private proxy feature to prevent strangers to access to proxy-->
+  <!--Used in private proxy feature to prevent strangers to access the proxy-->
   <authentication enabled="false">
     <user userName="admin" password="admin" pages="true" images="true" downloads="true"></user>
   </authentication>
 
+	<!--Image compressor config-->
+	<imageCompressor enabled="true" quality="10">
+	</imageCompressor>
 	
 	<userAccessControl enabled="false">
 		<blocked>

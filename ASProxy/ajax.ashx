@@ -4,7 +4,7 @@ using System;
 using System.Web;
 using SalarSoft.ASProxy;
 using SalarSoft.ASProxy.Exposed;
-using SalarSoft.ASProxy.BuiltIn.Plugins;
+using SalarSoft.ASProxy.BuiltIn;
 
 public class ajax : IHttpHandler
 {
@@ -78,5 +78,4 @@ public class ajax : IHttpHandler
 			return false;
 		}
 	}
-
 }

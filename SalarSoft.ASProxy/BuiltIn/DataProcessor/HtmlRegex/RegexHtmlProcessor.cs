@@ -97,29 +97,6 @@ namespace SalarSoft.ASProxy.BuiltIn
 					rootUrl = UrlProvider.GetRootPath(pagePath);
 				}
 
-				//// removes scripts
-				//if (_UserOptions.RemoveScripts == false)
-				//{
-				//    // processes embeded scripts
-				//    ReplaceEmbededScript(ref codes,
-				//            pageUrl,
-				//            pageUrlNoQuery,
-				//            pagePath,
-				//            rootUrl);
-
-				//    // Replaces scripts source  for  href|src|background
-				//    regexPattarn = @"(?><script)(?>\s+[^>\s]+)*?\s*(?>src\s*=(?!\\)\s*)(?>(['""])?)(?<URL>(?(1)(?(?<="")[^""]+|[^']+)|[^ >]+))(?(1)\1|)";
-				//    ApplyToUrlSpecifed(ref codes,
-				//        regexPattarn,
-				//        pageUrl,
-				//        pageUrlNoQuery,
-				//        pagePath,
-				//        rootUrl,
-				//        pages.PageAnyType,
-				//        _UserOptions.EncodeUrl,
-				//        null);
-				//}
-
 				regexPattarn = @"<script\b[^>]*>(?:.*?)</script>";
 				MatchCollection matchColl = Regex.Matches(codes,
 												regexPattarn,
@@ -343,7 +320,7 @@ namespace SalarSoft.ASProxy.BuiltIn
 						rootUrl);
 
 				// Replace with IMG tag
-				// Replaces link|embed|script  for  href|src|background
+				// Replaces Link|Embed|script  for  href|src|background
 				// FOR NEXT ApplyToUrlSpecifed
 				regexPattarn = @"(?><(?<T>img|link|embed|script))(?>\s+[^>\s]+)*?\s*(?>(?<A>href|src)\s*=(?!\\)\s*)(?>(['""])?)(?<URL>(?(1)(?(?<="")[^""]+|[^']+)|[^ >]+))(?(1)\1|)";
 			}
@@ -395,21 +372,17 @@ namespace SalarSoft.ASProxy.BuiltIn
 					extraAttib);
 			}
 
-			if (_UserOptions.EmbedObjects)
-			{
-				// Encode <embed> tags
-				// <param name="movie" value="before.swf"> not done!
-				regexPattarn = @"(?><embed)(?>\s+[^>\s]+)*?\s*(?>src\s*=(?!\\)\s*)(?>(['""])?)(?<URL>(?(1)(?(?<="")[^""]+|[^']+)|[^ >]+))(?(1)\1|)";
-				ApplyToUrlSpecifed(ref codes,
-					regexPattarn,
-					pageUrl,
-					pageUrlNoQuery,
-					pagePath,
-					rootUrl,
-					pages.PageAnyType,
-					_UserOptions.EncodeUrl,
-					null);
-			}
+			// Object tags 
+			// <param name="movie" value="before.swf">
+			ReplaceObjectsMovie(ref codes,
+				pageUrl,
+				pageUrlNoQuery,
+				pagePath,
+				rootUrl,
+				pages.PageAnyType,
+				_UserOptions.EncodeUrl,
+				null);
+
 
 			// Encode <form> tags
 			if (_UserOptions.SubmitForms)
@@ -547,6 +520,9 @@ namespace SalarSoft.ASProxy.BuiltIn
 							case "script":
 								newPageFormat = pages.PageJS;
 								break;
+							case "embed":
+								newPageFormat = pages.PageAnyType;
+								break;
 						}
 					}
 
@@ -605,10 +581,6 @@ namespace SalarSoft.ASProxy.BuiltIn
 						{
 							if (UrlProvider.IsJavascriptUrl(matchValue))
 							{
-								//IJSProcessor js = (IJSProcessor)Provider.CreateProviderInstance(ProviderType.IJSProcessor);
-								//js.UserOptions = UserOptions.ReadFromRequest();
-								//Processors.JSProcessor.UserOptions = UserOptions;
-
 								// execute
 								Processors.JSProcessor.Execute(ref matchValue,
 									pageUrl,
@@ -687,6 +659,13 @@ namespace SalarSoft.ASProxy.BuiltIn
 												RegexOptions.Compiled);
 				for (int i = matchColl.Count - 1; i >= 0; i--)
 				{
+
+					// ISSUE: ***********************
+					// The bottleneck starts here. 
+					// sometime this "for" block runs about 2500 time per a request and it takes about 30 seconds.
+					// There should be a way to rid of this issue
+					// ISSUE: ***********************
+
 					addNewAttribute = hasNewAttribute;
 
 					Match match = matchColl[i];
@@ -748,10 +727,6 @@ namespace SalarSoft.ASProxy.BuiltIn
 						{
 							if (UrlProvider.IsJavascriptUrl(matchValue))
 							{
-								//IJSProcessor js = (IJSProcessor)Provider.CreateProviderInstance(ProviderType.IJSProcessor);
-								//js.UserOptions = UserOptions.ReadFromRequest();
-								//Processors.JSProcessor.UserOptions = UserOptions;
-
 								// execute
 								Processors.JSProcessor.Execute(ref matchValue,
 									pageUrl,
@@ -868,7 +843,6 @@ namespace SalarSoft.ASProxy.BuiltIn
 
 				// find matches
 				MatchCollection mColl = regex.Matches(codes);
-				//Processors.CssProcessor.UserOptions = UserOptions;
 
 				// match collection
 				for (int i = mColl.Count - 1; i >= 0; i--)
@@ -924,8 +898,6 @@ namespace SalarSoft.ASProxy.BuiltIn
 				// find matches
 				MatchCollection mColl = regex.Matches(codes);
 
-				//Processors.CssProcessor.UserOptions = UserOptions;
-
 				// match collection
 				for (int i = mColl.Count - 1; i >= 0; i--)
 				{
@@ -947,7 +919,7 @@ namespace SalarSoft.ASProxy.BuiltIn
 
 						if (eventCodeOrg != eventCode)
 						{
-							// Repace the change!
+							// Repace the changes!
 							codes = codes.Remove(group.Index, group.Length);
 							codes = codes.Insert(group.Index, eventCode);
 						}
@@ -979,8 +951,6 @@ namespace SalarSoft.ASProxy.BuiltIn
 
 				// find matches
 				MatchCollection mColl = regex.Matches(codes);
-
-				//Processors.JSProcessor.UserOptions = UserOptions;
 
 				// match collection
 				for (int i = mColl.Count - 1; i >= 0; i--)
@@ -1021,6 +991,151 @@ namespace SalarSoft.ASProxy.BuiltIn
 			}
 		}
 
+		private void ReplaceObjectsMovie(ref string codes,
+			string pageUrl,
+			string pageUrlNoQuery,
+			string pagePath,
+			string rootUrl,
+			string newPageFormat,
+			bool encodeUrl,
+			string extraAttributeFormat)
+		{
+			try
+			{
+				// the "[^>]*>" is additional
+				const string pattern = @"(?><param)(?>\s+[^>\s]+)*?\s*(?>value\s*=(?!\\)\s*)(?>(['""])?)(?<URL>(?(1)(?(?<="")[^""]+|[^']+)|[^ >]+))(?(1)\1|)[^>]*>";
+				Regex regex = new Regex(pattern,
+					RegexOptions.Compiled | RegexOptions.Singleline | RegexOptions.IgnoreCase);
+
+				// find matches
+				MatchCollection mColl = regex.Matches(codes);
+
+				bool addNewAttribute = false;
+				bool hasNewAttribute = false;
+
+				// match collection
+				for (int i = mColl.Count - 1; i >= 0; i--)
+				{
+					addNewAttribute = hasNewAttribute;
+
+					Match match = mColl[i];
+
+					// match value
+					string matchVal = match.Value;
+
+					// test if match contains (name="movie")
+					if (StringCompare.IndexOfIgnoreCase(ref matchVal, "movie") != -1)
+					{
+						// get the value group
+						Group group = match.Groups["URL"];
+
+						if (group != null)
+						{
+							string matchValue = group.Value;
+							string orgValue;
+
+
+							//===== If link is a bookmark don't change it=====
+							if (matchValue.StartsWith("#"))
+								continue;
+
+							// Decode html code
+							// some codes are in hex e.g. &#39; represents (')
+							matchValue = HttpUtility.HtmlDecode(matchValue);
+
+							// removes anu quotes from beginning and ending
+							matchValue = HtmlTags.RemoveQuotesFromTagAttributeValue(matchValue);
+
+							// if it is client side script
+							if (UrlProvider.IsClientSitdeUrl(matchValue) == false)
+							{
+								string bookmarkPart = string.Empty;
+
+								// Convert virtual url to absolute
+								matchValue = UrlProvider.JoinUrl(matchValue, pageUrlNoQuery, pagePath, rootUrl);
+
+								// Delete invalid character such as tab and line feed
+								matchValue = UrlProvider.IgnoreInvalidUrlCharctersInHtml(matchValue);
+
+								// Save orginal value
+								orgValue = matchValue;
+
+								//===== If another site url, has bookmark
+								if (matchValue.IndexOf('#') != -1)
+									matchValue = UrlProvider.RemoveUrlBookmark(matchValue, out bookmarkPart);
+
+								//====== Encode url to make it unknown ======
+								if (encodeUrl)
+								{
+									matchValue = UrlProvider.EncodeUrl(matchValue);
+								}
+
+								//====== Add it to our url ======
+								matchValue = string.Format(newPageFormat, matchValue);
+
+								//===== Add bookmark to last url =====
+								if (bookmarkPart.Length > 0)
+								{
+									matchValue += bookmarkPart;
+									bookmarkPart = "";
+								}
+							}
+							else
+							{
+								if (UrlProvider.IsJavascriptUrl(matchValue))
+								{
+									// execute
+									Processors.JSProcessor.Execute(ref matchValue,
+										pageUrl,
+										pageUrlNoQuery,
+										pagePath,
+										rootUrl);
+								}
+
+
+								orgValue = matchValue;
+								addNewAttribute = false;
+							}
+
+							//====== Make it safe
+							matchValue = HttpUtility.HtmlEncode(matchValue);
+
+
+							if (addNewAttribute)
+							{
+								// Apply original value and encoded value to format
+								// BUG: Problem with format string that contain (') or (") characters
+								// Bug Fixed since version 4.7
+								string newAttribute = string.Format(extraAttributeFormat, orgValue, matchValue);
+
+								Group extGroup = match.Groups["EXT"];
+								if (extGroup != null)
+								{
+									codes = codes.Insert(extGroup.Index, newAttribute);
+								}
+							}
+
+							// Replace the tag
+							codes = codes.Remove(group.Index, group.Length);
+							codes = codes.Insert(group.Index, matchValue);
+						}
+
+					}
+
+				}
+			}
+			catch (Exception ex)
+			{
+				// error logs
+				if (Systems.LogSystem.ErrorLogEnabled)
+					Systems.LogSystem.LogError(ex, pagePath);
+
+				LastStatus = LastStatus.ContinueWithError;
+				LastErrorMessage = "Failed to process some scripts.";
+			}
+		}
+
+
 		/// <summary>
 		/// Generate dynamic encoding javascript codes
 		/// </summary>
@@ -1054,10 +1169,10 @@ namespace SalarSoft.ASProxy.BuiltIn
 				pagePath,
 				rootUrl,
 				Systems.CookieManager.GetCookieName(pageUrl),
-				UrlProvider.JoinUrl(UrlProvider.GetAppAbsolutePath(), Consts.FilesConsts.DefaultPage),
+				UrlProvider.JoinUrl(UrlProvider.GetAppAbsolutePath(), Consts.FilesConsts.PageDefault_Dynamic),
 				UrlProvider.GetAppAbsolutePath(),
 				UrlProvider.GetAppAbsoluteBasePath(),
-				Consts.FilesConsts.DefaultPage,
+				Consts.FilesConsts.PageDefault_Dynamic,
 				Consts.Query.Base64Unknowner
 			);
 
@@ -1088,6 +1203,17 @@ namespace SalarSoft.ASProxy.BuiltIn
 			return result.ToString();
 		}
 
+		/// <summary>
+		/// removes tag name from html codes
+		/// </summary>
+		void RemoveTagOnly(ref string codes, string tagName)
+		{
+			codes = Regex.Replace(codes,
+						@"<[/]?(" + tagName + ")[^>]*?>",
+						string.Empty,
+						RegexOptions.IgnoreCase | RegexOptions.Compiled);
+		}
+
 		class Resources
 		{
 			public const string STR_SubmitForms_ExtraAttribute = " encodedurl=\"{1}\" methodorginal={2} ";
@@ -1103,7 +1229,6 @@ namespace SalarSoft.ASProxy.BuiltIn
 					"_wparent=_wparent ? _wparent : window;" +
 					"var _document=_wparent.document;" +
 					"var ASProxyOriginalURL=_document.getElementById('__ASProxyOriginalURL');" +
-				//"if(ASProxyOriginalURL==null){_document=_wparent.document; ASProxyOriginalURL=_document.getElementById('__ASProxyOriginalURL');}" +
 					"ASProxyOriginalURL.Freeze=false; ASProxyOriginalURL.CurrentUrl=''; var ASProxyUnvisibleHide;" +
 					"function ORG_Position_(){if(!ASProxyOriginalURL)return;var topValue='0';topValue=_document.body.scrollTop+'';" +
 					"if(topValue=='0' || topValue=='undefined')topValue=_wparent.scrollY+'';" +
@@ -1126,10 +1251,10 @@ namespace SalarSoft.ASProxy.BuiltIn
 			/// </summary>
 			public static string ASProxyJavaScriptTag(string content, string src)
 			{
-				string result = "<script " + Consts.ClientContent.attrAlreadyEncodedAttributeIgnore + " language='javascript' ";
+				string result = "<script " + Consts.ClientContent.attrAlreadyEncodedAttributeIgnore;
 				if (!string.IsNullOrEmpty(src))
-					result += "src='" + src + "'";
-				result += "type='text/javascript'>" + content + "</script>";
+					result += " src='" + src + "' ";
+				result += " type='text/javascript' language='javascript'>" + content + "</script>";
 				return result;
 			}
 		}

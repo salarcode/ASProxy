@@ -1,260 +1,141 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
 <%@ Page Language="C#" %>
-<%@ Import Namespace="SalarSoft.ASProxy.Exposed"%>
+
 <%@ Import Namespace="SalarSoft.ASProxy" %>
 <%@ Import Namespace="System.Threading" %>
-<html>
+
 <script runat="server">
-bool _HasError = true; 
-string _ToDisplayUrl = "";
-string _ErrorMessage = "";
-string _ResponseContent = "";
 UserOptions _userOptions;
+void ReadFromUserOptions(UserOptions opt)
+{
+	chkRemoveScripts.Checked = opt.RemoveScripts;
+	chkProcessLinks.Checked = opt.Links;
+	chkDisplayImages.Checked = opt.Images;
+	chkForms.Checked = opt.SubmitForms;
+	chkCompression.Checked = opt.HttpCompression;
+	chkCookies.Checked = opt.Cookies;
+	chkOrginalUrl.Checked = opt.OrginalUrl;
+	chkFrames.Checked = opt.Frames;
+	chkPageTitle.Checked = opt.PageTitle;
+	chkUTF8.Checked = opt.ForceEncoding;
+	chkTempCookies.Checked = opt.TempCookies;
+}
+UserOptions ApplyToUserOptions(UserOptions defaultOptions)
+{
+	UserOptions opt;
+	opt = defaultOptions;
+	opt.RemoveScripts = chkRemoveScripts.Checked;
+	opt.Links = chkProcessLinks.Checked;
+	opt.Images = chkDisplayImages.Checked;
+	opt.SubmitForms = chkForms.Checked;
+	opt.HttpCompression = chkCompression.Checked;
+	opt.Cookies = chkCookies.Checked;
+	opt.OrginalUrl = chkOrginalUrl.Checked;
+	opt.Frames = chkFrames.Checked;
+	opt.PageTitle = chkPageTitle.Checked;
+	opt.ForceEncoding = chkUTF8.Checked;
+	opt.TempCookies = chkTempCookies.Checked;
+	return opt;
+}
+protected void btnDisplay_Click(object sender, EventArgs e)
+{
+	txtUrl.Text = UrlProvider.CorrectInputUrl(txtUrl.Text);
+
+	_userOptions = ApplyToUserOptions(_userOptions);
+	_userOptions.SaveToResponse();
+
+	// The default page to surf
+	Consts.FilesConsts.PageDefault_Dynamic = "surf.aspx";
+
+	string surfUrl = UrlProvider.GetASProxyPageUrl(Consts.FilesConsts.PageDefault_Dynamic, txtUrl.Text, _userOptions.EncodeUrl);
+	Response.Redirect(surfUrl, true);
+}
+
+protected void Page_PreRender(object sender, EventArgs e)
+{
+	ReadFromUserOptions(_userOptions);
+}
 
 protected void Page_Load(object sender, EventArgs e)
 {
-	Consts.FilesConsts.DefaultPage = System.IO.Path.GetFileName(Request.Url.AbsolutePath).ToLower();
-    _userOptions = UserOptions.ReadFromRequest();
-
-	if (Configurations.Authentication.Enabled)
-	{
-		if(!Configurations.Authentication.HasPermission(User.Identity.Name,Configurations.AuthenticationConfig.UserPermission.Pages))
-		{
-			_ErrorMessage = "Access denied!";
-			_ErrorMessage += "<br />You do not have access to browse pages. Ask site administrator to grant permission.";
-			_HasError = true;
-			return;
-		}
-	}
-	
-	ProccessRequest();
-}
-
-void ProccessRequest()
-{
+	_userOptions = UserOptions.ReadFromRequest();
 	if (UrlProvider.IsASProxyAddressUrlIncluded(Request.QueryString))
 	{
-        using (IEngine engine = (IEngine)Provider.CreateProviderInstance(ProviderType.IEngine))
-		{
-
-            engine.UserOptions = _userOptions;
-            engine.DataTypeToProcess = DataTypeToProcess.Html;
-			engine.RequestInfo.SetContentType ( MimeContentType.text_html);
-			
-			engine.Initialize(Request);
-			engine.RequestInfo.RequestUrl = UrlProvider.CorrectInputUrl(engine.RequestInfo.RequestUrl);
-
-			GetResults(engine);
-		}
+		string queries = Request.Url.Query;
+		string surfUrl = UrlBuilder.AppendAntoherQueries(Consts.FilesConsts.PageDefault_Dynamic, queries);
+		Response.Redirect(surfUrl, true);
 	}
-}
-
-void GetResults(IEngine engine)
-{
-	_ToDisplayUrl = engine.RequestInfo.RequestUrl;
-	try
-	{
-		MimeContentType pageContentType;
-		if (!Common.IsFTPUrl(engine.RequestInfo.RequestUrl))
-		{
-			engine.ExecuteHandshake();
-
-			if (engine.LastStatus== LastStatus.Error)
-			{
-				if (Systems.LogSystem.ErrorLogEnabled)
-                    Systems.LogSystem.Log(LogEntity.Error, engine.RequestInfo.RequestUrl, engine.LastErrorMessage);
-
-				_ErrorMessage = engine.LastErrorMessage;
-				if(string.IsNullOrEmpty(_ErrorMessage))
-					_ErrorMessage = "Unknown error on requesting data";
-				_HasError = true;
-				return;
-			}
-			pageContentType = Common.StringToContentType(engine.ResponseInfo.ContentType);
-		}
-		else
-			pageContentType = MimeContentType.application;
-
-		switch (pageContentType)
-		{
-			case MimeContentType.application:
-				if (WebMethods.IsMethod(engine.RequestInfo.RequestMethod, WebMethods.DefaultMethods.GET))
-                    Response.Redirect(UrlProvider.GetASProxyPageUrl(Consts.FilesConsts.PageDownload, engine.RequestInfo.RequestUrl, true), false);
-				else
-                    Response.Redirect(UrlBuilder.AppendAntoherQueries(Consts.FilesConsts.PageDownload ,engine.RequestInfo.PostDataString), false);
-				return;
-			case MimeContentType.image_gif:
-			case MimeContentType.image_jpeg:
-                _ResponseContent = HtmlTags.ImgTag(UrlProvider.GetASProxyPageUrl(Consts.FilesConsts.PageAnyType, engine.RequestInfo.RequestUrl, true));
-				return;
-		}
-
-		// Don't process for these type in default page
-        if (pageContentType == MimeContentType.text_css || pageContentType == MimeContentType.text_plain || pageContentType == MimeContentType.text_javascript)
-            engine.DataTypeToProcess = DataTypeToProcess.None;
-
-		// Execute the request
-        _ResponseContent = engine.ExecuteToString();
-
-        
-		// Set response query
-		_ToDisplayUrl = engine.ResponseInfo.ResponseUrl;
-
-		// If content is text format
-		if (pageContentType == MimeContentType.text_css || pageContentType == MimeContentType.text_plain || pageContentType ==MimeContentType.text_javascript)
-			_ResponseContent = "<pre>" + HttpUtility.HtmlEncode(_ResponseContent) + "</pre>";
-
-		// Response charset
-		Response.ContentEncoding = engine.ResponseInfo.ContentEncoding;
-        Response.Charset = engine.ResponseInfo.ContentEncoding.BodyName;
-
-		if (engine.LastStatus == LastStatus.Error)
-		{
-            if (Systems.LogSystem.ErrorLogEnabled)
-				Systems.LogSystem.Log(LogEntity.Error, engine.RequestInfo.RequestUrl, engine.LastErrorMessage);
-
-			_ErrorMessage = engine.LastErrorMessage;
-			_HasError = true;
-			_ResponseContent = "";
-			return;
-		} 
-        else if (engine.LastStatus == LastStatus.ContinueWithError)
-        {
-            if (Systems.LogSystem.ErrorLogEnabled)
-				Systems.LogSystem.Log(LogEntity.Error, engine.RequestInfo.RequestUrl, engine.LastErrorMessage);
-            
-            // if has error but can continue
-            _ErrorMessage = engine.LastErrorMessage;
-            _HasError = true;
-        }
-
-
-		if (engine.UserOptions.DocType)
-		{
-			Response.Write(engine.ResponseInfo.HtmlDocType);
-		}
-		Response.Write(engine.ResponseInfo.HtmlInitilizerCodes);
-
-        if (engine.UserOptions.PageTitle)
-		{
-			Page.Title = Consts.General.ASProxyName + ": " + engine.ResponseInfo.HtmlPageTitle;
-		}
-		if (engine.ResponseInfo.HtmlIsFrameSet)
-		{
-			ApplyFramesetResults(engine);
-			return;
-		}
-	}
-	catch (ThreadAbortException){}
-	catch (Exception ex)
-	{
-		if (Systems.LogSystem.ErrorLogEnabled)
-			Systems.LogSystem.LogError(ex, engine.RequestInfo.RequestUrl, ex.Message);
-
-			_ErrorMessage = ex.Message;
-		_HasError = true;
-	}
-	finally{}
-}
-
-void ApplyFramesetResults(IEngine resutls)
-{
-	if (resutls.ResponseInfo.HtmlIsFrameSet)
-	{
-		string result = "";
-		if (WebMethods.IsMethod(resutls.RequestInfo.RequestMethod, WebMethods.DefaultMethods.GET))
-            result = UrlProvider.GetASProxyPageUrl(Consts.FilesConsts.PageDirectHtml, resutls.RequestInfo.RequestUrl, true);
-		else
-            result = UrlBuilder.AppendAntoherQueries(Consts.FilesConsts.PageDirectHtml, resutls.RequestInfo.PostDataString);
-		_ResponseContent = HtmlTags.IFrameTag(result, "100%", "600%");
-	}
-	// quit
-	HttpContext.Current.ApplicationInstance.CompleteRequest();
 }
 </script>
-<head runat="server">
-<title runat="server">[PageTitle]</title>
-<script src="scripts/base64encoder.js" type="text/javascript"></script>
-<!-- Surf the web invisibly using ASProxy power. A Powerfull web proxy is in your hands. -->
-<style type="text/css">
-#ASProxyMain{width:99.5%;display:block;padding:1px;margin:0px;border:2px solid #000000;text-align: center;}
-#ASProxyMainForm{display:block;padding:1px;margin:0px; width:auto; height:auto;}
-#ASProxyMain table{margin:0; padding:0px;}
-#ASProxyMainTable{color:black;padding:0px;margin:0px;border:1px solid #C0C0C0;background-color:#f8f8f8;background-image:none;font-weight:normal;font-style:normal;line-height:normal;visibility:visible;table-layout:auto;white-space:normal;word-spacing:normal;}
-#ASProxyMainTable td{margin:0; padding:0px; border-width:0px;color:black;font-family: Tahoma, sans-serif;font-size: 8pt;text-align: center;float:none;background-color:#f8f8f8;}
-#ASProxyMainTable .Button{background-color: #ECE9D8;border:2px outset;float:none;}
-#ASProxyMainTable .Sides{width: 140px;}
-#ASProxyMainTable a,#ASProxyMainTable a:hover,#ASProxyMainTable a:visited,#ASProxyMainTable a:active{font:normal normal normal 100% Tahoma;font-family: Tahoma, sans-serif; color: #000099; text-decoration:underline;}
-#ASProxyMainTable input{width:auto !important; font-size: 10pt;border:solid 1px silver;background-color: #FFFFFF;margin:1px 2px 1px 2px;}
-#ASProxyMainTable span input,
-.ASProxyCheckBox input{margin:0px;background-color:#F8F8F8;display:inline;border-width: 0px;float:none;height:auto !important;}
-#ASProxyMainTable span label,
-.ASProxyCheckBox label{margin:0px 2px;padding:0px; vertical-align:baseline;float:none;color:Black;height:auto !important;font:normal normal normal 100% Tahoma;display:inline;border-width:0px;background-color:#F8F8F8;}
-.ASProxyCheckBox{margin:0px 2px;padding:0px;float:none;color:Black;height:auto !important;font:normal normal normal 100% Tahoma;display:inline;border-width:0px;background-color:#F8F8F8;}
-</style></head><body>
+
+<html><head runat="server">
+<title runat="server">Surf the web with ASProxy</title>
+<meta content='Surf the web invisibly using ASProxy power. A Powerfull web proxy is in your hands.' name='description' />
+<meta content='ASProxy,free,anonymous proxy,anonymous,proxy,asp.net,surfing,filter,antifilter,anti filter' name='keywords' />
+<link href="theme/default/style.css" rel="stylesheet" type="text/css" />
+<link rel='shortcut icon' href='theme/default/favicon.ico' />
+</head><body>
+<form id="frmASProxyDefault" runat="server" asproxydone="2">
+
 <script language="javascript" type="text/javascript">
-var _ASProxyVersion="<%=Consts.General.ASProxyVersion %>";
-function toggleOpt(lnk){var trMoreOpt=document.getElementById('trMoreOpt'); if (trMoreOpt.style.display=='none'){trMoreOpt.style.display='';lnk.innerHTML='[lnkMoreOpt]...<small>&lt;</small>';
-}else{trMoreOpt.style.display='none';lnk.innerHTML='[lnkMoreOpt]...<small>&gt;</small>';}}
-</script>
+function toggleOpt(){var optBlock=document.getElementById('tblOptions');
+if (optBlock.style.display=='none'){optBlock.style.display='';}else{optBlock.style.display='none';}
+}</script><div class="header"><div id="logo">
+<h1><a asproxydone="2" href=".">ASProxy</a><span class="super"><%=Consts.General.ASProxyVersion %></span></h1>
+<h2>Surf the web with</h2></div></div><div id="menu-wrap"><div id="menu">
+<ul><li class="first"><a asproxydone="2" href="." accesskey="1">Home</a></li>
+<li><a asproxydone="2" href="cookieman.aspx" accesskey="2">Cookie Manager</a></li>
+<li><a asproxydone="2" href="download.aspx" accesskey="3">Download Tool</a></li>
+<li><a asproxydone="2" href="surf.aspx?dec=1&amp;url=aHR0cDovL2FzcHJveHkuc291cmNlZm9yZ2UubmV0B64Coded!" target="_blank" accesskey="4">ASProxy Page</a></li>
+</ul></div></div>
+<div id="content"><div class="content"><div class="urlBar">Enter URL:<br />
+<asp:TextBox ID="txtUrl" CssClass="urlText" onkeydown="_Page_HandleTextKey(event)" runat="server" Columns="70" dir="ltr" Width="550px"></asp:TextBox>
+<asp:Button CssClass="button" ID="btnASProxyDisplayButton" runat="server" OnClick="btnDisplay_Click" Text="Display" />
+</div><div class="about">
+<h1 class="title">What is ASProxy?</h1>
+<div class="entry">ASProxy is a service which allows the user to surf the net anonymously. When using
+ASProxy, not only is your identity hidden but you will be able to escape filters
+and firewalls from an internet connection.
+<br />In most cases your job, school, or even your country may prevent you from accessing
+your favorite websites. ASProxy will circumvent this.<br />
+The purpose of ASProxy is spreading freedom on the net, but this proxy can be used
+for any purposes. ASProxy is not responsible for your activities.
+</div></div></div></div>
+<div id="options"><div class="options"><h2><a href="javascript:void(0);" onclick="toggleOpt()">Options</a></h2>
+<table id="tblOptions" class="tblOptions" cellpadding="0" cellspacing="0">
+<tr class="option"><td class="name"><asp:CheckBox ID="chkDisplayImages" runat="server" Checked="True" Text="Images" />
+</td><td class="desc">Displays images.</td></tr><tr class="option">
+<td class="name"><asp:CheckBox ID="chkCompression" runat="server" Text="Compress response" Checked="False" />
+</td><td class="desc">Compresses the responded page.<br />This is a recommended option but it is not compatible with all hosting servers.
+</td></tr><tr class="option">
+<td class="name"><asp:CheckBox ID="chkRemoveScripts" runat="server" Text="Remove Scripts" Checked="True" />
+</td><td class="desc">Removes scripts from page. This option increases anonymity but may loose some functionalities.</td>
+</tr><tr class="option"><td class="name">
+<asp:CheckBox ID="chkOrginalUrl" runat="server" Checked="True" Text="Original URLs" />
+</td><td class="desc">Displays original URL address in a float bar on the top of page.<br />Note that this option can increase page size.<br />
+(Tip: To copy the address that the float bar shows press Ctrl+Shift+X keys)
+</td></tr><tr class="option">
+<td class="name"><asp:CheckBox ID="chkUTF8" runat="server" Checked="False" Text="Force UTF-8" />
+</td><td class="desc">Uses UTF-8 encoding for pages.<br />Suitable for non-English sites that contains non-ASCII characters.
+</td></tr><tr class="option"><td class="name"><asp:CheckBox ID="chkCookies" runat="server" Text="Cookies" Checked="True" />
+</td><td class="desc">Enables cookie support.</td>
+</tr><tr class="option"><td class="name"><asp:CheckBox ID="chkTempCookies" runat="server" Text="Save Cookies as Temp" />
+</td><td class="desc">Saves cookies only for current session, and they will not be available after browser is closed.
+</td></tr><tr class="option"><td class="name"><asp:CheckBox ID="chkProcessLinks" runat="server" Text="Links" Checked="True" />
+</td><td class="desc">Processes links and encodes them.</td>
+</tr><tr class="option"><td class="name"><asp:CheckBox ID="chkPageTitle" runat="server" Text="Display page title" Checked="True" />
+</td><td class="desc">Displays page title in browser title.</td></tr>
+<tr class="option"><td class="name"><asp:CheckBox ID="chkForms" runat="server" Text="Process forms" Checked="True" /></td>
+<td class="desc">Processes submit forms.</td></tr>
+<tr class="option"><td class="name">
+<asp:CheckBox ID="chkFrames" runat="server" Text="Frames" Checked="True" />
+</td><td class="desc">Enables inline frames.</td></tr>
+</table></div></div>
 
-<script type="text/javascript">
-_PgOpt={};
+<script language="javascript" type="text/javascript">
 _XPage={};
-var _Page_B64Unknowner="<%=Consts.Query.Base64Unknowner%>";
-var _Page_CookieName="<%=Consts.FrontEndPresentation.UserOptionsCookieName%>";
-
-function _Page_Initialize(){
-	_XNav='<%=Consts.FilesConsts.DefaultPage%>';
-	_XPage.UrlBox =document.getElementById('txtUrl');
-	_XPage.ProcessLinks =document.getElementById('chkProcessLinks');
-	_XPage.DisplayImages =document.getElementById('chkDisplayImages');
-	_XPage.Forms =document.getElementById('chkForms');
-	_XPage.Compression =document.getElementById('chkCompression');
-	_XPage.Cookies =document.getElementById('chkCookies');
-	_XPage.TempCookies =document.getElementById('chkTempCookies');
-	_XPage.OrginalUrl =document.getElementById('chkOrginalUrl');
-	_XPage.Frames =document.getElementById('chkFrames');
-	_XPage.PageTitle =document.getElementById('chkPageTitle');
-	_XPage.UTF8 =document.getElementById('chkUTF8');
-	_XPage.RemoveScripts =document.getElementById('chkRemoveScripts');
-}
-
-function _Page_SetOptions(){
-	_XPage.ProcessLinks.checked =<%=_userOptions.Links.ToString().ToLower() %>;
-	_XPage.DisplayImages.checked =<%=_userOptions.Images.ToString().ToLower() %>;
-	_XPage.Forms.checked =<%=_userOptions.SubmitForms.ToString().ToLower() %>;
-	_XPage.Compression.checked =<%=_userOptions.HttpCompression.ToString().ToLower() %>;
-	_XPage.Cookies.checked =<%=_userOptions.Cookies.ToString().ToLower() %>;
-	_XPage.TempCookies.checked =<%=_userOptions.TempCookies.ToString().ToLower() %>;
-	_XPage.OrginalUrl.checked =<%=_userOptions.OrginalUrl.ToString().ToLower() %>;
-	_XPage.Frames.checked =<%=_userOptions.Frames.ToString().ToLower() %>;
-	_XPage.PageTitle.checked =<%=_userOptions.PageTitle.ToString().ToLower() %>;
-	_XPage.UTF8.checked =<%=_userOptions.ForceEncoding.ToString().ToLower() %>;
-	_XPage.RemoveScripts.checked =<%=_userOptions.RemoveScripts.ToString().ToLower() %>;
-	_PgOpt.EncodeUrl=<%=_userOptions.EncodeUrl.ToString().ToLower() %>;
-}
-function _Page_SaveOptions(){
-	var cookieOpt=_Page_CookieName+"=";
-	cookieOpt+="&Links="+_XPage.ProcessLinks.checked;
-	cookieOpt+="&Images="+_XPage.DisplayImages.checked;
-	cookieOpt+="&SubmitForms="+_XPage.Forms.checked;
-	cookieOpt+="&HttpCompression="+_XPage.Compression.checked;
-	cookieOpt+="&Cookies="+_XPage.Cookies.checked;
-	cookieOpt+="&TempCookies="+_XPage.TempCookies.checked;
-	cookieOpt+="&OrginalUrl="+_XPage.OrginalUrl.checked;
-	cookieOpt+="&Frames="+_XPage.Frames.checked;
-	cookieOpt+="&PageTitle="+_XPage.PageTitle.checked;
-	cookieOpt+="&ForceEncoding="+_XPage.UTF8.checked;
-	cookieOpt+="&RemoveScripts="+_XPage.RemoveScripts.checked;
-	//cookieOpt+="&EncodeUrl="+_XPage.EncodeUrl.checked;
-	//cookieOpt+="&EmbedObjects="+_XPage.EmbedObjects.checked;
-	
-	var dt=new Date();
-	dt.setYear(dt.getFullYear()+1);
-	
-	cookieOpt+=" ;Path=/ ;expires="+dt.toString();
-	document.cookie=cookieOpt;
-}
+_XPage.UrlBox =document.getElementById('txtUrl');
 function _Page_HandleTextKey(ev){
 	var IE=false;
 	if(window.event) {ev=window.event;IE=true;}
@@ -268,57 +149,13 @@ function _Page_HandleTextKey(ev){
 		else if(ev.shiftKey)
 			_XPage.UrlBox.value+='.net';
 		}
-		_Page_SubmitForm();		
 	}
 	return true;
 }
-function _Page_SubmitForm(){
-	_Page_SaveOptions();
-	var url=_XPage.UrlBox.value;
-	if(url!='') {_Page_Navigate(url); return true;}
-	else {alert('[UrlIsEmpty]'); return false;}
-}
-
-function _Page_Navigate(url){
-	var navUrl=_XNav;
-	if(_PgOpt.EncodeUrl){
-		navUrl+='?dec='+'1'+'&url=';
-	    navUrl+=_Base64_encode(_XPage.UrlBox.value)+_Page_B64Unknowner;
-	} else {
-		navUrl+='?dec='+'0'+'&url=';
-	    navUrl+=_XPage.UrlBox.value;
-	}
-	document.location=navUrl;
-}
-function _PageOnSubmit(){
-	_Page_SubmitForm();
-	return false;
-}
 </script>
 
-<form asproxydone="2" onsubmit="return _PageOnSubmit();" method="post" id="ASProxyMainForm">
-<div id="ASProxyMain" dir="[Direction]">
-<table id="ASProxyMainTable" style="width: 100%; ">
-<tr><td style="padding:0px; margin:0px;"><table style="width: 100%;border-width:0px;" cellpadding="0" cellspacing="0">
-<tr><td class="Sides"><a href="." asproxydone="2">ASProxy <%=Consts.General.ASProxyVersion %></a></td><td style="font-size:small;"><strong>[PageHeader]</strong></td><td class="Sides">powered by SalarSoft</td></tr>
-</table></td></tr><tr><td><!--This is ASProxy powered by SalarSoft. --><input name="url" type="text" size="60" id="txtUrl" dir="ltr" style="width:450px;" onkeyup="_Page_HandleTextKey(event)" value="<%=_ToDisplayUrl%>"/>
-<input type="submit" value="[btnDisplay]" id="btnASProxyDisplayButton" class="Button" style="height: 22px"/>&nbsp;<br />
-<span class="ASProxyCheckBox"><input id="chkUTF8" type="checkbox" onclick="_Page_SaveOptions()"/><label for="chkUTF8">[chkUTF8]</label></span>&nbsp;<span class="ASProxyCheckBox"><input id="chkOrginalUrl" type="checkbox" checked="checked" onclick="_Page_SaveOptions()"/><label for="chkOrginalUrl">[chkOrginalUrl]</label></span>&nbsp;<span class="ASProxyCheckBox"><input id="chkRemoveScripts" type="checkbox" onclick="_Page_SaveOptions()"/><label for="chkRemoveScripts">[chkRemoveScripts]</label></span>&nbsp;<span class="ASProxyCheckBox"><input id="chkDisplayImages" type="checkbox" checked="checked" onclick="_Page_SaveOptions()"/><label for="chkDisplayImages">[chkDisplayImages]</label></span>&nbsp;<span class="ASProxyCheckBox"><input id="chkCookies" type="checkbox" checked="checked" onclick="_Page_SaveOptions()"/><label for="chkCookies">[chkCookies]</label></span>&nbsp;<span class="ASProxyCheckBox"><input id="chkCompression" type="checkbox" onclick="_Page_SaveOptions()"/><label for="chkCompression">[chkCompression]</label></span>&nbsp;<a asproxydone="2" id="lnkMoreOpt" href="javascript:void(0);" onclick="toggleOpt(this);">[lnkMoreOpt]...<small>&gt;</small></a></td>
-</tr><tr id="trMoreOpt" style="display: none;"><td id="tdMoreOpt"><span class="ASProxyCheckBox"><input id="chkFrames" type="checkbox" checked="checked" onclick="_Page_SaveOptions()"/><label for="chkFrames">[chkFrames]</label></span>&nbsp;<span class="ASProxyCheckBox"><input id="chkPageTitle" type="checkbox" checked="checked" onclick="_Page_SaveOptions()"/><label for="chkPageTitle">[chkPageTitle]</label></span>&nbsp;<span class="ASProxyCheckBox"><input id="chkForms" type="checkbox" checked="checked" onclick="_Page_SaveOptions()"/><label for="chkForms">[chkForms]</label></span>&nbsp;<span class="ASProxyCheckBox"><input id="chkProcessLinks" type="checkbox" checked="checked" onclick="_Page_SaveOptions()"/><label for="chkProcessLinks">[chkProcessLinks]</label></span>&nbsp;<span class="ASProxyCheckBox"><input id="chkTempCookies" type="checkbox" checked="checked" onclick="_Page_SaveOptions()"/><label for="chkTempCookies">[chkTempCookies]</label></span></td></tr>
-<tr><td><a asproxydone="2" href="cookieman.aspx" target="_blank">[CookieManager]</a>&nbsp;&nbsp;<a asproxydone="2" href="download.aspx" target="_blank">[DownloadTool]</a>&nbsp;&nbsp;[GetFreeVersion]&nbsp;&nbsp;<span id="lblVersionNotifier"></span></td>
-</tr></table>
-<script type="text/javascript">
-_Page_Initialize();
-_Page_SetOptions();
-</script>
-<%if (_HasError){ %>
-<span title="Error message" style="color:Red; font-weight:bold; font-family:Tahoma; font-size:10pt;"><%=_ErrorMessage%></span>
-<%} %>
-<noscript style="color:Maroon;font-weight:bold; font-family:Tahoma; font-size:11pt;">[JsIsDisabled]</noscript>
-</div></form>
+<div id="links"><p><a asproxydone="2" href="cookieman.aspx" target="_blank">Cookie Manager</a>
+<a asproxydone="2" href="download.aspx" target="_blank">Download Tool</a> Have your own <a asproxydone="2" href="surf.aspx?dec=1&url=aHR0cDovL2FzcHJveHkuc291cmNlZm9yZ2UubmV0B64Coded!" target="_blank">ASProxy</a>. It's free.
+</p></div><div id="footer"><p>@2009 ASProxy <%=Consts.General.ASProxyVersion %>: powered by SalarSoft</p></div>
+</form>
 </body></html>
-
-<div style="position: relative; left: 0px; top: 5px; width: 100%; height:auto;">
-<%=_ResponseContent%>
-</div>
-<script type="text/javascript" src="scripts/versionchecker.js"></script>

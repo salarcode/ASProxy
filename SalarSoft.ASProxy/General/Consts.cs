@@ -14,7 +14,7 @@ namespace SalarSoft.ASProxy
         public class General
         {
             public const string ASProxyName = "ASProxy";
-            public const string ASProxyVersion = "5.2pre";
+            public const string ASProxyVersion = "5.5a";
 
 			public const string ContextUserOptionsKey = "ContextUserOptions";
         }
@@ -105,14 +105,14 @@ namespace SalarSoft.ASProxy
             /// <summary>
             /// The default page variable is static and can be changed during application execution
             /// </summary>
-            public static string DefaultPage = "default.aspx";
+			public static string PageDefault_Dynamic = "surf.aspx";
 
             public const string Dir_Scripts = "scripts";
 			public const string Dir_AppData = "App_Data";
             public const string Dir_UpdateSources = "UpdateSources";
 
             public const string AJAXHandler = "ajax.ashx";
-            public const string PageDefault = "default.aspx";
+            //public const string PageDefault = "surf.aspx";
             public const string PageAnyType = "getany.ashx";
             public const string PageDownload = "download.ashx";//"download.aspx";
             public const string PageAuthorization = "authorization.aspx";

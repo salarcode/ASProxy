@@ -46,6 +46,7 @@
     <Reference Include="System" />
     <Reference Include="System.configuration" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Security" />
     <Reference Include="System.Web" />
     <Reference Include="System.Xml" />
@@ -85,6 +86,7 @@
     <Compile Include="BuiltIn\DataProcessor\HTML\HtmlReplacer.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="BuiltIn\Compressors\ImageCompressor.cs" />
     <Compile Include="BuiltIn\DataProcessor\JavaScript\JSParser.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -104,7 +106,7 @@
     <Compile Include="Configurations\Configurations.cs" />
     <Compile Include="Configurations\CurrentContext.cs" />
     <Compile Include="Configurations\CustomErrors.cs" />
-    <Compile Include="Configurations\HttpCompressor.cs" />
+    <Compile Include="BuiltIn\Compressors\HttpCompressor.cs" />
     <Compile Include="Configurations\Provider.cs" />
     <Compile Include="Definitions\Enumerations.cs" />
     <Compile Include="Definitions\RequestInfo.cs" />

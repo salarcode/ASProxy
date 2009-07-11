@@ -1,6 +1,6 @@
 ****************************************
-ASProxy       :version 5.2
-Last update   :2009/06/26
+ASProxy       :version 5.5
+Last update   :2009/07/28
 Official site :http://asproxy.sourceforge.net/
 
 ASProxy is an ASP.NET Web Proxy.
@@ -35,13 +35,17 @@ Changing interface:
 ****************************************
 Version History
 
-Version 5.2 2009/06/26
-* Most part of ASProxy is rewrited and optimized.
-* Press Ctrl+Shift+X to freeze the float bar of original urls and then copy the address.
+Version 5.5 2009/07/28
+* New look and design.
+* Administration interface. This is optional and should be uploaded by user manually.
 
+Version 5.2 2009/06/28
+* Most part of ASProxy is rewrited and optimized.
+* Now with providers it is possible change the way ASProxy engine is working.
+  Providers feature is not complete yet but it will be delivered along with Plugins support.
+* Press Ctrl+Shift+X to freeze the float bar of original urls and then copy the address.
 * Content encoding detection is improved.
 * Some performance gained through using HttpHandler instead of simple pages.
-* Image error code is removed.
 
 Version 5.1 2009/04/14
 * Image error now with error code.

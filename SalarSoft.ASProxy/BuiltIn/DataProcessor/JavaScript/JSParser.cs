@@ -57,7 +57,7 @@ namespace SalarSoft.ASProxy.BuiltIn
 			int searchingStartIndex)
 		{
 			char propertyStart = '=';
-			TextRange result = new TextRange(-1, -1);
+			TextRange result;// = new TextRange(-1, -1);
 
 			int searchIndex = searchingStartIndex;
 
@@ -101,7 +101,7 @@ namespace SalarSoft.ASProxy.BuiltIn
 			int searchingStartIndex)
 		{
 			char propertyStart = '=';
-			TextRange result = new TextRange(-1, -1);
+			TextRange result;// = new TextRange(-1, -1);
 
 			int searchIndex = searchingStartIndex;
 
@@ -139,7 +139,7 @@ namespace SalarSoft.ASProxy.BuiltIn
 			int searchingStartIndex)
 		{
 			char propertyStart = '=';
-			TextRange result = new TextRange(-1, -1);
+			TextRange result;// = new TextRange(-1, -1);
 
 			int searchIndex = searchingStartIndex;
 
@@ -179,7 +179,7 @@ namespace SalarSoft.ASProxy.BuiltIn
 			int searchingStartIndex)
 		{
 			char propertyStart = '=';
-			TextRange result = new TextRange(-1, -1);
+			TextRange result;// = new TextRange(-1, -1);
 
 			int searchIndex = searchingStartIndex;
 
@@ -222,7 +222,7 @@ namespace SalarSoft.ASProxy.BuiltIn
 			int searchingStartIndex)
 		{
 			char methodStart = '(';
-			TextRange result = new TextRange(-1, -1);
+			TextRange result;//= new TextRange(-1, -1);
 
 			int searchIndex = searchingStartIndex;
 
@@ -274,7 +274,7 @@ namespace SalarSoft.ASProxy.BuiltIn
 			int searchingStartIndex)
 		{
 			char methodStart = '(';
-			TextRange result = new TextRange(-1, -1);
+			TextRange result;//= new TextRange(-1, -1);
 
 			int searchIndex = searchingStartIndex;
 

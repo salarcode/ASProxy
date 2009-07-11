@@ -30,7 +30,7 @@ namespace SalarSoft.ASProxy
 			string pagesFormat = "{0}?" + Consts.Query.Decode + "=" + Convert.ToInt32(_EncodeUrl) + "&" +
 								Consts.Query.UrlAddress + "={1}";
 
-			PageDefault = string.Format(pagesFormat, Consts.FilesConsts.PageDefault, "{0}");
+			PageDefault = string.Format(pagesFormat, Consts.FilesConsts.PageDefault_Dynamic, "{0}");
 			PageHtml = string.Format(pagesFormat, Consts.FilesConsts.PageDirectHtml, "{0}");
 			PageAnyType = string.Format(pagesFormat, Consts.FilesConsts.PageAnyType, "{0}");
 			PageDownload = string.Format(pagesFormat, Consts.FilesConsts.PageDownload, "{0}");

@@ -3,6 +3,32 @@
 <head>
     <title>ASProxyEncoder::ASProxyEncodeImages Test Suit</title>
     <script type="text/javascript">
+    
+		_userConfig={EncodeUrl:true, OrginalUrl:true, Links:false, Images:true, Forms:false, Frames:false, Cookies:false};
+		
+		_reqInfo={
+			pageUrl:'http://localhost:3000/ASProxy/_test/ASProxyTestSuit/ASProxyEncoder/ASProxyEncodeImages.htm?param=1&hi=2',
+			pageUrlNoQuery:'http://localhost:3000/ASProxy/_test/ASProxyTestSuit/ASProxyEncoder/ASProxyEncodeImages.htm',
+			pagePath:'http://localhost:3000/ASProxy/_test/ASProxyTestSuit/ASProxyEncoder/',
+			rootUrl:'http://localhost:3000/', 
+			cookieName:'blocked_Cookies',
+			ASProxyUrl:'http://localhost:3000/ASProxy/default.aspx', // or 'http://site.com/default.aspx';
+			ASProxyPath:'http://localhost:3000/ASProxy/', // or 'http://site.com/';
+			ASProxyRoot:'http://localhost:3000/' ,
+			ASProxyPageName:'default.aspx',
+			UrlUnknowner:'B64Coded!'
+		};
+
+		_reqInfo.location={
+			Hash:'#hi',
+			Host:"site.com:8080",
+			Hostname:"site.com",
+			Pathname:"/dir/page.htm",
+			Search:'?test=1',
+			Port:"8080",
+			Protocol:"http:"
+		}
+    
 		__ASProxyEncodeUrl=1;
 		__ASProxyOriginalUrlEnabled=0;
 		__ASProxyLinksEnabled=0;
@@ -34,6 +60,9 @@
     </script>
     <script type="text/javascript" src="/ASProxy/scripts/base64encoder.js"></script>
     <script type="text/javascript" src="/ASProxy/scripts/asproxyencoder.js"></script>
+    <script type="text/javascript">
+		_ASProxy.Debug=true;
+    </script>
     <style type="text/css">
 		body{font-size:small;}
 		img{border:solid 1px red;}

@@ -184,7 +184,7 @@ namespace SalarSoft.ASProxy.BuiltIn
 		{
 
 			// Allocate result with default values
-			TextRange result = new TextRange(-1, -1);
+			TextRange result;// = new TextRange(-1, -1);
 
 			// Increase start position
 			valueStart++;

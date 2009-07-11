@@ -1,9 +1,14 @@
-Version 5.1 -> 5.2
+Version 5.2 -> 5.5
 
 File change log:
 
 * Interfaces:
-	All interface files are changed.
+	default.aspx
+	surf.aspx
+	download.aspx
+	cookieman.aspx
+	scripts/asproxyencoder.js
+	theme/default/style.css
 	
 * Code files:
-	All source codes are changed.
+	SalarSoft.ASProxy/General/Consts.cs

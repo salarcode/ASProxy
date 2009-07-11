@@ -9,9 +9,10 @@
     <add name="ICssProcessor" className="SalarSoft.ASProxy.BuiltIn.CSSProcessor"></add>
     <add name="IJSProcessor" className="SalarSoft.ASProxy.BuiltIn.JSProcessor"></add>
     <add name="ICookieManager" className="SalarSoft.ASProxy.BuiltIn.CookieManager"></add>
-
-    <add name="ICookieManager_OLD" className="SalarSoft.ASProxy.BuiltIn.CookieManager_OLD"></add>
     <add name="IHtmlProcessor" className="SalarSoft.ASProxy.BuiltIn.RegexHtmlProcessor"></add>
+
+		<add name="IHtmlProcessor_OLD" className="SalarSoft.ASProxy.BuiltIn.HtmlProcessor"></add>
+		<add name="ICookieManager_OLD" className="SalarSoft.ASProxy.BuiltIn.CookieManager_OLD"></add>
   </provider>
 
   <provider name="Custom">

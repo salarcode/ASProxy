@@ -1,19 +1,17 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Options>
-  <ForceEncoding changeable="true">False</ForceEncoding>
+	<ForceEncoding changeable="true">False</ForceEncoding>
 	<RemoveScripts changeable="true">False</RemoveScripts>
 	<RemoveImages changeable="true">False</RemoveImages>
 	<HttpCompression changeable="true">False</HttpCompression>
 	<EncodeUrl changeable="true">True</EncodeUrl>
 	<Cookies changeable="true">True</Cookies>
+	<TempCookies changeable="true">False</TempCookies>
 	<Images changeable="true">True</Images>
-	<Scripts changeable="true">True</Scripts>
 	<Links changeable="true">True</Links>
-	<IFrame changeable="true">True</IFrame>
-	<FrameSet changeable="true">True</FrameSet>
+	<Frames changeable="true">True</Frames>
 	<SubmitForms changeable="true">True</SubmitForms>
-	<CssLink changeable="true">True</CssLink>
-	<EmbedObjects changeable="true">True</EmbedObjects>
+	<RemoveObjects changeable="false">False</RemoveObjects>
 	<OrginalUrl changeable="true">True</OrginalUrl>
 	<PageTitle changeable="true">True</PageTitle>
 	<DocType changeable="true">True</DocType>

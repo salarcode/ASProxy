@@ -164,8 +164,8 @@ namespace SalarSoft.ASProxy.BuiltIn
 			string attr1Value,
 			string attr2)
 		{
-			TextRange attr1Result = new TextRange();
-			TextRange attr2Result = new TextRange();
+			TextRange attr1Result = new TextRange(-1, -1);
+			TextRange attr2Result = new TextRange(-1, -1);
 			int cursorPos = 0;
 			string tmp, actionSrc = "";
 
@@ -248,8 +248,8 @@ namespace SalarSoft.ASProxy.BuiltIn
 			string attr1Value,
 			string attr2)
 		{
-			TextRange attr1Result = new TextRange();
-			TextRange attr2Result = new TextRange();
+			TextRange attr1Result = new TextRange(-1, -1);
+			TextRange attr2Result = new TextRange(-1, -1);
 			int cursorPos = 0;
 			string actionSrc = "";
 
@@ -451,8 +451,8 @@ namespace SalarSoft.ASProxy.BuiltIn
 			bool changeMethod,
 			string extraAttributeFormat)
 		{
-			TextRange methodResult = new TextRange();
-			TextRange actionResult = new TextRange();
+			TextRange methodResult;// = new TextRange();
+			TextRange actionResult;// = new TextRange();
 			int cursorPos = 0;
 			string newAttribute = "";
 			string formMethod = "";
@@ -607,8 +607,8 @@ namespace SalarSoft.ASProxy.BuiltIn
 			const string attr2 = "content";
 			const string contentUrlTag = "url=";
 
-			TextRange attr1Result = new TextRange();
-			TextRange attr2Result = new TextRange();
+			TextRange attr1Result = new TextRange(-1, -1);
+			TextRange attr2Result = new TextRange(-1, -1);
 			int cursorPos = 0;
 			string tmp, actionSrc = "";
 

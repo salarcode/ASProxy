@@ -96,13 +96,13 @@ namespace SalarSoft.ASProxy
         }
 
 
+		static string[] _ClientSideUrls = new string[] { "mailto:", "file://", "javascript:", "vbscript:", "jscript:", "vbs:", "ymsgr:", "data:" };
         public static bool IsClientSitdeUrl(string path)
         {
-            string[] stdurl = new string[] { "mailto:", "file://", "javascript:", "vbscript:", "jscript:", "vbs:", "ymsgr:", "data:" };
             path = path.ToLower();
-            for (int i = 0; i < stdurl.Length; i++)
+            for (int i = 0; i < _ClientSideUrls.Length; i++)
             {
-                if (StringCompare.StartsWithMatchCase(ref path, stdurl[i]))
+                if (StringCompare.StartsWithMatchCase(ref path, _ClientSideUrls[i]))
                     return true;
                 //if (path.StartsWith(stdurl[i]))
                 //    return true;
@@ -117,13 +117,13 @@ namespace SalarSoft.ASProxy
             return false;
         }
 
+		static string[] _NonVirtualUrls = new string[] { "http://", "https://", "mailto:", "ftp://", "file://", "telnet://", "news://", "nntp://", "ldap://", "ymsgr:", "javascript:", "vbscript:", "jscript:", "vbs:", "data:" };
         public static bool IsVirtualUrl(string path)
         {
-            string[] stdurl = new string[] { "http://", "https://", "mailto:", "ftp://", "file://", "telnet://", "news://", "nntp://", "ldap://", "ymsgr:", "javascript:", "vbscript:", "jscript:", "vbs:", "data:" };
             path = path.ToLower();
-            for (int i = 0; i < stdurl.Length; i++)
+            for (int i = 0; i < _NonVirtualUrls.Length; i++)
             {
-                if (StringCompare.StartsWithMatchCase(ref path, stdurl[i]))
+                if (StringCompare.StartsWithMatchCase(ref path, _NonVirtualUrls[i]))
                     return false;
                 //if (path.StartsWith(stdurl[i]))
                 //    return false;
@@ -178,14 +178,14 @@ namespace SalarSoft.ASProxy
             if (query.Length == 0)
                 return pageBasePath;
 
-            string tmpPage = query.ToLower();
-
             // If the query contains only parameter
             if (query[0] == '?')
             {
                 return UrlBuilder.AppendAntoherQueries(pageUrlWithoutParameters, query);// Safe but slow
                 //return pageUrlWithoutParameters + query; //
             }
+
+            string tmpPage = query.ToLower();
 
             // check if the url is a foreign site url like this: http://www.google.com
             if (!IsVirtualUrl(tmpPage))

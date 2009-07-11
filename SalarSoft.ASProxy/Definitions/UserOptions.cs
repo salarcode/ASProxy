@@ -21,7 +21,7 @@ namespace SalarSoft.ASProxy
         public bool Frames;
         public bool SubmitForms;
         //public bool CssLink;
-        public bool EmbedObjects;
+        public bool RemoveObjects;
         public bool HttpCompression;
         public bool EncodeUrl;
         public bool OrginalUrl;
@@ -54,11 +54,12 @@ namespace SalarSoft.ASProxy
             UserOptions result;
 			result._LoadedFromSource = false;
 
-            result.HttpCompression = false;		// Disabled by default
+            result.HttpCompression = false;	// Disabled by default
             result.ForceEncoding = false;	// Disabled by default
-            result.RemoveScripts = false;		// Disabled by default
-            result.RemoveImages = false;			// Disabled by default
-			result.TempCookies = false; // Disabled by default
+            result.RemoveScripts = false;	// Disabled by default
+            result.RemoveImages = false;	// Disabled by default
+			result.TempCookies = false;		// Disabled by default
+			result.RemoveObjects = false;	// Disabled by default
             result.DocType = def;            
             result.OrginalUrl = def;
             result.Images = def;
@@ -66,7 +67,6 @@ namespace SalarSoft.ASProxy
 			result.Frames = def;
             result.SubmitForms = def;
             result.EncodeUrl = def;
-            result.EmbedObjects = def;
             result.Cookies = def;
             result.PageTitle = def;
             //result.Scripts = def;
@@ -151,10 +151,13 @@ namespace SalarSoft.ASProxy
 						continue;
 
 					FieldInfo info = optionType.GetField(node.Name);
-                    if (info.FieldType.IsEnum)
-                        info.SetValue(result, Enum.Parse(info.FieldType, node.InnerText));
-                    else
-                        info.SetValue(result, Convert.ChangeType(node.InnerText, info.FieldType));
+					if (info != null)
+					{
+						if (info.FieldType.IsEnum)
+							info.SetValue(result, Enum.Parse(info.FieldType, node.InnerText));
+						else
+							info.SetValue(result, Convert.ChangeType(node.InnerText, info.FieldType));
+					}
                 }
             }
             catch { }
