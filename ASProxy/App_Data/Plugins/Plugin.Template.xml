@@ -1,6 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <plugin>
 	<info ASProxyVersion="5.*">
+		<Name>Template</Name>
 		<Author>ASProxy</Author>
 		<Version>1.0</Version>
 		<Description>ASProxy plugins template</Description>
@@ -10,6 +11,5 @@
 	<update enabled="false" updateInfoUrl="http://asproxy.sourceforge.net/update/autoupdate.xml">
 	</update>
 
-	<pluginFor name="IPluginCookieManager" className="ASProxyPlugins.TTPluginCookieManager"></pluginFor>
-	<pluginFor name="IPluginEngine" className="ASProxyPlugins.TPluginEngine"></pluginFor>
+	<plugin typeName="ASProxyPlugins.TTPluginCookieManager"></plugin>
 </plugin>

@@ -78,7 +78,7 @@ namespace SalarSoft.ASProxy.BuiltIn
 						_webData.Dispose();
 
 					// initializing new DataCore
-					_webData = (IWebData)Provider.CreateProviderInstance(ProviderType.IWebData);
+					_webData = (IWebData)Provider.GetProvider(ProviderType.IWebData);
 					_webData.RequestInfo.RequestUrl = RequestInfo.RequestUrl;
 					_webData.RequestInfo.UserAgent = userAgent;
 				}
@@ -143,13 +143,13 @@ namespace SalarSoft.ASProxy.BuiltIn
 				case DataTypeToProcess.AutoDetect:
 					break;
 				case DataTypeToProcess.Html:
-					dataProcessor = (IDataProcessor)Provider.CreateProviderInstance(ProviderType.IHtmlProcessor);
+					dataProcessor = (IDataProcessor)Provider.GetProvider(ProviderType.IHtmlProcessor);
 					break;
 				case DataTypeToProcess.JavaScript:
-					dataProcessor = (IDataProcessor)Provider.CreateProviderInstance(ProviderType.IJSProcessor);
+					dataProcessor = (IDataProcessor)Provider.GetProvider(ProviderType.IJSProcessor);
 					break;
 				case DataTypeToProcess.Css:
-					dataProcessor = (IDataProcessor)Provider.CreateProviderInstance(ProviderType.ICssProcessor);
+					dataProcessor = (IDataProcessor)Provider.GetProvider(ProviderType.ICssProcessor);
 					break;
 				case DataTypeToProcess.AdobeFlash:
 				// still nothing
@@ -248,13 +248,13 @@ namespace SalarSoft.ASProxy.BuiltIn
 				case DataTypeToProcess.AutoDetect:
 					break;
 				case DataTypeToProcess.Html:
-					dataProcessor = (IDataProcessor)Provider.CreateProviderInstance(ProviderType.IHtmlProcessor);
+					dataProcessor = (IDataProcessor)Provider.GetProvider(ProviderType.IHtmlProcessor);
 					break;
 				case DataTypeToProcess.JavaScript:
-					dataProcessor = (IDataProcessor)Provider.CreateProviderInstance(ProviderType.IJSProcessor);
+					dataProcessor = (IDataProcessor)Provider.GetProvider(ProviderType.IJSProcessor);
 					break;
 				case DataTypeToProcess.Css:
-					dataProcessor = (IDataProcessor)Provider.CreateProviderInstance(ProviderType.ICssProcessor);
+					dataProcessor = (IDataProcessor)Provider.GetProvider(ProviderType.ICssProcessor);
 					break;
 				case DataTypeToProcess.AdobeFlash:
 				// still nothing
@@ -423,13 +423,13 @@ namespace SalarSoft.ASProxy.BuiltIn
 				case DataTypeToProcess.AutoDetect:
 					break;
 				case DataTypeToProcess.Html:
-					dataProcessor = (IDataProcessor)Provider.CreateProviderInstance(ProviderType.IHtmlProcessor);
+					dataProcessor = (IDataProcessor)Provider.GetProvider(ProviderType.IHtmlProcessor);
 					break;
 				case DataTypeToProcess.JavaScript:
-					dataProcessor = (IDataProcessor)Provider.CreateProviderInstance(ProviderType.IJSProcessor);
+					dataProcessor = (IDataProcessor)Provider.GetProvider(ProviderType.IJSProcessor);
 					break;
 				case DataTypeToProcess.Css:
-					dataProcessor = (IDataProcessor)Provider.CreateProviderInstance(ProviderType.ICssProcessor);
+					dataProcessor = (IDataProcessor)Provider.GetProvider(ProviderType.ICssProcessor);
 					break;
 				case DataTypeToProcess.AdobeFlash:
 				// still nothing

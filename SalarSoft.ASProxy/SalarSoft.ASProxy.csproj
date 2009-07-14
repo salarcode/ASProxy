@@ -107,8 +107,11 @@
     <Compile Include="Configurations\CurrentContext.cs" />
     <Compile Include="Configurations\CustomErrors.cs" />
     <Compile Include="BuiltIn\Compressors\HttpCompressor.cs" />
+    <Compile Include="Configurations\Plugins.cs" />
     <Compile Include="Configurations\Provider.cs" />
     <Compile Include="Definitions\Enumerations.cs" />
+    <Compile Include="Definitions\PluginHosts.cs" />
+    <Compile Include="Definitions\PluginInfo.cs" />
     <Compile Include="Definitions\RequestInfo.cs" />
     <Compile Include="Definitions\ResponseInfo.cs" />
     <Compile Include="Definitions\TextRange.cs" />
@@ -136,6 +139,7 @@
     <Compile Include="Exposed\ExHtmlProcessor.cs" />
     <Compile Include="Exposed\PluginInterfaces\IPluginCredentialCache.cs" />
     <Compile Include="Exposed\PluginInterfaces\IPluginCSSProcessor.cs" />
+    <Compile Include="Exposed\PluginInterfaces\IPluginHost.cs" />
     <Compile Include="Exposed\PluginInterfaces\IPluginHtmlProcessor.cs" />
     <Compile Include="Exposed\PluginInterfaces\IPluginJSProcessor.cs" />
     <Compile Include="Exposed\PluginInterfaces\IPluginLogSystem.cs" />

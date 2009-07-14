@@ -22,7 +22,7 @@ namespace SalarSoft.ASProxy
         /// <summary>
         /// Implementation list
         /// </summary>
-        public static Hashtable Implementation
+        internal static Hashtable Implementation
         {
             get { return _implementation; }
             set { _implementation = value; }
@@ -40,35 +40,27 @@ namespace SalarSoft.ASProxy
         }
 
         /// <summary>
-        /// Gets specified provider class type.
-        /// </summary>
-        public static Type GetProvider(ProviderType providerType)
-        {
-            return (Type)_implementation[providerType.ToString()];
-        }
-
-        /// <summary>
-        /// Creates an instance of requsted provider type.
+        /// Creates an instance of requsted provider.
         /// If specified provider not find the default provider will be used.
         /// </summary>
-        public static object CreateProviderInstance(ProviderType providerType)
+        public static object GetProvider(ProviderType providerType)
         {
-            Type provider = GetProvider(providerType);
+            Type provider = GetProviderType(providerType);
 
             if (provider == null)
-                return CreateDefaultProvider(providerType);
+                return GetBuiltinProvider(providerType);
 
             object result = InvokeDefaultCreateInstance(provider);
             if ((result is bool) && ((bool)result == false))
-                return CreateDefaultProvider(providerType);
+                return GetBuiltinProvider(providerType);
 
             return result;
         }
 
         /// <summary>
-        /// Creates a default instance of requsted provider type.
+        /// Creates a default instance of requsted provider.
         /// </summary>
-        public static object CreateDefaultProvider(ProviderType providerType)
+        public static object GetBuiltinProvider(ProviderType providerType)
         {
             switch (providerType)
             {
@@ -101,6 +93,14 @@ namespace SalarSoft.ASProxy
         #endregion
 
         #region private methods
+		/// <summary>
+		/// Gets specified provider class type.
+		/// </summary>
+		private static Type GetProviderType(ProviderType providerType)
+		{
+			return (Type)_implementation[providerType.ToString()];
+		}
+
         /// <summary>
         /// Load providers list from xml file
         /// </summary>
@@ -134,12 +134,12 @@ namespace SalarSoft.ASProxy
                 foreach (XmlNode node in activeNode.ChildNodes)
                 {
                     string name = node.Attributes["name"].Value;
-                    string className = node.Attributes["className"].Value;
+                    string typeName = node.Attributes["typeName"].Value;
 
                     try
                     {
                         // load specified class name
-                        Type classType = Type.GetType(className);
+                        Type classType = Type.GetType(typeName);
 
                         // add to the collection
                         if (classType != null)
@@ -150,7 +150,7 @@ namespace SalarSoft.ASProxy
                         // No error
                         // The default provider will be used
                         if (Systems.LogSystem.ErrorLogEnabled)
-                            Systems.LogSystem.LogError("Failed to load a provider: Name=" + name + " ClassName=" + className);
+                            Systems.LogSystem.LogError("Failed to load a provider: Name=" + name + " TypeName=" + typeName);
                     }
                 }
             }

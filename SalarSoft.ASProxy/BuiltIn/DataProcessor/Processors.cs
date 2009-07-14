@@ -18,9 +18,9 @@ namespace SalarSoft.ASProxy.BuiltIn
 
 		static void InitlizeClasses()
 		{
-			_HtmlProcessor = (IHtmlProcessor)Provider.CreateProviderInstance(ProviderType.IHtmlProcessor);
-			_CssProcessor = (ICssProcessor)Provider.CreateProviderInstance(ProviderType.ICssProcessor);
-			_JSProcessor = (IJSProcessor)Provider.CreateProviderInstance(ProviderType.IJSProcessor);
+			_HtmlProcessor = (IHtmlProcessor)Provider.GetProvider(ProviderType.IHtmlProcessor);
+			_CssProcessor = (ICssProcessor)Provider.GetProvider(ProviderType.ICssProcessor);
+			_JSProcessor = (IJSProcessor)Provider.GetProvider(ProviderType.IJSProcessor);
 		}
 
 		public static IHtmlProcessor HtmlProcessor { get { return _HtmlProcessor; } }

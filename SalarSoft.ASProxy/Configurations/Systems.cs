@@ -34,9 +34,9 @@ namespace SalarSoft.ASProxy
         #region static methods
         static Systems()
         {
-            _exCookieManager = (ICookieManager)Provider.CreateProviderInstance(ProviderType.ICookieManager);
-            _exLogSystem = (ILogSystem)Provider.CreateProviderInstance(ProviderType.ILogSystem);
-            _exCredentialCache = (ICredentialCache)Provider.CreateProviderInstance(ProviderType.ICredentialCache);
+            _exCookieManager = (ICookieManager)Provider.GetProvider(ProviderType.ICookieManager);
+            _exLogSystem = (ILogSystem)Provider.GetProvider(ProviderType.ILogSystem);
+            _exCredentialCache = (ICredentialCache)Provider.GetProvider(ProviderType.ICredentialCache);
         }
         #endregion
     }

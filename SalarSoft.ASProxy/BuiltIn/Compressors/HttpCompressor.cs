@@ -2,7 +2,7 @@ using System;
 using System.IO.Compression;
 using System.Web;
 
-namespace SalarSoft.ASProxy
+namespace SalarSoft.ASProxy.BuiltIn
 {
 	public class HttpCompressor : IHttpModule
 	{
@@ -54,16 +54,16 @@ namespace SalarSoft.ASProxy
 			if (IsCompressEnabled(Request) == false)
 				return;
 
-			/// load encodings from header
+			// load encodings from header
 			QValueList encodings = new QValueList(Request.Headers["Accept-Encoding"]);
 
-			/// get the types we can handle, can be accepted and
-			/// in the defined client preference
+			// get the types we can handle, can be accepted and
+			// in the defined client preference
 			QValue preferred = encodings.FindPreferred("gzip", "deflate", "identity");
 
-			/// if none of the preferred values were found, but the
-			/// client can accept wildcard encodings, we'll default
-			/// to Gzip.
+			// if none of the preferred values were found, but the
+			// client can accept wildcard encodings, we'll default
+			// to Gzip.
 			if (preferred.IsEmpty && encodings.AcceptWildcard && encodings.Find("gzip").IsEmpty)
 				preferred = new QValue("gzip");
 

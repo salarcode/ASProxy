@@ -39,6 +39,35 @@ namespace SalarSoft.ASProxy
 			}
 		}
 
+
+		/// <summary>
+		/// Generate full physical path of a file or page.
+		/// </summary>
+		/// <param name="path">File name or page name</param>
+		/// <returns>Full physical path</returns>
+		public static string MapAppPath(string path)
+		{
+			if (path == "" || path == null)
+				return path;
+			string apppath = AppPhysicalPath;
+			string result = path;
+			if (result[0] == '\\' || result[0] == '/')
+				result = result.Remove(0, 1);
+			if (apppath[apppath.Length - 1] != '\\')
+				result = apppath + "\\" + path;
+			else
+				result = apppath + path;
+			return result;
+		}
+
+		/// <summary>
+		/// Current application phycical path.
+		/// </summary>
+		public static string AppPhysicalPath
+		{
+			get { return HttpRuntime.AppDomainAppPath; }
+		}
+
 		/// <summary>
 		/// Generate full virtual path of a page or url file address.
 		/// </summary>

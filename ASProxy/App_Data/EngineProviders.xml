@@ -2,21 +2,22 @@
 <ASPorxyProviders active="Default">
   
   <provider name="Default">
-    <add name="IEngine" className="SalarSoft.ASProxy.BuiltIn.ASProxyEngine"></add>
-    <add name="IWebData" className="SalarSoft.ASProxy.BuiltIn.WebData"></add>
-    <add name="ICredentialCache" className="SalarSoft.ASProxy.BuiltIn.ASProxyCredentialCache"></add>
-    <add name="ILogSystem" className="SalarSoft.ASProxy.BuiltIn.LogSystem"></add>
-    <add name="ICssProcessor" className="SalarSoft.ASProxy.BuiltIn.CSSProcessor"></add>
-    <add name="IJSProcessor" className="SalarSoft.ASProxy.BuiltIn.JSProcessor"></add>
-    <add name="ICookieManager" className="SalarSoft.ASProxy.BuiltIn.CookieManager"></add>
-    <add name="IHtmlProcessor" className="SalarSoft.ASProxy.BuiltIn.RegexHtmlProcessor"></add>
+		<!-- typeName syntax: "Class.Full.Path, Assembly.Name"-->
+    <add name="IEngine" typeName="SalarSoft.ASProxy.BuiltIn.ASProxyEngine, SalarSoft.ASProxy"></add>
+    <add name="IWebData" typeName="SalarSoft.ASProxy.BuiltIn.WebData, SalarSoft.ASProxy"></add>
+    <add name="ICredentialCache" typeName="SalarSoft.ASProxy.BuiltIn.ASProxyCredentialCache, SalarSoft.ASProxy"></add>
+    <add name="ILogSystem" typeName="SalarSoft.ASProxy.BuiltIn.LogSystem, SalarSoft.ASProxy"></add>
+    <add name="ICssProcessor" typeName="SalarSoft.ASProxy.BuiltIn.CSSProcessor, SalarSoft.ASProxy"></add>
+    <add name="IJSProcessor" typeName="SalarSoft.ASProxy.BuiltIn.JSProcessor, SalarSoft.ASProxy"></add>
+    <add name="ICookieManager" typeName="SalarSoft.ASProxy.BuiltIn.CookieManager, SalarSoft.ASProxy"></add>
+    <add name="IHtmlProcessor" typeName="SalarSoft.ASProxy.BuiltIn.RegexHtmlProcessor, SalarSoft.ASProxy"></add>
 
-		<add name="IHtmlProcessor_OLD" className="SalarSoft.ASProxy.BuiltIn.HtmlProcessor"></add>
-		<add name="ICookieManager_OLD" className="SalarSoft.ASProxy.BuiltIn.CookieManager_OLD"></add>
+		<add name="IHtmlProcessor_OLD" typeName="SalarSoft.ASProxy.BuiltIn.HtmlProcessor, SalarSoft.ASProxy"></add>
+		<add name="ICookieManager_OLD" typeName="SalarSoft.ASProxy.BuiltIn.CookieManager_OLD, SalarSoft.ASProxy"></add>
   </provider>
 
   <provider name="Custom">
-    <add name="" className=""></add>
+    <add name="" typeName=""></add>
   </provider>
   
 </ASPorxyProviders>
