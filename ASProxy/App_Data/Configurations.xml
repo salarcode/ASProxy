@@ -13,7 +13,7 @@
 		</plugins>
 	</providers>
 
-	<pages uiLanguage="fa-ir" />
+	<pages uiLanguage="en-us" />
 	
 	<webData maxContentLength="-1"
 			requestTimeout="60000"

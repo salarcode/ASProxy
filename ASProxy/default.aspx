@@ -66,14 +66,11 @@
 		}
 	}
 </script>
-
-<html>
-<head>
+<html><head>
 <title>Surf the web with ASProxy</title>
 <meta content='Surf the web invisibly using ASProxy power. A Powerfull web proxy is in your hands.' name='description' />
 <meta content='ASProxy,free,anonymous proxy,anonymous,proxy,asp.net,surfing,filter,antifilter,anti filter' name='keywords' />
 <link href="theme/default/style-<%=Resources.Languages.TextDirection %>.css" rel="stylesheet" type="text/css" />
-
 <link rel='shortcut icon' href='theme/default/favicon.ico' />
 </head><body>
 <form id="frmASProxyDefault" runat="server" asproxydone="2" defaultbutton="btnASProxyDisplayButton">

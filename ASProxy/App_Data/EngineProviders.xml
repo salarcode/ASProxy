@@ -11,9 +11,6 @@
     <add name="IJSProcessor" typeName="SalarSoft.ASProxy.BuiltIn.JSProcessor, SalarSoft.ASProxy"></add>
     <add name="ICookieManager" typeName="SalarSoft.ASProxy.BuiltIn.CookieManager, SalarSoft.ASProxy"></add>
     <add name="IHtmlProcessor" typeName="SalarSoft.ASProxy.BuiltIn.RegexHtmlProcessor, SalarSoft.ASProxy"></add>
-
-		<add name="IHtmlProcessor_OLD" typeName="SalarSoft.ASProxy.BuiltIn.HtmlProcessor, SalarSoft.ASProxy"></add>
-		<add name="ICookieManager_OLD" typeName="SalarSoft.ASProxy.BuiltIn.CookieManager_OLD, SalarSoft.ASProxy"></add>
   </provider>
 
   <provider name="Custom">
