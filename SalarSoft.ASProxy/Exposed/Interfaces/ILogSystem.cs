@@ -30,7 +30,9 @@ namespace SalarSoft.ASProxy.Exposed
 
         void Log(LogEntity entity, string requestedUrl, params object[] optionalData);
 
-        void LogError(Exception ex, string requestedUrl, params object[] optionalData);
+		void LogError(Exception ex, string requestedUrl, params object[] optionalData);
+
+		void LogError(Exception ex, string message, string requestedUrl, params object[] optionalData);
         
         void LogError(Exception ex, HttpRequest request, string message, string requestedUrl, params object[] optionalData);
         

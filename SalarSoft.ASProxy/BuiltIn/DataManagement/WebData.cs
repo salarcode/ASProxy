@@ -21,6 +21,7 @@ namespace SalarSoft.ASProxy.BuiltIn
 		#region variables
 		private WebRequest _webRequest;
 		private InternetProtocols _requestProtocol;
+		private bool _isPluginAvailable;
 		#endregion
 
 		#region properties
@@ -34,6 +35,9 @@ namespace SalarSoft.ASProxy.BuiltIn
 			ResponseData = new MemoryStream();
 
 			_requestProtocol = InternetProtocols.HTTP;
+
+			// getting plugin availablity state
+			_isPluginAvailable = Plugins.IsPluginAvailable(PluginHosts.IPluginWebData);
 		}
 		public override void Dispose()
 		{
@@ -67,6 +71,12 @@ namespace SalarSoft.ASProxy.BuiltIn
 				// Post data
 				ApplyPostDataToRequest(_webRequest);
 
+
+				// 0- executing plugins
+				if (_isPluginAvailable)
+					Plugins.CallPluginMethod(PluginHosts.IPluginWebData,
+						PluginMethods.IPluginWebData.BeforeExecuteGetResponse,
+						this, _webRequest);
 
 				try
 				{
@@ -115,9 +125,16 @@ namespace SalarSoft.ASProxy.BuiltIn
 						}
 					}
 
-					// Nothing is captured, so continue with error
+					// Nothing is captured, so throw the error
 					throw;
 				}
+
+				// 1- executing plugins
+				if (_isPluginAvailable)
+					Plugins.CallPluginMethod(PluginHosts.IPluginWebData,
+						PluginMethods.IPluginWebData.AfterExecuteGetResponse,
+						this, webResponse);
+
 
 				// Check for response persmission set from "Administration UI"
 				ValidateResponse(webResponse);
@@ -125,9 +142,20 @@ namespace SalarSoft.ASProxy.BuiltIn
 				// Response is successfull, continue to get data
 				FinalizeWebResponse(webResponse);
 
+				// 2- executing plugins
+				if (_isPluginAvailable)
+					Plugins.CallPluginMethod(PluginHosts.IPluginWebData,
+						PluginMethods.IPluginWebData.AfterExecuteFinalizeWebResponse,
+						this, webResponse);
+
 				// Getting data
 				ReadResponseData(webResponse, ResponseData);
 
+				// 3- executing plugins
+				if (_isPluginAvailable)
+					Plugins.CallPluginMethod(PluginHosts.IPluginWebData,
+						PluginMethods.IPluginWebData.AfterExecuteReadResponseData,
+						this);
 			}
 			catch (WebException ex)
 			{
@@ -166,8 +194,21 @@ namespace SalarSoft.ASProxy.BuiltIn
 				// Continue to get data
 				FinalizeWebResponse(ex.Response);
 
+				// 2- executing plugins
+				if (_isPluginAvailable)
+					Plugins.CallPluginMethod(PluginHosts.IPluginWebData,
+						PluginMethods.IPluginWebData.AfterExecuteFinalizeWebResponse,
+						this, ex.Response);
+
 				// Getting data
 				ReadResponseData(webResponse, ResponseData);
+
+				// 3- executing plugins
+				if (_isPluginAvailable)
+					Plugins.CallPluginMethod(PluginHosts.IPluginWebData,
+						PluginMethods.IPluginWebData.AfterExecuteReadResponseData,
+						this);
+
 
 				// The state is error page
 				LastStatus = LastStatus.ContinueWithError;
@@ -304,7 +345,7 @@ namespace SalarSoft.ASProxy.BuiltIn
 				catch (Exception ex)
 				{
 					if (Systems.LogSystem.ErrorLogEnabled)
-						Systems.LogSystem.LogError(ex, webResponse.ResponseUri.ToString());
+						Systems.LogSystem.LogError(ex, "WebData.FinalizeUnauthorizedWebResponse", webResponse.ResponseUri.ToString());
 
 					LastErrorMessage = ex.Message;
 					LastStatus = LastStatus.ContinueWithError;
@@ -452,9 +493,14 @@ namespace SalarSoft.ASProxy.BuiltIn
 				webRequest.ContentType = RequestInfo.ContentType;
 			}
 
-			// request timeout (Timeout is in milliseconds ) 
-			// webRequest.Timeout = Consts.BackEndConenction.RequestTimeOut;
-			webRequest.Timeout = Configurations.WebData.RequestTimeout;
+			// Timeout is the number of milliseconds that a subsequent 
+			// synchronous request made with the GetResponse method waits
+			// for a response, and the GetRequestStream method waits for a stream.
+			if (RequestInfo.RequesterType == RequesterType.Download)
+				webRequest.Timeout = Configurations.WebData.Downloader_Timeout;
+			else
+				webRequest.Timeout = Configurations.WebData.RequestTimeout;
+
 
 			// If server has configured to pass through a proxy
 			if (Configurations.NetProxy.WebProxyEnabled)
@@ -493,10 +539,15 @@ namespace SalarSoft.ASProxy.BuiltIn
 				case InternetProtocols.HTTP:
 					HttpWebRequest httpRequest = ((HttpWebRequest)_webRequest);
 
-					// Set execution timeout
+					// The ReadWriteTimeout property controls the time-out for the Read method,
+					// which is used to read the stream returned by the GetResponseStream method,
+					// and for the Write method, which is used to write to the stream returned by
+					// the GetRequestStream method.
 					// Timeout is in milliseconds 
-					// httpRequest.ReadWriteTimeout = Consts.BackEndConenction.RequestFormReadWriteTimeOut;
-					httpRequest.ReadWriteTimeout = Configurations.WebData.RequestReadWriteTimeOut;
+					if (RequestInfo.RequesterType == RequesterType.Download)
+						httpRequest.ReadWriteTimeout = Configurations.WebData.Downloader_ReadWriteTimeOut;
+					else
+						httpRequest.ReadWriteTimeout = Configurations.WebData.RequestReadWriteTimeOut;
 
 
 					// Enabling cookies

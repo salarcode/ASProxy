@@ -4,19 +4,27 @@ using SalarSoft.ASProxy.Exposed;
 using System.Net;
 using System.IO;
 using System.Text;
+using System.Collections;
 
 namespace SalarSoft.ASProxy.BuiltIn
 {
 	/// <summary>
-	/// Summary description for ASProxyEngine
+	/// This is ASProxy engine. Every user request should be handled by this class.
 	/// </summary>
 	public class ASProxyEngine : ExEngine
 	{
+		#region local variables
+		private bool _isPluginAvailable;
+		#endregion
+
 		#region public methods
 		public ASProxyEngine()
 		{
 			RequestInfo = new EngineRequestInfo();
 			ResponseInfo = new EngineResponseInfo();
+
+			// getting plugin availablity state
+			_isPluginAvailable = Plugins.IsPluginAvailable(PluginHosts.IPluginEngine);
 		}
 
 		/// <summary>
@@ -26,6 +34,12 @@ namespace SalarSoft.ASProxy.BuiltIn
 		{
 			IntializeRequestInfo(httpRequest);
 			IntializeRequestInfoPostData(httpRequest);
+
+			// 0- executing plugins
+			if (_isPluginAvailable)
+				Plugins.CallPluginMethod(PluginHosts.IPluginEngine,
+					PluginMethods.IPluginEngine.AfterInitialize,
+					this);
 		}
 
 		/// <summary>
@@ -36,6 +50,12 @@ namespace SalarSoft.ASProxy.BuiltIn
 			RequestInfo.RequestUrl = requestUrl;
 			RequestInfo.RequestMethod = WebMethods.GET;
 			IntializeRequestInfoPostData(null);
+
+			// 0- executing plugins
+			if (_isPluginAvailable)
+				Plugins.CallPluginMethod(PluginHosts.IPluginEngine,
+					PluginMethods.IPluginEngine.AfterInitialize,
+					this);
 		}
 
 		/// <summary>
@@ -47,6 +67,12 @@ namespace SalarSoft.ASProxy.BuiltIn
 			// Hashshakhe can only run one time
 			if (_webData != null)
 				return;
+
+			// 1- executing the plugins
+			if (_isPluginAvailable)
+				Plugins.CallPluginMethod(PluginHosts.IPluginEngine,
+					PluginMethods.IPluginEngine.BeforeHandshake,
+					this, _webData);
 
 			// If this is an image request, we should provide orginal link as referer
 			if (RequestInfo.ContentTypeMime == MimeContentType.image_gif ||
@@ -109,6 +135,12 @@ namespace SalarSoft.ASProxy.BuiltIn
 
 			} while (_webData.ResponseInfo.AutoRedirect);
 
+			// 2- executing the plugins
+			if (_isPluginAvailable)
+				Plugins.CallPluginMethod(PluginHosts.IPluginEngine,
+					PluginMethods.IPluginEngine.AfterHandshake,
+					this, _webData);
+
 		}
 
 		/// <summary>
@@ -159,6 +191,12 @@ namespace SalarSoft.ASProxy.BuiltIn
 
 			if (dataProcessor != null)
 			{
+				// 3- executing the plugins
+				if (_isPluginAvailable)
+					Plugins.CallPluginMethod(PluginHosts.IPluginEngine,
+						PluginMethods.IPluginEngine.BeforeProcessor,
+						this, dataProcessor);
+
 				// Web data instance
 				dataProcessor.WebData = _webData;
 
@@ -196,6 +234,12 @@ namespace SalarSoft.ASProxy.BuiltIn
 					ResponseInfo.HtmlInitilizerCodes = htmlProcessor.PageInitializerCodes;
 					ResponseInfo.HtmlDocType = htmlProcessor.DocType;
 				}
+
+				// 4- executing the plugins
+				if (_isPluginAvailable)
+					Plugins.CallPluginMethod(PluginHosts.IPluginEngine,
+						PluginMethods.IPluginEngine.AfterProcessor,
+						this);
 
 				// the processed content
 				return response;
@@ -264,6 +308,12 @@ namespace SalarSoft.ASProxy.BuiltIn
 
 			if (dataProcessor != null)
 			{
+				// 3- executing the plugins
+				if (_isPluginAvailable)
+					Plugins.CallPluginMethod(PluginHosts.IPluginEngine,
+						PluginMethods.IPluginEngine.BeforeProcessor,
+						this, dataProcessor);
+
 				// Web data instance
 				dataProcessor.WebData = _webData;
 
@@ -305,6 +355,12 @@ namespace SalarSoft.ASProxy.BuiltIn
 				// apply response info to response
 				ApplyResponseInfo(httpResponse);
 
+				// 4- executing the plugins
+				if (_isPluginAvailable)
+					Plugins.CallPluginMethod(PluginHosts.IPluginEngine,
+						PluginMethods.IPluginEngine.AfterProcessor,
+						this);
+
 				// the processed content
 				httpResponse.Write(response);
 			}
@@ -314,7 +370,7 @@ namespace SalarSoft.ASProxy.BuiltIn
 				bool ContinueNonMime = true;
 
 				// if response is a image
-				if ((Configurations.ImageCompressor.Enabled) && 
+				if ((Configurations.ImageCompressor.Enabled) &&
 					(mimeType == MimeContentType.image_gif || mimeType == MimeContentType.image_jpeg))
 				{
 					// apply response info to response
@@ -392,6 +448,13 @@ namespace SalarSoft.ASProxy.BuiltIn
 					// httpResponse.OutputStream.Close();
 				}
 			}
+
+			// 5- executing the plugins
+			if (_isPluginAvailable)
+				Plugins.CallPluginMethod(PluginHosts.IPluginEngine,
+					PluginMethods.IPluginEngine.AfterExecuteToResponse,
+					this, httpResponse);
+
 		}
 
 		/// <summary>
@@ -441,6 +504,12 @@ namespace SalarSoft.ASProxy.BuiltIn
 
 			if (dataProcessor != null)
 			{
+				// 3- executing the plugins
+				if (_isPluginAvailable)
+					Plugins.CallPluginMethod(PluginHosts.IPluginEngine,
+						PluginMethods.IPluginEngine.BeforeProcessor,
+						this, dataProcessor);
+
 				// Web data instance
 				dataProcessor.WebData = _webData;
 
@@ -478,6 +547,12 @@ namespace SalarSoft.ASProxy.BuiltIn
 					ResponseInfo.HtmlInitilizerCodes = htmlProcessor.PageInitializerCodes;
 					ResponseInfo.HtmlDocType = htmlProcessor.DocType;
 				}
+
+				// 4- executing the plugins
+				if (_isPluginAvailable)
+					Plugins.CallPluginMethod(PluginHosts.IPluginEngine,
+						PluginMethods.IPluginEngine.AfterProcessor,
+						this);
 
 				// the processed content
 				byte[] streamBuff = ResponseInfo.ContentEncoding.GetBytes(response);
@@ -551,11 +626,9 @@ namespace SalarSoft.ASProxy.BuiltIn
 				}
 			}
 		}
-
 		#endregion
 
 		#region private methods
-
 		protected virtual void ApplyWebDataRequestInfo(IWebData webData)
 		{
 			// Setting the referrer
@@ -580,6 +653,7 @@ namespace SalarSoft.ASProxy.BuiltIn
 			webData.RequestInfo.InputStream = RequestInfo.InputStream;
 			webData.RequestInfo.AcceptCookies = UserOptions.Cookies;
 			webData.RequestInfo.PrrocessErrorPage = RequestInfo.PrrocessErrorPage;
+			webData.RequestInfo.RequesterType = RequestInfo.RequesterType;
 		}
 
 		protected virtual void ApplyResponseInfo(HttpResponse httpResponse)
@@ -793,8 +867,12 @@ namespace SalarSoft.ASProxy.BuiltIn
 					// Some web sites encodes the url, and we need to decode it.
 					//RequestInfo.PostDataString = HttpUtility.HtmlDecode(RequestInfo.PostDataString);
 
-					// the text should be docoded to be used
-					RequestInfo.PostDataString = HttpUtility.UrlDecode(RequestInfo.PostDataString);
+					// Since V5.5
+					// The text should be decoded before any use
+					RequestInfo.PostDataString = UnicodeUrlDecoder.UrlDecode(RequestInfo.PostDataString);
+
+					// BUG: not working with (#) and (&) characters
+					//RequestInfo.PostDataString = HttpUtility.UrlDecode(RequestInfo.PostDataString);
 				}
 				else
 					RequestInfo.PostDataString = "";

@@ -1,33 +1,40 @@
 ﻿<?xml version="1.0"?>
 <Configurations>
 
-  <providers>
-    <!--Enables third party plugins to overwite the base classes.-->
-    <engine canBeOverwritten="true" />
+	<providers>
+		<!--Enables third party plugins to overwite the base classes.-->
+		<engine canBeOverwritten="true" />
     
-    <!--Enables plugins-->
+		<!--Enables plugins-->
 		<plugins enabled="true">
-			<diabledPlugins>
-				<plugin name=""></plugin>
-			</diabledPlugins>
+			<disabledPlugins>
+				<plugin name="TemplatePlugin" />
+			</disabledPlugins>
 		</plugins>
-  </providers>
+	</providers>
+
+	<pages uiLanguage="fa-ir" />
 	
-  <webData maxContentLength="-1"
-           requestTimeout="60000"
-           requestReadWriteTimeOut="70000"
-           sendSignature="true"
-					 preferredLocalEncoding="windows-1256">
+	<webData maxContentLength="-1"
+			requestTimeout="60000"
+			requestReadWriteTimeOut="70000"
+			sendSignature="true"
+			preferredLocalEncoding="windows-1256">
+		
+		<downloader resumeSupport="true"
+					maxContentLength="-1"
+					requestTimeout="120000"
+					requestReadWriteTimeOut="300000" />
 		<userAgent mode="Default" custom="ASProxy (compatible; Mozilla/5.0;)" />
-  </webData>
+	</webData>
   
-  <!--Used in private proxy feature to prevent strangers to access the proxy-->
-  <authentication enabled="false">
-    <user userName="admin" password="admin" pages="true" images="true" downloads="true"></user>
-  </authentication>
+	<!--Used in private proxy feature to prevent the strangers to access the proxy-->
+	<authentication enabled="false">
+		<user userName="admin" password="admin" pages="true" images="true" downloads="true"></user>
+	</authentication>
 
 	<!--Image compressor config-->
-	<imageCompressor enabled="true" quality="10">
+	<imageCompressor enabled="false" quality="10">
 	</imageCompressor>
 	
 	<userAccessControl enabled="false">
@@ -40,35 +47,35 @@
 		</allow>
 	</userAccessControl>
 
-  <!--Enables auto update-->
-  <autoUpdate updateInfoUrl="http://asproxy.sourceforge.net/update/autoupdate.xml"
-              engine="true" plugins="true">
-  </autoUpdate>
+	<!--Enables auto update-->
+	<autoUpdate updateInfoUrl="http://asproxy.sourceforge.net/update/autoupdate.xml"
+			  engine="true" plugins="true">
+	</autoUpdate>
 
-  <!-- Logs user activites to specfied location-->
-  <logSystem maxFileSize="5120" fileFormat="yyyy-MM-dd">
-    
-    <!--Browsing activities-->
-    <activityLog enabled="false" location="~/App_Data/DailyLog/{0}.log"
-                  pages="true" images="false">
-    </activityLog>
-    
-    <!--error log-->
-    <errorLog enabled="false" location="~/App_Data/ErrorLog/{0}.log" />
-  </logSystem>
+	<!-- Logs user activites to specfied location-->
+	<logSystem maxFileSize="5120" fileFormat="yyyy-MM-dd">
 
-  <!--
-  If web server is behind a network proxy or firewall, you should config it here to pass
-  direct, SystemDefault, Custom
-  -->
-  <netProxy mode="Direct">
-    <custom address="0.0.0.0" port="8080" authentication="false">
-      <authentication userName="" password="" />
-    </custom>
-  </netProxy>
+		<!--Browsing activities-->
+		<activityLog enabled="false" location="~/App_Data/DailyLog/{0}.log"
+					  pages="true" images="false">
+		</activityLog>
+
+		<!--error log-->
+		<errorLog enabled="true" location="~/App_Data/ErrorLog/{0}.log" />
+	</logSystem>
+
+	<!--
+	If web server is behind a network proxy or firewall, you should config it here to pass
+	direct, SystemDefault, Custom
+	-->
+	<netProxy mode="Direct">
+		<custom address="0.0.0.0" port="8080" authentication="false">
+			<authentication userName="" password="" />
+		</custom>
+	</netProxy>
   
-  <customConfig>
-    <!--<config name="" value=""></config>-->
-  </customConfig>
+	<customConfig>
+		<!--<config name="" value=""></config>-->
+	</customConfig>
   
 </Configurations>

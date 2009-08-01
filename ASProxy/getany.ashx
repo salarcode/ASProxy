@@ -15,7 +15,7 @@ public class GetAny : IHttpHandler, System.Web.SessionState.IReadOnlySessionStat
 		{
 			if (UrlProvider.IsASProxyAddressUrlIncluded(context.Request.QueryString))
 			{
-				engine = (IEngine)Provider.CreateProviderInstance(ProviderType.IEngine);
+				engine = (IEngine)Provider.GetProvider(ProviderType.IEngine);
 				engine.UserOptions = UserOptions.ReadFromRequest();
 
 				// should detect automatically
@@ -51,7 +51,7 @@ public class GetAny : IHttpHandler, System.Web.SessionState.IReadOnlySessionStat
 				if (engine.LastStatus == LastStatus.Error)
 				{
 					if (Systems.LogSystem.ErrorLogEnabled)
-						Systems.LogSystem.LogError(engine.LastException, engine.RequestInfo.RequestUrl, engine.LastErrorMessage);
+						Systems.LogSystem.LogError(engine.LastException, engine.LastErrorMessage, engine.RequestInfo.RequestUrl);
 
 					context.Response.Clear();
 					SalarSoft.ASProxy.Common.ClearASProxyRespnseHeader(context.Response);
@@ -75,7 +75,7 @@ public class GetAny : IHttpHandler, System.Web.SessionState.IReadOnlySessionStat
 		catch (Exception ex)
 		{
 			if (Systems.LogSystem.ErrorLogEnabled)
-				Systems.LogSystem.LogError(ex, context.Request.Url.ToString(), ex.Message);
+				Systems.LogSystem.LogError(ex, ex.Message, context.Request.Url.ToString());
 
 			context.Response.Clear();
 			Common.ClearASProxyRespnseHeader(context.Response);

@@ -30,6 +30,7 @@ namespace SalarSoft.ASProxy
         /// </summary>
         public string RequestMethod;
         public string RequestUrl;
+		public RequesterType RequesterType;
 
         /// <summary>
         /// Posted data in string format
@@ -98,8 +99,9 @@ namespace SalarSoft.ASProxy
         public Stream InputStream;
         public ReferrerType ReferrerUsage;
         public CookieCollection Cookies;
-        public NameValueCollection CustomHeaders;
-        public string PostDataString;
+		public NameValueCollection CustomHeaders;
+		public RequesterType RequesterType;
+		public string PostDataString;
         public string RequestUrl;
         public string ContentType;
         public string UserAgent;

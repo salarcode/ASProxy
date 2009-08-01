@@ -32,7 +32,7 @@ public class ajax : IHttpHandler
 			if (engine.LastStatus == LastStatus.Error)
 			{
 				if (Systems.LogSystem.ErrorLogEnabled)
-					Systems.LogSystem.LogError(engine.LastException, engine.RequestInfo.RequestUrl, engine.LastErrorMessage);
+					Systems.LogSystem.LogError(engine.LastException, engine.LastErrorMessage, engine.RequestInfo.RequestUrl);
 
 				context.Response.Write(engine.LastErrorMessage);
 				context.Response.StatusDescription = engine.LastErrorMessage;
@@ -47,8 +47,7 @@ public class ajax : IHttpHandler
 			if (engine.LastStatus == LastStatus.Error)
 			{
 				if (Systems.LogSystem.ErrorLogEnabled)
-					Systems.LogSystem.LogError(engine.LastException, engine.RequestInfo.RequestUrl, engine.LastErrorMessage);
-					//Systems.LogSystem.LogError(engine.RequestInfo.RequestUrl, engine.LastErrorMessage);
+					Systems.LogSystem.LogError(engine.LastException, engine.LastErrorMessage, engine.RequestInfo.RequestUrl);
 
 				context.Response.Write(engine.LastErrorMessage);
 				context.Response.StatusDescription = engine.LastErrorMessage;
@@ -61,8 +60,7 @@ public class ajax : IHttpHandler
 		catch (Exception ex)
 		{
 			if (Systems.LogSystem.ErrorLogEnabled)
-				//Systems.LogSystem.LogError(engine.RequestInfo.RequestUrl, engine.LastErrorMessage);
-				Systems.LogSystem.LogError(engine.LastException, engine.RequestInfo.RequestUrl, engine.LastErrorMessage);
+				Systems.LogSystem.LogError(engine.LastException, engine.LastErrorMessage, engine.RequestInfo.RequestUrl);
 
 
 			context.Response.Write(ex.Message);

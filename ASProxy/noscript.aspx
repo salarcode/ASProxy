@@ -136,7 +136,7 @@ void GetResults(IEngine engine)
 			lblErrorMsg.Visible = true;
 		}
 
-		if (engine.UserOptions.DocType)
+		if (engine.UserOptions.DocType && !engine.ResponseInfo.HtmlIsFrameSet)
 		{
 			Response.Write(engine.ResponseInfo.HtmlDocType);
 		}
@@ -156,7 +156,7 @@ void GetResults(IEngine engine)
 	catch (Exception ex)
 	{
 		if (Systems.LogSystem.ErrorLogEnabled)
-			Systems.LogSystem.LogError(ex, engine.RequestInfo.RequestUrl, ex.Message);
+			Systems.LogSystem.LogError(ex, ex.Message, engine.RequestInfo.RequestUrl);
 
 		lblErrorMsg.Text = ex.Message;
 		lblErrorMsg.Visible = true;
@@ -168,12 +168,11 @@ void ProccessRequest()
 	// Don't apply operation only if this is post back from asproxy "Display" button.
 	if (Request.Form[btnASProxyDisplayButton.ID] == null)
 	{
-
 		ReadFromUserOptions(_userOptions);
 
 		if (UrlProvider.IsASProxyAddressUrlIncluded(Request.QueryString))
 		{
-			using (IEngine engine = (IEngine)Provider.CreateProviderInstance(ProviderType.IEngine))
+			using (IEngine engine = (IEngine)Provider.GetProvider(ProviderType.IEngine))
 			{
 
 				engine.UserOptions = _userOptions;
@@ -196,7 +195,7 @@ protected void btnDisplay_Click(object sender, EventArgs e)
 	_userOptions = ApplyToUserOptions(_userOptions);
 	_userOptions.SaveToResponse();
 		
-	using (IEngine engine = (IEngine)Provider.CreateProviderInstance(ProviderType.IEngine))
+	using (IEngine engine = (IEngine)Provider.GetProvider(ProviderType.IEngine))
 	{
 		engine.RequestInfo.RequestUrl = txtUrl.Text;
 			
@@ -234,7 +233,7 @@ protected void Page_Load(object sender, EventArgs e)
 }
 </script>
 <head runat="server">
-<title runat="server">[PageTitle]</title>
+<title runat="server">Surf the web with ASProxy</title>
 <!-- Surf the web invisibly using ASProxy power. A Powerfull web proxy is in your hands. -->
 <style type="text/css">
 #ASProxyMain{width:99.5%;display:block;padding:1px;margin:0px;border:2px solid #000000;text-align: center;}
@@ -252,18 +251,18 @@ protected void Page_Load(object sender, EventArgs e)
 </style></head><body>
 <script language="javascript" type="text/javascript">
 var _ASProxyVersion="<%=Consts.General.ASProxyVersion %>";
-function toggleOpt(lnk){var trMoreOpt=document.getElementById('trMoreOpt'); if (trMoreOpt.style.display=='none'){trMoreOpt.style.display='';lnk.innerHTML='[lnkMoreOpt]...<small>&lt;</small>';
-}else{trMoreOpt.style.display='none';lnk.innerHTML='[lnkMoreOpt]...<small>&gt;</small>';}}
+function toggleOpt(lnk){var trMoreOpt=document.getElementById('trMoreOpt'); if (trMoreOpt.style.display=='none'){trMoreOpt.style.display='';lnk.innerHTML='Options...<small>&lt;</small>';
+}else{trMoreOpt.style.display='none';lnk.innerHTML='Options...<small>&gt;</small>';}}
 </script>
 <form id="frmASProxyDefault" runat="server" asproxydone="2" style="height:auto; margin-bottom:0px;">
-<div id="ASProxyMain" dir="[Direction]">
+<div id="ASProxyMain" dir="ltr">
 <table id="ASProxyMainTable" style="width: 100%; ">
 <tr><td style="padding:0px; margin:0px;"><table style="width: 100%;border-width:0px;" cellpadding="0" cellspacing="0">
-<tr><td class="Sides"><a href="." asproxydone="2">ASProxy <%=Consts.General.ASProxyVersion %></a></td><td style="font-size:small;"><strong>[PageHeader]</strong></td><td class="Sides">powered by SalarSoft</td></tr>
-</table></td></tr><tr><td><!--This is ASProxy powered by SalarSoft. --><asp:TextBox ID="txtUrl" runat="server" Columns="60" dir="ltr" Width="450px"></asp:TextBox><asp:Button ID="btnASProxyDisplayButton" runat="server" Style="height: 22px" CssClass="Button" OnClick="btnDisplay_Click" Text="[btnDisplay]" />&nbsp;<br />
-<asp:CheckBox CssClass="ASProxyCheckBox" ID="chkUTF8" runat="server" Checked="False" Text="[chkUTF8]" />&nbsp;<asp:CheckBox CssClass="ASProxyCheckBox" ID="chkOrginalUrl" runat="server" Checked="True" Text="[chkOrginalUrl]" />&nbsp;<asp:CheckBox CssClass="ASProxyCheckBox" ID="chkRemoveScripts" runat="server" Text="[chkRemoveScripts]" />&nbsp;<asp:CheckBox CssClass="ASProxyCheckBox" ID="chkDisplayImages" runat="server" Checked="True" Text="[chkDisplayImages]" />&nbsp;<asp:CheckBox CssClass="ASProxyCheckBox" ID="chkCookies" runat="server" Checked="True" Text="[chkCookies]" />&nbsp;<asp:CheckBox CssClass="ASProxyCheckBox" ID="chkCompression" runat="server" Checked="False" Text="[chkCompression]" />&nbsp;<a asproxydone="2" id="lnkMoreOpt" href="javascript:void(0);" onclick="toggleOpt(this);">[lnkMoreOpt]...<small>&lt;</small></a></td>
-</tr><tr id="trMoreOpt" style=""><td id="tdMoreOpt"><asp:CheckBox CssClass="ASProxyCheckBox" ID="chkFrames" runat="server" Checked="True" Text="[chkFrames]" />&nbsp;<asp:CheckBox CssClass="ASProxyCheckBox" ID="chkPageTitle" runat="server" Text="[chkPageTitle]" Checked="True" />&nbsp;<asp:CheckBox CssClass="ASProxyCheckBox" ID="chkForms" runat="server" Checked="True" Text="[chkForms]" />&nbsp;<asp:CheckBox CssClass="ASProxyCheckBox" ID="chkProcessLinks" runat="server" Checked="True" Text="[chkProcessLinks]" />&nbsp;<asp:CheckBox CssClass="ASProxyCheckBox" ID="chkTempCookies" runat="server" Checked="False" Text="[chkTempCookies]" /></td></tr>
-<tr><td><a asproxydone="2" href="cookieman.aspx" target="_blank">[CookieManager]</a>&nbsp;&nbsp;<a asproxydone="2" href="download.aspx" target="_blank">[DownloadTool]</a>&nbsp;&nbsp;[GetFreeVersion]&nbsp;&nbsp;<span id="lblVersionNotifier"></span></td>
+<tr><td class="Sides"><a href="." asproxydone="2">ASProxy <%=Consts.General.ASProxyVersion %></a></td><td style="font-size:small;"><strong>Surf the web with ASProxy</strong></td><td class="Sides">powered by SalarSoft</td></tr>
+</table></td></tr><tr><td><!--This is ASProxy powered by SalarSoft. --><asp:TextBox ID="txtUrl" runat="server" Columns="60" dir="ltr" Width="450px"></asp:TextBox><asp:Button ID="btnASProxyDisplayButton" runat="server" Style="height: 22px" CssClass="Button" OnClick="btnDisplay_Click" Text="Display" />&nbsp;<br />
+<asp:CheckBox CssClass="ASProxyCheckBox" ID="chkUTF8" runat="server" Checked="False" Text="Force UTF-8" />&nbsp;<asp:CheckBox CssClass="ASProxyCheckBox" ID="chkOrginalUrl" runat="server" Checked="True" Text="Original URLs" />&nbsp;<asp:CheckBox CssClass="ASProxyCheckBox" ID="chkRemoveScripts" runat="server" Text="Remove scripts" />&nbsp;<asp:CheckBox CssClass="ASProxyCheckBox" ID="chkDisplayImages" runat="server" Checked="True" Text="Images" />&nbsp;<asp:CheckBox CssClass="ASProxyCheckBox" ID="chkCookies" runat="server" Checked="True" Text="Cookies" />&nbsp;<asp:CheckBox CssClass="ASProxyCheckBox" ID="chkCompression" runat="server" Checked="False" Text="Compress response" />&nbsp;<a asproxydone="2" id="lnkMoreOpt" href="javascript:void(0);" onclick="toggleOpt(this);">Options...<small>&lt;</small></a></td>
+</tr><tr id="trMoreOpt" style=""><td id="tdMoreOpt"><asp:CheckBox CssClass="ASProxyCheckBox" ID="chkFrames" runat="server" Checked="True" Text="Frames" />&nbsp;<asp:CheckBox CssClass="ASProxyCheckBox" ID="chkPageTitle" runat="server" Text="Display page title" Checked="True" />&nbsp;<asp:CheckBox CssClass="ASProxyCheckBox" ID="chkForms" runat="server" Checked="True" Text="Process forms" />&nbsp;<asp:CheckBox CssClass="ASProxyCheckBox" ID="chkProcessLinks" runat="server" Checked="True" Text="Links" />&nbsp;<asp:CheckBox CssClass="ASProxyCheckBox" ID="chkTempCookies" runat="server" Checked="False" Text="Save Cookies as Temp" /></td></tr>
+<tr><td><a asproxydone="2" href="cookieman.aspx" target="_blank">Cookie Manager</a>&nbsp;&nbsp;<a asproxydone="2" href="download.aspx" target="_blank">Download Tool</a>&nbsp;&nbsp;Have your own <a asproxydone="2" href="?decode=1&amp;url=aHR0cDovL2FzcHJveHkuc291cmNlZm9yZ2UubmV0B64Coded!" target="_blank">ASProxy</a>. It's free.&nbsp;&nbsp;<span id="lblVersionNotifier"></span></td>
 </tr></table><asp:Label ID="lblErrorMsg" runat="server" EnableTheming="False" EnableViewState="False" Font-Bold="True" Font-Names="Tahoma" Font-Size="10pt" ForeColor="Red" Text="Error message" ToolTip="Error message" Visible="False"></asp:Label>
 </div>
 <asp:Literal ID="ltrBeforeContent" runat="server" EnableViewState="false"></asp:Literal>

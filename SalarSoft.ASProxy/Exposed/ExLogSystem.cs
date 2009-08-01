@@ -19,11 +19,10 @@ namespace SalarSoft.ASProxy.Exposed
         public abstract void Log(LogEntity entity, string requestedUrl, params object[] optionalData);
         public abstract void Log(LogEntity entity, HttpRequest request, string requestedUrl, params object[] optionalData);
         public abstract void LogError(Exception ex, string requestedUrl, params object[] optionalData);
+		public abstract void LogError(Exception ex, string message, string requestedUrl, params object[] optionalData);
         public abstract void LogError(Exception ex, HttpRequest request, string message, string requestedUrl, params object[] optionalData);
         public abstract void LogError(string message, string requestedUrl, params object[] optionalData);
         public abstract void LogError(string message, params object[] optionalData);
         #endregion
-
-
-    }
+	}
 }

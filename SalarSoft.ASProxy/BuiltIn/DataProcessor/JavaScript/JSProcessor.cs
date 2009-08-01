@@ -59,6 +59,12 @@ namespace SalarSoft.ASProxy.BuiltIn
 		{
 			try
 			{
+				// 1- executing plugins
+				if (Plugins.IsPluginAvailable(PluginHosts.IPluginJSProcessor))
+					Plugins.CallPluginMethod(PluginHosts.IPluginJSProcessor,
+						PluginMethods.IPluginJSProcessor.BeforeExecute,
+						this, (object)codes, pageUrl, pageUrlNoQuery, pagePath, rootUrl);
+
 				JSReplacer.AddEncoderMethodToPropertySet(ref codes,
 					"location.href",
 					Consts.ClientContent.JSEncoder_ASProxyEncoderMethodName);
@@ -106,6 +112,13 @@ namespace SalarSoft.ASProxy.BuiltIn
 				// Since v4.8
 				//JSReplacer.AddEncoderMethodToMethodFirstParameter(ref html, "window.open", Consts.JSEncoder_ASProxyEncoderMethodName);
 				//JSReplacer.AddEncoderMethodToMethodFirstParameter(ref html, "location.open", Consts.JSEncoder_ASProxyEncoderMethodName);
+
+
+				// 2- executing plugins
+				if (Plugins.IsPluginAvailable(PluginHosts.IPluginJSProcessor))
+					Plugins.CallPluginMethod(PluginHosts.IPluginJSProcessor,
+						PluginMethods.IPluginJSProcessor.AfterExecute,
+						this, (object)codes, pageUrl, pageUrlNoQuery, pagePath, rootUrl);
 
 			}
 			catch (Exception ex)

@@ -15,6 +15,16 @@
         ICssProcessor
     }
 
+	/// <summary>
+	/// Represents what king of page is requesting.
+	/// </summary>
+	public enum RequesterType
+	{
+		Normal,
+		Download,
+		Image
+	}
+
     ///<summary>
     /// Data type to process
     ///</summary>

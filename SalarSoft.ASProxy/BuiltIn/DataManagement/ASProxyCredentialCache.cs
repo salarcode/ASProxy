@@ -6,68 +6,80 @@ using SalarSoft.ASProxy.Exposed;
 
 namespace SalarSoft.ASProxy.BuiltIn
 {
-    public class ASProxyCredentialCache : ExCredentialCache
-    {
-        class CredentialDetails
-        {
-            public string UserName;
-            public string Password;
-        }
+	public class ASProxyCredentialCache : ExCredentialCache
+	{
+		class CredentialDetails
+		{
+			public string UserName;
+			public string Password;
+		}
 
-        public override bool IsCertificated(string url)
-        {
-            if (HttpContext.Current == null || HttpContext.Current.Session == null)
-                return false;
+		#region local variables
+		private bool _isPluginAvailable;
+		#endregion
 
-            string key = GetCertificatedKey(url);
-            return (HttpContext.Current.Session[key] != null);
-        }
+		public ASProxyCredentialCache()
+		{
+			// getting plugin availablity state
+			_isPluginAvailable = Plugins.IsPluginAvailable(PluginHosts.IPluginCredentialCache);
+		}
 
-        public override void AddCertification(string url, string userName, string password)
-        {
-            HttpSessionState session = HttpContext.Current.Session;
-            if (session == null) return;
+		public override bool IsCertificated(string url)
+		{
+			if (HttpContext.Current == null || HttpContext.Current.Session == null)
+				return false;
 
-            string key = GetCertificatedKey(url);
-            CredentialDetails details = new CredentialDetails();
-            details.UserName = userName;
-            details.Password = password;
-            session[key] = details;
-        }
+			string key = GetCertificatedKey(url);
+			return (HttpContext.Current.Session[key] != null);
+		}
 
-        public void AddCertification(HttpContext context, string url, string userName, string password)
-        {
-            if (context.Session == null)
-                return;
+		public override void AddCertification(string url, string userName, string password)
+		{
+			HttpSessionState session = HttpContext.Current.Session;
+			if (session == null) return;
 
-            string key = GetCertificatedKey(url);
-            CredentialDetails details = new CredentialDetails();
-            details.UserName = userName;
-            details.Password = password;
-            context.Session[key] = details;
-        }
+			string key = GetCertificatedKey(url);
+			CredentialDetails details = new CredentialDetails();
+			details.UserName = userName;
+			details.Password = password;
+			session[key] = details;
 
-        public override NetworkCredential GetNetworkCertification(string url)
-        {
-            return GetNetworkCertification(GetCertification(url));
-        }
+			// 0- executing plugins
+			if (_isPluginAvailable)
+				Plugins.CallPluginMethod(PluginHosts.IPluginCredentialCache,
+					PluginMethods.IPluginCredentialCache.AfterAddCertification,
+					this, url, userName, password);
+		}
 
-        private NetworkCredential GetNetworkCertification(CredentialDetails credit)
-        {
-            return new NetworkCredential(credit.UserName, credit.Password);
-        }
+		public override NetworkCredential GetNetworkCertification(string url)
+		{
+			NetworkCredential result = GetNetworkCertification(GetCertification(url));
+			
+			// 1- executing plugins
+			if (_isPluginAvailable)
+				Plugins.CallPluginMethod(PluginHosts.IPluginCredentialCache,
+					PluginMethods.IPluginCredentialCache.OnGetNetworkCertification,
+					this, url, result);
 
-        private CredentialDetails GetCertification(string url)
-        {
-            string key = GetCertificatedKey(url);
-            return (CredentialDetails)HttpContext.Current.Session[key];
-        }
+			return result;
+		}
 
-        private string GetCertificatedKey(string url)
-        {
-            Uri reqUri = new Uri(url);
-            return reqUri.Scheme + reqUri.Port + reqUri.Host;
-        }
+		private NetworkCredential GetNetworkCertification(CredentialDetails credit)
+		{
+			return new NetworkCredential(credit.UserName, credit.Password);
+		}
 
-    }
+		private CredentialDetails GetCertification(string url)
+		{
+			string key = GetCertificatedKey(url);
+			return (CredentialDetails)HttpContext.Current.Session[key];
+		}
+
+		private string GetCertificatedKey(string url)
+		{
+			Uri reqUri = new Uri(url);
+			return reqUri.Scheme + reqUri.Port + reqUri.Host;
+		}
+
+	}
 }

@@ -1,6 +1,6 @@
 ﻿*{margin:0;padding:0;}
 body{background: #FFFFFF none repeat-x;text-align: justify;font-family: Arial, Helvetica, sans-serif;font-size: 13px;color: #333333;}
-td{font-family: Arial, Helvetica, sans-serif;font-size: 13px;}
+td{font-size: 13px;}
 .header{background: #2E2E2E none repeat scroll 0 0;height: 110px;margin: 0 auto;}
 #logo{height: 110px;margin: 0 auto;width: 778px;}
 #logo h1{float: left;font-size: 4em;padding-top: 40px;}
@@ -12,20 +12,25 @@ td{font-family: Arial, Helvetica, sans-serif;font-size: 13px;}
 #menu{width: 778px;height: 40px;margin: 0 auto;}
 #menu ul{margin: 0;padding: 0;list-style: none;line-height: normal;}
 #menu li{display: inline;}
-#menu a{float: left;margin-right: 6px;padding: 5px 20px 5px 20px;background: #4C4D51;border: 1px #575C5F solid;text-decoration: none;text-transform: uppercase;font-weight: bold;font-size: 11px;color: #FFFFFF;}
-#menu a:hover{text-decoration: none;background: #983D3A;border: 1px #D45951 solid;}
+#menu a{float: left;margin-right: 6px;padding: 5px 20px 5px 20px;background: #4C4D51;border: 1px #575C5F solid;text-decoration: none;text-transform: uppercase;font-weight: bold;font-size: 11px;color: #FFFFFF; outline-width:0px;}
+#menu a:hover{text-decoration: none;background: #983D3A;border: 1px #D45951 solid;
+-moz-box-shadow:0px 0px 10px gray;box-shadow:0px 0px 10px gray;}
 #menu .first a{background: #983D3A;border: 1px #D45951 solid;}
 #content{background: #E8DBA7 none repeat scroll 0 0;border-bottom: 4px solid #D35406;}
 #content .content{margin: 0 auto;padding: 0 0 20px;width: 778px;}
-.urlBar{background: #BBB082 none repeat scroll 0 0;color: #FFFFFF;font-size: 0.9em;font-weight: bold;margin: 0 0 10px;padding: 5px 10px 10px 10px;-moz-border-radius: 0px 0px 10px 10px;-webkit-border-radius: 0px 0px 10px 10px;border-radius: 0px 0px 10px 10px;}
+.urlBar{text-shadow:0 0 4px black; background: #BBB082 none repeat scroll 0 0;color: #FFFFFF;font-size: 0.9em;font-weight: bold;margin: 0 0 10px;padding: 5px 10px 10px 10px;-moz-border-radius: 0px 0px 10px 10px;-webkit-border-radius: 0px 0px 10px 10px;border-radius: 0px 0px 10px 10px;}
 .button{vertical-align: bottom;background: #4C4D51 none repeat scroll 0 0;border: 1px solid silver;color: #FFFFFF;font-size: 11px;font-weight: bold;margin-right: 6px;padding: 3px 14px;text-decoration: none;text-transform: uppercase;height: 30px;cursor: pointer;}
 .button:Hover{background: #983D3A none repeat scroll 0 0;border: 1px solid #D45951;text-decoration: none;}
-.urlBar .urlText{vertical-align: bottom;-height: 20px;padding: 6px;background-color: whitesmoke;border: solid 1px #4C4D51;}
+.urlBar .urlText{vertical-align: bottom;-height: 20px;padding: 6px;background-color: whitesmoke;border: solid 1px #4C4D51;
+-moz-box-shadow:0 0 10px gray;box-shadow:1px 1px 3px silver;text-shadow:2px 2px 3px gray;
+}
 .urlBar .urlText:hover, .urlBar .urlText:active{background-color: white;border: solid 1px black;}
 .urlBar .urlBarLinkBar{margin-top: 5px;font-size: 1.1em;}
 .urlBar .urlBarDesc{margin-top: 5px;}
+.urlBar A{text-shadow:0px 0px 5px white; outline-width:0px;}
+.urlBar A:hover{text-shadow:0px 0px 10px blue;}
 .about h1{margin: 10px 0;padding: 0;font-size: 1.5em;}
-.about .title{color: #CC6B47;}
+.about .title{color: #CC6B47;text-shadow:1px 1px 6px #CC6B47;}
 #options{background: #F4EDD3;border-bottom: 4px #D35406 solid;}
 .options{width: 778px;margin: 0 auto;}
 .options a{color: White;text-decoration: none;}
@@ -33,11 +38,11 @@ td{font-family: Arial, Helvetica, sans-serif;font-size: 13px;}
 .tblOptions{width: 100%;margin-bottom: 5px;}
 .tblOptions tr.option{background-color: #F4EDD3;}
 .tblOptions tr.option:hover{background-color: whitesmoke;border: solid 5px red;}
-.tblOptions tr.option .name{padding: 5px 5px 5px 5px;background: #F8F7E1 url(update_icon.gif) no-repeat scroll 6px 10px;border-top: 1px solid #C5C07D;border-left: 1px solid #C5C07D;color: #000000;display: block;font-family: Arial,Helvetica,sans-serif;font-size: 11px;font-style: normal;font-variant: normal;font-weight: normal;line-height: 33px;margin: 0 0 5px;padding: 0 0 0 29px;}
+.tblOptions tr.option .name{margin: 0 0 5px;padding: 0 0 0 29px;background: #F8F7E1 none no-repeat scroll 6px 10px;border-top: 1px solid #C5C07D;border-left: 1px solid #C5C07D;color: #000000;display: block;font-size: 11px;font-style: normal;font-variant: normal;font-weight: normal;line-height: 33px;}
 .tblOptions tr.option .name label{padding: 0px 5px;}
 .tblOptions tr.option .desc{padding: 2px 2px 12px 2px;border-top: solid 1px #BBB082;margin-bottom: 4px;direction: ltr;font-size: 12px;}
 #links{clear: both;margin: 0 auto;background: none repeat-x;text-align: center;}
 #links p a{color: White;}
 #links p{color: white;background: black;margin: 0 auto;width: 763px;font-size: .8em;padding: 10px 0 10px 15px;text-align: center;font-size: .9em;font-weight: bold;color: #FFFFFF;-moz-border-radius: 0px 0px 10px 10px;-webkit-border-radius: 0px 0px 10px 10px;border-radius: 0px 0px 10px 10px;}
-#footer{clear: both;margin: 0 auto;padding: 10px 0;background: none repeat-x;text-align: center;}
+#footer{ direction:ltr; clear: both;margin: 0 auto;padding: 10px 0;background: none repeat-x;text-align: center;}
 #footer p{margin: 0;font-size: .8em;color: #666666;}

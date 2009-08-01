@@ -1,15 +1,15 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <plugin>
 	<info ASProxyVersion="5.*">
-		<Name>Template</Name>
-		<Author>ASProxy</Author>
+		<Name>TemplatePlugin</Name>
+		<Author>ASProxy, SalarSoft</Author>
 		<Version>1.0</Version>
-		<Description>ASProxy plugins template</Description>
-		<Date>2009-5-10</Date>
+		<Description>This is a template plugin</Description>
+		<Date>2009-7-12</Date>
 	</info>
-	
+
 	<update enabled="false" updateInfoUrl="http://asproxy.sourceforge.net/update/autoupdate.xml">
 	</update>
 
-	<plugin typeName="ASProxyPlugins.TTPluginCookieManager"></plugin>
+	<classType typeName="Namespace.Classname, Assembly.Name"></classType>
 </plugin>

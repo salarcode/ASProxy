@@ -11,10 +11,10 @@ using System.IO;
 public class Download : IHttpHandler, System.Web.SessionState.IReadOnlySessionState
 {
 
-    public void ProcessRequest(HttpContext context)
-    {
-        try
-        {
+	public void ProcessRequest(HttpContext context)
+	{
+		try
+		{
 			if (Configurations.Authentication.Enabled)
 			{
 				if (!Configurations.Authentication.HasPermission(context.User.Identity.Name,
@@ -27,158 +27,188 @@ public class Download : IHttpHandler, System.Web.SessionState.IReadOnlySessionSt
 				}
 			}
 
-            if (UrlProvider.IsASProxyAddressUrlIncluded(context.Request.QueryString))
-            {
-                DownloadUrl(context);
-            }
-            else
-            {
-                context.Response.StatusCode = (int)System.Net.HttpStatusCode.NotFound; ;
-                context.Response.ContentType = "text/html";
-                context.Response.Write("No url is specified.");
-            }
-        }
-        catch (ThreadAbortException) { }
-        catch (Exception ex)
-        {
-            if (Systems.LogSystem.ErrorLogEnabled)
-                Systems.LogSystem.LogError(ex,context.Request.Url.ToString());
+			if (UrlProvider.IsASProxyAddressUrlIncluded(context.Request.QueryString))
+			{
+				DownloadUrl(context);
+			}
+			else
+			{
+				context.Response.StatusCode = (int)System.Net.HttpStatusCode.NotFound; ;
+				context.Response.ContentType = "text/html";
+				context.Response.Write("No url is specified.");
+			}
+		}
+		catch (ThreadAbortException) { }
+		catch (Exception ex)
+		{
+			if (Systems.LogSystem.ErrorLogEnabled)
+				Systems.LogSystem.LogError(ex, context.Request.Url.ToString());
 
-            context.Response.StatusCode = (int)Common.GetExceptionHttpErrorCode(ex);
-            context.Response.ContentType = "text/html";
-            context.Response.Write(ex.Message);
-         
-            return;
-        }
-    }
+			context.Response.StatusCode = (int)Common.GetExceptionHttpErrorCode(ex);
+			context.Response.ContentType = "text/html";
+			context.Response.Write(ex.Message);
 
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <Added>Since V4.1</Added>
-    private string GetRedirectEncodedUrlForASProxyPages(string asproxyPage, string currentRequest, bool encodeUrl)
-    {
-        // Encode redirect page if needed
-        if (encodeUrl)
-        {
-            currentRequest = UrlProvider.EncodeUrl(currentRequest);
-        }
+			return;
+		}
+	}
 
-        // Apply current page as referrer url for redirect url
-        asproxyPage = UrlBuilder.AddUrlQuery(asproxyPage, Consts.Query.UrlAddress, currentRequest);
+	/// <summary>
+	/// 
+	/// </summary>
+	/// <Added>Since V4.1</Added>
+	private string GetRedirectEncodedUrlForASProxyPages(string asproxyPage, string currentRequest, bool encodeUrl)
+	{
+		// Encode redirect page if needed
+		if (encodeUrl)
+		{
+			currentRequest = UrlProvider.EncodeUrl(currentRequest);
+		}
 
-        // Apply decode option
-        asproxyPage = UrlBuilder.AddUrlQuery(asproxyPage, Consts.Query.Decode, Convert.ToByte(encodeUrl).ToString());
+		// Apply current page as referrer url for redirect url
+		asproxyPage = UrlBuilder.AddUrlQuery(asproxyPage, Consts.Query.UrlAddress, currentRequest);
 
-        // If page is marked as posted back, remark it as no post back
-        if (asproxyPage.IndexOf(Consts.Query.WebMethod) != -1)
-            asproxyPage = UrlBuilder.RemoveQuery(asproxyPage, Consts.Query.WebMethod);
+		// Apply decode option
+		asproxyPage = UrlBuilder.AddUrlQuery(asproxyPage, Consts.Query.Decode, Convert.ToByte(encodeUrl).ToString());
 
-        return asproxyPage;
-    }
+		// If page is marked as posted back, remark it as no post back
+		if (asproxyPage.IndexOf(Consts.Query.WebMethod) != -1)
+			asproxyPage = UrlBuilder.RemoveQuery(asproxyPage, Consts.Query.WebMethod);
 
-    public void DownloadUrl(HttpContext context)
-    {
-        IEngine engine = null;
-        MemoryStream responseData = null;
-        ResumableDownload download = null;
-        try
-        {
-            engine = (IEngine)Provider.CreateProviderInstance(ProviderType.IEngine);
-            engine.UserOptions = UserOptions.ReadFromRequest();
-            
-            engine.DataTypeToProcess = DataTypeToProcess.None;
-            engine.RequestInfo.SetContentType ( MimeContentType.application);
+		return asproxyPage;
+	}
 
-            // Initializing the engine
-            engine.Initialize(context.Request);
-            
-            // communicate with back-end
-            engine.ExecuteHandshake();
+	public void DownloadUrl(HttpContext context)
+	{
+		IEngine engine = null;
+		MemoryStream responseData = null;
+		ResumableDownload download = null;
+		try
+		{
+			engine = (IEngine)Provider.GetProvider(ProviderType.IEngine);
+			engine.UserOptions = UserOptions.ReadFromRequest();
 
-            
-            // the data stream
-            responseData = new MemoryStream();
-            
-            // Execute the response
-            engine.ExecuteToStream(responseData);
+			engine.DataTypeToProcess = DataTypeToProcess.None;
+			engine.RequestInfo.SetContentType(MimeContentType.application);
+	
+			// we request for a download
+			engine.RequestInfo.RequesterType = RequesterType.Download;
+			
+			// Initializing the engine
+			engine.Initialize(context.Request);
 
-            if (engine.LastStatus == LastStatus.Error)
-            {
-                if (Systems.LogSystem.ErrorLogEnabled)
-					Systems.LogSystem.LogError(engine.LastException, engine.RequestInfo.RequestUrl, engine.LastErrorMessage);
+			// communicate with back-end
+			engine.ExecuteHandshake();
 
-                context.Response.Clear();
-                SalarSoft.ASProxy.Common.ClearASProxyRespnseHeader(context.Response);
-                context.Response.ContentType = "text/html";
-                context.Response.Write("//" + engine.LastErrorMessage);
-                context.Response.StatusCode = (int)Common.GetExceptionHttpErrorCode(engine.LastException);
+			if (Configurations.WebData.Downloader_ResumeSupport)
+			{
 
-                context.ApplicationInstance.CompleteRequest();
-                return;
-            }
+				// the data stream
+				responseData = new MemoryStream();
 
-            context.Response.ClearContent();
-            Common.ClearASProxyRespnseHeader(context.Response);
+				// Execute the response
+				engine.ExecuteToStream(responseData);
 
-            download = new ResumableDownload();
-            download.ClearResponseData();
-            download.ContentType = "application/octet-stream";
+				if (engine.LastStatus == LastStatus.Error)
+				{
+					if (Systems.LogSystem.ErrorLogEnabled)
+						Systems.LogSystem.LogError(engine.LastException, engine.LastErrorMessage, engine.RequestInfo.RequestUrl);
 
-            string filename;
-            //====Get file name====
-            if (string.IsNullOrEmpty(engine.ResponseInfo.ContentFilename) == false)
-                filename = engine.ResponseInfo.ContentFilename;
-            else
-                filename = System.IO.Path.GetFileName(engine.RequestInfo.RequestUrl);
+					context.Response.Clear();
+					SalarSoft.ASProxy.Common.ClearASProxyRespnseHeader(context.Response);
+					context.Response.ContentType = "text/html";
+					context.Response.Write("//" + engine.LastErrorMessage);
+					context.Response.StatusCode = (int)Common.GetExceptionHttpErrorCode(engine.LastException);
+
+					context.ApplicationInstance.CompleteRequest();
+					return;
+				}
+
+				context.Response.ClearContent();
+				Common.ClearASProxyRespnseHeader(context.Response);
+
+				download = new ResumableDownload();
+				download.ClearResponseData();
+				download.ContentType = "application/octet-stream";
+
+				string filename;
+				//====Get file name====
+				if (string.IsNullOrEmpty(engine.ResponseInfo.ContentFilename) == false)
+					filename = engine.ResponseInfo.ContentFilename;
+				else
+					filename = System.IO.Path.GetFileName(engine.RequestInfo.RequestUrl);
 
 
-            // Log download status
-            if (Systems.LogSystem.ActivityLogEnabled)
-                Systems.LogSystem.Log(LogEntity.DownloadRequested, engine.RequestInfo.RequestUrl, filename, responseData.Length.ToString());
+				// Log download status
+				if (Systems.LogSystem.ActivityLogEnabled)
+					Systems.LogSystem.Log(LogEntity.DownloadRequested, engine.RequestInfo.RequestUrl, filename, responseData.Length.ToString());
 
 
-            //********************************************//
-            //	Important note!
-            //	MemoryStream.ToArray() is slower than MemoryStream.GetBuffer()
-            //	Because the MemoryStream.ToArray function returns a copy of stream content,
-            //  but MemoryStream.GetBuffer() returns a refrence of stream contents.
-            //	So i used GetBuffer()!!
-            //********************************************//
-            download.ProcessDownload(responseData.GetBuffer(), engine.RequestInfo.RequestUrl, filename);
+				//********************************************//
+				//	Important note!
+				//	MemoryStream.ToArray() is slower than MemoryStream.GetBuffer()
+				//	Because the MemoryStream.ToArray function returns a copy of stream content,
+				//  but MemoryStream.GetBuffer() returns a refrence of stream contents.
+				//	So i used GetBuffer()!!
+				//********************************************//
+				download.ProcessDownload(responseData.GetBuffer(), engine.RequestInfo.RequestUrl, filename);
+			}
+			else
+			{
+				// resume support is not enabled
 
-        }
-        catch (System.Threading.ThreadAbortException) { }
-        catch (Exception ex)
-        {
-            if (Systems.LogSystem.ErrorLogEnabled)
-                Systems.LogSystem.LogError(ex, engine.RequestInfo.RequestUrl, ex.Message);
+				// writes data directly to the response
+				engine.ExecuteToResponse(context.Response);
 
-            context.Response.Clear();
-            SalarSoft.ASProxy.Common.ClearASProxyRespnseHeader(context.Response);
-            context.Response.ContentType = "text/html";
-            context.Response.Write(ex.Message);
-            context.Response.StatusCode = (int)Common.GetExceptionHttpErrorCode(engine.LastException);
+				// check for errors
+				if (engine.LastStatus == LastStatus.Error)
+				{
+					if (Systems.LogSystem.ErrorLogEnabled)
+						Systems.LogSystem.LogError(engine.LastException, engine.LastErrorMessage, engine.RequestInfo.RequestUrl);
 
-            context.ApplicationInstance.CompleteRequest();
-        }
-        finally
-        {
-            if (download != null)
-                download.Dispose();
-            if (engine != null)
-                engine.Dispose();
-        }
-        
-    }
+					context.Response.Clear();
+					SalarSoft.ASProxy.Common.ClearASProxyRespnseHeader(context.Response);
+					context.Response.ContentType = "text/html";
+					context.Response.Write("//" + engine.LastErrorMessage);
+					context.Response.StatusCode = (int)Common.GetExceptionHttpErrorCode(engine.LastException);
 
-    
-    public bool IsReusable
-    {
-        get
-        {
-            return false;
-        }
-    }
+					context.ApplicationInstance.CompleteRequest();
+					return;
+				}
+
+			}
+
+		}
+		catch (System.Threading.ThreadAbortException) { }
+		catch (Exception ex)
+		{
+			if (Systems.LogSystem.ErrorLogEnabled)
+				Systems.LogSystem.LogError(ex, ex.Message, engine.RequestInfo.RequestUrl);
+
+			context.Response.Clear();
+			SalarSoft.ASProxy.Common.ClearASProxyRespnseHeader(context.Response);
+			context.Response.ContentType = "text/html";
+			context.Response.Write(ex.Message);
+			context.Response.StatusCode = (int)Common.GetExceptionHttpErrorCode(engine.LastException);
+
+			context.ApplicationInstance.CompleteRequest();
+		}
+		finally
+		{
+			if (download != null)
+				download.Dispose();
+			if (engine != null)
+				engine.Dispose();
+		}
+
+	}
+
+
+	public bool IsReusable
+	{
+		get
+		{
+			return false;
+		}
+	}
 
 }

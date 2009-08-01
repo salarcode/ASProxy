@@ -6,9 +6,9 @@ namespace SalarSoft.ASProxy.Exposed
 {
 	/// <summary>
 	/// The plugin base class to get started.
-	/// The plugin should register classes in constructor.
+	/// The plugin should register its host classes in constructor.
 	/// </summary>
-	interface IPluginHost
+	public interface IPluginHost
 	{
 		
 	}

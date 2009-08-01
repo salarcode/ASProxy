@@ -62,6 +62,12 @@ namespace SalarSoft.ASProxy.BuiltIn
 		{
 			try
 			{
+				// 1- executing plugins
+				if (Plugins.IsPluginAvailable(PluginHosts.IPluginCSSProcessor))
+					Plugins.CallPluginMethod(PluginHosts.IPluginCSSProcessor,
+						PluginMethods.IPluginCSSProcessor.BeforeExecute,
+						this, (object)codes, pageUrl, pageUrlNoQuery, pagePath, rootUrl);
+
 				// ASProxy pages url formats generator
 				ASProxyPagesFormat pages = new ASProxyPagesFormat(_UserOptions.EncodeUrl);
 
@@ -82,6 +88,14 @@ namespace SalarSoft.ASProxy.BuiltIn
 					rootUrl,
 					_UserOptions.EncodeUrl,
 					false);
+
+
+				// 2- executing plugins
+				if (Plugins.IsPluginAvailable(PluginHosts.IPluginCSSProcessor))
+					Plugins.CallPluginMethod(PluginHosts.IPluginCSSProcessor,
+						PluginMethods.IPluginCSSProcessor.AfterExecute,
+						this, (object)codes, pageUrl, pageUrlNoQuery, pagePath, rootUrl);
+
 			}
 			catch (Exception ex)
 			{

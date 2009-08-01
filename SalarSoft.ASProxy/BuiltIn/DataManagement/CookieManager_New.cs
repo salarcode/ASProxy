@@ -7,6 +7,16 @@ using System.Collections;
 
 namespace SalarSoft.ASProxy.BuiltIn
 {
+
+
+	/// <summary>
+	/// 
+	/// </summary>
+	/// <rules>
+	/// Cookie rules.
+	/// 
+	/// 
+	/// </rules>
 	public class CookieManager : ExCookieManager
 	{
 		protected const string strCookieNameExt = "_ASPX";
@@ -151,7 +161,12 @@ namespace SalarSoft.ASProxy.BuiltIn
 		}
 
 
-		public void ApplyRequestToCookieContainer(CookieContainer container, HttpRequest userRequest)
+		/// <summary>
+		/// Reads request cookie to cookie container
+		/// </summary>
+		/// <param name="container"></param>
+		/// <param name="userRequest"></param>
+		private void ApplyRequestToCookieContainer(CookieContainer container, HttpRequest userRequest)
 		{
 			if (container == null || userRequest == null)
 				return;
@@ -227,6 +242,11 @@ namespace SalarSoft.ASProxy.BuiltIn
 			// restore cookies from user request
 			ApplyRequestToCookieContainer(httpWebRequest.CookieContainer, userRequest);
 
+			// BUGFIX: CookieContainer has a bug
+			// Here is its bugfix
+			// To get around this bug, the domains should start with a DOT
+			BugFix_AddDotCookieDomain(httpWebRequest.CookieContainer);
+
 		}
 
 
@@ -255,9 +275,9 @@ namespace SalarSoft.ASProxy.BuiltIn
 		private static string GetCookieNameByHost(string host)
 		{
 			string cookieName = host + strCookieNameExt;
-
-			if (cookieName.StartsWith(".www"))
-				cookieName = cookieName.Remove(0, 1);
+#warning ooooooooooooooooooopppppppppppsssss
+			//if (cookieName.StartsWith(".www"))
+			//	cookieName = cookieName.Remove(0, 1);
 			return cookieName;
 		}
 

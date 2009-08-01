@@ -1,0 +1,52 @@
+﻿@import url(style.css);
+
+body
+{
+	direction:rtl;
+	font-family:Tahoma,sans-serif;
+font-size:13px;
+}
+
+.about h1
+{
+	font-family:Arial,Helvetica,sans-serif;
+}
+#logo h2
+{
+	font-family:Arial,Helvetica,sans-serif;
+}
+.button
+{
+	font-family:Tahoma,sans-serif;
+}
+
+.options h2
+{
+	letter-spacing:0px;
+}
+#menu a
+{
+	float:right;
+}
+#content
+{
+	-direction:rtl;
+}
+#options
+{
+	-direction:rtl;
+}
+.tblOptions tr.option .name
+{
+	line-height:inherit;
+	margin: 0 0 5px 0 ;
+	padding:10px 10px 10px 10px;
+	border-left:none;
+	border-right:1px solid #C5C07D;
+	text-align:right;
+		white-space:nowrap;
+}
+.tblOptions tr.option .desc
+{
+	direction:rtl;
+}

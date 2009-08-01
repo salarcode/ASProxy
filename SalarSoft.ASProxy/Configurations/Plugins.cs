@@ -4,7 +4,6 @@ using System.Text;
 using System.Xml;
 using System.IO;
 using System.Web;
-using SalarSoft.ASProxy.Definitions;
 using System.Reflection;
 using System.Collections;
 
@@ -12,89 +11,202 @@ namespace SalarSoft.ASProxy
 {
 	public class Plugins
 	{
-		static List<PluginInfo> _loadedPlugins;
-		static Dictionary<PluginHosts, ArrayList> _addedPlugins;
-		static Dictionary<PluginHosts, ArrayList> _createdPlugins;
+		internal struct PluginStore
+		{
+			public Type ClassType;
+			public object Instance;
+		}
+
+		static List<PluginInfo> _availablePlugins;
+		static Dictionary<PluginHosts, ArrayList> _pluginsClassType;
+		static bool _pluginsEnabled;
 
 		static Plugins()
 		{
-			_loadedPlugins = new List<PluginInfo>();
-			_addedPlugins = new Dictionary<PluginHosts, ArrayList>();
-			_createdPlugins = new Dictionary<PluginHosts, ArrayList>();
+			_availablePlugins = new List<PluginInfo>();
+			_pluginsClassType = new Dictionary<PluginHosts, ArrayList>();
 
-			if (Configurations.Providers.PluginsEnabled)
-				// the default providers will be used
+			_pluginsEnabled = Configurations.Providers.PluginsEnabled;
+			if (_pluginsEnabled)
 				LoadPlugins();
-
 		}
 
+		/// <summary>
+		/// The loaded plugins stores in current request's context.
+		/// </summary>
+		private static Dictionary<PluginHosts, List<PluginStore>> LoadedPluginsList
+		{
+			get
+			{
+				const string contextItemStoreKey = "Plugins.LoadedPlugins";
+				HttpContext context = HttpContext.Current;
+				if (context != null)
+				{
+					Dictionary<PluginHosts, List<PluginStore>> loadedList =
+						(Dictionary<PluginHosts, List<PluginStore>>)context.Items[contextItemStoreKey];
+					if (loadedList == null)
+					{
+						loadedList = new Dictionary<PluginHosts, List<PluginStore>>();
+						context.Items[contextItemStoreKey] = loadedList;
+					}
+					return loadedList;
+				}
+				return null;
+			}
+		}
 
 		#region public methods
+
+		/// <summary>
+		/// Registers plugin host
+		/// </summary>
 		public static void RegisterHost(PluginHosts hostType, Type pluginClass)
 		{
+			ArrayList added;
+
 			// added plugins list
-			ArrayList added = _addedPlugins[hostType];
-			if (added == null)
+			if (!_pluginsClassType.TryGetValue(hostType, out added))
 				added = new ArrayList();
 
 			added.Add(pluginClass);
-			_addedPlugins[hostType] = added;
+			_pluginsClassType[hostType] = added;
 		}
 
+		/// <summary>
+		/// Removes the registration of a plugin host class
+		/// </summary>
 		public static void UnRegisterHost(PluginHosts hostType)
 		{
-			// added plugins list
-			_addedPlugins.Remove(hostType);
+			// remove from registered list
+			_pluginsClassType.Remove(hostType);
+
+			// remove from loaded list
+			Dictionary<PluginHosts, List<PluginStore>> loadedList = LoadedPluginsList;
+			if (loadedList != null)
+				loadedList.Remove(hostType);
 		}
 		#endregion
 
 
 		#region internal methods
-		internal static bool IsPluginEnabled(PluginHosts hostType)
-		{
-			// added plugins list
-			ArrayList added = _addedPlugins[hostType];
-			if (added == null)
-				return false;
-			else
-				return added.Count > 0;
-		}
 
-		internal static ArrayList GetPluginsInstance(PluginHosts hostType)
+		/// <summary>
+		/// Calls specified method of all specified hosts.
+		/// </summary>
+		internal static void CallPluginMethod(PluginHosts hostType, Enum methodNameEnum, params object[] arguments)
 		{
-			ArrayList created = _createdPlugins[hostType];
-			if (created != null && created.Count > 0)
+			// Gets the available plugins list
+			List<PluginStore> plugins = GetPluginsInstances(hostType);
+			if (plugins != null && plugins.Count > 0)
 			{
-				return created;
-			}
-			else
-			{
-				ArrayList added = _addedPlugins[hostType];
-				created = new ArrayList();
+				// method name as enum
+				string methodName = methodNameEnum.ToString();
 
-				for (int i = 0; i < added.Count; i++)
+				for (int i = 0; i < plugins.Count; i++)
 				{
-					Type classType = (Type)added[i];
-					object classObj;
+					PluginStore pluginStore = plugins[i];
 					try
 					{
-						classObj = InvokeDefaultCreateInstance(classType);
-						created.Add(classObj);
+						// getting requested method info using reflection
+						MethodInfo info = pluginStore.ClassType
+							.GetMethod(methodName,
+							BindingFlags.Instance | BindingFlags.Public);
+
+						// call plugin with specifed arguments
+						info.Invoke(pluginStore.Instance, arguments);
 					}
-					catch (Exception)
+					catch (EPluginStopRequest) { throw; }
+					catch (Exception ex)
 					{
+						// the plugin is requested to stop any operation
+						if (ex.InnerException is EPluginStopRequest)
+							throw;
+
 						if (Systems.LogSystem.ErrorLogEnabled)
-							Systems.LogSystem.LogError("Error in create new instance of plugin host: hostName=" + hostType);
+							Systems.LogSystem.LogError(ex, "Plugin method failed. IPluginEngine Plugin=" + plugins[i].ClassType + " MethodName=" + methodName, string.Empty);
 					}
 				}
-				_createdPlugins[hostType] = created;
-
-				return created;
 			}
 		}
+
+		/// <summary>
+		/// Checks if there is any plugin class registered for specified type
+		/// </summary>
+		internal static bool IsPluginAvailable(PluginHosts hostType)
+		{
+			if (!_pluginsEnabled)
+				return false;
+
+			if (_pluginsClassType.ContainsKey(hostType))
+			{
+				return true;
+			}
+			return false;
+		}
+
 		#endregion
 
 		#region private methods
+		/// <summary>
+		/// Creates and stores plugin class instances, then returns the their list
+		/// </summary>
+		private static List<PluginStore> GetPluginsInstances(PluginHosts hostType)
+		{
+			// reads loaded plugins list from context
+			Dictionary<PluginHosts, List<PluginStore>> loadedPlugins = LoadedPluginsList;
+
+			List<PluginStore> loaded;
+
+			// if the request host is already created
+			if (loadedPlugins.TryGetValue(hostType, out loaded))
+			{
+				// if there is any return it
+				if (loaded.Count > 0)
+					return loaded;
+			}
+
+
+			ArrayList available;
+
+			// the plugin class is not created
+			// trying to get the plugin class type if avaialble
+			if (_pluginsClassType.TryGetValue(hostType, out available))
+			{
+				// new store list
+				loaded = new List<PluginStore>();
+
+				for (int i = 0; i < available.Count; i++)
+				{
+					Type classType = (Type)available[i];
+					object classObj;
+					try
+					{
+						// creatig a new instance of class type
+						classObj = InvokeDefaultCreateInstance(classType);
+
+						PluginStore store;
+						store.ClassType = classType;
+						store.Instance = classObj;
+
+						loaded.Add(store);
+					}
+					catch (Exception ex)
+					{
+						if (Systems.LogSystem.ErrorLogEnabled)
+							Systems.LogSystem.LogError(ex, "Error in create new instance of plugin host: hostName=" + hostType, string.Empty);
+					}
+				}
+
+				// adding stored plugin in a collection
+				loadedPlugins[hostType] = loaded;
+
+				// and the result
+				return loaded;
+			}
+
+			// nothing found
+			return null;
+		}
 
 		/// <summary>
 		/// Load providers list from xml file
@@ -109,7 +221,10 @@ namespace SalarSoft.ASProxy
 
 			for (int i = 0; i < pluginsList.Length; i++)
 			{
+				// reads plugin info from xml file
 				PluginInfo info = ReadPluginInfo(pluginsList[i]);
+
+				// and adds to the available plugins list
 				loaded.Add(info);
 			}
 
@@ -125,16 +240,21 @@ namespace SalarSoft.ASProxy
 				for (int i = 0; i < pluginsList.Count; i++)
 				{
 					info = pluginsList[i];
+
+					// if plugin is disabled don't do anything
+					if (info.Disabled)
+						continue;
+
 					Type classType;
 					try
 					{
 						// load specified class name
 						classType = Type.GetType(info.ClassTypeName);
 					}
-					catch (Exception)
+					catch (Exception ex)
 					{
 						if (Systems.LogSystem.ErrorLogEnabled)
-							Systems.LogSystem.LogError("Failed to load plugin: Name=" + info.Name + " TypeName=" + info.ClassTypeName);
+							Systems.LogSystem.LogError(ex, "Failed to load plugin: Name=" + info.Name + " TypeName=" + info.ClassTypeName, string.Empty);
 
 						// continue to next plugin
 						continue;
@@ -147,23 +267,25 @@ namespace SalarSoft.ASProxy
 
 						// everything is ok
 						// Plugin is added to successfully loaded plugins
-						_loadedPlugins.Add(info);
+						_availablePlugins.Add(info);
 					}
-					catch (Exception)
+					catch (Exception ex)
 					{
 						if (Systems.LogSystem.ErrorLogEnabled)
-							Systems.LogSystem.LogError("Error in create new instance of a plugin: Name=" + info.Name);
+							Systems.LogSystem.LogError(ex, "Error in create new instance of a plugin: Name=" + info.Name, string.Empty);
 					}
 				}
 			}
-			catch (Exception)
+			catch (Exception ex)
 			{
 				if (Systems.LogSystem.ErrorLogEnabled)
-					Systems.LogSystem.LogError("Error in loading plugins!");
+					Systems.LogSystem.LogError(ex, "Error in loading plugins!", string.Empty);
 			}
 		}
 
-
+		/// <summary>
+		/// Creates a new instance of specified type by calling its default constructor
+		/// </summary>
 		private static object InvokeDefaultCreateInstance(Type type)
 		{
 			// Get the default constructor
@@ -175,6 +297,9 @@ namespace SalarSoft.ASProxy
 			return false;
 		}
 
+		/// <summary>
+		/// Reads plugin info from specifed plugin xml file
+		/// </summary>
 		private static PluginInfo ReadPluginInfo(string pluginXmlFile)
 		{
 			PluginInfo result;
@@ -189,12 +314,15 @@ namespace SalarSoft.ASProxy
 				// read data from xml data file
 				result = PluginInfo.ReadFromXml(rootNode);
 
+				// disabled state
+				result.Disabled = Configurations.Providers.IsPluginDisabled(result.Name);
+
 				return result;
 			}
-			catch (Exception)
+			catch (Exception ex)
 			{
 				if (Systems.LogSystem.ErrorLogEnabled)
-					Systems.LogSystem.LogError("Failed to load a plugin: xmlFile= " + Path.GetFileName(pluginXmlFile));
+					Systems.LogSystem.LogError(ex, "Failed to load a plugin: xmlFile= " + Path.GetFileName(pluginXmlFile), string.Empty);
 			}
 			return new PluginInfo();
 		}
@@ -203,7 +331,7 @@ namespace SalarSoft.ASProxy
 		{
 			get
 			{
-				return CurrentContext.MapAppPath(Consts.FilesConsts.Dir_Plugins); ;
+				return CurrentContext.MapAppPath(Consts.FilesConsts.Dir_Plugins);
 			}
 		}
 

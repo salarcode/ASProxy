@@ -25,7 +25,7 @@ public class Images : IHttpHandler, System.Web.SessionState.IReadOnlySessionStat
 			}
             if (UrlProvider.IsASProxyAddressUrlIncluded(context.Request.QueryString))
             {
-                IEngine engine = (IEngine)Provider.CreateProviderInstance(ProviderType.IEngine);
+                IEngine engine = (IEngine)Provider.GetProvider(ProviderType.IEngine);
                 engine.UserOptions = UserOptions.ReadFromRequest();
                 
                 engine.DataTypeToProcess = DataTypeToProcess.None;
@@ -69,7 +69,7 @@ public class Images : IHttpHandler, System.Web.SessionState.IReadOnlySessionStat
             if (engine.LastStatus == LastStatus.Error)
             {
                 if (Systems.LogSystem.ErrorLogEnabled)
-					Systems.LogSystem.LogError(engine.LastException, engine.RequestInfo.RequestUrl, engine.LastErrorMessage);
+					Systems.LogSystem.LogError(engine.LastException, engine.LastErrorMessage, engine.RequestInfo.RequestUrl);
 
 
                 ShowError(context, Common.GetExceptionHttpDetailedErrorCode(engine.LastException));
@@ -86,7 +86,7 @@ public class Images : IHttpHandler, System.Web.SessionState.IReadOnlySessionStat
         catch (Exception)
         {
             if (Systems.LogSystem.ErrorLogEnabled)
-				Systems.LogSystem.LogError(engine.LastException, engine.RequestInfo.RequestUrl, engine.LastErrorMessage);
+				Systems.LogSystem.LogError(engine.LastException, engine.LastErrorMessage, engine.RequestInfo.RequestUrl);
 
             ShowError(context, Common.GetExceptionHttpDetailedErrorCode(engine.LastException));
 

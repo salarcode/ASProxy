@@ -1,6 +1,6 @@
 ****************************************
 ASProxy       :version 5.5
-Last update   :2009/07/28
+Last update   :2009/07/30
 Official site :http://asproxy.sourceforge.net/
 
 ASProxy is an ASP.NET Web Proxy.
@@ -37,7 +37,10 @@ Version History
 
 Version 5.5 2009/07/28
 * New look and design.
+* Plugin support.
+* Extension support.
 * Administration interface. This is optional and should be uploaded by user manually.
+* Easy 
 
 Version 5.2 2009/06/28
 * Most part of ASProxy is rewrited and optimized.

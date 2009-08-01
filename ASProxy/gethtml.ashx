@@ -26,7 +26,7 @@ public class GetHtml : IHttpHandler, System.Web.SessionState.IReadOnlySessionSta
 			}
 			if (UrlProvider.IsASProxyAddressUrlIncluded(context.Request.QueryString))
             {
-                engine = (IEngine)Provider.CreateProviderInstance(ProviderType.IEngine);
+                engine = (IEngine)Provider.GetProvider(ProviderType.IEngine);
                 engine.UserOptions = UserOptions.ReadFromRequest();
 
                 engine.DataTypeToProcess = DataTypeToProcess.Html;
@@ -42,7 +42,7 @@ public class GetHtml : IHttpHandler, System.Web.SessionState.IReadOnlySessionSta
                 if (engine.LastStatus == LastStatus.Error)
                 {
                     if (Systems.LogSystem.ErrorLogEnabled)
-						Systems.LogSystem.LogError(engine.LastException, engine.RequestInfo.RequestUrl, engine.LastErrorMessage);
+						Systems.LogSystem.LogError(engine.LastException, engine.LastErrorMessage, engine.RequestInfo.RequestUrl);
 
                     context.Response.Clear();
                     SalarSoft.ASProxy.Common.ClearASProxyRespnseHeader(context.Response);
@@ -66,7 +66,7 @@ public class GetHtml : IHttpHandler, System.Web.SessionState.IReadOnlySessionSta
 		catch (Exception ex)
         {
             if (Systems.LogSystem.ErrorLogEnabled)
-                Systems.LogSystem.LogError(ex, context.Request.Url.ToString(), ex.Message);
+                Systems.LogSystem.LogError(ex, ex.Message, context.Request.Url.ToString());
 
             context.Response.Clear();
             SalarSoft.ASProxy.Common.ClearASProxyRespnseHeader(context.Response);

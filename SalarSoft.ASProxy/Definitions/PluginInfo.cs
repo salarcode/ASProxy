@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Xml;
 
-namespace SalarSoft.ASProxy.Definitions
+namespace SalarSoft.ASProxy
 {
 	public struct PluginInfo
 	{
@@ -13,6 +13,7 @@ namespace SalarSoft.ASProxy.Definitions
 		public string Version;
 		public string Description;
 		public bool UpdateEnabled;
+		public bool Disabled;
 		internal string UpdateInfoUrl;
 		internal string ClassTypeName;
 
@@ -22,10 +23,10 @@ namespace SalarSoft.ASProxy.Definitions
 			// info
 			XmlNode node = rootNode.SelectSingleNode("info");
 			result.ASProxyVersion = node.Attributes["ASProxyVersion"].Value;
-			result.Name = node.SelectSingleNode("Name").Value;
-			result.Author = node.SelectSingleNode("Author").Value;
-			result.Version = node.SelectSingleNode("Version").Value;
-			result.Description = node.SelectSingleNode("Description").Value;
+			result.Name = node.SelectSingleNode("Name").InnerText;
+			result.Author = node.SelectSingleNode("Author").InnerText;
+			result.Version = node.SelectSingleNode("Version").InnerText;
+			result.Description = node.SelectSingleNode("Description").InnerText;
 
 			// update
 			node = rootNode.SelectSingleNode("update");
@@ -35,6 +36,8 @@ namespace SalarSoft.ASProxy.Definitions
 			// classType
 			node = rootNode.SelectSingleNode("classType");
 			result.ClassTypeName = node.Attributes["typeName"].Value;
+
+			result.Disabled = false;
 
 			return result;
 		}

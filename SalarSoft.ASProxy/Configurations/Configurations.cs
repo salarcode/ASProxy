@@ -5,6 +5,8 @@ using System.Configuration;
 using System.Net;
 using System.Web;
 using System.Xml;
+using System.Collections.Specialized;
+using System.Globalization;
 
 namespace SalarSoft.ASProxy
 {
@@ -16,6 +18,7 @@ namespace SalarSoft.ASProxy
 		#region variables
 		private static Hashtable _customConfig;
 		private static ProvidersConfig _providers;
+		private static PagesConfig _pages;
 		private static WebDataConfig _webData;
 		private static AuthenticationConfig _authentication;
 		private static ImageCompressorConfig _imageCompressor;
@@ -45,6 +48,11 @@ namespace SalarSoft.ASProxy
 		{
 			get { return Configurations._webData; }
 			set { Configurations._webData = value; }
+		}
+		public static PagesConfig Pages
+		{
+			get { return Configurations._pages; }
+			set { Configurations._pages = value; }
 		}
 		public static AuthenticationConfig Authentication
 		{
@@ -104,6 +112,9 @@ namespace SalarSoft.ASProxy
 
 				// webData -------
 				_webData.SaveToXml(xmlDoc, rootNode);
+
+				// pages -------
+				_pages.SaveToXml(xmlDoc, rootNode);
 
 				// authentication ------
 				_authentication.SaveToXml(xmlDoc, rootNode);
@@ -184,6 +195,9 @@ namespace SalarSoft.ASProxy
 				// webData -------
 				_webData.ReadFromXml(rootNode);
 
+				// pages -------
+				_pages.ReadFromXml(rootNode);
+
 				// authentication ------
 				_authentication.ReadFromXml(rootNode);
 
@@ -240,6 +254,12 @@ namespace SalarSoft.ASProxy
 		{
 			public bool EngineCanBeOverwritten;
 			public bool PluginsEnabled;
+			public StringCollection DisabledPlugins;
+
+			public bool IsPluginDisabled(string pluginName)
+			{
+				return DisabledPlugins.Contains(pluginName);
+			}
 
 			public void SaveToXml(XmlDocument xmlDoc, XmlNode rootNode)
 			{
@@ -249,28 +269,89 @@ namespace SalarSoft.ASProxy
 				XmlNode activeNode = xmlDoc.CreateElement("providers");
 				rootNode.AppendChild(activeNode);
 
+				// engine node
 				node = xmlDoc.CreateElement("engine");
 				activeNode.AppendChild(node);
 				attribute = xmlDoc.CreateAttribute("canBeOverwritten");
 				attribute.Value = this.EngineCanBeOverwritten.ToString();
 				node.Attributes.Append(attribute);
 
+				// plugins node
 				node = xmlDoc.CreateElement("plugins");
 				activeNode.AppendChild(node);
 				attribute = xmlDoc.CreateAttribute("enabled");
 				attribute.Value = this.PluginsEnabled.ToString();
 				node.Attributes.Append(attribute);
+
+				// disabled plugins node
+				XmlNode disabledNode = xmlDoc.CreateElement("disabledPlugins");
+				node.AppendChild(disabledNode);
+				for (int i = 0; i < DisabledPlugins.Count; i++)
+				{
+					XmlNode nameNode = xmlDoc.CreateElement("plugin");
+					disabledNode.AppendChild(nameNode);
+
+					attribute = xmlDoc.CreateAttribute("name");
+					attribute.Value = DisabledPlugins[i];
+					nameNode.Attributes.Append(attribute);
+				}
 			}
+
 			public void ReadFromXml(XmlNode rootNode)
 			{
 				XmlNode node = rootNode.SelectSingleNode("providers/engine");
 				this.EngineCanBeOverwritten = Convert.ToBoolean(node.Attributes["canBeOverwritten"].Value);
 
+				// plugins
 				node = rootNode.SelectSingleNode("providers/plugins");
 				this.PluginsEnabled = Convert.ToBoolean(node.Attributes["enabled"].Value);
+
+				// disabled plugins list
+				node = rootNode.SelectSingleNode("providers/plugins/disabledPlugins");
+				this.DisabledPlugins = new StringCollection();
+				foreach (XmlNode childNode in node.ChildNodes)
+				{
+					DisabledPlugins.Add(childNode.Attributes["name"].Value);
+				}
 			}
 		}
+		public struct PagesConfig : IConfigSection
+		{
+			public string UILanguage;
 
+			public CultureInfo GetUiLanguage()
+			{
+				try 
+				{
+					return new CultureInfo(UILanguage);
+				}
+				catch (Exception)
+				{
+					UILanguage = "en-us";
+					return CultureInfo.CurrentUICulture;
+				}
+			}
+
+			public void SaveToXml(XmlDocument xmlDoc, XmlNode rootNode)
+			{
+				XmlNode node;
+				XmlAttribute attribute;
+
+				XmlNode pagesNode = xmlDoc.CreateElement("pages");
+				rootNode.AppendChild(pagesNode);
+
+
+				attribute = xmlDoc.CreateAttribute("uiLanguage");
+				attribute.Value = this.UILanguage;
+				pagesNode.Attributes.Append(attribute);
+			}
+
+			public void ReadFromXml(XmlNode rootNode)
+			{
+				XmlNode node = rootNode.SelectSingleNode("pages");
+				this.UILanguage = node.Attributes["uiLanguage"].Value;
+			}
+		}
 		public struct WebDataConfig : IConfigSection
 		{
 			public long MaxContentLength;
@@ -281,45 +362,70 @@ namespace SalarSoft.ASProxy
 			public UserAgentMode UserAgent;
 			public string UserAgentCustom;
 
+			public bool Downloader_ResumeSupport;
+			public int Downloader_MaxContentLength;
+			public int Downloader_Timeout;
+			public int Downloader_ReadWriteTimeOut;
+
 			public void SaveToXml(XmlDocument xmlDoc, XmlNode rootNode)
 			{
 				XmlAttribute attribute;
 
-				XmlNode node = xmlDoc.CreateElement("webData");
-				rootNode.AppendChild(node);
+				XmlNode webDataNode = xmlDoc.CreateElement("webData");
+				rootNode.AppendChild(webDataNode);
 
 
 				attribute = xmlDoc.CreateAttribute("maxContentLength");
 				attribute.Value = this.MaxContentLength.ToString();
-				node.Attributes.Append(attribute);
+				webDataNode.Attributes.Append(attribute);
 
 				attribute = xmlDoc.CreateAttribute("requestTimeout");
 				attribute.Value = this.RequestTimeout.ToString();
-				node.Attributes.Append(attribute);
+				webDataNode.Attributes.Append(attribute);
 
 				attribute = xmlDoc.CreateAttribute("requestReadWriteTimeOut");
 				attribute.Value = this.RequestReadWriteTimeOut.ToString();
-				node.Attributes.Append(attribute);
+				webDataNode.Attributes.Append(attribute);
 
 				attribute = xmlDoc.CreateAttribute("sendSignature");
 				attribute.Value = this.SendSignature.ToString();
-				node.Attributes.Append(attribute);
+				webDataNode.Attributes.Append(attribute);
 
 				attribute = xmlDoc.CreateAttribute("preferredLocalEncoding");
 				attribute.Value = this.PreferredLocalEncoding;
-				node.Attributes.Append(attribute);
+				webDataNode.Attributes.Append(attribute);
 
-				XmlNode nodeUserAgent = xmlDoc.CreateElement("userAgent");
-				node.AppendChild(nodeUserAgent);
-				node = nodeUserAgent;
+				// userAgent node
+				XmlNode userAgentNode = xmlDoc.CreateElement("userAgent");
+				webDataNode.AppendChild(userAgentNode);
 
 				attribute = xmlDoc.CreateAttribute("mode");
 				attribute.Value = this.UserAgent.ToString();
-				node.Attributes.Append(attribute);
+				userAgentNode.Attributes.Append(attribute);
 
 				attribute = xmlDoc.CreateAttribute("custom");
 				attribute.Value = this.UserAgentCustom;
-				node.Attributes.Append(attribute);
+				userAgentNode.Attributes.Append(attribute);
+
+				// downloader node
+				XmlNode downloader = xmlDoc.CreateElement("downloader");
+				webDataNode.AppendChild(downloader);
+
+				attribute = xmlDoc.CreateAttribute("resumeSupport");
+				attribute.Value = this.Downloader_ResumeSupport.ToString();
+				downloader.Attributes.Append(attribute);
+
+				attribute = xmlDoc.CreateAttribute("maxContentLength");
+				attribute.Value = this.Downloader_MaxContentLength.ToString();
+				downloader.Attributes.Append(attribute);
+
+				attribute = xmlDoc.CreateAttribute("requestTimeout");
+				attribute.Value = this.Downloader_Timeout.ToString();
+				downloader.Attributes.Append(attribute);
+
+				attribute = xmlDoc.CreateAttribute("requestReadWriteTimeOut");
+				attribute.Value = this.Downloader_ReadWriteTimeOut.ToString();
+				downloader.Attributes.Append(attribute);
 
 
 			}
@@ -335,9 +441,17 @@ namespace SalarSoft.ASProxy
 				this.SendSignature = Convert.ToBoolean(node.Attributes["sendSignature"].Value);
 				this.PreferredLocalEncoding = node.Attributes["preferredLocalEncoding"].Value;
 
-				node = node.SelectSingleNode("userAgent");
-				this.UserAgent = (UserAgentMode)Enum.Parse(typeof(UserAgentMode), node.Attributes["mode"].Value, true);
-				this.UserAgentCustom = node.Attributes["custom"].Value;
+				// userAgent node
+				XmlNode userAgentNode = node.SelectSingleNode("userAgent");
+				this.UserAgent = (UserAgentMode)Enum.Parse(typeof(UserAgentMode), userAgentNode.Attributes["mode"].Value, true);
+				this.UserAgentCustom = userAgentNode.Attributes["custom"].Value;
+
+				// downloader node
+				XmlNode downloaderNode = node.SelectSingleNode("downloader");
+				this.Downloader_ResumeSupport = Convert.ToBoolean(downloaderNode.Attributes["resumeSupport"].Value);
+				this.Downloader_MaxContentLength = Convert.ToInt32(downloaderNode.Attributes["maxContentLength"].Value);
+				this.Downloader_Timeout = Convert.ToInt32(downloaderNode.Attributes["requestTimeout"].Value);
+				this.Downloader_ReadWriteTimeOut = Convert.ToInt32(downloaderNode.Attributes["requestReadWriteTimeOut"].Value);
 			}
 
 			public enum UserAgentMode { Default, ASProxy, Custom };
@@ -664,7 +778,7 @@ namespace SalarSoft.ASProxy
 			{
 				XmlNode node = rootNode.SelectSingleNode("netProxy");
 				this.Mode = (NetProxyConfig.NetProxyMode)Enum.Parse(typeof(NetProxyConfig.NetProxyMode),
-									node.Attributes["mode"].Value,true);
+									node.Attributes["mode"].Value, true);
 				node = rootNode.SelectSingleNode("netProxy/custom");
 				this.Address = node.Attributes["address"].Value;
 				this.Port = Convert.ToInt32(node.Attributes["port"].Value);

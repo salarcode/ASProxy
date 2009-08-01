@@ -110,8 +110,8 @@ namespace SalarSoft.ASProxy
             public const string Dir_Scripts = "scripts";
 			public const string Dir_AppData = "App_Data";
 			public const string Dir_UpdateSources = "UpdateSources";
-			public const string Dir_Plugins = Dir_AppData + "/" + "Plugins";
-			public const string File_PluginInfoExt = ".xml";
+			public const string Dir_Plugins = Dir_AppData + "\\" + "Plugins";
+			public const string File_PluginInfoExt = "*.xml";
 
             public const string AJAXHandler = "ajax.ashx";
             public const string PageAnyType = "getany.ashx";
