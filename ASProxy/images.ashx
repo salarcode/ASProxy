@@ -49,7 +49,7 @@ public class Images : IHttpHandler, System.Web.SessionState.IReadOnlySessionStat
         catch (Exception ex)
         {
             if (Systems.LogSystem.ErrorLogEnabled)
-                Systems.LogSystem.LogError(ex, context.Request.Url.ToString());
+				Systems.LogSystem.LogError(ex, ex.Message, context.Request.Url.ToString());
 
             ShowError(context, Common.GetExceptionHttpDetailedErrorCode(ex));
 
@@ -83,10 +83,10 @@ public class Images : IHttpHandler, System.Web.SessionState.IReadOnlySessionStat
             }
         }
         catch (ThreadAbortException) { }
-        catch (Exception)
+        catch (Exception ex)
         {
             if (Systems.LogSystem.ErrorLogEnabled)
-				Systems.LogSystem.LogError(engine.LastException, engine.LastErrorMessage, engine.RequestInfo.RequestUrl);
+				Systems.LogSystem.LogError(ex, ex.Message, engine.RequestInfo.RequestUrl);
 
             ShowError(context, Common.GetExceptionHttpDetailedErrorCode(engine.LastException));
 

@@ -37,7 +37,7 @@
 		catch (Exception ex)
 		{
             if (Systems.LogSystem.ErrorLogEnabled)
-				Systems.LogSystem.LogError(ex, url);
+				Systems.LogSystem.LogError(ex, ex.Message, url);
             
 			lblErrorMsg.Text = ex.Message;
 			lblErrorMsg.Visible = true;
@@ -76,7 +76,7 @@
 		catch (Exception ex)
 		{
 			if (Systems.LogSystem.ErrorLogEnabled)
-				Systems.LogSystem.LogError(ex, url);
+				Systems.LogSystem.LogError(ex, ex.Message, url);
 
 			e.Authenticated = false;
 

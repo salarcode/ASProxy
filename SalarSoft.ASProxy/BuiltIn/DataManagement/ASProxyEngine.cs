@@ -406,7 +406,8 @@ namespace SalarSoft.ASProxy.BuiltIn
 						ApplyResponseInfo(httpResponse);
 
 						MemoryStream mem = (MemoryStream)_webData.ResponseData;
-						mem.WriteTo(httpResponse.OutputStream);
+						if (mem.Length > 0)
+							mem.WriteTo(httpResponse.OutputStream);
 
 					}
 					else if (processType == DataTypeToProcess.None)
@@ -593,7 +594,8 @@ namespace SalarSoft.ASProxy.BuiltIn
 						&& _webData.ResponseData is MemoryStream)
 					{
 						MemoryStream mem = (MemoryStream)_webData.ResponseData;
-						mem.WriteTo(stream);
+						if (mem.Length > 0)
+							mem.WriteTo(stream);
 					}
 					else if (processType == DataTypeToProcess.None)
 					{

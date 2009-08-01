@@ -55,15 +55,15 @@ public class GetJS : IHttpHandler, System.Web.SessionState.IReadOnlySessionState
 		catch (System.Threading.ThreadAbortException)
 		{
 		}
-		catch (Exception err)
+		catch (Exception ex)
 		{
 			if (Systems.LogSystem.ErrorLogEnabled)
-				Systems.LogSystem.LogError(engine.LastException, engine.LastErrorMessage, engine.RequestInfo.RequestUrl);
+				Systems.LogSystem.LogError(ex, ex.Message, engine.RequestInfo.RequestUrl);
 
 			context.Response.Clear();
 			SalarSoft.ASProxy.Common.ClearASProxyRespnseHeader(context.Response);
 			context.Response.ContentType = "text/html";
-			context.Response.Write("/* Error: " + err.Message + " */");
+			context.Response.Write("/* Error: " + ex.Message + " */");
 			context.Response.StatusCode = (int)Common.GetExceptionHttpErrorCode(engine.LastException);
 
 			context.ApplicationInstance.CompleteRequest();

@@ -178,7 +178,7 @@ namespace SalarSoft.ASProxy.BuiltIn
 					LastException = ex;
 
 					// special message
-					this.LastErrorMessage = ex.Message +
+					LastErrorMessage = ex.Message +
 						"\n<br />" + "ASProxy is behind a firewall? If so, go through the proxy server or config ASProxy to pass it.";
 
 					return;
@@ -212,6 +212,7 @@ namespace SalarSoft.ASProxy.BuiltIn
 
 				// The state is error page
 				LastStatus = LastStatus.ContinueWithError;
+				LastException = ex;
 				LastErrorMessage = ex.Message;
 			}
 			catch (Exception ex)
@@ -347,8 +348,9 @@ namespace SalarSoft.ASProxy.BuiltIn
 					if (Systems.LogSystem.ErrorLogEnabled)
 						Systems.LogSystem.LogError(ex, "WebData.FinalizeUnauthorizedWebResponse", webResponse.ResponseUri.ToString());
 
-					LastErrorMessage = ex.Message;
 					LastStatus = LastStatus.ContinueWithError;
+					LastErrorMessage = ex.Message;
+					LastException = ex;
 				}
 			}
 
@@ -464,6 +466,7 @@ namespace SalarSoft.ASProxy.BuiltIn
 						Systems.LogSystem.LogError(ex, webResponse.ResponseUri.ToString());
 
 					LastErrorMessage = ex.Message;
+					LastException = ex;
 					LastStatus = LastStatus.ContinueWithError;
 				}
 			}
@@ -570,6 +573,7 @@ namespace SalarSoft.ASProxy.BuiltIn
 								Systems.LogSystem.LogError(ex, _webRequest.RequestUri.ToString());
 
 							LastErrorMessage = ex.Message;
+							LastException = ex;
 							LastStatus = LastStatus.ContinueWithError;
 						}
 					}

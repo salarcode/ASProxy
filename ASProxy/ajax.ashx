@@ -60,7 +60,7 @@ public class ajax : IHttpHandler
 		catch (Exception ex)
 		{
 			if (Systems.LogSystem.ErrorLogEnabled)
-				Systems.LogSystem.LogError(engine.LastException, engine.LastErrorMessage, engine.RequestInfo.RequestUrl);
+				Systems.LogSystem.LogError(ex, ex.Message, engine.RequestInfo.RequestUrl);
 
 
 			context.Response.Write(ex.Message);

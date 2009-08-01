@@ -230,6 +230,7 @@ namespace SalarSoft.ASProxy.BuiltIn
 					Systems.LogSystem.LogError(ex, pageUrl);
 
 				LastStatus = LastStatus.ContinueWithError;
+				LastException = ex;
 				LastErrorMessage = "ASProxy has some errors! The delivered content may not work properly.";
 			}
 		}
@@ -472,9 +473,10 @@ namespace SalarSoft.ASProxy.BuiltIn
 
 				return result;
 			}
-			catch
+			catch(Exception ex)
 			{
 				LastStatus = LastStatus.ContinueWithError;
+				LastException = ex;
 				LastErrorMessage = "Failed to proccess <base> tag!";
 				return false;
 			}
@@ -636,6 +638,7 @@ namespace SalarSoft.ASProxy.BuiltIn
 					Systems.LogSystem.LogError(ex, pagePath);
 
 				LastStatus = LastStatus.ContinueWithError;
+				LastException = ex;
 				LastErrorMessage = "Failed to process some contents.";
 			}
 		}
@@ -782,6 +785,7 @@ namespace SalarSoft.ASProxy.BuiltIn
 					Systems.LogSystem.LogError(ex, pagePath);
 
 				LastStatus = LastStatus.ContinueWithError;
+				LastException = ex;
 				LastErrorMessage = "Failed to process some contents.";
 			}
 		}
@@ -836,6 +840,7 @@ namespace SalarSoft.ASProxy.BuiltIn
 					Systems.LogSystem.LogError(ex, pagePath);
 
 				LastStatus = LastStatus.ContinueWithError;
+				LastException = ex;
 				LastErrorMessage = "Failed to process some scripts.";
 			}
 		}
@@ -890,6 +895,7 @@ namespace SalarSoft.ASProxy.BuiltIn
 					Systems.LogSystem.LogError(ex, pagePath);
 
 				LastStatus = LastStatus.ContinueWithError;
+				LastException = ex;
 				LastErrorMessage = "Failed to process some styles.";
 			}
 		}
@@ -944,6 +950,7 @@ namespace SalarSoft.ASProxy.BuiltIn
 					Systems.LogSystem.LogError(ex, pagePath);
 
 				LastStatus = LastStatus.ContinueWithError;
+				LastException = ex;
 				LastErrorMessage = "Failed to process some styles.";
 			}
 		}
@@ -998,6 +1005,7 @@ namespace SalarSoft.ASProxy.BuiltIn
 					Systems.LogSystem.LogError(ex, pagePath);
 
 				LastStatus = LastStatus.ContinueWithError;
+				LastException = ex;
 				LastErrorMessage = "Failed to process some scripts.";
 			}
 		}
@@ -1142,6 +1150,7 @@ namespace SalarSoft.ASProxy.BuiltIn
 					Systems.LogSystem.LogError(ex, pagePath);
 
 				LastStatus = LastStatus.ContinueWithError;
+				LastException = ex;
 				LastErrorMessage = "Failed to process some scripts.";
 			}
 		}
@@ -1231,7 +1240,7 @@ namespace SalarSoft.ASProxy.BuiltIn
 			public const string STR_IFrame_ExtraAttribute = " onload=_ASProxy.Enc.EncodeFrames() ";
 			public const string STR_OrginalUrl_TagAttributeFormat = " onmouseout=ORG_OUT_() onmouseover=ORG_IN_(this) originalurl=\"{0}\" ";
 
-			public const string STR_OrginalUrl_FloatBar = "<div id='__ASProxyOriginalURL' dir='ltr' style='display:block;font-family:verdana;color:black;font-size:11px;padding:2px 5px 2px 5px;margin:0;position:absolute;left:0px;top:0px;width:98%;background:whitesmoke none;border:solid 2px black;overflow: visible;z-index:999999999;visibility:hidden;text-align:left;'></div>";
+			public const string STR_OrginalUrl_FloatBar = "<div id='__ASProxyOriginalURL' dir='ltr' style='display:block;font-family:verdana;color:black;font-size:11px;padding:2px 5px 2px 5px;margin:0;position:absolute;left:0px;top:0px;width:98%;background:whitesmoke none;border:solid 2px black;overflow: visible;z-index:999999999;visibility:hidden;text-align:left;line-height:100%;'></div>";
 
 			// float bar scripts should appear after ASProxyEncoder scripts
 			public const string STR_OrginalUrl_Functions =

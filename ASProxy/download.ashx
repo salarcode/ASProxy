@@ -42,7 +42,7 @@ public class Download : IHttpHandler, System.Web.SessionState.IReadOnlySessionSt
 		catch (Exception ex)
 		{
 			if (Systems.LogSystem.ErrorLogEnabled)
-				Systems.LogSystem.LogError(ex, context.Request.Url.ToString());
+				Systems.LogSystem.LogError(ex, ex.Message, context.Request.Url.ToString());
 
 			context.Response.StatusCode = (int)Common.GetExceptionHttpErrorCode(ex);
 			context.Response.ContentType = "text/html";

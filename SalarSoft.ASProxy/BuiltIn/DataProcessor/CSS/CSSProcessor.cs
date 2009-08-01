@@ -104,6 +104,7 @@ namespace SalarSoft.ASProxy.BuiltIn
 					Systems.LogSystem.LogError(ex, pageUrl);
 				
 				LastStatus = LastStatus.ContinueWithError;
+				LastException = ex;
 				LastErrorMessage = "ASProxy has some errors!";
 
 				codes = "/* ASProxy has some errors! \n"
