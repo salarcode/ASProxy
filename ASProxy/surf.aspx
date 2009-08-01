@@ -209,7 +209,6 @@ function toggleOpt(lnk){var trMoreOpt=document.getElementById('MoreOptions'); if
 </script>
 
 <script type="text/javascript">
-_PgOpt={};
 _XPage={};
 var _Page_B64Unknowner="<%=Consts.Query.Base64Unknowner%>";
 var _Page_CookieName="<%=Consts.FrontEndPresentation.UserOptionsCookieName%>";
@@ -228,6 +227,7 @@ function _Page_Initialize(){
 	_XPage.PageTitle =document.getElementById('chkPageTitle');
 	_XPage.UTF8 =document.getElementById('chkUTF8');
 	_XPage.RemoveScripts =document.getElementById('chkRemoveScripts');
+	_XPage.EncodeUrl =document.getElementById('chkEncodeUrl');
 }
 
 function _Page_SetOptions(){
@@ -242,7 +242,7 @@ function _Page_SetOptions(){
 	_XPage.PageTitle.checked =<%=_userOptions.PageTitle.ToString().ToLower() %>;
 	_XPage.UTF8.checked =<%=_userOptions.ForceEncoding.ToString().ToLower() %>;
 	_XPage.RemoveScripts.checked =<%=_userOptions.RemoveScripts.ToString().ToLower() %>;
-	_PgOpt.EncodeUrl=<%=_userOptions.EncodeUrl.ToString().ToLower() %>;
+	_XPage.EncodeUrl.checked=<%=_userOptions.EncodeUrl.ToString().ToLower() %>;
 }
 function _Page_SaveOptions(){
 	var cookieOpt=_Page_CookieName+"=";
@@ -257,7 +257,7 @@ function _Page_SaveOptions(){
 	cookieOpt+="&PageTitle="+_XPage.PageTitle.checked;
 	cookieOpt+="&ForceEncoding="+_XPage.UTF8.checked;
 	cookieOpt+="&RemoveScripts="+_XPage.RemoveScripts.checked;
-	//cookieOpt+="&EncodeUrl="+_XPage.EncodeUrl.checked;
+	cookieOpt+="&EncodeUrl="+_XPage.EncodeUrl.checked;
 	//cookieOpt+="&RemoveObjects="+_XPage.RemoveObjects.checked;
 	
 	var dt=new Date();
@@ -292,7 +292,7 @@ function _Page_SubmitForm(){
 
 function _Page_Navigate(url){
 	var navUrl=_XNav;
-	if(_PgOpt.EncodeUrl){
+	if(_XPage.EncodeUrl.checked){
 		navUrl+='?dec='+'1'+'&url=';
 	    navUrl+=_Base64_encode(_XPage.UrlBox.value)+_Page_B64Unknowner;
 	} else {
@@ -328,7 +328,8 @@ id="chkCompression" type="checkbox" onclick="_Page_SaveOptions()" /><label for="
 <a asproxydone="2" id="lnkMoreOpt" href="javascript:void(0);" onclick="toggleOpt(this);"><%=this.GetLocalResourceObject("lnkMoreOptions")%>...<small>&gt;</small></a>
 </div>
 <div id="MoreOptions" style="display: none;">
-<span class="ASProxyOption"><input id="chkFrames" type="checkbox" checked="checked" onclick="_Page_SaveOptions()"/><label
+<span class="ASProxyOption"><input id="chkEncodeUrl" type="checkbox" checked="checked" onclick="_Page_SaveOptions()"/><label
+for="chkEncodeUrl"><%=this.GetLocalResourceObject("chkEncodeUrl")%></label></span>&nbsp;<span class="ASProxyOption"><input id="chkFrames" type="checkbox" checked="checked" onclick="_Page_SaveOptions()"/><label
 for="chkFrames"><%=this.GetLocalResourceObject("chkFrames")%></label></span>&nbsp;<span class="ASProxyOption"><input id="chkPageTitle" type="checkbox" checked="checked" onclick="_Page_SaveOptions()" /><label
 for="chkPageTitle"><%=this.GetLocalResourceObject("chkPageTitle")%></label></span>&nbsp;<span class="ASProxyOption"><input id="chkForms" type="checkbox" checked="checked" onclick="_Page_SaveOptions()" /><label
 for="chkForms"><%=this.GetLocalResourceObject("chkForms")%></label></span>&nbsp;<span class="ASProxyOption"><input id="chkProcessLinks" type="checkbox" checked="checked" onclick="_Page_SaveOptions()" /><label

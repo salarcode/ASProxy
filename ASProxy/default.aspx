@@ -128,12 +128,23 @@ meta:resourcekey="chkRemoveScripts" />
 </td><td class="desc">
 <asp:Literal ID="lblRemoveScripts" EnableViewState="False" runat="server" 
 meta:resourcekey="lblRemoveScripts" Text="Removes scripts from page. This option increases anonymity but may loose some functionalities."></asp:Literal>
-</td></tr><tr class="option"><td class="name">
+</td></tr>
+
+<tr class="option"><td class="name">
 <asp:CheckBox ID="chkOrginalUrl" runat="server" Checked="True" Text="Original URLs"
 meta:resourcekey="chkOrginalUrl" /></td><td class="desc">
 <asp:Literal ID="lblOrginalUrl" EnableViewState="False" runat="server" 
 meta:resourcekey="lblOrginalUrl" Text="Displays original URL address in a float bar on the top of page.&lt;br /&gt;Note that this option can increase page size.&lt;br /&gt;(Tip: To copy the address that the float bar shows press Ctrl+Shift+X keys)"></asp:Literal>
-</td></tr><tr class="option"><td class="name">
+</td></tr>
+
+<tr class="option"><td class="name">
+<asp:CheckBox ID="chkEncodeUrl" runat="server" Checked="True" Text="Encode URLs"
+meta:resourcekey="chkEncodeUrl" /></td><td class="desc">
+<asp:Literal ID="lblEncodeUrl" EnableViewState="False" runat="server" 
+meta:resourcekey="lblEncodeUrl" Text="Encodes original site address and hides it."></asp:Literal>
+</td></tr>
+
+<tr class="option"><td class="name">
 <asp:CheckBox ID="chkUTF8" runat="server" Text="Force UTF-8" 
 meta:resourcekey="chkUTF8" /></td><td class="desc">
 <asp:Literal ID="lblUTF8" EnableViewState="False" runat="server" 
