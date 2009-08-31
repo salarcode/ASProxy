@@ -10,13 +10,16 @@ namespace SalarSoft.ASProxy.BuiltIn
 
 
 	/// <summary>
+	/// Oh god, I could find the problem of cookies and it was damn microsoft's CookieContainer bug!
+	/// I've reported this fucking bug, and it is mysteriously fixed in a day! 
+	/// It is late now and 3 releases of .net have this bug, what should I do? Damn it!
 	/// 
+	/// 
+	/// This class can work with bugless CookieContainer which arrives with .NET 4.0 .
+	/// But I won't use it because of backward compatibility!
+	/// 
+	/// Sicim bo microsofta!
 	/// </summary>
-	/// <rules>
-	/// Cookie rules.
-	/// 
-	/// 
-	/// </rules>
 	public class CookieManager : ExCookieManager
 	{
 		protected const string strCookieNameExt = "_ASPX";

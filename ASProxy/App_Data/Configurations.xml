@@ -49,19 +49,21 @@
 
 	<!--Enables auto update-->
 	<autoUpdate updateInfoUrl="http://asproxy.sourceforge.net/update/autoupdate.xml"
-			  engine="true" plugins="true">
+			  engine="true" providers="true" plugins="true">
 	</autoUpdate>
 
 	<!-- Logs user activites to specfied location-->
 	<logSystem maxFileSize="5120" fileFormat="yyyy-MM-dd">
 
 		<!--Browsing activities-->
-		<activityLog enabled="false" location="~/App_Data/DailyLog/{0}.log"
-					  pages="true" images="false">
+		<activityLog enabled="false"
+						location="~/App_Data/DailyLog/{0}.log"
+					  pages="true"
+						images="false">
 		</activityLog>
 
 		<!--error log-->
-		<errorLog enabled="true" location="~/App_Data/ErrorLog/{0}.log" />
+		<errorLog enabled="false" location="~/App_Data/ErrorLog/{0}.log" />
 	</logSystem>
 
 	<!--

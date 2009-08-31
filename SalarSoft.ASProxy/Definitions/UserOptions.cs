@@ -39,6 +39,8 @@ namespace SalarSoft.ASProxy
         /// </summary>
         public bool DocType;
 
+		//public UserOptions ChangeableByUser;
+
 		public bool LoadedFromSource
 		{
 			get { return _LoadedFromSource; }
@@ -69,10 +71,6 @@ namespace SalarSoft.ASProxy
             result.EncodeUrl = def;
             result.Cookies = def;
             result.PageTitle = def;
-            //result.Scripts = def;
-            //result.IFrame = def;
-            //result.FrameSet = def;
-            //result.CssLink = def;
 			return result;
         }
 
