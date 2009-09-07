@@ -1,0 +1,42 @@
+﻿fieldset 
+{
+	padding:10px;
+}
+
+fieldset td:first-child, .first_cell
+{
+	width:200px;
+}
+fieldset td:nth-child(2) input,
+fieldset td:nth-child(2) select,
+.field_cell input
+{
+	width:250px;
+}
+input[type='checkbox'],input[type='radio'],input[type='submit'],input[type='button']
+{
+    width:auto !important;
+}
+table>table td
+{
+    margin:5px 2px;
+}
+
+.field_error
+{
+    font-size:x-small;
+}
+.error_list
+{
+    margin:5px 10px;
+}
+
+.field_desc
+{
+	font-size:7.5pt;
+	color:#2E2E2E;
+}
+.submit_button
+{
+    padding:5px 13px;
+}

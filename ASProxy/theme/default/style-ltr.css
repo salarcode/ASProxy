@@ -38,8 +38,8 @@ td{font-size: 13px;}
 .tblOptions{width: 100%;margin-bottom: 5px;}
 .tblOptions tr.option{background-color: #F4EDD3;}
 .tblOptions tr.option:hover{background-color: whitesmoke;border: solid 5px red;}
-.tblOptions tr.option .name{margin: 0 0 5px;padding: 0 0 0 29px;background: #F8F7E1 none no-repeat scroll 6px 10px;border-top: 1px solid #C5C07D;border-left: 1px solid #C5C07D;color: #000000;display: block;font-size: 11px;font-style: normal;font-variant: normal;font-weight: normal;line-height: 33px;}
-.tblOptions tr.option .name label{padding: 0px 5px;}
+.tblOptions tr.option .name{white-space:nowrap;margin: 0 0 5px;padding: 0 10px 0 29px;background: #F8F7E1 none no-repeat scroll 6px 10px;border-top: 1px solid #C5C07D;border-left: 1px solid #C5C07D;color: #000000;display: block;font-size: 11px;font-style: normal;font-variant: normal;font-weight: normal;line-height: 33px;}
+.tblOptions tr.option .name label{padding: 0px 5px; white-space:nowrap;}
 .tblOptions tr.option .desc{padding: 2px 2px 12px 2px;border-top: solid 1px #BBB082;margin-bottom: 4px;direction: ltr;font-size: 12px;}
 #links{clear: both;margin: 0 auto;background: none repeat-x;text-align: center;}
 #links p a{color: White;}

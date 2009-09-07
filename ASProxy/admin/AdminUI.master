@@ -12,6 +12,7 @@
 	<asp:ContentPlaceHolder ID="PageHead" runat="server">
 		<title>Administration UI</title>
 	</asp:ContentPlaceHolder>
+	<link href="styles/style.css" rel="stylesheet" type="text/css" />
 	<link href="../theme/default/style-ltr.css" rel="stylesheet" type="text/css" />
 	<style type="text/css">
 		.about h1
