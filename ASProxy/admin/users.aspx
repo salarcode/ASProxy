@@ -1,4 +1,4 @@
-﻿<%@ Page Title="ASProxy Users Authentication" Language="C#" MasterPageFile="~/admin/AdminUI.master" AutoEventWireup="true" CodeFile="users.aspx.cs" Inherits="admin_users" %>
+﻿<%@ Page Title="ASProxy Users Authentication" Language="C#" MasterPageFile="~/admin/AdminUI.master" AutoEventWireup="true" CodeFile="users.aspx.cs" Inherits="Admin_Users" %>
 
 <asp:Content ID="plhHead" ContentPlaceHolderID="PageHead" runat="Server">
 </asp:Content>
@@ -6,6 +6,11 @@
     ASProxy Users Authentication
 </asp:Content>
 <asp:Content ID="plhContent" ContentPlaceHolderID="Content" runat="Server">
+	<div class="error_list">
+    <asp:Literal ID="ltErrorsList" runat="server"></asp:Literal>
+	<asp:ValidationSummary ID="vldErrorsList" runat="server" />
+	</div>
+
     <fieldset>
         <legend>Authentication</legend>
         <table style="width: 100%;">
@@ -40,6 +45,9 @@
                                 </td>
                                 <td>
                                     <asp:TextBox ID="txtNewUsername" runat="server"></asp:TextBox>
+                                    <asp:RequiredFieldValidator ID="reqNewUsername" runat="server" 
+                                        ControlToValidate="txtNewUsername" ErrorMessage="Username is required" 
+                                        ValidationGroup="NewUser">Required</asp:RequiredFieldValidator>
                                 </td>
                             </tr>
                             <tr>
@@ -48,6 +56,9 @@
                                 </td>
                                 <td>
                                     <asp:TextBox ID="txtNewPassword" runat="server"></asp:TextBox>
+                                    <asp:RequiredFieldValidator ID="reqNewPassword" runat="server" 
+                                        ControlToValidate="txtNewPassword" ErrorMessage="Password is required" 
+                                        ValidationGroup="NewUser">Required</asp:RequiredFieldValidator>
                                 </td>
                             </tr>
                             <tr>
@@ -64,7 +75,7 @@
                             <tr>
                                 <td>
                                     <asp:Button CssClass="submit_button" ID="btnNewUserAdd" runat="server" 
-                                        Text="Add user" onclick="btnNewUserAdd_Click" />
+                                        Text="Add user" onclick="btnNewUserAdd_Click" ValidationGroup="NewUser" />
                                 </td>
                                 <td>
                                 </td>

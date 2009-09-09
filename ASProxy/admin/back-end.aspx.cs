@@ -1,20 +1,17 @@
 ﻿using System;
-using System.Collections;
-using System.Configuration;
-using System.Data;
-using System.Web;
-using System.Web.Security;
-using System.Web.UI;
-using System.Web.UI.HtmlControls;
-using System.Web.UI.WebControls;
-using System.Web.UI.WebControls.WebParts;
-using SalarSoft.ASProxy;
 using System.Collections.Generic;
 using System.Text;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+using SalarSoft.ASProxy;
 
 public partial class Admin_BackEnd : System.Web.UI.Page
 {
     protected void Page_Load(object sender, EventArgs e)
+    {
+
+    }
+    protected void Page_Init(object sender, EventArgs e)
     {
         FillComboboxes();
         LoadFormData();
@@ -26,8 +23,6 @@ public partial class Admin_BackEnd : System.Web.UI.Page
     }
     bool ValidateForm()
     {
-        Page.Validate();
-        long num;
         List<String> errorsList = new List<string>();
 
         try
@@ -52,11 +47,11 @@ public partial class Admin_BackEnd : System.Web.UI.Page
             return;
         ltErrorsList.Visible = true;
         string display = "<ul style='color:Red;'>";
-        display += "</ul>";
         foreach (string item in errorsList)
         {
-            display = "<li>" + item + "</li>";
+            display += "<li>" + item + "</li>";
         }
+        display += "</ul>";
         ltErrorsList.Text = display;
     }
 
@@ -141,6 +136,7 @@ public partial class Admin_BackEnd : System.Web.UI.Page
     }
     protected void btnSave_Click(object sender, EventArgs e)
     {
+        Page.Validate();
         if (Page.IsValid && ValidateForm())
         {
             ApplyToConfig();

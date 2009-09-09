@@ -1,7 +1,6 @@
 ﻿<%@ Page Language="C#" MasterPageFile="~/admin/AdminUI.master" Title="Providers" %>
 
 <script runat="server">
-
 	protected void btnEnableDisableClick(object sender, EventArgs e)
 	{
 
