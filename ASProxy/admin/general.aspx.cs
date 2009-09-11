@@ -19,9 +19,13 @@ public partial class Admin_General : System.Web.UI.Page
         LoadFormData();
     }
 
+    bool ValidateForm()
+    {
+        return true;
+    }
     void LoadLanguagesCombo()
     {
-        NameValueCollection lngList= Common.GetInstalledLanguagesList();
+        NameValueCollection lngList = Common.GetInstalledLanguagesList();
 
         for (int i = 0; i < lngList.Count; i++)
         {
@@ -39,12 +43,12 @@ public partial class Admin_General : System.Web.UI.Page
 
         txtUpdateInfoUrl.Text = Configurations.AutoUpdate.UpdateInfoUrl;
         chkUpdateEngine.Checked = Configurations.AutoUpdate.Engine;
-        chkUpdatePlugins.Checked=Configurations.AutoUpdate.Plugins;
+        chkUpdatePlugins.Checked = Configurations.AutoUpdate.Plugins;
         chkUpdateProviders.Checked = Configurations.AutoUpdate.Providers;
 
         txtLogMaxFileSize.Text = Configurations.LogSystem.MaxFileSize.ToString();
         txtLogFileFormat.Text = Configurations.LogSystem.FileFormat;
-        
+
         chkActivityLogEnabled.Checked = Configurations.LogSystem.ActivityLog_Enabled;
         chkActivityLogImages.Checked = Configurations.LogSystem.ActivityLog_Images;
         chkActivityLogPages.Checked = Configurations.LogSystem.ActivityLog_Pages;
@@ -52,5 +56,39 @@ public partial class Admin_General : System.Web.UI.Page
 
         chkErrorLogEnabled.Checked = Configurations.LogSystem.ErrorLog_Enabled;
         chkErrorLogLocation.Text = Configurations.LogSystem.ErrorLog_location;
+    }
+
+    private void ApplyToConfig()
+    {
+        Configurations.Pages.UILanguage = cmbUiLanguage.SelectedValue;
+
+        Configurations.ImageCompressor.Enabled = chkImageCompressor.Checked;
+        Configurations.ImageCompressor.Quality = Convert.ToInt64(txtImgQuality.Text);
+
+        Configurations.AutoUpdate.UpdateInfoUrl = txtUpdateInfoUrl.Text;
+        Configurations.AutoUpdate.Engine = chkUpdateEngine.Checked;
+        Configurations.AutoUpdate.Plugins = chkUpdatePlugins.Checked;
+        Configurations.AutoUpdate.Providers = chkUpdateProviders.Checked;
+
+        Configurations.LogSystem.MaxFileSize = Convert.ToInt64(txtLogMaxFileSize.Text);
+        Configurations.LogSystem.FileFormat = txtLogFileFormat.Text;
+
+        Configurations.LogSystem.ActivityLog_Enabled = chkActivityLogEnabled.Checked;
+        Configurations.LogSystem.ActivityLog_Images = chkActivityLogImages.Checked;
+        Configurations.LogSystem.ActivityLog_Pages = chkActivityLogPages.Checked;
+        Configurations.LogSystem.ActivityLog_Location = chkActivityLogLocation.Text;
+
+        Configurations.LogSystem.ErrorLog_Enabled = chkErrorLogEnabled.Checked;
+        Configurations.LogSystem.ErrorLog_location = chkErrorLogLocation.Text;
+    }
+
+    protected void btnSave_Click(object sender, EventArgs e)
+    {
+        Page.Validate();
+        if (Page.IsValid && ValidateForm())
+        {
+            ApplyToConfig();
+            Configurations.SaveSettings();
+        }
     }
 }

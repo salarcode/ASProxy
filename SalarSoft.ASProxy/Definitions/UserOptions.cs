@@ -9,69 +9,67 @@ namespace SalarSoft.ASProxy
     ///</summary>
     public struct UserOptions
     {
-		private bool _LoadedFromSource;
+        private static UserOptions _defaultOptions;
+        private bool _LoadedFromSource;
 
-		public bool Cookies;
-		public bool TempCookies;
+        public bool Cookies;
+        public bool TempCookies;
         public bool Images;
-        //public bool Scripts;
         public bool Links;
-        //public bool IFrame;
-        //public bool FrameSet;
         public bool Frames;
         public bool SubmitForms;
-        //public bool CssLink;
         public bool RemoveObjects;
         public bool HttpCompression;
         public bool EncodeUrl;
         public bool OrginalUrl;
         public bool PageTitle;
         public bool ForceEncoding;
-
         /// <summary>
         /// Specifies scripts should strip or not. This option disabled by default.
         /// </summary>
         public bool RemoveScripts;
         public bool RemoveImages;
-
         /// <summary>
         /// Inherits DOCTYPE.
         /// </summary>
         public bool DocType;
 
-		//public UserOptions ChangeableByUser;
 
-		public bool LoadedFromSource
-		{
-			get { return _LoadedFromSource; }
-			set { _LoadedFromSource = value; }
-		}
+        public bool LoadedFromSource
+        {
+            get { return _LoadedFromSource; }
+            set { _LoadedFromSource = value; }
+        }
 
+        static UserOptions()
+        {
+            Configurations.UserOptionsConfig config = Configurations.UserOptions;
+            
+            _defaultOptions.Cookies = config.Cookies.Enabled;
+            _defaultOptions.DocType = config.DocType.Enabled;
+            _defaultOptions.EncodeUrl = config.EncodeUrl.Enabled;
+            _defaultOptions.ForceEncoding = config.ForceEncoding.Enabled;
+            _defaultOptions.Frames = config.Frames.Enabled;
+            _defaultOptions.HttpCompression = config.HttpCompression.Enabled;
+            _defaultOptions.Images = config.Images.Enabled;
+            _defaultOptions.Links = config.Links.Enabled;
+            _defaultOptions.OrginalUrl = config.OrginalUrl.Enabled;
+            _defaultOptions.PageTitle = config.PageTitle.Enabled;
+            _defaultOptions.RemoveImages = config.RemoveImages.Enabled;
+            _defaultOptions.RemoveObjects = config.RemoveObjects.Enabled;
+            _defaultOptions.RemoveScripts = config.RemoveScripts.Enabled;
+            _defaultOptions.SubmitForms = config.SubmitForms.Enabled;
+            _defaultOptions.TempCookies = config.TempCookies.Enabled;
 
+            _defaultOptions._LoadedFromSource = false;
+
+        }
         /// <summary>
         /// Initialize a new instance of UserOptions with default value
         /// </summary>
-        public static UserOptions LoadDefaults(bool def)
+        public static UserOptions LoadDefaults()
         {
-            UserOptions result;
-			result._LoadedFromSource = false;
-
-            result.HttpCompression = false;	// Disabled by default
-            result.ForceEncoding = false;	// Disabled by default
-            result.RemoveScripts = false;	// Disabled by default
-            result.RemoveImages = false;	// Disabled by default
-			result.TempCookies = false;		// Disabled by default
-			result.RemoveObjects = false;	// Disabled by default
-            result.DocType = def;            
-            result.OrginalUrl = def;
-            result.Images = def;
-            result.Links = def;
-			result.Frames = def;
-            result.SubmitForms = def;
-            result.EncodeUrl = def;
-            result.Cookies = def;
-            result.PageTitle = def;
-			return result;
+            return _defaultOptions;
         }
 
         public void SaveToResponse()
@@ -94,7 +92,8 @@ namespace SalarSoft.ASProxy
 
         public static UserOptions ReadFromRequest()
         {
-            UserOptions result = LoadDefaults(true);
+            // a copy of default options
+            UserOptions result = LoadDefaults();
 
             HttpContext context = HttpContext.Current;
             HttpCookie cookie = context.Request.Cookies[Consts.FrontEndPresentation.UserOptionsCookieName];
@@ -106,8 +105,8 @@ namespace SalarSoft.ASProxy
 
             foreach (FieldInfo info in type.GetFields())
             {
-				if (info.Name == "_LoadedFromSource")
-					continue;
+                if (info.Name == "_LoadedFromSource")
+                    continue;
 
                 string cookievalue = cookie[info.Name];
 
@@ -126,14 +125,14 @@ namespace SalarSoft.ASProxy
             }
 
             result = (UserOptions)instance;
-			result._LoadedFromSource = true;
+            result._LoadedFromSource = true;
 
             return result;
         }
 
         public static UserOptions ReadFromXml(string xmlFile)
         {
-            UserOptions result = LoadDefaults(true);
+            UserOptions result = LoadDefaults();
 
             try
             {
@@ -145,23 +144,23 @@ namespace SalarSoft.ASProxy
 
                 foreach (XmlNode node in baseNode.ChildNodes)
                 {
-					if (node.Name == "_LoadedFromSource")
-						continue;
+                    if (node.Name == "_LoadedFromSource")
+                        continue;
 
-					FieldInfo info = optionType.GetField(node.Name);
-					if (info != null)
-					{
-						if (info.FieldType.IsEnum)
-							info.SetValue(result, Enum.Parse(info.FieldType, node.InnerText));
-						else
-							info.SetValue(result, Convert.ChangeType(node.InnerText, info.FieldType));
-					}
+                    FieldInfo info = optionType.GetField(node.Name);
+                    if (info != null)
+                    {
+                        if (info.FieldType.IsEnum)
+                            info.SetValue(result, Enum.Parse(info.FieldType, node.InnerText));
+                        else
+                            info.SetValue(result, Convert.ChangeType(node.InnerText, info.FieldType));
+                    }
                 }
             }
             catch { }
 
-			result._LoadedFromSource = true;
-			return result;
+            result._LoadedFromSource = true;
+            return result;
         }
 
         public void SaveToXml(string xmlFile)

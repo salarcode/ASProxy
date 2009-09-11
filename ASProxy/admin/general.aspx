@@ -7,10 +7,6 @@
 
 <asp:Content ID="plhHead" ContentPlaceHolderID="PageHead" runat="Server">
 <style type="text/css">
-.options_table td
-{
-    padding:5px 0px;
-}
 </style>
 </asp:Content>
 <asp:Content ID="plhHeader" ContentPlaceHolderID="Header" runat="Server">
@@ -26,7 +22,7 @@ ASProxy General Configurations
     <fieldset>
         <legend>Image Compressor</legend>
         <asp:CheckBox ID="chkImageCompressor" runat="server" Text="Image compressor is enabled" />
-        <br /><span class="field_desc">(Enables image compression with specifed qaulity. Be aware this feature may have some overhead to your server.)</span>
+        <br /><span class="field_desc">(Enables image compression with specified quality. Be aware this feature may have some overhead to your server.)</span>
         
         <br />
         <br />
@@ -116,7 +112,7 @@ ASProxy General Configurations
                 <td>Location</td>
                 <td><asp:TextBox ID="chkActivityLogLocation" runat="server" Columns="50"></asp:TextBox>
                 <br /><span class="field_desc">(The location to store log files. It must be 
-                    releative.)</span></td>
+                    relative.)</span></td>
             </tr>
             <tr>
                 <td>Pages</td>
@@ -131,7 +127,7 @@ ASProxy General Configurations
             </table>
     </fieldset>
     <fieldset><legend>Error Log</legend>
-    <span class="field_desc">(Developers who are debuging ASProxy should know what error details is. This feature is for them. Saves error details in specified location.)</span>
+    <span class="field_desc">(Developers who are debugging ASProxy should know what error details is. This feature is for them. Saves error details in specified location.)</span>
         <table  class="options_table">
             <tr>
                 <td>Error log enabled</td>
@@ -142,11 +138,12 @@ ASProxy General Configurations
                 <td>Location</td>
                 <td><asp:TextBox ID="chkErrorLogLocation" runat="server" Columns="50"></asp:TextBox>
                 <br /><span class="field_desc">(The location to store log files. It must be 
-                    releative.)</span></td>
+                    relative.)</span></td>
             </tr>
             </table>
     </fieldset>
     </fieldset>
-    <asp:Button CssClass="submit_button" ID="btnSave" runat="server" Text="Save" />
+    <asp:Button CssClass="submit_button" ID="btnSave" runat="server" Text="Save" 
+        onclick="btnSave_Click" />
     <input class="submit_button" id="btnCancel" type="button" value="Cancel" />
 </asp:Content>

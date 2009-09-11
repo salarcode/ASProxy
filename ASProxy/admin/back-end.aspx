@@ -82,7 +82,7 @@
 				</td>
 				<td><asp:DropDownList ID="cmbUserAgentMode" runat="server">
 					</asp:DropDownList>
-					<br /><span class="field_desc">(Back-end UserAgent behaviour.)</span>
+					<br /><span class="field_desc">(Back-end UserAgent behavior.)</span>
 				</td>
 			</tr>
 			<tr>

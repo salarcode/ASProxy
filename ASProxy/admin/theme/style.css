@@ -1,4 +1,14 @@
-﻿fieldset 
+﻿#admin_menu{width: 778px;height: 35px;margin: 0 auto; margin-top:5px;}
+#admin_menu ul{margin: 0;padding: 0;list-style: none;line-height: normal;}
+#admin_menu li{display: inline;}
+#admin_menu a
+{text-shadow:0 0 0px black;
+    float: left;margin-right: 6px;padding: 5px 10px;background: #4C4D51;border: 1px #575C5F solid;text-decoration: none;text-transform: uppercase;font-weight: bold;font-size: 11px;color: #FFFFFF; outline-width:0px;}
+#admin_menu a:hover{text-decoration: none;background: #983D3A;border: 1px #D45951 solid;
+-moz-box-shadow:0px 0px 10px gray;box-shadow:0px 0px 10px gray;}
+#admin_menu .first a{background: #983D3A;border: 1px #D45951 solid;}
+
+fieldset 
 {
 	padding:10px;
 }
@@ -23,6 +33,42 @@ table>table td
     margin:5px 2px;
 }
 
+.option_first_row
+{
+    -moz-box-shadow:3px 2px 5px #BBB082;
+    -webkit-box-shadow:3px 2px 5px #BBB082;
+    -o-box-shadow:3px 2px 5px #BBB082;
+    box-shadow:3px 2px 5px #BBB082;
+    border:solid 0px silver;
+}
+.option_first_row td
+{
+    background-color:#2E2E2E;
+    color:white;
+    padding:5px 10px;
+    font-weight:bold;
+    text-align:center;
+}
+.option_first_row td:first-child
+{
+    -moz-border-radius-topleft:5px;
+    -webkit-border-radius-topleft:5px;
+    -o-border-radius-topleft:5px;
+    border-radius-topleft:5px;
+}
+.option_first_row td:last-child
+{
+    -moz-border-radius-topright:5px;
+    -webkit-border-radius-topright:5px;
+    -o-border-radius-topright:5px;
+    border-radius-topright:5px;
+}
+
+.options_table td
+{
+    padding:5px 0px;
+}
+
 .field_error
 {
     font-size:x-small;
@@ -41,3 +87,4 @@ table>table td
 {
     padding:5px 13px;
 }
+

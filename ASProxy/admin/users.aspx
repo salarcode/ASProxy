@@ -27,7 +27,7 @@
                         runat="server" Text="Disable" 
                         style="padding:0px; margin:0px; font-size:x-small;" 
                         onclick="btnLoginDisable_Click" />
-                    <br /><span class="field_desc">(Helps you to prevent strengers to access your hosted ASProxy, and save bandwidth!)</span>
+                    <br /><span class="field_desc">(Helps you to prevent strangers to access your hosted ASProxy, and save bandwidth!)</span>
                 </td>
             </tr>
             <tr>
@@ -69,7 +69,7 @@
                                     <asp:CheckBox ID="chkNewImages" runat="server" Text="Images" Checked="True" />
                                     <asp:CheckBox ID="chkNewDownloads" runat="server" Text="Downloads" 
                                         Checked="True" />
-                                    <br /><span class="field_desc">(Specify three kind of acces that a user can have.)</span>
+                                    <br /><span class="field_desc">(Specify three kind of access that a user can have.)</span>
                                 </td>
                             </tr>
                             <tr>
@@ -110,7 +110,7 @@
                 <td>
                     <fieldset>
                         <legend>Add new rule</legend>
-                        <span class="field_desc">(Allow/Block access to ASProxy from a specied IP address or from a range of addresses.)</span>
+                        <span class="field_desc">(Allow/Block access to ASProxy from a specified IP address or from a range of addresses.)</span>
                         <table style="width: 100%;">
                             <tr>
                             <td>Rule mode:</td>

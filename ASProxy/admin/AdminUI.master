@@ -9,86 +9,99 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
-	<asp:ContentPlaceHolder ID="PageHead" runat="server">
-		<title>Administration UI</title>
-	</asp:ContentPlaceHolder>
-	<link href="theme/style.css" rel="stylesheet" type="text/css" />
-	<link href="../theme/default/style-ltr.css" rel="stylesheet" type="text/css" />
-	<style type="text/css">
-		.about h1
-		{
-			margin-top: 0px;
-			padding-top: 5px;
-		}
-	</style>
+    <asp:ContentPlaceHolder ID="PageHead" runat="server">
+        <title>Administration UI</title>
+    </asp:ContentPlaceHolder>
+    <link href="theme/style.css" rel="stylesheet" type="text/css" />
+    <link href="../theme/default/style-ltr.css" rel="stylesheet" type="text/css" />
+    <style type="text/css">
+        .about h1
+        {
+            margin-top: 0px;
+            padding-top: 5px;
+        }
+    </style>
 </head>
 <body>
-	<form id="frmMaster" runat="server">
-	<div class="header">
-		<div id="logo">
-			<h1>
-				<a asproxydone="2" href=".">ASProxy</a><span class="super"><%=Consts.General.ASProxyVersion %></span></h1>
-			<h2>
-				<asp:Literal ID="lblLogo2" EnableViewState="False" runat="server" meta:resourcekey="lblLogo2"
-					Text="Administration UI"></asp:Literal></h2>
-		</div>
-	</div>
-	<div id="menu-wrap">
-		<div id="menu">
-			<ul>
-				<li><a asproxydone="2" href="." accesskey="1">
-					<asp:Literal ID="mnuHome" EnableViewState="False" runat="server" meta:resourcekey="mnuHome"
-						Text="Home"></asp:Literal></a></li>
-				<li><a asproxydone="2" href="../cookieman.aspx" accesskey="2">
-					<asp:Literal ID="mnuCookie" EnableViewState="False" runat="server" meta:resourcekey="mnuCookie"
-						Text="Cookie Manager"></asp:Literal></a></li>
-				<li class="first"><a asproxydone="2" href="../download.aspx" accesskey="3">
-					<asp:Literal ID="mnuDownload" EnableViewState="False" runat="server" meta:resourcekey="mnuDownload"
-						Text="Download Tool"></asp:Literal></a></li>
-				<li><a asproxydone="2" href="../surf.aspx?dec=1&amp;url=aHR0cDovL2FzcHJveHkuc291cmNlZm9yZ2UubmV0B64Coded!"
-					target="_blank" accesskey="4">
-					<asp:Literal ID="mnuASProxy" EnableViewState="False" runat="server" meta:resourcekey="mnuASProxy"
-						Text="ASProxy Page"></asp:Literal></a></li>
-			</ul>
-		</div>
-	</div>
-	<div id="content">
-		<div class="content">
-			<div class="about">
-				<h1 class="title">
-					<asp:ContentPlaceHolder ID="Header" runat="server">
-					</asp:ContentPlaceHolder>
-				</h1>
-				<div class="entry">
-					<asp:ContentPlaceHolder ID="Content" runat="server">
-					</asp:ContentPlaceHolder>
-				</div>
-			</div>
-		</div>
-	</div>
-	<div id="links">
-		<p>
-			<a asproxydone="2" href="../cookieman.aspx" target="_blank">
-				<asp:Literal ID="mnuFootCookie" EnableViewState="False" runat="server" meta:resourcekey="mnuFootCookie"
-					Text="Cookie Manager"></asp:Literal></a> <a asproxydone="2" href="../download.aspx"
-						target="_blank">
-						<asp:Literal ID="mnuFootDownload" EnableViewState="False" runat="server" meta:resourcekey="mnuFootDownload"
-							Text="Download Tool"></asp:Literal></a>
-			<asp:Literal ID="lblFootSlogan1" EnableViewState="False" runat="server" meta:resourcekey="lblFootSlogan1"
-				Text="Have your own"></asp:Literal>
-			<a asproxydone="2" href="../surf.aspx?dec=1&url=aHR0cDovL2FzcHJveHkuc291cmNlZm9yZ2UubmV0B64Coded!"
-				target="_blank">ASProxy</a>.
-			<asp:Literal ID="lblFootSlogan2" EnableViewState="False" runat="server" meta:resourcekey="lblFootSlogan2"
-				Text="It's free."></asp:Literal>
-		</p>
-	</div>
-	<div id="footer">
-		<p>
-			@2009 ASProxy
-			<%=Consts.General.ASProxyVersion %>: powered by SalarSoft</p>
-	</div>
-	<asp:Label ID="lblAutoPrompt" runat="server" Text='<script type="text/javascript">window.location="{0}";</script>'
-		EnableViewState="False" Visible="False" meta:resourcekey="lblAutoPrompt"></asp:Label>
-	</form>
+    <form id="frmMaster" runat="server">
+    <div class="header">
+        <div id="logo">
+            <h1>
+                <a asproxydone="2" href=".">ASProxy</a><span class="super"><%=Consts.General.ASProxyVersion %></span></h1>
+            <h2>
+                <asp:Literal ID="lblLogo2" EnableViewState="False" runat="server" meta:resourcekey="lblLogo2"
+                    Text="Administration UI"></asp:Literal></h2>
+        </div>
+    </div>
+    <div id="menu-wrap">
+        <div id="menu">
+            <ul>
+                <li><a asproxydone="2" href="../" accesskey="1">
+                    <asp:Literal ID="mnuHome" EnableViewState="False" runat="server" meta:resourcekey="mnuHome"
+                        Text="Home"></asp:Literal></a></li>
+                <li><a asproxydone="2" href="../cookieman.aspx" accesskey="2">
+                    <asp:Literal ID="mnuCookie" EnableViewState="False" runat="server" meta:resourcekey="mnuCookie"
+                        Text="Cookie Manager"></asp:Literal></a></li>
+                <li><a asproxydone="2" href="../download.aspx" accesskey="3">
+                    <asp:Literal ID="mnuDownload" EnableViewState="False" runat="server" meta:resourcekey="mnuDownload"
+                        Text="Download Tool"></asp:Literal></a></li>
+                <li><a asproxydone="2" href="../surf.aspx?dec=1&amp;url=aHR0cDovL2FzcHJveHkuc291cmNlZm9yZ2UubmV0B64Coded!"
+                    target="_blank" accesskey="4">
+                    <asp:Literal ID="mnuASProxy" EnableViewState="False" runat="server" meta:resourcekey="mnuASProxy"
+                        Text="ASProxy Page"></asp:Literal></a></li>
+            </ul>
+        </div>
+    </div>
+    <div id="content">
+        <div class="content">
+            <div class="urlBar">
+                <div id="admin_menu">
+                    <ul>
+                        <li class="first_!"><a href="." accesskey="1">Admin Home</a></li>
+                        <li><a href="general.aspx" accesskey="2">General Options</a></li>
+                        <li><a href="back-end.aspx" accesskey="3">Back-End</a></li>
+                        <li><a href="providers.aspx" accesskey="4">Providers</a></li>
+                        <li><a href="logsystem.aspx" accesskey="5">Log System</a></li>
+                        <li><a href="users.aspx" accesskey="6">Users</a></li>
+                        <li><a href="userconfig.aspx" accesskey="7">User Options</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="about">
+                <h1 class="title">
+                    <asp:ContentPlaceHolder ID="Header" runat="server">
+                    </asp:ContentPlaceHolder>
+                </h1>
+                <div class="entry">
+                    <asp:ContentPlaceHolder ID="Content" runat="server">
+                    </asp:ContentPlaceHolder>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="links">
+        <p>
+            <a asproxydone="2" href="../cookieman.aspx" target="_blank">
+                <asp:Literal ID="mnuFootCookie" EnableViewState="False" runat="server" meta:resourcekey="mnuFootCookie"
+                    Text="Cookie Manager"></asp:Literal></a> <a asproxydone="2" href="../download.aspx"
+                        target="_blank">
+                        <asp:Literal ID="mnuFootDownload" EnableViewState="False" runat="server" meta:resourcekey="mnuFootDownload"
+                            Text="Download Tool"></asp:Literal></a>
+            <asp:Literal ID="lblFootSlogan1" EnableViewState="False" runat="server" meta:resourcekey="lblFootSlogan1"
+                Text="Have your own"></asp:Literal>
+            <a asproxydone="2" href="../surf.aspx?dec=1&url=aHR0cDovL2FzcHJveHkuc291cmNlZm9yZ2UubmV0B64Coded!"
+                target="_blank">ASProxy</a>.
+            <asp:Literal ID="lblFootSlogan2" EnableViewState="False" runat="server" meta:resourcekey="lblFootSlogan2"
+                Text="It's free."></asp:Literal>
+        </p>
+    </div>
+    <div id="footer">
+        <p>
+            @2009 ASProxy
+            <%=Consts.General.ASProxyVersion %>: powered by SalarSoft</p>
+    </div>
+    <asp:Label ID="lblAutoPrompt" runat="server" Text='<script type="text/javascript">window.location="{0}";</script>'
+        EnableViewState="False" Visible="False" meta:resourcekey="lblAutoPrompt"></asp:Label>
+    </form>
 </body>
 </html>

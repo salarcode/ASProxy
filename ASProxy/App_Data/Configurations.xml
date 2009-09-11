@@ -49,7 +49,7 @@
 
   <!--Enables auto update-->
   <autoUpdate updateInfoUrl="http://asproxy.sourceforge.net/update/autoupdate.xml"
-			  engine="true" providers="true" plugins="true">
+			  engine="false" providers="false" plugins="false">
   </autoUpdate>
 
   <!-- Logs user activites to specfied location-->

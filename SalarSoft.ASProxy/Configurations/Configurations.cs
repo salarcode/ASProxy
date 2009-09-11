@@ -7,6 +7,7 @@ using System.Web;
 using System.Xml;
 using System.Collections.Specialized;
 using System.Globalization;
+using System.Reflection;
 
 namespace SalarSoft.ASProxy
 {
@@ -25,7 +26,7 @@ namespace SalarSoft.ASProxy
         private static AutoUpdateConfig _autoUpdate;
         private static LogSystemConfig _logSystem;
         private static NetProxyConfig _netProxy;
-        private static UserOptions _userOptions;
+        private static UserOptionsConfig _userOptions;
         #endregion
 
         #region properties
@@ -79,7 +80,7 @@ namespace SalarSoft.ASProxy
             get { return Configurations._netProxy; }
             set { Configurations._netProxy = value; }
         }
-        public static UserOptions UserOptions
+        public static UserOptionsConfig UserOptions
         {
             get { return Configurations._userOptions; }
             set { Configurations._userOptions = value; }
@@ -97,7 +98,7 @@ namespace SalarSoft.ASProxy
             _autoUpdate = new AutoUpdateConfig();
             _logSystem = new LogSystemConfig();
             _netProxy = new NetProxyConfig();
-            _userOptions = new UserOptions();
+            _userOptions = new UserOptionsConfig();
 
             ReadSettings();
         }
@@ -105,9 +106,6 @@ namespace SalarSoft.ASProxy
         {
             try
             {
-                // first save default user options
-                SaveUserOptions();
-
                 XmlNode activeNode;
                 XmlNode rootNode;
                 XmlNode node;
@@ -129,6 +127,9 @@ namespace SalarSoft.ASProxy
                 // authentication ------
                 _authentication.SaveToXml(xmlDoc, rootNode);
 
+                // imageCompressor ------
+                _imageCompressor.SaveToXml(xmlDoc, rootNode);
+
                 // autoUpdate -------
                 _autoUpdate.SaveToXml(xmlDoc, rootNode);
 
@@ -137,6 +138,9 @@ namespace SalarSoft.ASProxy
 
                 // netProxy -------
                 _netProxy.SaveToXml(xmlDoc, rootNode);
+
+                // Users config
+                _userOptions.SaveToXml(xmlDoc, rootNode);
 
                 // customConfig ---------
                 activeNode = xmlDoc.CreateElement("customConfig");
@@ -187,9 +191,6 @@ namespace SalarSoft.ASProxy
         {
             try
             {
-                // first read default user options
-                ReadUserOptions();
-
                 XmlNode activeNode;
                 XmlNode rootNode;
                 XmlDocument xmlDoc = new XmlDocument();
@@ -211,7 +212,7 @@ namespace SalarSoft.ASProxy
                 // authentication ------
                 _authentication.ReadFromXml(rootNode);
 
-                // authentication ------
+                // imageCompressor ------
                 _imageCompressor.ReadFromXml(rootNode);
 
                 // autoUpdate -------
@@ -222,6 +223,8 @@ namespace SalarSoft.ASProxy
 
                 // netProxy -------
                 _netProxy.ReadFromXml(rootNode);
+
+                _userOptions.ReadFromXml(rootNode);
 
                 // Custom config -------
                 activeNode = rootNode.SelectSingleNode("customConfig");
@@ -237,20 +240,6 @@ namespace SalarSoft.ASProxy
                 }
             }
             catch (Exception) { }
-        }
-        private static void ReadUserOptions()
-        {
-            string config = ConfigurationManager.AppSettings["DefaultUserOptionsXml"];
-            if (HttpContext.Current != null)
-                config = HttpContext.Current.Server.MapPath(config);
-            _userOptions = UserOptions.ReadFromXml(config);
-        }
-        private static void SaveUserOptions()
-        {
-            string config = ConfigurationManager.AppSettings["DefaultUserOptionsXml"];
-            if (HttpContext.Current != null)
-                config = HttpContext.Current.Server.MapPath(config);
-            _userOptions.SaveToXml(config);
         }
         #endregion
 
@@ -505,7 +494,7 @@ namespace SalarSoft.ASProxy
                 this.Downloader_ReadWriteTimeOut = Convert.ToInt32(downloaderNode.Attributes["requestReadWriteTimeOut"].Value);
             }
 
-            public enum UserAgentMode { Default=0, ASProxy=1, Custom=2 };
+            public enum UserAgentMode { Default = 0, ASProxy = 1, Custom = 2 };
         }
 
         public class AuthenticationConfig : IConfigSection
@@ -529,6 +518,21 @@ namespace SalarSoft.ASProxy
                 }
                 return false;
             }
+
+            public User GetByUsername(string userName)
+            {
+                if (Users != null)
+                {
+                    userName = userName.ToLower();
+                    foreach (User user in Users)
+                    {
+                        if (userName == user.UserName.ToLower())
+                            return user;
+                    }
+                }
+                return new User();
+            }
+
             public bool HasPermission(string userName, UserPermission permission)
             {
                 if (Users != null)
@@ -569,7 +573,7 @@ namespace SalarSoft.ASProxy
                 attribute.Value = this.Enabled.ToString();
                 activeNode.Attributes.Append(attribute);
 
-                if (this.Enabled && this.Users != null && this.Users.Count > 0)
+                if (this.Users != null && this.Users.Count > 0)
                 {
                     foreach (AuthenticationConfig.User user in this.Users)
                     {
@@ -601,22 +605,20 @@ namespace SalarSoft.ASProxy
             }
             public void ReadFromXml(XmlNode rootNode)
             {
-                XmlNode node = rootNode.SelectSingleNode("authentication"); ;
+                XmlNode node = rootNode.SelectSingleNode("authentication");
 
                 this.Enabled = Convert.ToBoolean(node.Attributes["enabled"].Value);
-                if (this.Enabled)
+
+                this.Users = new List<AuthenticationConfig.User>();
+                foreach (XmlNode childNode in node.ChildNodes)
                 {
-                    this.Users = new List<AuthenticationConfig.User>();
-                    foreach (XmlNode childNode in node.ChildNodes)
-                    {
-                        AuthenticationConfig.User user = new AuthenticationConfig.User();
-                        user.UserName = childNode.Attributes["userName"].Value;
-                        user.Password = childNode.Attributes["password"].Value;
-                        user.Pages = Convert.ToBoolean(childNode.Attributes["pages"].Value);
-                        user.Images = Convert.ToBoolean(childNode.Attributes["images"].Value);
-                        user.Downloads = Convert.ToBoolean(childNode.Attributes["downloads"].Value);
-                        this.Users.Add(user);
-                    }
+                    AuthenticationConfig.User user = new AuthenticationConfig.User();
+                    user.UserName = childNode.Attributes["userName"].Value;
+                    user.Password = childNode.Attributes["password"].Value;
+                    user.Pages = Convert.ToBoolean(childNode.Attributes["pages"].Value);
+                    user.Images = Convert.ToBoolean(childNode.Attributes["images"].Value);
+                    user.Downloads = Convert.ToBoolean(childNode.Attributes["downloads"].Value);
+                    this.Users.Add(user);
                 }
             }
 
@@ -664,6 +666,7 @@ namespace SalarSoft.ASProxy
             public string UpdateInfoUrl;
             public bool Engine;
             public bool Plugins;
+            public bool Providers;
 
             public void SaveToXml(XmlDocument xmlDoc, XmlNode rootNode)
             {
@@ -696,7 +699,7 @@ namespace SalarSoft.ASProxy
         }
         public class LogSystemConfig : IConfigSection
         {
-            public int MaxFileSize;
+            public long MaxFileSize;
             public string FileFormat;
             public bool ActivityLog_Enabled;
             public string ActivityLog_Location;
@@ -758,7 +761,7 @@ namespace SalarSoft.ASProxy
             {
                 XmlNode node = rootNode.SelectSingleNode("logSystem");
                 this.FileFormat = node.Attributes["fileFormat"].Value;
-                this.MaxFileSize = Convert.ToInt32(node.Attributes["maxFileSize"].Value);
+                this.MaxFileSize = Convert.ToInt64(node.Attributes["maxFileSize"].Value);
 
                 node = rootNode.SelectSingleNode("logSystem/activityLog");
                 this.ActivityLog_Enabled = Convert.ToBoolean(node.Attributes["enabled"].Value);
@@ -898,6 +901,94 @@ namespace SalarSoft.ASProxy
             }
 
             public enum NetProxyMode { Direct = 0, SystemDefault = 1, Custom = 2 }
+        }
+
+        public class UserOptionsConfig : IConfigSection
+        {
+            public struct UserConfig
+            {
+                public bool Enabled;
+                public bool Changeable;
+            }
+
+            public UserConfig Cookies;
+            public UserConfig TempCookies;
+            public UserConfig Images;
+            public UserConfig Links;
+            public UserConfig Frames;
+            public UserConfig SubmitForms;
+            public UserConfig RemoveObjects;
+            public UserConfig HttpCompression;
+            public UserConfig EncodeUrl;
+            public UserConfig OrginalUrl;
+            public UserConfig PageTitle;
+            public UserConfig ForceEncoding;
+            public UserConfig RemoveScripts;
+            public UserConfig RemoveImages;
+            public UserConfig DocType;
+
+
+            public void SaveToXml(XmlDocument xmlDoc, XmlNode rootNode)
+            {
+                XmlNode activeNode;
+
+                XmlNode node = xmlDoc.CreateElement("userOptions");
+                rootNode.AppendChild(node);
+                activeNode = node;
+
+                // userOptions/options
+                node = xmlDoc.CreateElement("options");
+                activeNode.AppendChild(node);
+                activeNode = node;
+
+                // Save configurations
+                SaveConfig(xmlDoc, activeNode, Cookies, "Cookies");
+                SaveConfig(xmlDoc, activeNode, TempCookies, "TempCookies");
+                SaveConfig(xmlDoc, activeNode, Images, "Images");
+                SaveConfig(xmlDoc, activeNode, Links, "Links");
+                SaveConfig(xmlDoc, activeNode, Frames, "Frames");
+                SaveConfig(xmlDoc, activeNode, SubmitForms, "SubmitForms");
+                SaveConfig(xmlDoc, activeNode, RemoveObjects, "RemoveObjects");
+                SaveConfig(xmlDoc, activeNode, HttpCompression, "HttpCompression");
+                SaveConfig(xmlDoc, activeNode, EncodeUrl, "EncodeUrl");
+                SaveConfig(xmlDoc, activeNode, OrginalUrl, "OrginalUrl");
+                SaveConfig(xmlDoc, activeNode, PageTitle, "PageTitle");
+                SaveConfig(xmlDoc, activeNode, ForceEncoding, "ForceEncoding");
+                SaveConfig(xmlDoc, activeNode, RemoveScripts, "RemoveScripts");
+                SaveConfig(xmlDoc, activeNode, RemoveImages, "RemoveImages");
+                SaveConfig(xmlDoc, activeNode, DocType, "DocType");
+            }
+
+
+            public void ReadFromXml(XmlNode rootNode)
+            {
+                XmlNode node = rootNode.SelectSingleNode("userOptions/options");
+
+                Type optionType = typeof(UserOptionsConfig);
+                foreach (XmlNode configNode in node.ChildNodes)
+                {
+                    FieldInfo info = optionType.GetField(configNode.Name);
+                    if (info != null)
+                    {
+                        UserConfig readedConfig;
+                        readedConfig.Enabled = Convert.ToBoolean(configNode.InnerText);
+                        readedConfig.Changeable = Convert.ToBoolean(configNode.Attributes["changeable"].Value);
+
+                        info.SetValue(this, readedConfig);
+                    }
+                }
+            }
+
+            void SaveConfig(XmlDocument xmlDoc, XmlNode baseNode, UserConfig config, string configName)
+            {
+                XmlNode configNode = xmlDoc.CreateElement(configName);
+                baseNode.AppendChild(configNode);
+                configNode.InnerText = config.Enabled.ToString();
+
+                XmlAttribute attribute = xmlDoc.CreateAttribute("changeable");
+                attribute.Value = config.Changeable.ToString();
+                configNode.Attributes.Append(attribute);
+            }
         }
         #endregion
     }

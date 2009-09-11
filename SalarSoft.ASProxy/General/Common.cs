@@ -5,12 +5,50 @@ using System.IO;
 using System.Text;
 using System.Web;
 using System.Net;
+using System.Collections.Generic;
+using System.Text.RegularExpressions;
+using System.Globalization;
 
 namespace SalarSoft.ASProxy
 {
     public class Common
     {
         #region public static
+
+        public static NameValueCollection GetInstalledLanguagesList()
+        {
+            NameValueCollection languages = new NameValueCollection();
+
+
+            string[] list = Directory.GetFiles(HttpContext.Current.Server.MapPath("~/App_LocalResources"), "*.resx", SearchOption.AllDirectories);
+            foreach (string str in list)
+            {
+                Regex regex = new Regex("[a-zA-Z-]*.resx");
+                string language = regex.Match(str).ToString().Replace(".resx", String.Empty);
+
+                CultureInfo cultureInfo;
+                try
+                {
+                    if (language == "aspx")
+                    {
+                        cultureInfo = CultureInfo.GetCultureInfo("en-US");
+                    }
+                    else
+                    {
+                        cultureInfo = CultureInfo.GetCultureInfo(language);
+                    }
+                }
+                catch
+                {
+                    // just ignore it
+                    continue;
+                }
+                
+                languages[cultureInfo.IetfLanguageTag.ToLower()] = cultureInfo.NativeName;
+            }
+            return languages;
+        }
+
         public static int GetExceptionHttpDetailedErrorCode(Exception exception)
         {
             if (exception != null)
@@ -162,7 +200,7 @@ namespace SalarSoft.ASProxy
             HttpCookieCollection cool = response.Cookies;
 
             HttpCookie cookie = response.Cookies[Consts.FrontEndPresentation.HttpCompressorCookieName];
-			string encode = cookie[Consts.FrontEndPresentation.HttpCompressEncoding];
+            string encode = cookie[Consts.FrontEndPresentation.HttpCompressEncoding];
             response.ClearHeaders();
 
             if (string.IsNullOrEmpty(encode))
@@ -185,7 +223,7 @@ namespace SalarSoft.ASProxy
             {
                 case MimeContentType.text_html:
                     return DataTypeToProcess.Html;
-                    
+
                 case MimeContentType.text_css:
                     return DataTypeToProcess.Css;
 

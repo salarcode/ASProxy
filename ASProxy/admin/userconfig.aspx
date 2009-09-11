@@ -28,7 +28,6 @@ fieldset td:first-child, .first_cell
 }
 #config_table tr:first-child
 {
-    border:5px solid #D45951;
     border:solid 0px silver;
     -moz-box-shadow:3px 2px 5px #BBB082;
     -webkit-box-shadow:3px 2px 5px #BBB082;
@@ -43,6 +42,22 @@ fieldset td:first-child, .first_cell
     font-size:small;
     padding:5px 5px !important;
 }
+
+#config_table tr:first-child td:first-child
+{
+    -moz-border-radius-topleft:5px;
+    -webkit-border-radius-topleft:5px;
+    -o-border-radius-topleft:5px;
+    border-radius-topleft:5px;
+}
+#config_table tr:first-child td:last-child
+{
+    -moz-border-radius-topright:5px;
+    -webkit-border-radius-topright:5px;
+    -o-border-radius-topright:5px;
+    border-radius-topright:5px;
+}
+
 </style>
 </asp:Content>
 <asp:Content ID="plhHeader" ContentPlaceHolderID="Header" Runat="Server">
@@ -186,7 +201,7 @@ Users Configurations
 	<tr>
 		<td>
 			Remove Objects
-			<br /><span class="field_desc">(Removes embeded objects.)</span></td>
+			<br /><span class="field_desc">(Removes embedded objects.)</span></td>
 		<td style="text-align:center">
 			<asp:CheckBox ID="chkRemoveObjectsActive" runat="server" /> 
 		</td>
