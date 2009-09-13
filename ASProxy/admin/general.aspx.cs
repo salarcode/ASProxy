@@ -21,6 +21,11 @@ public partial class Admin_General : System.Web.UI.Page
 
     bool ValidateForm()
     {
+		// Start with ~/
+		// chkActivityLogLocation.Text
+
+		// Start with ~/
+		// chkErrorLogLocation.Text
         return true;
     }
     void LoadLanguagesCombo()

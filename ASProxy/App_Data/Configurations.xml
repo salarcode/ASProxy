@@ -1,80 +1,83 @@
 ﻿<?xml version="1.0"?>
 <Configurations>
 
-  <providers>
-    <!--Enables third party plugins to overwite the base classes.-->
-    <engine canBeOverwritten="true" />
+	<!--Administration UI-->
+	<adminUI isAdminStarted="false" userName="admin" password="admin" />
 
-    <!--Enables plugins-->
-    <plugins enabled="true">
-      <disabledPlugins>
-        <plugin name="TemplatePlugin" />
-      </disabledPlugins>
-    </plugins>
-  </providers>
+	<providers>
+		<!--Enables third party plugins to overwite the base classes.-->
+		<engine canBeOverwritten="true" />
+    
+		<!--Enables plugins-->
+		<plugins enabled="true">
+			<disabledPlugins>
+				<plugin name="TemplatePlugin" />
+			</disabledPlugins>
+		</plugins>
+	</providers>
 
-  <pages uiLanguage="en-us" />
-
-  <webData maxContentLength="-1"
+	<pages uiLanguage="en-us" />
+	
+	<webData maxContentLength="-1"
 			requestTimeout="60000"
 			requestReadWriteTimeOut="70000"
 			sendSignature="true"
 			preferredLocalEncoding="windows-1256">
-
-    <downloader resumeSupport="true"
+		
+		<downloader resumeSupport="true"
 					maxContentLength="-1"
 					requestTimeout="120000"
 					requestReadWriteTimeOut="300000" />
-    <userAgent mode="Default" custom="ASProxy (compatible; Mozilla/5.0;)" />
-  </webData>
+		<userAgent mode="Default" custom="ASProxy (compatible; Mozilla/5.0;)" />
+	</webData>
+  
+	<!--Used in private proxy feature to prevent the strangers to access the proxy-->
+	<authentication enabled="false">
+		<user userName="admin" password="admin" pages="true" images="true" downloads="true"></user>
+	</authentication>
 
-  <!--Used in private proxy feature to prevent the strangers to access the proxy-->
-  <authentication enabled="false">
-    <user userName="admin" password="admin" pages="true" images="true" downloads="true"></user>
-  </authentication>
+	<!--Image compressor config-->
+	<imageCompressor enabled="false" quality="10">
+	</imageCompressor>
+	
+	<userAccessControl enabled="false">
+		<blocked>
+			<ip value="78.110.175.11" />
+			<range low="78.110.175.13" high="78.110.175.13" />
+		</blocked>
+		<allow>
+			<ip value="196.40.10.246" />
+		</allow>
+	</userAccessControl>
 
-  <!--Image compressor config-->
-  <imageCompressor enabled="false" quality="10">
-  </imageCompressor>
-
-  <userAccessControl enabled="false">
-    <blocked>
-      <ip value="78.110.175.11" />
-      <range low="78.110.175.13" high="78.110.175.13" />
-    </blocked>
-    <allow>
-      <ip value="196.40.10.246" />
-    </allow>
-  </userAccessControl>
-
-  <!--Enables auto update-->
-  <autoUpdate updateInfoUrl="http://asproxy.sourceforge.net/update/autoupdate.xml"
+	<!--Enables auto update-->
+	<autoUpdate updateInfoUrl="http://asproxy.sourceforge.net/update/autoupdate.xml"
 			  engine="false" providers="false" plugins="false">
-  </autoUpdate>
+	</autoUpdate>
 
-  <!-- Logs user activites to specfied location-->
-  <logSystem maxFileSize="5120" fileFormat="yyyy-MM-dd">
+	<!-- Logs user activites to specfied location-->
+	<logSystem maxFileSize="5120" fileFormat="yyyy-MM-dd">
 
-    <!--Browsing activities-->
-    <activityLog enabled="false"
+		<!--Browsing activities-->
+		<activityLog enabled="false"
 						location="~/App_Data/DailyLog/{0}.log"
 					  pages="true"
 						images="false">
-    </activityLog>
+		</activityLog>
 
-    <!--error log-->
-    <errorLog enabled="false" location="~/App_Data/ErrorLog/{0}.log" />
-  </logSystem>
+		<!--error log-->
+		<errorLog enabled="false" location="~/App_Data/ErrorLog/{0}.log" />
+	</logSystem>
 
-  <!--
+	<!--
 	If web server is behind a network proxy or firewall, you should config it here to pass
 	direct, SystemDefault, Custom
 	-->
-  <netProxy mode="Direct">
-    <custom address="0.0.0.0" port="8080" authentication="false">
-      <authentication userName="" password="" />
-    </custom>
-  </netProxy>
+	<netProxy mode="Direct">
+		<custom address="0.0.0.0" port="8080" authentication="false">
+			<authentication userName="" password="" />
+		</custom>
+	</netProxy>
 
   <!-- Users default options -->
   <userOptions>
@@ -96,9 +99,9 @@
       <DocType changeable="true">True</DocType>
     </options>
   </userOptions>
-
-  <customConfig>
-    <!--<config name="" value=""></config>-->
-  </customConfig>
-
+  
+	<customConfig>
+		<!--<config name="" value=""></config>-->
+	</customConfig>
+  
 </Configurations>
