@@ -1,4 +1,4 @@
-<%@ Page Title="ASProxy General Configurations" Language="C#" MasterPageFile="~/admin/AdminUI.master" AutoEventWireup="true"
+<%@ Page Title="General Configurations" Language="C#" MasterPageFile="~/admin/AdminUI.master" AutoEventWireup="true"
     CodeFile="general.aspx.cs" Inherits="Admin_General" %>
 
 <script runat="server">
@@ -10,7 +10,7 @@
 </style>
 </asp:Content>
 <asp:Content ID="plhHeader" ContentPlaceHolderID="Header" runat="Server">
-ASProxy General Configurations
+	General Configurations 
 </asp:Content>
 <asp:Content ID="plhContent" ContentPlaceHolderID="Content" runat="Server">
     <fieldset>
@@ -145,5 +145,5 @@ ASProxy General Configurations
     </fieldset>
     <asp:Button CssClass="submit_button" ID="btnSave" runat="server" Text="Save" 
         onclick="btnSave_Click" />
-    <input class="submit_button" id="btnCancel" type="button" value="Cancel" />
+    <input class="submit_button" id="btnCancel" type="button" value="Cancel"  onclick="document.location='default.aspx'" />
 </asp:Content>

@@ -10,7 +10,7 @@ namespace SalarSoft.ASProxy
 {
 
 	/// <summary>
-	/// Summary description for Provider
+	/// Extensions Provider Loader
 	/// </summary>
 	public static class Provider
 	{

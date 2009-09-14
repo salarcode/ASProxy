@@ -278,7 +278,6 @@ namespace SalarSoft.ASProxy
 			{
 				return DisabledPlugins.Contains(pluginName);
 			}
-
 			public void SaveToXml(XmlDocument xmlDoc, XmlNode rootNode)
 			{
 				XmlNode node;
@@ -314,7 +313,6 @@ namespace SalarSoft.ASProxy
 					nameNode.Attributes.Append(attribute);
 				}
 			}
-
 			public void ReadFromXml(XmlNode rootNode)
 			{
 				XmlNode node = rootNode.SelectSingleNode("providers/engine");
@@ -349,7 +347,6 @@ namespace SalarSoft.ASProxy
 					return CultureInfo.CurrentUICulture;
 				}
 			}
-
 			public void SaveToXml(XmlDocument xmlDoc, XmlNode rootNode)
 			{
 				XmlAttribute attribute;
@@ -362,7 +359,6 @@ namespace SalarSoft.ASProxy
 				attribute.Value = this.UILanguage;
 				pagesNode.Attributes.Append(attribute);
 			}
-
 			public void ReadFromXml(XmlNode rootNode)
 			{
 				XmlNode node = rootNode.SelectSingleNode("pages");
@@ -536,7 +532,6 @@ namespace SalarSoft.ASProxy
 				}
 				return false;
 			}
-
 			public User GetByUsername(string userName)
 			{
 				if (Users != null)
@@ -550,7 +545,6 @@ namespace SalarSoft.ASProxy
 				}
 				return new User();
 			}
-
 			public bool HasPermission(string userName, UserPermission permission)
 			{
 				if (Users != null)
@@ -973,8 +967,6 @@ namespace SalarSoft.ASProxy
 				SaveConfig(xmlDoc, activeNode, RemoveImages, "RemoveImages");
 				SaveConfig(xmlDoc, activeNode, DocType, "DocType");
 			}
-
-
 			public void ReadFromXml(XmlNode rootNode)
 			{
 				XmlNode node = rootNode.SelectSingleNode("userOptions/options");
@@ -993,7 +985,6 @@ namespace SalarSoft.ASProxy
 					}
 				}
 			}
-
 			void SaveConfig(XmlDocument xmlDoc, XmlNode baseNode, UserConfig config, string configName)
 			{
 				XmlNode configNode = xmlDoc.CreateElement(configName);
@@ -1032,7 +1023,6 @@ namespace SalarSoft.ASProxy
 				attribute.Value = this.Password.ToString();
 				node.Attributes.Append(attribute);
 			}
-
 			public void ReadFromXml(XmlNode rootNode)
 			{
 				XmlNode node = rootNode.SelectSingleNode("adminUI");

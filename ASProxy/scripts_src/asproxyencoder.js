@@ -1,6 +1,6 @@
 ﻿// ASProxy Dynamic Encoder
 // ASProxy encoder for dynamically created objects //
-// Last update: 2009-07-09 coded by Salar Khalilzadeh //
+// Last update: 2009-07-20 coded by Salar Khalilzadeh //
 
 //_userConfig={EncodeUrl:true, OrginalUrl:true, Links:true, Images:true, Forms:true, Frames:true, Cookies:true};
 
@@ -31,6 +31,8 @@
 // ASProxy object
 _ASProxy={
 	Debug_UseAbsoluteUrl:false,
+	TraceCookies:false,
+	LogEnabled:false,
 	Activities:{},
 	Pages:{
 		pgGetAny:'getany.ashx',
@@ -90,7 +92,7 @@ function __UrlEncoder(url,type,notCorrectLocalUrl,extraQuery){
 	else
 		asproxyBasePath=_reqInfo.ASProxyPageName;
 
-	// use full usrl, only for debug
+	// UseAbsoluteUrl, only for debug
 	if(typeof(_ASProxy.Debug_UseAbsoluteUrl)!='undefined' && _ASProxy.Debug_UseAbsoluteUrl)
 		asproxyBasePath=_reqInfo.ASProxyPath + asproxyBasePath;
 
@@ -209,7 +211,7 @@ _ASProxy.StringEndsWith=function(str1,str2){
 // private: convert url to requested url if started with proxy address AND checks if this is not a client url
 _ASProxy.CorrectLocalUrlToOrginalCheck =function(url) {
 	if(_ASProxy.IsClientSideUrl(url) || _ASProxy.IsSelfBookmarkUrl(url))
-		return requestUrl;
+		return url;
 	return _ASProxy.CorrectLocalUrlToOrginal(url);
 }
 
@@ -278,7 +280,17 @@ _ASProxy.B64UnknownerAdd = function(url) {
 // ---------------------------
 // END
 // ---------------------------
-
+_ASProxy.Log=function(){
+if(_ASProxy.LogEnabled &&  typeof(console)!='undefined'){
+	try{
+		console.debug('ASProxy log:');
+		var log='';
+		for(var i=0;i<arguments.length;i++){
+			log+=arguments[i]+'\n';
+		}
+		console.debug(log);
+	}catch(e){}
+}}
 _ASProxy.IsEncodedByASProxy = function(url){
 	if(url==null) return false;
 	url=url.toLowerCase();
@@ -322,9 +334,9 @@ try{
 		var r = o.attachEvent("on" + evType, f);
 		return r;
 	} else {
-		try{ o["on" + evType] = f; }catch(e){}
+		try{ o["on" + evType] = f; }catch(e){_ASProxy.Log('AttachEvent"on"',e);}
 	}
-}catch(e){}
+}catch(e){_ASProxy.Log('AttachEvent',e);}
 }
 
 // ---------------------------
@@ -381,14 +393,11 @@ for(i=0;i<elementsArray.length;i++){
 			// last encodec url address
 			var orgEncodedUrl=item.attributes["encodedurl"];
 			if(orgEncodedUrl==null){	
-				
 				_ASProxy.CallOriginalSetAttr(item,"encodedurl",propValue);
-				//ATTR: item.setAttribute("encodedurl",propValue);
 				
 				// if frames is proccessing and additional key is available
 				if(contentType==3 && additionalKey){
 					_ASProxy.CallOriginalSetAttr(item,additionalKey,additionalValue);
-					//ATTR: item.setAttribute(additionalKey,additionalValue);
 				}
 				
 				applyEncoding=true;
@@ -414,16 +423,13 @@ for(i=0;i<elementsArray.length;i++){
 			
 			// set encoding done flag
 			_ASProxy.CallOriginalSetAttr(item,"asproxydone","1");
-			//ATTR: item.setAttribute("asproxydone","1");
 			
 			// set original address
 			_ASProxy.CallOriginalSetAttr(item,"originalurl",_ASProxy.GetBookmarkOnlyForCurrentPage(propValueFull));
-			//ATTR: item.setAttribute("originalurl",_ASProxy.GetBookmarkOnlyForCurrentPage(propValueFull));
 
 			// if frames is proccessing and additional key is available
 			if(contentType==3 && additionalKey){
 				_ASProxy.CallOriginalSetAttr(item,additionalKey,additionalValue);
-				//ATTR: item.setAttribute(additionalKey,additionalValue);
 			}
 
 			// set float bar variables
@@ -438,16 +444,13 @@ for(i=0;i<elementsArray.length;i++){
 				continue;
 			else
 				newValue= __UrlEncoder(newValue,contentType,true,null);
-				//newValue= ASProxyEncoder(newValue,contentType,false,null,true);
 			
 			// apply new value
 			_ASProxy.CallOriginalSetAttr(item, propName , newValue);
-			//ATTR: item.setAttribute(propName , newValue);
 			item[propName] = newValue;
 			
 			//Saving base64 coded url to monitor changes
 			_ASProxy.CallOriginalSetAttr(item, "encodedurl" , newValue);
-			//ATTR: item.setAttribute("encodedurl" , newValue);
 		}
 		
 	}
@@ -506,20 +509,15 @@ for(i=0;i<document.forms.length;i++)
 		}
 
 		if(applyEncoding){
-			//ATTR: frm.setAttribute("asproxydone","1");
-			//ATTR: frm.setAttribute("methodorginal" , frmMethod);
 			_ASProxy.CallOriginalSetAttr(frm,"asproxydone","1");
 			_ASProxy.CallOriginalSetAttr(frm,"methodorginal" , frmMethod);
 
 			// encodes action
 			var newFrmAction=__UrlEncoder(frmAction,ENC_Page,false,"method="+frmMethod);
 
-			//ATTR: frm.action=newFrmAction;
 			_ASProxy.CallOriginalSetAttr(frm,"action", newFrmAction);
-			//ATTR: frm.setAttribute("action", newFrmAction);
 
 			_ASProxy.CallOriginalSetAttr(frm,"encodedurl", newFrmAction);
-			//ATTR: frm.setAttribute("encodedurl", newFrmAction);//Saving encoded url to monitor the changes
 
 			//override from method
 			frm.method="POST";
@@ -537,7 +535,7 @@ _ASProxy.Enc.EncodeFrames=function(){
 	var frames=document.documentElement.getElementsByTagName("iframe");
 	try{
 	_ASProxy.Enc.EncodeElements(frames,"src",3,false,null,null,"onload","_ASProxy.Enc.EncodeFrames()");
-	}catch(e){}
+	}catch(e){_ASProxy.Log('Enc.EncodeFrames',e);}
 
 	//After 4 seconds
 	window.setTimeout("_ASProxy.Enc.EncodeFrames();",5000);
@@ -548,7 +546,7 @@ _ASProxy.Enc.EncodeLinks=function(){
 	if(_userConfig.Links!=true) return;
 	try{
 	_ASProxy.Enc.EncodeElements(document.links,"href",0,true);
-	}catch(e){}
+	}catch(e){_ASProxy.Log('Enc.EncodeLinks',e);}
 
 	//After 1 second 
 	window.setTimeout("_ASProxy.Enc.EncodeLinks();",1000);
@@ -559,7 +557,7 @@ _ASProxy.Enc.EncodeImages=function(){
 	if(_userConfig.Images!=true) return;
 	try{
 	_ASProxy.Enc.EncodeElements(document.images,"src",1,true);
-	}catch(e){}
+	}catch(e){_ASProxy.Log('Enc.EncodeImages',e);}
 
 	//After 1 second
 	window.setTimeout("_ASProxy.Enc.EncodeImages();",1000);
@@ -572,7 +570,7 @@ _ASProxy.Enc.EncodeInputImages=function(){
 	var inputImages=document.documentElement.getElementsByTagName("input");
 	try{
 	_ASProxy.Enc.EncodeElements(inputImages,"src",1,true,"type","image");
-	}catch(e){}
+	}catch(e){_ASProxy.Log('Enc.EncodeInputImages',e);}
 
 	//After 4 seconds
 	window.setTimeout("_ASProxy.Enc.EncodeInputImages();",4000);
@@ -583,7 +581,7 @@ _ASProxy.Enc.EncodeScriptSources=function(){
 	var scripts=document.documentElement.getElementsByTagName("script");
 	try{
 	_ASProxy.Enc.EncodeElements(scripts,"src",2,false);
-	}catch(e){}
+	}catch(e){_ASProxy.Log('Enc.EncodeScriptSources',e);}
 
 	//After 4 second 
 	window.setTimeout("_ASProxy.Enc.EncodeScriptSources();",4000);
@@ -628,7 +626,10 @@ function __CookieGet(_CookieName){
 	if(toGetCName==null)
 		toGetCName = _reqInfo.cookieName;
 	var cookieString = document.cookie;
-		
+
+	if(typeof(_ASProxy.TraceCookies)!='undefined' && _ASProxy.TraceCookies)
+		_ASProxy.Log("__CookieGet: "+_CookieName);
+
 	var aCookie = cookieString.split("; ");
 	for (var i=0; i < aCookie.length; i++)
 	{
@@ -643,6 +644,11 @@ function __CookieGet(_CookieName){
 // sCookie: cookie string to set
 function __CookieSet(sCookie){
 var cookieSettingValues="";
+
+if(typeof(_ASProxy.TraceCookies)!='undefined' && _ASProxy.TraceCookies)
+	_ASProxy.Log("__CookieSet: "+sCookie);
+
+
 function GetCookie(cookieString,sName){
 	var aCookie = cookieString.split("; ");
 	for (var i=0; i < aCookie.length; i++)
@@ -797,7 +803,7 @@ try{
 		// Try to add Html element interfaces which is not supported in all browsers
 		// These Html element interfaces are not implemented by IE8 standard mode
 		interfaces.push([HTMLElement, HTMLUListElement, HTMLQuoteElement, HTMLPreElement, HTMLModElement, HTMLMenuElement, HTMLDirectoryElement, HTMLAppletElement ]);
-	}catch(e){}
+	}catch(e){_ASProxy.Log('OverrideHtmlSetters interfaces.push',e);}
 
 	// Default attribute setter
 	var _EncodeSetAttributeValue=function(attr,value,refTagName){
@@ -846,7 +852,7 @@ try{
 			{
 				value = _ASProxy.ParseHtml(value); 
 			}
-		}catch(e){}
+		}catch(e){_ASProxy.Log('_EncodeSetAttributeValue',e);}
 		return value;
 	}
 	
@@ -862,7 +868,7 @@ try{
 				// call original method
 				this.OriginalSetAttribute(attr, value);
 			}
-		}catch(e){}
+		}catch(e){_ASProxy.Log('_ASProxy.SetAttribute',e);}
 	};
 	
 	// changes the form element and dosn't need any action
@@ -910,14 +916,17 @@ try{
 			}else{
 				this.OriginalSetAttribute('action',_EncodeSetAttributeValue('action',value,this.tagName));
 			}
-		}catch(e){}
+		}catch(e){_ASProxy.Log('Setter_Action',e);}
 	};
 	
 	// overriding elements properties
 	for( i=0; i< interfaces.length ;i++ ){
 		// element definition
 		var elm = interfaces[i].prototype;
-
+		
+		// Does it have a prototype?
+		if(elm==null) continue;
+		
 		// overridding element 'setAttribute' method
 		elm.OriginalSetAttribute = elm.setAttribute;
 		elm.setAttribute = _ASProxy.SetAttribute;
@@ -930,7 +939,7 @@ try{
 		elm.__defineSetter__('innerHtml', _ASProxy.Setter_InnerHtml);
 
 	}
-}catch(e){}
+}catch(e){_ASProxy.Log('OverrideHtmlSetters ALL',e);}
 }
 
 // Overriding standard functions
@@ -979,26 +988,26 @@ _ASProxy.OverrideStandards=function() {
 
 	try{
 		window.open=_ASProxy.WindowOpen;
-	}catch(e){}
+	}catch(e){_ASProxy.Log('OVR window.open failed',e);}
 	try{
 		document.open=_ASProxy.WindowOpen;
-	}catch(e){}
+	}catch(e){_ASProxy.Log('OVR document.open failed',e);}
 	try{
 		open=_ASProxy.WindowOpen;
-	}catch(e){}
+	}catch(e){_ASProxy.Log('OVR open failed',e);}
 	try{
 		window.location.replace=_ASProxy.LocationReplace;
-	}catch(e){}
+	}catch(e){_ASProxy.Log('OVR window.location failed',e);}
 	try{
 		location.replace=_ASProxy.LocationReplace;
-	}catch(e){}
+	}catch(e){_ASProxy.Log('OVR location.replace failed',e);}
 	
 	try{
 		document.write=_ASProxy.DocumentWrite;
-	}catch(e){}
+	}catch(e){_ASProxy.Log('OVR document.write failed',e);}
 	try{
 		document.writeln=_ASProxy.DocumentWriteLn;
-	}catch(e){}
+	}catch(e){_ASProxy.Log('OVR document.writeln failed',e);}
 }
 
 // ---------------------------

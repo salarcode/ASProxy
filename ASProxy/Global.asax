@@ -15,13 +15,13 @@
 		    SalarSoft.ASProxy.Updater.AddUpdateReminder();
 		}
 	}
+	
 
 	protected void Application_PreRequestHandlerExecute(object sender, EventArgs e)
 	{
 		// Page ui
 		System.Threading.Thread.CurrentThread.CurrentUICulture = Configurations.Pages.GetUiLanguage();
-			
-		
+
 		if (Configurations.Authentication.Enabled)
 		{
 			if (Request.IsAuthenticated == false)
@@ -48,5 +48,6 @@
 		// shows a custom error message instead of ASP.NET general error
 		CustomErrors.HandleCustomErrors(ex);
 	}
+
 </script>
 

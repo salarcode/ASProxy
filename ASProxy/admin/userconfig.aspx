@@ -1,4 +1,4 @@
-﻿<%@ Page Title="Users Configurations" Language="C#" MasterPageFile="~/admin/AdminUI.master" AutoEventWireup="true" CodeFile="userconfig.aspx.cs" Inherits="admin_userconfig" %>
+﻿<%@ Page Title="Users Configurations" Language="C#" MasterPageFile="~/admin/AdminUI.master" AutoEventWireup="true" CodeFile="userconfig.aspx.cs" Inherits="Admin_UserConfig" %>
 
 <asp:Content ID="plhHead" ContentPlaceHolderID="PageHead" Runat="Server">
 <style type="text/css">

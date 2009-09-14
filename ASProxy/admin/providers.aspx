@@ -1,4 +1,4 @@
-<%@ Page Title="ASProxy Engine Extensions" Language="C#" MasterPageFile="~/admin/AdminUI.master"
+<%@ Page Title="Engine Extensions" Language="C#" MasterPageFile="~/admin/AdminUI.master"
     AutoEventWireup="true" CodeFile="providers.aspx.cs" Inherits="Admin_Providers" %>
 
 <%@ Import Namespace="SalarSoft.ASProxy" %>

@@ -9,6 +9,9 @@ using System.Collections;
 
 namespace SalarSoft.ASProxy
 {
+	/// <summary>
+	/// Plugins provider
+	/// </summary>
     public class Plugins
     {
         internal struct PluginStore

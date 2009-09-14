@@ -6,7 +6,7 @@ using SalarSoft.ASProxy.Exposed;
 namespace SalarSoft.ASProxy
 {
     /// <summary>
-    /// Utility classes instances to use in project
+	/// Instances of utility classes to use in everywhere. These classes are shared between requests.
     /// </summary>
     public static class Systems
     {

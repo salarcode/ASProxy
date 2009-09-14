@@ -1,6 +1,6 @@
 ****************************************
-ASProxy       :version 5.5
-Last update   :2009/08/01
+ASProxy       :version 5.5b1
+Last update   :2009/09/14
 Official site :http://asproxy.sourceforge.net/
 
 ASProxy is an ASP.NET Web Proxy.
@@ -8,8 +8,8 @@ A powerful web proxy is in your hands! Feel its power!
 
 ****************************************
 Install notes:
-	To install this application copy all the files in zip to the server.
-	It is better to copy compiled package files instead of the sources.
+	To install this application copy all the files in "upload" folder to the server.
+	It is better to copy compiled package files instead of the source-code package contents.
 
 Installing to a subdirectory:
 	To have asproxy in a subdirectory in your site, do one of these:
@@ -19,14 +19,16 @@ Installing to a subdirectory:
 	*- Create a subdirectory as a virtual directory and copy all files there.
 	*- Create a subdomain and copy all files there.
 
+Administration UI Installation:
+	Just copy the "admin" folder from inside of "AdminUI" folder to the server where you have installed ASProxy.
+	In other word the folder "admin" should be along with "web.config", "bin" and other ASProxy files.
+
 Important:
 	Be sure that your server supports ASP.NET 2 and then set your server ASP.NET version to 2.0.50727.
 
 Applying language:
-	Open "ASProxyLanguage.exe" application which is located in LanguageTool folder.
-	Set "Language XML" to the language xml file which you want to be applied.
-	Set "ASProxy folder" to the source folder. Note that you should use source package. If you use compiled package nothing will happen.
-	Click "Start" button.
+	* Manual: Open "/App_Data/Configurations.xml" file in an editor. Locate "pages" section and change the "uiLanguage" value.
+	* AdminUI: Go to "/admin/general.aspx", in the "UI Language" section choice desired language and press "Save" button.
 
 Changing interface:
 	If you don't like default interface, there is some. Go and get them right here: http://asproxy.sourceforge.net/download.html
@@ -35,12 +37,13 @@ Changing interface:
 ****************************************
 Version History
 
-Version 5.5 2009/07/28
-* New look and design.
-* Plugin support.
-* Extension support.
-* Administration interface. This is optional and should be uploaded by user manually.
-* Easy 
+Version 5.5 Beta1 2009/09/14
+* New: New look and design.
+* New: Plugin support. Apply what do you want to do with ASProxy easily.
+* New: Extension support. Write your own engine for ASProxy.
+* New: Administration UI. Config your ASProxy easily from everywhere.
+* New: Easier mulitlanguage support. One package for all languages. Just copy the .resx files and change the default language.
+* Fixed: Minor Javascript issues.
 
 Version 5.2 2009/06/28
 * Most part of ASProxy is rewrited and optimized.

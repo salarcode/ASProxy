@@ -1,4 +1,4 @@
-﻿<%@ Page Title="Saved logs by Log System" Language="C#" MasterPageFile="~/admin/AdminUI.master" AutoEventWireup="true" CodeFile="logsystem.aspx.cs" Inherits="admin_logsystem" %>
+﻿<%@ Page Title="Saved logs by Log System" Language="C#" MasterPageFile="~/admin/AdminUI.master" AutoEventWireup="true" CodeFile="logsystem.aspx.cs" Inherits="Admin_Logsystem" %>
 
 <asp:Content ID="plhHead" ContentPlaceHolderID="PageHead" runat="Server">
 </asp:Content>

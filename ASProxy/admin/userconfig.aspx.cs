@@ -5,7 +5,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using SalarSoft.ASProxy;
 
-public partial class admin_userconfig : System.Web.UI.Page
+public partial class Admin_UserConfig : System.Web.UI.Page
 {
     protected void Page_Load(object sender, EventArgs e)
     {

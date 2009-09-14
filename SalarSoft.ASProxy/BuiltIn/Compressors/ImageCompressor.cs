@@ -37,7 +37,7 @@ namespace SalarSoft.ASProxy.BuiltIn
 						if (IsImageAnimated(img))
 						{
 							// GIF
-							// TODO: PNGA in not implemented yet
+							// TODO: APNG in not implemented yet
 							codecInfo = GetEncoderInfo("image/gif");
 						}
 						else

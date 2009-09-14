@@ -1,5 +1,5 @@
 <%@ Page Title="Login to Administration UI" Language="C#" MasterPageFile="~/admin/AdminUI.master"
-	AutoEventWireup="true" CodeFile="adminlogin.aspx.cs" Inherits="admin_adminlogin" %>
+	AutoEventWireup="true" CodeFile="adminlogin.aspx.cs" Inherits="Admin_AdminLogin" %>
 
 <asp:Content ID="plhHead" ContentPlaceHolderID="PageHead" runat="Server">
 </asp:Content>
@@ -10,6 +10,8 @@
 	<div class="error_list">
 		<asp:Literal ID="ltErrorsList" runat="server"></asp:Literal>
 	</div>
+	<asp:Label ID="lblRegisterMessage" runat="server" Text="This is first time you are opening Administation UI. To prevent strangers from changing your ASProxy configuration you should specify an username and password." EnableViewState="false" Visible="false"></asp:Label>
+	<asp:Label ID="lblLoginMessage" runat="server" Text="To be able to see and change the configurations you should login with administration account." EnableViewState="false" Visible="false"></asp:Label>
 	<fieldset>
 		<table style="width: 100%;">
 			<tr>

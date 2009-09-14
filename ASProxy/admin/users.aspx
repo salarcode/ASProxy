@@ -102,6 +102,7 @@
     </fieldset>
     <fieldset>
         <legend>User Access Control</legend>
+		<span class="field_desc" style="color:Red; font-weight:bold;">(Note: This configuration is not implemented by ASProxy yet.)</span>
         <table style="width: 100%;">
             <tr>
                 <td>

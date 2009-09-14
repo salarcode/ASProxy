@@ -5,18 +5,45 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using SalarSoft.ASProxy;
 
-public partial class admin_adminlogin : System.Web.UI.Page
+public partial class Admin_AdminLogin : System.Web.UI.Page
 {
+	List<string> _errorsList = new List<string>();
 	protected void Page_Load(object sender, EventArgs e)
 	{
 		btnAdminRegister.Visible = false;
 		btnAdminLogin.Visible = false;
-		if(Configurations.AdminUI.IsAdminStarted==false)
+		lblRegisterMessage.Visible = false;
+		lblLoginMessage.Visible = false;
+		if (Configurations.AdminUI.IsAdminStarted == false)
+		{
 			btnAdminRegister.Visible = true;
+			lblRegisterMessage.Visible = true;
+		}
 		else
+		{
 			btnAdminLogin.Visible = true;
+			lblLoginMessage.Visible = true;
+		}
+	}
+	void DisplayErrors(List<string> errorsList)
+	{
+		if (errorsList.Count == 0)
+			return;
+		ltErrorsList.Visible = true;
+		string display = "<ul style='color:Red;'>";
+		foreach (string item in errorsList)
+		{
+			display += "<li>" + item + "</li>";
+		}
+		display += "</ul>";
+		ltErrorsList.Text = display;
 	}
 
+
+	void AddError(string errorMessage)
+	{
+		_errorsList.Add(errorMessage);
+	}
 
 	void ReturnToRedirectedPage()
 	{
@@ -26,6 +53,12 @@ public partial class admin_adminlogin : System.Web.UI.Page
 		Response.Redirect(returnUrl, true);
 	}
 
+	protected override void OnPreRender(EventArgs e)
+	{
+		DisplayErrors(_errorsList);
+
+		base.OnPreRender(e);
+	}
 
 	protected void btnAdminLogin_Click(object sender, EventArgs e)
 	{
@@ -39,6 +72,8 @@ public partial class admin_adminlogin : System.Web.UI.Page
 				Admin_AdminUI.LoginTheUser();
 				ReturnToRedirectedPage();
 			}
+			else
+				AddError("Invalid username or password");
 		}
 	}
 	protected void btnAdminRegister_Click(object sender, EventArgs e)

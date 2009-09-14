@@ -7,7 +7,7 @@ using SalarSoft.ASProxy;
 using System.IO;
 using System.Threading;
 
-public partial class admin_logsystem : System.Web.UI.Page
+public partial class Admin_Logsystem : System.Web.UI.Page
 {
 
     protected void Page_Load(object sender, EventArgs e)
