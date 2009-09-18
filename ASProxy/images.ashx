@@ -121,7 +121,7 @@ public class Images : IHttpHandler, System.Web.SessionState.IReadOnlySessionStat
 
 	public void ShowError(HttpContext context, int errorCode)
 	{
-		SalarSoft.ASProxy.Common.ClearASProxyRespnseHeader(context.Response);
+		SalarSoft.ASProxy.Common.ClearHeadersButSaveEncoding(context.Response);
 		context.Response.ClearContent();
 		context.Response.ContentType = "image/gif";
 		Bitmap bmp = GetErrorImage(errorCode.ToString());
@@ -132,7 +132,7 @@ public class Images : IHttpHandler, System.Web.SessionState.IReadOnlySessionStat
 
 	public void ShowError(HttpContext context, string errorMsg)
 	{
-		SalarSoft.ASProxy.Common.ClearASProxyRespnseHeader(context.Response);
+		SalarSoft.ASProxy.Common.ClearHeadersButSaveEncoding(context.Response);
 		context.Response.ClearContent();
 		context.Response.ContentType = "image/gif";
 		Bitmap bmp = GetErrorImage(errorMsg);

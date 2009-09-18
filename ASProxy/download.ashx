@@ -114,7 +114,7 @@ public class Download : IHttpHandler, System.Web.SessionState.IReadOnlySessionSt
 						Systems.LogSystem.LogError(engine.LastException, engine.LastErrorMessage, engine.RequestInfo.RequestUrl);
 
 					context.Response.Clear();
-					SalarSoft.ASProxy.Common.ClearASProxyRespnseHeader(context.Response);
+					SalarSoft.ASProxy.Common.ClearHeadersButSaveEncoding(context.Response);
 					context.Response.ContentType = "text/html";
 					context.Response.Write("//" + engine.LastErrorMessage);
 					context.Response.StatusCode = (int)Common.GetExceptionHttpErrorCode(engine.LastException);
@@ -124,7 +124,7 @@ public class Download : IHttpHandler, System.Web.SessionState.IReadOnlySessionSt
 				}
 
 				context.Response.ClearContent();
-				Common.ClearASProxyRespnseHeader(context.Response);
+				Common.ClearHeadersButSaveEncoding(context.Response);
 
 				download = new ResumableDownload();
 				download.ClearResponseData();
@@ -166,7 +166,7 @@ public class Download : IHttpHandler, System.Web.SessionState.IReadOnlySessionSt
 						Systems.LogSystem.LogError(engine.LastException, engine.LastErrorMessage, engine.RequestInfo.RequestUrl);
 
 					context.Response.Clear();
-					SalarSoft.ASProxy.Common.ClearASProxyRespnseHeader(context.Response);
+					SalarSoft.ASProxy.Common.ClearHeadersButSaveEncoding(context.Response);
 					context.Response.ContentType = "text/html";
 					context.Response.Write("//" + engine.LastErrorMessage);
 					context.Response.StatusCode = (int)Common.GetExceptionHttpErrorCode(engine.LastException);
@@ -185,7 +185,7 @@ public class Download : IHttpHandler, System.Web.SessionState.IReadOnlySessionSt
 				Systems.LogSystem.LogError(ex, ex.Message, engine.RequestInfo.RequestUrl);
 
 			context.Response.Clear();
-			SalarSoft.ASProxy.Common.ClearASProxyRespnseHeader(context.Response);
+			SalarSoft.ASProxy.Common.ClearHeadersButSaveEncoding(context.Response);
 			context.Response.ContentType = "text/html";
 			context.Response.Write(ex.Message);
 			context.Response.StatusCode = (int)Common.GetExceptionHttpErrorCode(engine.LastException);

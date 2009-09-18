@@ -53,7 +53,7 @@ namespace SalarSoft.ResumableDownload
 		{
 			HttpResponse objResponse = HttpContext.Current.Response;
 			objResponse.ClearContent();
-            SalarSoft.ASProxy.Common.ClearASProxyRespnseHeader(objResponse);
+            SalarSoft.ASProxy.Common.ClearHeadersButSaveEncoding(objResponse);
 		}
 		public DownloadState ProcessDownload(string UrlAddress,string filename)
 		{

@@ -35,7 +35,7 @@ public class GetAny : IHttpHandler, System.Web.SessionState.IReadOnlySessionStat
 						Systems.LogSystem.LogError(engine.LastException, engine.LastErrorMessage, engine.RequestInfo.RequestUrl);
 
 					context.Response.Clear();
-					SalarSoft.ASProxy.Common.ClearASProxyRespnseHeader(context.Response);
+					SalarSoft.ASProxy.Common.ClearHeadersButSaveEncoding(context.Response);
 					context.Response.ContentType = "text/html";
 					context.Response.Write("//" + engine.LastErrorMessage);
 					context.Response.StatusCode = (int)Common.GetExceptionHttpErrorCode(engine.LastException);
@@ -60,7 +60,7 @@ public class GetAny : IHttpHandler, System.Web.SessionState.IReadOnlySessionStat
 				Systems.LogSystem.LogError(ex, ex.Message, context.Request.Url.ToString());
 
 			context.Response.Clear();
-			Common.ClearASProxyRespnseHeader(context.Response);
+			Common.ClearHeadersButSaveEncoding(context.Response);
 			context.Response.ContentType = "text/html";
 			context.Response.Write("<center><b><font color='red'>Error: " + ex.Message + "</font></b></center>");
 			context.Response.StatusCode = (int)Common.GetExceptionHttpErrorCode(engine.LastException);

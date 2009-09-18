@@ -37,6 +37,9 @@ Changing interface:
 ****************************************
 Version History
 
+Version 5.5 Beta2 2009/09/14
+* Ficed: Custom error corruption with Http compression.
+
 Version 5.5 Beta1 2009/09/14
 * New: New look and design.
 * New: Plugin support. Apply what do you want to do with ASProxy easily.

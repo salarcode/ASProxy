@@ -34,7 +34,9 @@ namespace SalarSoft.ASProxy
 
 				// clear all previous data
 				context.Response.ClearContent();
-				context.Response.ClearHeaders();
+
+				// BugFixed 5.5b2: Content-Encding:Gzip is required
+				Common.ClearHeadersButSaveEncoding(context.Response);
 
 				// write to response
 				context.Response.ContentType = "text/html";

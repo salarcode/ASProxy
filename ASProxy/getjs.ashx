@@ -35,7 +35,7 @@ public class GetJS : IHttpHandler, System.Web.SessionState.IReadOnlySessionState
 						Systems.LogSystem.LogError(engine.LastException, engine.LastErrorMessage, engine.RequestInfo.RequestUrl);
 
 					context.Response.Clear();
-					SalarSoft.ASProxy.Common.ClearASProxyRespnseHeader(context.Response);
+					SalarSoft.ASProxy.Common.ClearHeadersButSaveEncoding(context.Response);
 					context.Response.ContentType = "text/html";
 					context.Response.Write("/* Status Error: " + engine.LastErrorMessage + " */");
 					context.Response.StatusCode = (int)Common.GetExceptionHttpErrorCode(engine.LastException);
@@ -61,7 +61,7 @@ public class GetJS : IHttpHandler, System.Web.SessionState.IReadOnlySessionState
 				Systems.LogSystem.LogError(ex, ex.Message, engine.RequestInfo.RequestUrl);
 
 			context.Response.Clear();
-			SalarSoft.ASProxy.Common.ClearASProxyRespnseHeader(context.Response);
+			SalarSoft.ASProxy.Common.ClearHeadersButSaveEncoding(context.Response);
 			context.Response.ContentType = "text/html";
 			context.Response.Write("/* Error: " + ex.Message + " */");
 			context.Response.StatusCode = (int)Common.GetExceptionHttpErrorCode(engine.LastException);

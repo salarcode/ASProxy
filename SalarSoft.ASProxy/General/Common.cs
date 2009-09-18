@@ -189,13 +189,15 @@ namespace SalarSoft.ASProxy
 
         public static string AspDotNetViewStateResetToDef(string query)
         {
-            return query.Replace(Consts.DataProccessing.ASPDotNETRenamedViewState, Consts.DataProccessing.ASPDotNETViewState);
+            return query.Replace(
+				Consts.DataProccessing.ASPDotNETRenamedViewState,
+				Consts.DataProccessing.ASPDotNETViewState);
         }
 
         /// <summary>
         /// Clears response header then recovers compression header
         /// </summary>
-        public static void ClearASProxyRespnseHeader(HttpResponse response)
+        public static void ClearHeadersButSaveEncoding(HttpResponse response)
         {
             HttpCookieCollection cool = response.Cookies;
 
@@ -206,7 +208,7 @@ namespace SalarSoft.ASProxy
             if (string.IsNullOrEmpty(encode))
                 return;
 
-            response.AddHeader("Content-Encoding", encode);
+			response.AppendHeader("Content-Encoding", encode);
         }
 
         /// <summary>
