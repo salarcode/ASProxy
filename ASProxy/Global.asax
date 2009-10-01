@@ -5,28 +5,39 @@
 	
 	void Application_Start(object sender, EventArgs e)
 	{
-		// Since V5.1, Some site didn't implement Expect 100-Continue behavior .
+		// Since V5.1, Some sites didn't implement Expect 100-Continue behavior .
 		// The Expect 100-Continue behavior is fully described in IETF RFC 2616 Section 10.1.1. 
 		System.Net.ServicePointManager.Expect100Continue = false;
 
 		// auto update reminder
 		if (Configurations.AutoUpdate.Engine)
 		{
-		    SalarSoft.ASProxy.Updater.AddUpdateReminder();
+			SalarSoft.ASProxy.Updater.AddUpdateReminder();
 		}
 	}
-	
+
 
 	protected void Application_PreRequestHandlerExecute(object sender, EventArgs e)
 	{
-		// Page ui
+		// Page UI
 		System.Threading.Thread.CurrentThread.CurrentUICulture = Configurations.Pages.GetUiLanguage();
 
+		// User Access Control
+		if (Configurations.UserAccessControl.Enabled)
+		{
+			if (Systems.UAC.ValidateContext(Context) == false)
+			{
+				// nothing! haha, the response is ended already!
+			}
+		}
+
+		// Authentication
 		if (Configurations.Authentication.Enabled)
 		{
 			if (Request.IsAuthenticated == false)
 			{
 				string url = Request.Url.AbsolutePath.ToLower();
+
 				if (url.EndsWith("login.aspx") == false)
 				{
 					string redirect = "login.aspx?ReturnUrl=" + HttpUtility.UrlEncode(Request.Url.PathAndQuery);

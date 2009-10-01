@@ -8,8 +8,9 @@
         IEngine,
         IWebData,
         ICookieManager,
-        ILogSystem,
-        ICredentialCache,
+		ILogSystem,
+		IUAC,
+		ICredentialCache,
         IHtmlProcessor,
         IJSProcessor,
         ICssProcessor

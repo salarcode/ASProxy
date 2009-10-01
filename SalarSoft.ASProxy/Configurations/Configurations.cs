@@ -28,6 +28,7 @@ namespace SalarSoft.ASProxy
 		private static LogSystemConfig _logSystem;
 		private static NetProxyConfig _netProxy;
 		private static UserOptionsConfig _userOptions;
+		private static UserAccessControlConfig _userAccessControlConfig;
 		#endregion
 
 		#region properties
@@ -91,6 +92,11 @@ namespace SalarSoft.ASProxy
 			get { return Configurations._userOptions; }
 			set { Configurations._userOptions = value; }
 		}
+		public static UserAccessControlConfig UserAccessControl
+		{
+			get { return Configurations._userAccessControlConfig; }
+			set { Configurations._userAccessControlConfig = value; }
+		}
 		#endregion
 
 		#region public methods
@@ -106,7 +112,7 @@ namespace SalarSoft.ASProxy
 			_logSystem = new LogSystemConfig();
 			_netProxy = new NetProxyConfig();
 			_userOptions = new UserOptionsConfig();
-
+			_userAccessControlConfig = new UserAccessControlConfig();
 			ReadSettings();
 		}
 		public static void SaveSettings()
@@ -151,6 +157,9 @@ namespace SalarSoft.ASProxy
 
 				// Users config
 				_userOptions.SaveToXml(xmlDoc, rootNode);
+
+				// UAC config
+				_userAccessControlConfig.SaveToXml(xmlDoc, rootNode);
 
 				// customConfig ---------
 				activeNode = xmlDoc.CreateElement("customConfig");
@@ -241,6 +250,9 @@ namespace SalarSoft.ASProxy
 
 				// UserOptions--------
 				_userOptions.ReadFromXml(rootNode);
+
+				// UAC--------
+				_userAccessControlConfig.ReadFromXml(rootNode);
 
 				// Custom config -------
 				activeNode = rootNode.SelectSingleNode("customConfig");
@@ -1029,6 +1041,164 @@ namespace SalarSoft.ASProxy
 				this.IsAdminStarted = Convert.ToBoolean(node.Attributes["isAdminStarted"].Value);
 				this.UserName = node.Attributes["userName"].Value;
 				this.Password = node.Attributes["password"].Value;
+			}
+		}
+		public class UserAccessControlConfig : IConfigSection
+		{
+			private const string _IPRange = "range";
+			private const string _IPSingle = "ip";
+
+			public bool Enabled;
+			public List<IPRange> BlockedRange;
+			public List<IPRange> AllowedRange;
+			public List<string> BlockedList;
+			public List<string> AllowedList;
+
+			public void SaveToXml(XmlDocument xmlDoc, XmlNode rootNode)
+			{
+				XmlNode userAccessControl = xmlDoc.CreateElement("userAccessControl");
+				rootNode.AppendChild(userAccessControl);
+
+				// Enabled
+				XmlAttribute attrEnabled = xmlDoc.CreateAttribute("enabled");
+				attrEnabled.Value = Enabled.ToString();
+				userAccessControl.Attributes.Append(attrEnabled);
+
+
+				XmlNode blocked = xmlDoc.CreateElement("blocked");
+				userAccessControl.AppendChild(blocked);
+
+				XmlNode allowed = xmlDoc.CreateElement("allowed");
+				userAccessControl.AppendChild(blocked);
+
+				// White list
+				if (AllowedRange != null)
+					foreach (IPRange range in AllowedRange)
+					{
+						XmlNode xmlRange = xmlDoc.CreateElement(_IPRange);
+						allowed.AppendChild(xmlRange);
+
+						XmlAttribute xmlHigh = xmlDoc.CreateAttribute("high");
+						XmlAttribute xmlLow = xmlDoc.CreateAttribute("low");
+
+						xmlHigh.Value = range.High;
+						xmlLow.Value = range.Low;
+
+						xmlRange.Attributes.Append(xmlHigh);
+						xmlRange.Attributes.Append(xmlLow);
+					}
+				if (AllowedList != null)
+					foreach (string ip in AllowedList)
+					{
+						XmlNode xmlIP = xmlDoc.CreateElement(_IPSingle);
+						allowed.AppendChild(xmlIP);
+
+						XmlAttribute xmlSingle = xmlDoc.CreateAttribute("value");
+						xmlSingle.Value = ip;
+
+						xmlIP.Attributes.Append(xmlSingle);
+					}
+
+				// The black list
+				if (BlockedRange != null)
+					foreach (IPRange range in BlockedRange)
+					{
+						XmlNode xmlRange = xmlDoc.CreateElement(_IPRange);
+						blocked.AppendChild(xmlRange);
+
+						XmlAttribute xmlHigh = xmlDoc.CreateAttribute("high");
+						XmlAttribute xmlLow = xmlDoc.CreateAttribute("low");
+
+						xmlHigh.Value = range.High;
+						xmlLow.Value = range.Low;
+
+						xmlRange.Attributes.Append(xmlHigh);
+						xmlRange.Attributes.Append(xmlLow);
+					}
+				if (BlockedList != null)
+					foreach (string ip in BlockedList)
+					{
+						XmlNode xmlIP = xmlDoc.CreateElement(_IPSingle);
+						blocked.AppendChild(xmlIP);
+
+						XmlAttribute xmlSingle = xmlDoc.CreateAttribute("value");
+						xmlSingle.Value = ip;
+
+						xmlIP.Attributes.Append(xmlSingle);
+					}
+			}
+
+			public void ReadFromXml(XmlNode rootNode)
+			{
+				XmlNode userAccessControl = rootNode.SelectSingleNode("userAccessControl");
+				this.Enabled = Convert.ToBoolean(userAccessControl.Attributes["enabled"].Value);
+
+				XmlNode blocked = userAccessControl.SelectSingleNode("blocked");
+				XmlNode allowed = userAccessControl.SelectSingleNode("allowed");
+
+				// White list
+				if (allowed != null)
+					foreach (XmlNode node in allowed)
+					{
+						if (node.NodeType == XmlNodeType.Comment)
+							continue;
+
+						if (node.Name == _IPRange)
+						{
+							IPRange range = new IPRange();
+							range.High = node.Attributes["high"].Value;
+							range.Low = node.Attributes["low"].Value;
+
+							if (AllowedRange == null)
+								AllowedRange = new List<IPRange>();
+
+							// Add to allowed list
+							AllowedRange.Add(range);
+						}
+						else if (node.Name == _IPSingle)
+						{
+							if (AllowedList == null)
+								AllowedList = new List<string>();
+
+							// Read and add it
+							AllowedList.Add(node.Attributes["value"].Value);
+						}
+					}
+
+				// The black list
+				if (blocked != null && (AllowedRange == null && AllowedList == null))
+					foreach (XmlNode node in blocked)
+					{
+						if (node.NodeType == XmlNodeType.Comment)
+							continue;
+
+						if (node.Name == _IPRange)
+						{
+							IPRange range = new IPRange();
+							range.High = node.Attributes["high"].Value;
+							range.Low = node.Attributes["low"].Value;
+
+							if (BlockedRange == null)
+								BlockedRange = new List<IPRange>();
+
+							// Add to allowed list
+							BlockedRange.Add(range);
+						}
+						else if (node.Name == _IPSingle)
+						{
+							if (BlockedList == null)
+								BlockedList = new List<string>();
+
+							// Read and add it
+							BlockedList.Add(node.Attributes["value"].Value);
+						}
+					}
+			}
+
+			public struct IPRange
+			{
+				public string High;
+				public string Low;
 			}
 		}
 		#endregion

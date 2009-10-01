@@ -5,6 +5,7 @@ using System.Net;
 using System.IO;
 using System.Text;
 using System.Collections;
+using System.IO.Compression;
 
 namespace SalarSoft.ASProxy.BuiltIn
 {
@@ -285,6 +286,9 @@ namespace SalarSoft.ASProxy.BuiltIn
 				processType = Common.MimeTypeToToProcessType(mimeType);
 			}
 
+			// BUGFIX: v5.5b2, HttpCompression increases images size
+			VerifyHttpCompressionByMimeType(httpResponse, mimeType);
+
 			IDataProcessor dataProcessor = null;
 
 			switch (processType)
@@ -455,6 +459,50 @@ namespace SalarSoft.ASProxy.BuiltIn
 				Plugins.CallPluginMethod(PluginHosts.IPluginEngine,
 					PluginMethods.IPluginEngine.AfterExecuteToResponse,
 					this, httpResponse);
+
+		}
+
+		/// <summary>
+		/// Disables http compression for non-text contents
+		/// </summary>
+		/// <reason>BUGFIX v5.5b2:  HttpCompression increases images size</reason>
+		private void VerifyHttpCompressionByMimeType(HttpResponse httpResponse, MimeContentType responseMimeType)
+		{
+			switch (responseMimeType)
+			{
+				case MimeContentType.text_html:
+				case MimeContentType.text_plain:
+				case MimeContentType.text_css:
+				case MimeContentType.text_javascript:
+					// nothing
+					// the compression remains if it is there
+					break;
+				case MimeContentType.image_jpeg:
+				case MimeContentType.image_gif:
+				case MimeContentType.application:
+				default:
+					// Disabling HttpCompression for this request
+					//httpResponse.Headers.Remove("Content-Encoding");
+					httpResponse.ClearHeaders();
+
+					if (httpResponse.Filter is GZipStream)
+					{
+						using (GZipStream compress = (GZipStream)httpResponse.Filter)
+						{
+							// reassign the original filter
+							httpResponse.Filter = compress.BaseStream;
+						}
+					}
+					else if (httpResponse.Filter is DeflateStream)
+					{
+						using (DeflateStream compress = (DeflateStream)httpResponse.Filter)
+						{
+							// reassign the original filter
+							httpResponse.Filter = compress.BaseStream;
+						}
+					}
+					break;
+			}
 
 		}
 

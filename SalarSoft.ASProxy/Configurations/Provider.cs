@@ -87,6 +87,9 @@ namespace SalarSoft.ASProxy
 
 				case ProviderType.IJSProcessor:
 					return new JSProcessor();
+
+				case ProviderType.IUAC:
+					return new UAC();
 			}
 			return null;
 		}

@@ -47,7 +47,12 @@ namespace SalarSoft.ASProxy
 		/// <summary>
 		/// Used to system errors and user activies to a desired place.
 		/// </summary>
-		IPluginLogSystem
+		IPluginLogSystem,
+
+		/// <summary>
+		/// Used to block user with specified IPs from using this service.
+		/// </summary>
+		IPluginUAC
 
 	}
 }

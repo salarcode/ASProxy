@@ -14,6 +14,17 @@ namespace SalarSoft.ASProxy.BuiltIn
 		public void Init(HttpApplication context)
 		{
 			context.BeginRequest += new EventHandler(context_BeginRequest);
+			//context.EndRequest += new EventHandler(context_BeginRequest);
+		}
+
+		void context_BeginRequest(object sender, EventArgs e)
+		{
+			HttpApplication app = (HttpApplication)sender;
+			HttpRequest request = app.Request;
+			HttpResponse response = app.Response;
+
+			ApplyCompression(request, response);
+
 		}
 
 		void AddToCookie(HttpResponse response, string encode)
@@ -67,6 +78,7 @@ namespace SalarSoft.ASProxy.BuiltIn
 			if (preferred.IsEmpty && encodings.AcceptWildcard && encodings.Find("gzip").IsEmpty)
 				preferred = new QValue("gzip");
 
+
 			// handle the preferred encoding
 			switch (preferred.Name)
 			{
@@ -87,14 +99,5 @@ namespace SalarSoft.ASProxy.BuiltIn
 
 		}
 
-		void context_BeginRequest(object sender, EventArgs e)
-		{
-			HttpApplication app = (HttpApplication)sender;
-			HttpRequest request = app.Request;
-			HttpResponse response = app.Response;
-
-			ApplyCompression(request, response);
-
-		}
 	}
 }

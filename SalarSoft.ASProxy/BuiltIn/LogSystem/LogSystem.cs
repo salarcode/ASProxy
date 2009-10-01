@@ -7,7 +7,7 @@ using SalarSoft.ASProxy.Exposed;
 namespace SalarSoft.ASProxy.BuiltIn
 {
 	/// <summary>
-	/// Summary description for LogSystem
+	/// ASproxy built-in log-system
 	/// </summary>
 	public class LogSystem : ExLogSystem
 	{
@@ -77,6 +77,7 @@ namespace SalarSoft.ASProxy.BuiltIn
 				}
 				catch (Exception)
 				{
+					// call stack overflow!
 					//Configurations.LogSystem.ErrorLog_Enabled = false;
 				}
 			}

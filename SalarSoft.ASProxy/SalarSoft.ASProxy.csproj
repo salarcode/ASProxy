@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.21022</ProductVersion>
+    <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{B3B14BA8-D028-4B01-92B6-36D2E7F6CCB5}</ProjectGuid>
     <OutputType>Library</OutputType>
@@ -103,6 +103,7 @@
     <Compile Include="BuiltIn\Plugins\AjaxEngine.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="BuiltIn\UserAccessControl\UAC.cs" />
     <Compile Include="Configurations\Configurations.cs" />
     <Compile Include="Configurations\CurrentContext.cs" />
     <Compile Include="Configurations\CustomErrors.cs" />
@@ -120,6 +121,7 @@
     <Compile Include="Exposed\ExDataParser.cs" />
     <Compile Include="Exposed\ExDataProcessor.cs" />
     <Compile Include="Exposed\ExEngine.cs" />
+    <Compile Include="Exposed\ExUAC.cs" />
     <Compile Include="Exposed\ExWebData.cs" />
     <Compile Include="Exposed\ExJSProcessor.cs" />
     <Compile Include="Exposed\ExCssProcessor.cs" />
@@ -131,12 +133,14 @@
     <Compile Include="Exposed\Interfaces\IDataProcessor.cs" />
     <Compile Include="Exposed\Interfaces\IEngine.cs" />
     <Compile Include="Exposed\Interfaces\IHtmlProcessor.cs" />
+    <Compile Include="Exposed\Interfaces\IUAC.cs" />
     <Compile Include="Exposed\Interfaces\IWebData.cs" />
     <Compile Include="Exposed\Interfaces\IExeptionHandled.cs" />
     <Compile Include="Exposed\ExLogSystem.cs" />
     <Compile Include="Exposed\ExCredentialCache.cs" />
     <Compile Include="Exposed\Interfaces\ILogSystem.cs" />
     <Compile Include="Exposed\ExHtmlProcessor.cs" />
+    <Compile Include="Exposed\PluginInterfaces\IPluginUAC.cs" />
     <Compile Include="Exposed\PluginInterfaces\IPluginCredentialCache.cs" />
     <Compile Include="Exposed\PluginInterfaces\IPluginCSSProcessor.cs" />
     <Compile Include="Exposed\PluginInterfaces\IPluginHost.cs" />
@@ -152,6 +156,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Update\Updater.cs" />
     <Compile Include="Utility\ASProxyPagesFormat.cs" />
+    <Compile Include="BuiltIn\UserAccessControl\CompareIPs.cs" />
     <Compile Include="Utility\EPluginStopRequest.cs" />
     <Compile Include="Utility\QValueList.cs" />
     <Compile Include="Utility\StringStream.cs" />

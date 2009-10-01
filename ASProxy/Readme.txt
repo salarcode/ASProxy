@@ -37,8 +37,10 @@ Changing interface:
 ****************************************
 Version History
 
-Version 5.5 Beta2 2009/09/14
-* Ficed: Custom error corruption with Http compression.
+Version 5.5 Beta2 2009/10/02
+* New: User Access Control behaves like an IP blocker helps you to block or allow certain IPs to use ASProxy.
+* Fixed: CustomErrors corruption with HttpCompression.
+* Fixed: HttpComressor increases images size.
 
 Version 5.5 Beta1 2009/09/14
 * New: New look and design.
