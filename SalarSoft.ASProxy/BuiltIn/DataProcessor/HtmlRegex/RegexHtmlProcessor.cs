@@ -477,7 +477,7 @@ namespace SalarSoft.ASProxy.BuiltIn
 			{
 				LastStatus = LastStatus.ContinueWithError;
 				LastException = ex;
-				LastErrorMessage = "Failed to proccess <base> tag!";
+				LastErrorMessage = "Failed to proccess 'base' tag!";
 				return false;
 			}
 		}
@@ -1006,7 +1006,7 @@ namespace SalarSoft.ASProxy.BuiltIn
 
 				LastStatus = LastStatus.ContinueWithError;
 				LastException = ex;
-				LastErrorMessage = "Failed to process some scripts.";
+				LastErrorMessage = "Failed to process some events in scripts.";
 			}
 		}
 
@@ -1151,7 +1151,7 @@ namespace SalarSoft.ASProxy.BuiltIn
 
 				LastStatus = LastStatus.ContinueWithError;
 				LastException = ex;
-				LastErrorMessage = "Failed to process some scripts.";
+				LastErrorMessage = "Failed to process some embedded objects.";
 			}
 		}
 

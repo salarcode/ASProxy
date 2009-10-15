@@ -488,8 +488,17 @@ namespace SalarSoft.ASProxy.BuiltIn
 
 			if (_requestProtocol != InternetProtocols.FTP)
 			{
-				// Set the Credentials
-				webRequest.Credentials = CredentialCache.DefaultCredentials;
+				try
+				{
+					// This method may cause mono to fail to load, "Need EnvironmentPermission implementation first"
+					// Set the Credentials
+					webRequest.Credentials = CredentialCache.DefaultCredentials;
+				}
+				catch
+				{
+					// Just simple Mono exception
+				}
+
 
 				// ADDED again in v3.7:: Set request content type
 				// Bug fixed v4.8, ftp does not support this

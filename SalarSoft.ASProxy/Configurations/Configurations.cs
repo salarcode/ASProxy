@@ -1069,7 +1069,7 @@ namespace SalarSoft.ASProxy
 				userAccessControl.AppendChild(blocked);
 
 				XmlNode allowed = xmlDoc.CreateElement("allowed");
-				userAccessControl.AppendChild(blocked);
+				userAccessControl.AppendChild(allowed);
 
 				// White list
 				if (AllowedRange != null)

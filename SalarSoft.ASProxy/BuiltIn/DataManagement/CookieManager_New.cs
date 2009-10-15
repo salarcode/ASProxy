@@ -18,12 +18,17 @@ namespace SalarSoft.ASProxy.BuiltIn
 	/// This class can work with bugless CookieContainer which arrives with .NET 4.0 .
 	/// But I won't use it because of backward compatibility!
 	/// 
-	/// Sicim bo microsofta!
+	/// Sicim bo microsofte!
 	/// </summary>
 	public class CookieManager : ExCookieManager
 	{
 		protected const string strCookieNameExt = "_ASPX";
+		protected static readonly bool IsRunningOnMicrosoftCLR;
 
+		static CookieManager()
+		{
+			IsRunningOnMicrosoftCLR = !Common.IsRunningOnMono();
+		}
 
 		/// <summary>
 		/// Saves response cookies in a cookie collection
@@ -78,12 +83,14 @@ namespace SalarSoft.ASProxy.BuiltIn
 
 				// add response cookies
 				// this add overrides previous cookies
-				container.Add(webUri, responseCookies);
+				//BUFIX: container.Add(webUri, responseCookies);
+				container.Add(responseCookies);
 
-				// BUGFIX: CookieContainer has a bug
-				// Here is its bugfix
-				// To get around this bug, the domains should start with a DOT
-				BugFix_AddDotCookieDomain(container);
+				// Only for Micosoft .NET Framework
+				if (IsRunningOnMicrosoftCLR)
+					// BUGFIX: CookieContainer has a bug, here is its bugfix
+					// To get around this bug, the domains should start with a DOT
+					BugFix_AddDotCookieDomain(container);
 
 				// get cookie container cookies
 				// BUG: CookieContainer has a bug
@@ -113,56 +120,89 @@ namespace SalarSoft.ASProxy.BuiltIn
 			}
 		}
 
-		/// <summary>
-		/// CookieContainer "Domain" BugFix
-		/// </summary>
-		/// <param name="responseCookies"></param>
-		private void BugFix_AddDotCookieDomain(CookieCollection responseCookies)
-		{
-			// #warning cookie dirty modifiying
-			foreach (Cookie cookie in responseCookies)
-			{
-				string domain = cookie.Domain;
-				if (!string.IsNullOrEmpty(domain))
-				{
-					if (domain[0] != '.')
-						domain = '.' + domain;
-					//if (domain[0] == '.')
-					//    domain = domain.Remove(0, 1);
-					cookie.Domain = domain;
-				}
-			}
-		}
 
-		Type _ContainerType = typeof(CookieContainer);
-
+		private static Type _cookieContainerType = Type.GetType("System.Net.CookieContainer, System, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089");
+		private static Type _pathListType = Type.GetType("System.Net.PathList, System, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089");
 		/// <summary>
-		/// CookieContainer "Domain" BugFix
+		/// This method is aimed to fix a goddamn CookieContainer issue,
+		/// In CookieContainer adds missed path for cookies that is not started with dot.
+		/// This is a dirty hack
 		/// </summary>
-		/// <param name="responseCookies"></param>
+		/// <remarks>
+		/// This method is only for .NET 2.0 which is used by .NET 3.0 and 3.5 too.
+		/// The issue will be fixed in .NET 4, I hope!
+		/// </remarks>
+		/// <autor>Many thanks to CallMeLaNN "dot-net-expertise.blogspot.com" to complete this method</autor>
 		private void BugFix_AddDotCookieDomain(CookieContainer cookieContainer)
 		{
-			// here is the hack: http://social.microsoft.com/Forums/en-US/netfxnetcom/thread/1297afc1-12d4-4d75-8d3f-7563222d234c
-			// and: http://channel9.msdn.com/forums/TechOff/260235-Bug-in-CookieContainer-where-do-I-report/
-			Hashtable table = (Hashtable)_ContainerType.InvokeMember("m_domainTable",
-									   System.Reflection.BindingFlags.NonPublic |
-									   System.Reflection.BindingFlags.GetField |
-									   System.Reflection.BindingFlags.Instance,
-									   null,
-									   cookieContainer,
-									   new object[] { });
+			Hashtable table = (Hashtable)_cookieContainerType.InvokeMember("m_domainTable",
+											 System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.GetField | System.Reflection.BindingFlags.Instance,
+											 null,
+											 cookieContainer,
+											 new object[] { });
+
 			ArrayList keys = new ArrayList(table.Keys);
-			foreach (string keyObj in keys)
+
+			object pathList1;
+			object pathList2;
+
+			SortedList sortedList1;
+			SortedList sortedList2;
+			ArrayList pathKeys;
+
+			CookieCollection cookieColl1;
+			CookieCollection cookieColl2;
+
+			foreach (string key in keys)
 			{
-				string key = (keyObj as string);
 				if (key[0] == '.')
 				{
-					string newKey = key.Remove(0, 1);
-					table[newKey] = table[keyObj];
+					string nonDotKey = key.Remove(0, 1);
+					// Dont simply code like this:
+					// table[nonDotKey] = table[key];
+					// instead code like below:
+
+					// This codes will copy all cookies in dot domain key into nondot domain key.
+
+					pathList1 = table[key];
+					pathList2 = table[nonDotKey];
+					if (pathList2 == null)
+					{
+						pathList2 = Activator.CreateInstance(_pathListType); // Same as PathList pathList = new PathList();
+						lock (cookieContainer)
+						{
+							table[nonDotKey] = pathList2;
+						}
+					}
+
+					// merge the PathList, take cookies from table[keyObj] copy into table[nonDotKey]
+					sortedList1 = (SortedList)_pathListType.InvokeMember("m_list", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.GetField | System.Reflection.BindingFlags.Instance, null, pathList1, new object[] { });
+					sortedList2 = (SortedList)_pathListType.InvokeMember("m_list", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.GetField | System.Reflection.BindingFlags.Instance, null, pathList2, new object[] { });
+
+					pathKeys = new ArrayList(sortedList1.Keys);
+
+					foreach (string pathKey in pathKeys)
+					{
+
+						cookieColl1 = (CookieCollection)sortedList1[pathKey];
+						cookieColl2 = (CookieCollection)sortedList2[pathKey];
+						if (cookieColl2 == null)
+						{
+							cookieColl2 = new CookieCollection();
+							sortedList2[pathKey] = cookieColl2;
+						}
+
+						foreach (Cookie c in cookieColl1)
+						{
+							lock (cookieColl2)
+							{
+								cookieColl2.Add(c);
+							}
+						}
+					}
 				}
 			}
 		}
-
 
 		/// <summary>
 		/// Reads request cookie to cookie container
@@ -189,7 +229,6 @@ namespace SalarSoft.ASProxy.BuiltIn
 						container.SetCookies(host, val);
 				}
 			}
-
 		}
 
 		/// <summary>
@@ -213,7 +252,8 @@ namespace SalarSoft.ASProxy.BuiltIn
 
 
 			// Add whole cookie in collection
-			webRequest.CookieContainer.Add(webRequest.Address, cookies);
+			//BUFIX: webRequest.CookieContainer.Add(webRequest.Address, cookies);
+			webRequest.CookieContainer.Add(cookies);
 		}
 
 		/// <summary>
@@ -245,10 +285,12 @@ namespace SalarSoft.ASProxy.BuiltIn
 			// restore cookies from user request
 			ApplyRequestToCookieContainer(httpWebRequest.CookieContainer, userRequest);
 
-			// BUGFIX: CookieContainer has a bug
-			// Here is its bugfix
-			// To get around this bug, the domains should start with a DOT
-			BugFix_AddDotCookieDomain(httpWebRequest.CookieContainer);
+			// Only for Micosoft .NET Framework
+			if (IsRunningOnMicrosoftCLR)
+				// BUGFIX: CookieContainer has a bug
+				// Here is its bugfix
+				// To get around this bug, the domains should start with a DOT
+				BugFix_AddDotCookieDomain(httpWebRequest.CookieContainer);
 
 		}
 
@@ -278,7 +320,6 @@ namespace SalarSoft.ASProxy.BuiltIn
 		private static string GetCookieNameByHost(string host)
 		{
 			string cookieName = host + strCookieNameExt;
-#warning ooooooooooooooooooopppppppppppsssss
 			//if (cookieName.StartsWith(".www"))
 			//	cookieName = cookieName.Remove(0, 1);
 			return cookieName;
@@ -354,10 +395,25 @@ namespace SalarSoft.ASProxy.BuiltIn
 			return result;
 		}
 
-		MethodInfo methodCookieToServerString = typeof(Cookie).GetMethod("ToServerString", BindingFlags.Instance | BindingFlags.NonPublic);
+		/// <summary>
+		/// Cookie has a method named "ToServerString" which returns its cookie header for transferring in the net.
+		/// It is hidden!
+		/// "ToServerString" is for Microsoft .NET framework
+		/// "ToClientString" is for Mono framework
+		/// </summary>
+		MethodInfo cookieHeaderGeneratorMethod;
 		private string CallCookieToServerString(Cookie cookie)
 		{
-			return methodCookieToServerString.Invoke(cookie, null).ToString();
+			// Get the method type info
+			if (cookieHeaderGeneratorMethod == null)
+			{
+				if(IsRunningOnMicrosoftCLR)
+					cookieHeaderGeneratorMethod = typeof(Cookie).GetMethod("ToServerString", BindingFlags.Instance | BindingFlags.NonPublic);
+				else
+					cookieHeaderGeneratorMethod = typeof(Cookie).GetMethod("ToClientString", BindingFlags.Instance | BindingFlags.NonPublic);
+			}
+
+			return cookieHeaderGeneratorMethod.Invoke(cookie, null).ToString();
 		}
 
 	}

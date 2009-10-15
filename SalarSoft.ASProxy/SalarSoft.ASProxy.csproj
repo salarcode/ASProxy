@@ -58,9 +58,7 @@
     <Compile Include="BuiltIn\DataManagement\ASProxyEngine.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="BuiltIn\DataManagement\CookieManager_Old.cs">
-      <SubType>Code</SubType>
-    </Compile>
+    <Compile Include="BuiltIn\DataManagement\CookieManager_New.cs" />
     <Compile Include="BuiltIn\DataManagement\ResumableDownload.cs">
       <SubType>Code</SubType>
     </Compile>
