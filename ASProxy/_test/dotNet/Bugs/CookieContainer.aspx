@@ -8,22 +8,22 @@
 	{
 		CookieContainer result = new CookieContainer();
 
-		Uri uri = new Uri("http://sub.site.com");
+		Uri uri = new Uri("http://extra.sub.site.com");
 		string cookieH;
 		//cookieH = @"Test0=val; domain=test.site.com; path=/";
 		//result.SetCookies(uri, cookieH);
 
-		cookieH = @"Test1=val; domain=sub.site.com; path=/;";
+		cookieH = @"Test1=val; domain=extra.sub.site.com; path=/;";
 		result.SetCookies(uri, cookieH);
 
 		// Cookies2
 		//cookieH = @"Test2=val; $domain=.site.com; $path=/";
 		//result.SetCookies(uri, cookieH);
 
-		cookieH = @"Test2=val; domain=.site.com; path=/";
+		cookieH = @"Test2=val; domain=.sub.site.com; path=/";
 		result.SetCookies(uri, cookieH);
 
-		cookieH = @"Test3=val; domain=site.com; path=/;";
+		cookieH = @"Test3=val; domain=sub.site.com; path=/;";
 		result.SetCookies(uri, cookieH);
 
 		return result;
@@ -59,36 +59,36 @@
 
 		lblResult.Text += "<br>Total cookies count: " + cookie.Count + " &nbsp;&nbsp; expected: 3";
 
-		Uri uri = new Uri("http://sub.site.com");
+		Uri uri = new Uri("http://extra.sub.site.com");
 		CookieCollection coll ;//= cookie.GetCookies(uri);
 		coll = GetCookies(cookie,uri);
 		lblResult.Text += "<br>For " + uri + " Cookie count: " + coll.Count + " &nbsp;&nbsp; expected: 2";
 		lblResult.Text += "<br>";
 		foreach (Cookie c in coll)
 		{
-			lblResult.Text += " Name:" + c.Name + " Value:" + c.Value;
+			lblResult.Text += " Name:" + c.Name + " ";
 		}
 		lblResult.Text += "<br>";
 
-		uri = new Uri("http://xyz.site.com");
+		uri = new Uri("http://xyz.sub.site.com");
 		//coll = cookie.GetCookies(uri);
 		coll = GetCookies(cookie, uri);
 		lblResult.Text += "<br>For " + uri + " Cookie count: " + coll.Count + " &nbsp;&nbsp; expected: 2";
 		lblResult.Text += "<br>";
 		foreach (Cookie c in coll)
 		{
-			lblResult.Text += " Name:" + c.Name + " Value:" + c.Value;
+			lblResult.Text += " Name:" + c.Name + " ";
 		}
 		lblResult.Text += "<br>";
 
-		uri = new Uri("http://site.com");
+		uri = new Uri("http://sub.site.com");
 		//coll = cookie.GetCookies(uri);
 		coll = GetCookies(cookie, uri);
 		lblResult.Text += "<br>For " + uri + " Cookie count: " + coll.Count + " &nbsp;&nbsp; expected: 2";
 		lblResult.Text += "<br>";
 		foreach (Cookie c in coll)
 		{
-			lblResult.Text += " Name:" + c.Name + " Value:" + c.Value;
+			lblResult.Text += " Name:" + c.Name + " ";
 		}
 		lblResult.Text += "<br>";
 

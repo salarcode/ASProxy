@@ -241,7 +241,9 @@ namespace SalarSoft.ASProxy.BuiltIn
 
 			// HttpRefresh
 			// replaces <meta http-equiv="refresh" content=1;url=HttpRefresh.htm>
-			regexPattarn = @"<meta(?>\s+[^>\s]+)*?\s*content\s*=\s*(?<Q>[""'])?[0-9]+\s*;\s*url=(?<UQ>['""]|['])?(?<URL>(?(?<="")[^""]+|(?(?<=')[^']+|[^'"" >]+)))(?(UQ)\2|)(?(Q)\1|)";
+			// BUGFIX v5.5b2: Mono has some issue with "(?(UQ)\2|)(?(Q)\1|)", it is a backtrack to detect (") and (') after the URL, specially when we have something like: content="0;url='refresh.html'"
+			// here is the original one, regexPattarn = @"<meta(?>\s+[^>\s]+)*?\s*content\s*=\s*(?<Q>[""'])?[0-9]+\s*;\s*url=(?<UQ>['""]|['])?(?<URL>(?(?<="")[^""]+|(?(?<=')[^']+|[^'"" >]+)))(?(UQ)\2|)(?(Q)\1|)";
+			regexPattarn = @"<meta(?>\s+[^>\s]+)*?\s*content\s*=\s*(?<Q>[""'])?[0-9]+\s*;\s*url=(?<UQ>['""]|['])?(?<URL>(?(?<="")[^""]+|(?(?<=')[^']+|[^'"" >]+)))";
 			ApplyToUrlSpecifed(ref codes,
 				regexPattarn,
 				pageUrl,

@@ -99,9 +99,23 @@
 		</table>
 	</fieldset>
 	<fieldset>
-		<legend>User Access Control</legend><span class="field_desc" style="color: Red; font-weight: bold;">
-			(Note: This configuration is not implemented by ASProxy yet.)</span>
+		<legend>User Access Control</legend>
 		<table style="width: 100%;">
+			<tr>
+				<td>
+					User Access Control</td>
+				<td>
+					<asp:CheckBox ID="chkUACEnabled" runat="server" Text="UAC is Enabled" Enabled="false"/>
+					<asp:Button ID="btnUACEnable" runat="server" Text="Enable" Style="padding: 0px;
+						margin: 0px; font-size: x-small;" onclick="btnUACEnable_Click" />/<asp:Button 
+						ID="btnUACDisable" Enabled="false"
+							runat="server" Text="Disable" Style="padding: 0px; margin: 0px; font-size: x-small;" 
+						onclick="btnUACDisable_Click" />
+					
+					<br />
+					<span class="field_desc">(Enables you to block or allow certain IP addresses from/to accessing to your ASProxy.)</span>
+				</td>
+			</tr>
 			<tr>
 				<td>
 					Add

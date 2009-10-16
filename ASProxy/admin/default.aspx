@@ -17,6 +17,15 @@
 			Response.Redirect(Request.Url.ToString());
 		}
 	}
+
+	protected void Page_Load(object sender, EventArgs e)
+	{
+		if (Common.IsRunningOnMono())
+		{
+			chkRestartApp.Enabled = false;
+			btnRestartApp.Enabled = false;		
+		}
+	}
 </script>
 
 <asp:Content ID="plhHead" ContentPlaceHolderID="PageHead" runat="Server">
@@ -121,7 +130,9 @@
 			<asp:Button ID="btnRestartApp" runat="server" Text="Restart Application" 
 				onclick="btnRestartApp_Click" /><asp:CheckBox
 				ID="chkRestartApp" runat="server" Text="Are you sure?" />
-			<br /><span class="field_desc">(Some ASProxy configurations applies after application restart. If you restart the application the configurations will load again. Also this may cause some current connections to fail.)</span>
+			<br /><span class="field_desc">(Some ASProxy configurations applies after application restart. If you restart the application the configurations will load again. Also this may cause some current connections to fail.)
+			<br /><span style="color:Red;">Warning, this option won't work with Mono, try to restart the app manually.</span>
+			</span>
 		</td>
 	</tr>
 	</table>

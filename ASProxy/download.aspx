@@ -54,6 +54,7 @@ Text="Download Tool"></asp:Literal></a></li>
 target="_blank" accesskey="4"><asp:Literal ID="mnuASProxy" EnableViewState="False" runat="server" meta:resourcekey="mnuASProxy"
 Text="ASProxy Page"></asp:Literal></a></li>
 </ul></div></div><div id="content"><div class="content">
+
 <div class="urlBar"><asp:Literal ID="lblUrl" EnableViewState="False" runat="server" 
 meta:resourcekey="lblUrl" Text="Enter URL:"></asp:Literal><br />
 <asp:TextBox ID="txtUrl" CssClass="urlText" runat="server" Columns="70" dir="ltr"
@@ -71,7 +72,10 @@ NavigateUrl="download.aspx" meta:resourcekey="lnkDownload">Download link</asp:Hy
 <asp:Label Style="display: block" class="urlBarDesc" ID="lblErrorMsg" runat="server"
 EnableViewState="False" Font-Bold="True" ForeColor="Red" Text="Error message"
 ToolTip="Error message" Visible="False" meta:resourcekey="lblErrorMsg"></asp:Label>
-</div><div class="about"><h1 class="title">
+</div>
+
+
+<div class="about"><h1 class="title">
 <asp:Label ID="lblMainTitle" runat="server" EnableViewState="False"
 meta:resourcekey="lblMainTitle" Text="Download tool"></asp:Label>
 </h1><div class="entry"><asp:Label ID="ltrMainDesc" runat="server" EnableViewState="False"
