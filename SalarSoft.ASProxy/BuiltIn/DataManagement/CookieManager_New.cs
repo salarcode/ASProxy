@@ -401,6 +401,11 @@ namespace SalarSoft.ASProxy.BuiltIn
 						}
 					}
 
+					// SalarSoft:
+					// Validating cookie domain name, it should not be empty
+					if (string.IsNullOrEmpty(cookieObj.Domain))
+						cookieObj.Domain = webUri.Host;
+
 					// Add generated cookie to the container
 					container.Add(cookieObj);
 				}
