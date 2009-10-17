@@ -4,27 +4,31 @@ using System.Web;
 using System.Reflection;
 using SalarSoft.ASProxy.Exposed;
 using System.Collections;
-using System.Collections.Generic;
 using System.Globalization;
 
 namespace SalarSoft.ASProxy.BuiltIn
 {
-
-
 	/// <summary>
 	/// Oh god, I could find the problem of cookies and it was damn microsoft's CookieContainer bug!
 	/// I've reported this fucking bug, and it is mysteriously fixed in a day! 
 	/// It is late now and 3 releases of .net have this bug, what should I do? Damn it!
 	/// 
-	/// 
 	/// This class can work with bugless CookieContainer which arrives with .NET 4.0 .
 	/// But I won't use it because of backward compatibility!
-	/// 
-	/// Sicim bo microsofte!
 	/// </summary>
+	/// <autors>
+	/// Originally developed my Salar.Kh
+	/// CookieContainer bugfix and contributor CallMeLaNN
+	/// </autors>
 	public class CookieManager : ExCookieManager
 	{
+		/// <summary>
+		/// 6 days
+		/// </summary>
 		protected const int intExpireDateNormalDays = 6;
+		/// <summary>
+		/// 30 minutes
+		/// </summary>
 		protected const int intExpireDateTempMinutes = 30;
 		protected const string strCookieNameExt = "_ASPX";
 		protected static readonly bool IsRunningOnMicrosoftCLR;
@@ -33,6 +37,7 @@ namespace SalarSoft.ASProxy.BuiltIn
 		{
 			IsRunningOnMicrosoftCLR = !Common.IsRunningOnMono();
 		}
+
 
 		/// <summary>
 		/// Saves response cookies in a cookie collection
@@ -76,7 +81,7 @@ namespace SalarSoft.ASProxy.BuiltIn
 
 				// if there is cookies 
 				// restores cookies from user request
-				ApplyRequestCookiesToCookieContainer(container, userRequest);
+				ApplyRequestCookiesToCookieContainer(container, userRequest, responseUrl);
 
 				// Response cookies
 				CookieCollection responseCookies = httpWebResponse.Cookies;
@@ -89,44 +94,25 @@ namespace SalarSoft.ASProxy.BuiltIn
 				if (IsRunningOnMicrosoftCLR)
 					// BUGFIX: CookieContainer has a bug, here is its bugfix
 					// To get around this bug, the domains should start with a DOT
-					BugFix_AddDotCookieDomain(container);
-
-				// Get cookies which applies to the response url
-				CookieCollection coll = container.GetCookies(responseUrl);
-
-				// Cookies are grouped by thier domains
-				Dictionary<string, CookieCollection> cookiesGroup = new Dictionary<string, CookieCollection>();
-
-				// Sending cookies to the back-end user's browser
-				foreach (Cookie cookie in coll)
-				{
-					// Get cookie name for current
-					string cookieName = GetCookieNameByDomain_FrontEnd(cookie, responseUrl);
-					string cookieHeader = GetCookieHeader(cookie);
-					cookieHeader = HttpUtility.UrlEncode(cookieHeader);
+					BugFix_CookieContaierFix(container);
 
 
-					CookieCollection groupedCookie;
-					if (cookiesGroup.TryGetValue(cookieName, out groupedCookie))
-					{
-						// the groups exists before
+				// CallMeLaNN:
+				// Get cookie header
+				// CookieCollection coll = container.GetCookies(webUri);
+				// Can't get all cookie header logically because it require Uri that can retrieve cookies on that domain and path only.
+				// Cookies in deeper subdomain or deeper path will not taken.
+				// We never know what subdomains or paths available here.
+				// So in order to get the all cookie in the entire domain, reflection is used.
+				// Or else we no need to use container earlier to do this.
+				// Container is design for easy to us to get the suitable cookies in the current domain and path + expiracy management.
+				// However Microsoft should add .GetAllCookies() method in case of this issue.
+				CookieCollection allCookies = GetAllCookies(container);
+				string cookieHeader = GetCookieHeader(allCookies);
 
-						groupedCookie.Add(cookie);
-					}
-					else
-					{
-						// new groups
-						groupedCookie = new CookieCollection();
-						groupedCookie.Add(cookie);
-
-						// add to cookie groups
-						cookiesGroup.Add(cookieName, groupedCookie);
-					}
-				}
 
 				// cookies calculated timeout in minute
 				DateTime expireDate;
-
 				if (saveAsTemporary)
 				{
 					// only 30 minutes
@@ -138,24 +124,23 @@ namespace SalarSoft.ASProxy.BuiltIn
 					expireDate = DateTime.Now.AddDays(intExpireDateNormalDays);
 				}
 
-				// Add grouped cookies to front-end user
-				foreach (KeyValuePair<string, CookieCollection> entry in cookiesGroup)
+
+				// if there is cookie header
+				if (!string.IsNullOrEmpty(cookieHeader))
 				{
-					HttpCookie frontendCookie = new HttpCookie(entry.Key);
+					// Cookie name for this response Url
+					string cookieName = GetCookieName(responseUrl);
 
-					// Header
-					string cookiesHeader = GetCookieHeader(entry.Value);
-
-					// Encode cookie header to make it safe
-					cookiesHeader = HttpUtility.UrlEncode(cookiesHeader);
+					HttpCookie frontendCookie = new HttpCookie(cookieName);
 
 					// expire
 					frontendCookie.Expires = expireDate;
 
-					// Value
-					frontendCookie.Value = cookiesHeader;
+					// value
+					// CallMeLaNN: This is second layer encode
+					frontendCookie.Value = HttpUtility.UrlEncode(cookieHeader);
 
-					// And finish...
+					// add to response
 					userResponse.Cookies.Add(frontendCookie);
 				}
 			}
@@ -184,6 +169,12 @@ namespace SalarSoft.ASProxy.BuiltIn
 			// Add whole cookie in collection
 			//BUFIX: webRequest.CookieContainer.Add(webRequest.Address, cookies);
 			webRequest.CookieContainer.Add(cookies);
+
+
+			// Only for Micosoft .NET Framework
+			if (IsRunningOnMicrosoftCLR)
+				// BUGFIX: CookieContainer has a bug
+				BugFix_CookieContaierFix(webRequest.CookieContainer);
 		}
 
 		/// <summary>
@@ -202,7 +193,7 @@ namespace SalarSoft.ASProxy.BuiltIn
 			if (userRequest == null || userResponse == null)
 				return;
 			HttpWebRequest httpWebRequest = (HttpWebRequest)webRequest;
-			Uri webUri = httpWebRequest.Address;
+			Uri requestUrl = httpWebRequest.Address;
 
 			// ---------------------------------------
 			// The code
@@ -213,226 +204,271 @@ namespace SalarSoft.ASProxy.BuiltIn
 
 
 			// restore cookies from user request
-			ApplyRequestCookiesToCookieContainer(httpWebRequest.CookieContainer, userRequest);
+			ApplyRequestCookiesToCookieContainer(httpWebRequest.CookieContainer, userRequest, requestUrl);
 
 			// Only for Micosoft .NET Framework
 			if (IsRunningOnMicrosoftCLR)
 				// BUGFIX: CookieContainer has a bug
 				// Here is its bugfix
 				// To get around this bug, the domains should start with a DOT
-				BugFix_AddDotCookieDomain(httpWebRequest.CookieContainer);
-
+				BugFix_CookieContaierFix(httpWebRequest.CookieContainer);
 		}
 
 		/// <summary>
-		/// Reads request cookie to cookie container
+		/// Generates cookie name to which will be stored in back-end user's browser
 		/// </summary>
-		private void ApplyRequestCookiesToCookieContainer(CookieContainer container, HttpRequest userRequest)
+		/// <returns>Cookie name with ASProxy suffix</returns>
+		public override string GetCookieName(Uri uri)
 		{
-			if (container == null || userRequest == null)
-				return;
-
-			// if there is cookies 
-			for (int i = 0; i < userRequest.Cookies.Count; i++)
-			{
-				HttpCookie cookie = userRequest.Cookies[i];
-				if (IsASProxyCookie(cookie.Name))
-				{
-					string val;
-					// BUGFIX: cookies header shouldn't be decoded
-					//val = HttpUtility.UrlDecode(cookie.Value);
-					val = cookie.Value;
-
-					Uri host = GetASProxyCookieHost_New(cookie.Name);
-					if (host != null)
-					{
-						// Tries to parse the cookie
-						// Mono method does not work correctly with .NET
-						// ParseAndAddCookies(val, host, container);
-
-						 //BUG: SetCookies has a bug because it uses Add(cookie, url) which has a bug
-						 container.SetCookies(host, val);
-					}
-				}
-			}
-		}
-
-		private Uri GetASProxyCookieHost_New(string name)
-		{
-			int index = name.LastIndexOf(strCookieNameExt);
-			if (index != -1)
-			{
-				// removing asproxy sign
-				string host = name.Substring(0, index);
-
-				// removing the beginning dot!
-				if (host.StartsWith("."))
-					host = host.Remove(0, 1);
-
-				try
-				{
-					return new Uri("http://" + host);
-				}
-				catch (UriFormatException)
-				{
-					throw new UriFormatException("failed to parse: " + name);
-				}
-			}
-			return null;
+			return GetCookieNameByHost(uri.Host);
 		}
 
 		/// <summary>
-		/// Parses the cookie header and adds the cookie to CookieContainer
+		/// Generates cookie name to which will be stored in back-end user's browser
+		/// </summary>
+		/// <returns>Cookie name with ASProxy suffix</returns>
+		public override string GetCookieName(string url)
+		{
+			Uri uri;
+			if (Uri.TryCreate(url, UriKind.RelativeOrAbsolute, out uri))
+			{
+				return GetCookieNameByHost(uri.Host);
+			}
+			throw new UriFormatException(String.Format("Specified Url is invalid. Url: {0}", url));
+		}
+
+		/// <summary>
+		/// Reads request cookie and applies them to cookie container
 		/// </summary>
 		/// <remarks>
-		/// Copied from Mono library
+		/// Here actually I am not using cookie header format, but I use my own key=value pair.
+		/// You can change to make it compatible like cookie header like
+		///   cookiename=cookievalue instead of Name=cookiename; Value=cookievalue (I seperate name and value for faster coding and good parsing)
+		///   expires=... instead of Expires=...
+		/// but actually not necessary to be same like cookie header format because this will never use at http header, but just only stored in 'browser group cookie' and only used by this CookieManager.
+		/// This Fix will create Cookie by setting all required property value.
+		/// This will store Expires, HttpOnly etc that will managed by CookieContainer.
+		/// string -> cookie object
+		/// Note: I am not sure if this work with your modified RestoreCookiesFromResponse()
 		/// </remarks>
-		/// <see cref="http://anonsvn.mono-project.com/viewvc/trunk/mcs/class/System/System.Net/CookieContainer.cs?revision=140055&amp;view=markup"/>
-		private void ParseAndAddCookies(string header, Uri uri, CookieContainer container)
+		/// <autor>CallMeLaNN</autor>
+		private void ApplyRequestCookiesToCookieContainer(CookieContainer container, HttpRequest userRequest, Uri webUri)
 		{
-			if (header.Length == 0)
+			if (container == null || userRequest == null || webUri == null)
 				return;
 
-			string[] name_values = header.Trim().Split(';');
-			int length = name_values.Length;
-			Cookie cookie = null;
-			int pos;
+			// Get cookie name for specified Url
+			string cookieName = GetCookieName(webUri);
+			
+			// Read the stored cookies for that Url
+			HttpCookie reqCookie = userRequest.Cookies[cookieName];
+			
+			// Check if there is cookie
+			if (reqCookie == null)
+				return;
 
-			CultureInfo inv = CultureInfo.InvariantCulture;
+			// If cookie value in encoded version, decode it first.
+			// This is second layer decode. (optional but required if encoded)
+			string header = HttpUtility.UrlDecode(reqCookie.Value);
 
-			bool havePath = false;
-			bool haveDomain = false;
+			if (string.IsNullOrEmpty(header.Trim()))
+				return;
 
-			for (int i = 0; i < length; i++)
+			// New cookie
+			Cookie cookieObj;
+
+			// Use standard & as seperator in 'cookie value' instead of , because Expires can contain comma for GMT date time format and split by , will doing the wrong split.
+			string[] cookies = header.Trim().Split('&');
+			foreach (string cookie in cookies)
 			{
-				pos = 0;
-				string name_value = name_values[i].Trim();
-				string name = ParseAndAddCookies_GetCookieName(name_value, name_value.Length, ref pos);
-				if (name == null || name == "")
-					throw new CookieException();//"Name is empty.");
+				if (string.IsNullOrEmpty(cookie.Trim()))
+					continue;
 
-				string value = ParseAndAddCookies_GetCookieValue(name_value, name_value.Length, ref pos);
-				if (cookie != null)
+				// cookie properties seperated by ;
+				string[] cookieProperties = cookie.Trim().Split(';');
+
+				// a new cookie
+				cookieObj = new Cookie();
+
+				foreach (string cookieProperty in cookieProperties)
 				{
-					if (!havePath && String.Compare(name, "$Path", true, inv) == 0 ||
-						String.Compare(name, "path", true, inv) == 0)
-					{
-						havePath = true;
-						cookie.Path = value;
+					string name, value;
+					string prop = cookieProperty.Trim();
+
+					if (string.IsNullOrEmpty(prop))
 						continue;
-					}
 
-					if (!haveDomain && String.Compare(name, "$Domain", true, inv) == 0 ||
-						String.Compare(name, "domain", true, inv) == 0)
+					// Can't use split by equal sign method since 'cookie value' can contain equal sign (like in google, PREF='ID=...') and break this parsing,
+					// instead, find the first equal sign.
+					// cookieKVP = prop.Split('=');
+					int equIndex = prop.IndexOf('=');
+					name = prop.Substring(0, equIndex).Trim();
+					value = prop.Substring(equIndex + 1, prop.Length - equIndex - 1).Trim();
+
+					// Note that this long property name (Name, Value, Expires, Domain, etc)
+					// can be do in short form (N, V, E, D, etc) to minimize cookie size.
+					switch (name)
 					{
-						cookie.Domain = value;
-						haveDomain = true;
-						continue;
+						case "Name":
+							cookieObj.Name = value;
+							break;
+						case "Value":
+							cookieObj.Value = HttpUtility.UrlDecode(value);
+							break;
+						case "Expires":
+							cookieObj.Expires = DateTime.Parse(value);
+							break;
+						case "Domain":
+							cookieObj.Domain = value;
+							break;
+						case "Path":
+							cookieObj.Path = value;
+							break;
+						case "HttpOnly":
+							cookieObj.HttpOnly = bool.Parse(value);
+							break;
+						case "Expired":
+							cookieObj.Expired = bool.Parse(value);
+							break;
+						case "Secure":
+							cookieObj.Secure = bool.Parse(value);
+							break;
+						case "Port":
+							// noted that I am not sure about port number, not tested yet to filter it.
+							cookieObj.Port = value;
+							break;
+						case "Version":
+							cookieObj.Version = int.Parse(value);
+							break;
+						case "Discard":
+							cookieObj.Discard = bool.Parse(value);
+							break;
+						case "Comment":
+							cookieObj.Comment = value;
+							break;
+						case "CommentUri":
+							cookieObj.CommentUri = new Uri(value);
+							break;
 					}
-
-					if (!havePath)
-						cookie.Path = ParseAndAddCookies_GetDir(uri.AbsolutePath);
-
-					if (!haveDomain)
-						cookie.Domain = uri.Host;
-
-					havePath = false;
-					haveDomain = false;
-
-					// Add to the contaier
-					container.Add(cookie);
-					cookie = null;
 				}
-				cookie = new Cookie(name, value);
+
+				// Add generated cookie to the container
+				container.Add(cookieObj);
 			}
 
-			if (cookie != null)
+			// Only for Micosoft .NET Framework
+			if (IsRunningOnMicrosoftCLR)
+				// BUGFIX: CookieContainer has a bug, here is its bugfix
+				// To get around this bug, the domains should start with a DOT
+				BugFix_CookieContaierFix(container);
+		}
+
+		/// <summary>
+		/// Returns all cookies stored in CookieContainer
+		/// </summary>
+		/// <returns>Collection of all cookies</returns>
+		private CookieCollection GetAllCookies(CookieContainer cc)
+		{
+			CookieCollection lstCookies = new CookieCollection();
+			Hashtable table = (Hashtable)_cookieContainerType.InvokeMember("m_domainTable",
+											 BindingFlags.NonPublic | BindingFlags.GetField | BindingFlags.Instance,
+											 null,
+											 cc,
+											 new object[] { });
+			foreach (object pathList in table.Values)
 			{
-				if (!havePath)
-					cookie.Path = ParseAndAddCookies_GetDir(uri.AbsolutePath);
-
-				// ERROR
-				if (!haveDomain)
-					cookie.Domain = uri.Host;
-
-				// Add to the container
-				container.Add(cookie);
+				SortedList lstCookieCol = (SortedList)_pathListType.InvokeMember("m_list",
+														  BindingFlags.NonPublic | BindingFlags.GetField | BindingFlags.Instance,
+														  null,
+														  pathList,
+														  new object[] { });
+				foreach (CookieCollection colCookies in lstCookieCol.Values)
+					foreach (Cookie c in colCookies)
+					{
+						lstCookies.Add(c);
+					}
 			}
+			return lstCookies;
 		}
 
 		/// <summary>
-		/// Copied from Mono library.
+		/// encode/serialize (group all cookies) by using key value pair (actually not exactly same like cookie header)
 		/// </summary>
-		/// <see cref="http://anonsvn.mono-project.com/viewvc/trunk/mcs/class/System/System.Net/CookieContainer.cs?revision=140055&amp;view=markup"/>
-		private static string ParseAndAddCookies_GetCookieValue(string str, int length, ref int i)
+		/// <returns>cookie object -> string</returns>
+		/// <autor>CallMeLaNN</autor>
+		private string GetCookieHeader(CookieCollection cookieCollection)
 		{
-			if (i >= length)
-				return null;
+			string result = "";
+			if (cookieCollection != null)
+			{
+				string cookieStr = null;
+				for (int i = 0; i < cookieCollection.Count; i++)
+				{
+					Cookie cookie = cookieCollection[i];
 
-			int k = i;
-			while (k < length && Char.IsWhiteSpace(str[k]))
-				k++;
+					// Generate cookie
 
-			int begin = k;
-			while (k < length && str[k] != ';')
-				k++;
+					// The If condition below only write/included if different than default value to minimize cookie size.
+					// Note that this long property name can be do in short form and remove space to minimize cookie size.
 
-			i = k;
-			return str.Substring(begin, i - begin).Trim();
+					// Required values, I think:
+					cookieStr = "Name=" + cookie.Name;
+
+					// this actual 'cookie value' should be encoded to avoid ,&% and other special char used in the 'cookie value' that will break a seperator and parsing later. This is first layer encode. Compulsory.
+					if (!string.IsNullOrEmpty(cookie.Value))
+						cookieStr += "; Value=" + HttpUtility.UrlEncode(cookie.Value);
+
+					if (cookie.Expires != DateTime.MinValue)
+						cookieStr += "; Expires=" + cookie.Expires.ToString();
+
+					if (!string.IsNullOrEmpty(cookie.Domain))
+						cookieStr += "; Domain=" + cookie.Domain;
+
+					if (!string.IsNullOrEmpty(cookie.Path))
+						cookieStr += "; Path=" + cookie.Path;
+
+					if (cookie.HttpOnly)
+						cookieStr += "; HttpOnly=" + cookie.HttpOnly.ToString();
+
+					if (cookie.Expired)
+						cookieStr += "; Expired=" + cookie.Expired.ToString();
+
+					if (cookie.Secure)
+						cookieStr += "; Secure=" + cookie.Secure.ToString();
+
+					// Additional and rarely used or I don't know, just add if any values:
+					if (!string.IsNullOrEmpty(cookie.Port))
+						cookieStr += "; Port=" + cookie.Port;
+
+					if (cookie.Version != 0)
+						cookieStr += "; Version=" + cookie.Version.ToString();
+
+					if (cookie.Discard)
+						cookieStr += "; Discard=" + cookie.Discard.ToString();
+
+					if (!string.IsNullOrEmpty(cookie.Comment))
+						cookieStr += "; Comment=" + cookie.Comment.ToString();
+
+					if (cookie.CommentUri != null)
+						cookieStr += "; CommentUri=" + cookie.CommentUri.AbsoluteUri;
+
+					if (!string.IsNullOrEmpty(result))
+						// Use standard & as seperator in cookie value instead of , because Expires can contain comma for GMT date time format.
+						result = result + "& " + cookieStr;
+					else
+						result = cookieStr;
+				}
+			}
+
+			return result;
 		}
 
-		/// <summary>
-		/// Copied from Mono library.
-		/// </summary>
-		/// <see cref="http://anonsvn.mono-project.com/viewvc/trunk/mcs/class/System/System.Net/CookieContainer.cs?revision=140055&amp;view=markup"/>
-		private static string ParseAndAddCookies_GetCookieName(string str, int length, ref int i)
-		{
-			if (i >= length)
-				return null;
-
-			int k = i;
-			while (k < length && Char.IsWhiteSpace(str[k]))
-				k++;
-
-			int begin = k;
-			while (k < length && str[k] != ';' && str[k] != '=')
-				k++;
-
-			i = k + 1;
-			return str.Substring(begin, k - begin).Trim();
-		} 
-
-		/// <summary>
-		/// Copied from Mono library.
-		/// </summary>
-		/// <see cref="http://anonsvn.mono-project.com/viewvc/trunk/mcs/class/System/System.Net/CookieContainer.cs?revision=140055&amp;view=markup"/>
-		private static string ParseAndAddCookies_GetDir(string path)
-		{
-			if (path == null || path == "")
-				return "/";
-
-			int last = path.LastIndexOf('/');
-			if (last == -1)
-				return "/" + path;
-
-			return path.Substring(0, last + 1);
-		} 
-
-		/// <summary>
-		/// Generates cookie string to sending with http request header
-		/// </summary>
-		/// <param name="cookie"></param>
-		/// <returns></returns>
-		private string GetCookieHeader(Cookie cookie)
-		{
-			return CallCookieToServerString(cookie);
-		}
 
 		private static Type _cookieContainerType = Type.GetType("System.Net.CookieContainer, System, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089");
 		private static Type _pathListType = Type.GetType("System.Net.PathList, System, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089");
 		/// <summary>
 		/// This method is aimed to fix a goddamn CookieContainer issue,
-		/// In CookieContainer adds missed path for cookies that is not started with dot.
+		/// It adds missed path for cookies which are not started with dot.
 		/// This is a dirty hack
 		/// </summary>
 		/// <remarks>
@@ -440,10 +476,10 @@ namespace SalarSoft.ASProxy.BuiltIn
 		/// The issue will be fixed in .NET 4, I hope!
 		/// </remarks>
 		/// <autor>Many thanks to CallMeLaNN "dot-net-expertise.blogspot.com" to complete this method</autor>
-		private void BugFix_AddDotCookieDomain(CookieContainer cookieContainer)
+		private void BugFix_CookieContaierFix(CookieContainer cookieContainer)
 		{
 			Hashtable table = (Hashtable)_cookieContainerType.InvokeMember("m_domainTable",
-											 System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.GetField | System.Reflection.BindingFlags.Instance,
+											 BindingFlags.NonPublic | BindingFlags.GetField | BindingFlags.Instance,
 											 null,
 											 cookieContainer,
 											 new object[] { });
@@ -465,7 +501,8 @@ namespace SalarSoft.ASProxy.BuiltIn
 				if (key[0] == '.')
 				{
 					string nonDotKey = key.Remove(0, 1);
-					// Dont simply code like this:
+
+					// Don't simply code like this:
 					// table[nonDotKey] = table[key];
 					// instead code like below:
 
@@ -483,8 +520,8 @@ namespace SalarSoft.ASProxy.BuiltIn
 					}
 
 					// merge the PathList, take cookies from table[keyObj] copy into table[nonDotKey]
-					sortedList1 = (SortedList)_pathListType.InvokeMember("m_list", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.GetField | System.Reflection.BindingFlags.Instance, null, pathList1, new object[] { });
-					sortedList2 = (SortedList)_pathListType.InvokeMember("m_list", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.GetField | System.Reflection.BindingFlags.Instance, null, pathList2, new object[] { });
+					sortedList1 = (SortedList)_pathListType.InvokeMember("m_list", BindingFlags.NonPublic | BindingFlags.GetField | BindingFlags.Instance, null, pathList1, new object[] { });
+					sortedList2 = (SortedList)_pathListType.InvokeMember("m_list", BindingFlags.NonPublic | BindingFlags.GetField | BindingFlags.Instance, null, pathList2, new object[] { });
 
 					pathKeys = new ArrayList(sortedList1.Keys);
 
@@ -512,43 +549,6 @@ namespace SalarSoft.ASProxy.BuiltIn
 		}
 
 		/// <summary>
-		/// Returns cookie name to store in user's browser
-		/// </summary>
-		/// <returns>A cookie name</returns>
-		public string GetCookieNameByDomain_FrontEnd(Cookie cookie, Uri url)
-		{
-			if (cookie == null || url == null)
-				return null;
-
-			if (string.IsNullOrEmpty(cookie.Domain))
-			{
-				return GetCookieNameByHost(url.Host);
-			}
-			else
-			{
-				// Cookie domain name is best name to use
-				// it can be something like ".domain.com" or "domain.com" , both are ok
-				return GetCookieNameByHost(cookie.Domain);
-			}
-		}
-
-		public override string GetCookieName(Uri uri)
-		{
-			//Uri uri = new Uri(url);
-			return GetCookieNameByHost(uri.Host);
-		}
-
-		public override string GetCookieName(string url)
-		{
-			Uri uri;
-			if (Uri.TryCreate(url, UriKind.RelativeOrAbsolute, out uri))
-			{
-				return GetCookieNameByHost(uri.Host);
-			}
-			throw new UriFormatException("Specified Url is invalid. Url: " + url);
-		}
-
-		/// <summary>
 		/// Applies asproxy cookie extension to a cookie name or hostname
 		/// </summary>
 		private static string GetCookieNameByHost(string host)
@@ -556,48 +556,12 @@ namespace SalarSoft.ASProxy.BuiltIn
 			return host + strCookieNameExt;
 		}
 
+		/// <summary>
+		/// Checks cookie name if it is ASProxy stored cookie
+		/// </summary>
 		private static bool IsASProxyCookie(string name)
 		{
 			return name.EndsWith(strCookieNameExt);
-		}
-
-		private string GetCookieHeader(CookieCollection cookieCollection)
-		{
-			string result = "";
-			if (cookieCollection != null)
-			{
-
-				for (int i = 0; i < cookieCollection.Count; i++)
-				{
-					Cookie cookie = cookieCollection[i];
-
-					// generate cookie
-					string cookieStr = CallCookieToServerString(cookie);
-
-					if (!string.IsNullOrEmpty(cookieStr))
-					{
-						if (!string.IsNullOrEmpty(result))
-							result = result + ", " + cookieStr;
-						else
-							result = cookieStr;
-					}
-
-					//if ((cookieStr != null) && (cookieStr.Length != 0))
-					//{
-					//    result = (result == null) ? cookieStr : (result + ", " + cookieStr);
-					//    //if ((cookie.Variant == CookieVariant.Rfc2965) || (this.HttpListenerContext.PromoteCookiesToRfc2965 && (cookie.Variant == CookieVariant.Rfc2109)))
-					//    //{
-					//    //    str = (str == null) ? cookieStr : (str + ", " + cookieStr);
-					//    //}
-					//    //else
-					//    //{
-					//    //    str2 = (str2 == null) ? cookieStr : (str2 + ", " + cookieStr);
-					//    //}
-					//}
-				}
-			}
-
-			return result;
 		}
 
 		/// <summary>
@@ -620,21 +584,6 @@ namespace SalarSoft.ASProxy.BuiltIn
 
 			return _cookieHeaderGeneratorMethod.Invoke(cookie, null).ToString();
 		}
-
-
-		static Type _cookieType = typeof(Cookie);
-		private static void BugFix_ResetCookieDomainImplicit(Cookie cookie)
-		{
-			//"m_domain_implicit"
-			_cookieType.GetField("m_domain_implicit",
-									   System.Reflection.BindingFlags.NonPublic |
-									   System.Reflection.BindingFlags.GetField |
-									   System.Reflection.BindingFlags.Instance)
-									   .SetValue(cookie, true);
-		}
-
-
-
 
 	}
 }
