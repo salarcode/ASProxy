@@ -3,6 +3,7 @@ using System.Data;
 using System.Configuration;
 using System.Web;
 using System.Net;
+using System.Collections.Specialized;
 
 namespace SalarSoft.ASProxy.Exposed
 {
@@ -13,6 +14,14 @@ namespace SalarSoft.ASProxy.Exposed
     {
 		string GetCookieName(Uri url);
 		string GetCookieName(string url);
+
+		string GetCookieNameExt { get; }
+
+		/// <summary>
+		/// Cookie names list which appllies to specifed url
+		/// </summary>
+		StringCollection GetAppliedCookieNamesList(string urlHost);
+
 		/// <summary>
         /// Saves response cookies in a cookie collection
         /// </summary>

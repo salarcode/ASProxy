@@ -3,6 +3,7 @@ using System.Text;
 using SalarSoft.ASProxy.Exposed;
 using System.Text.RegularExpressions;
 using System.Web;
+using System.Collections.Specialized;
 
 namespace SalarSoft.ASProxy.BuiltIn
 {
@@ -475,7 +476,7 @@ namespace SalarSoft.ASProxy.BuiltIn
 
 				return result;
 			}
-			catch(Exception ex)
+			catch (Exception ex)
 			{
 				LastStatus = LastStatus.ContinueWithError;
 				LastException = ex;
@@ -1172,6 +1173,7 @@ namespace SalarSoft.ASProxy.BuiltIn
 
 			string userConfig;
 			string reqInfo;
+			string cookieNames;
 			string locationObject;
 
 			userConfig = string.Format(Consts.ClientContent.JSEncoder_UserConfig,
@@ -1191,6 +1193,7 @@ namespace SalarSoft.ASProxy.BuiltIn
 				pagePath,
 				rootUrl,
 				Systems.CookieManager.GetCookieName(pageUrl),
+				Systems.CookieManager.GetCookieNameExt,
 				UrlProvider.JoinUrl(UrlProvider.GetAppAbsolutePath(), Consts.FilesConsts.PageDefault_Dynamic),
 				UrlProvider.GetAppAbsolutePath(),
 				UrlProvider.GetAppAbsoluteBasePath(),
@@ -1198,6 +1201,20 @@ namespace SalarSoft.ASProxy.BuiltIn
 				Consts.Query.Base64Unknowner
 			);
 
+			// Cookie names
+			StringCollection strColl = Systems.CookieManager.GetAppliedCookieNamesList(pageUrl);
+			string cookieNamesTemp = "";
+			for (int i = 0; i < strColl.Count; i++)
+			{
+				string name = strColl[i];
+				cookieNamesTemp += "'" + name + "'";
+				if (i != strColl.Count - 1)
+					cookieNamesTemp += ',';
+			}
+			cookieNames = string.Format(Consts.ClientContent.JSEncoder_AppliedCookieNames,
+				cookieNamesTemp);
+
+			// Page uri
 			Uri pageUri = new Uri(pageUrl);
 			locationObject = string.Format(Consts.ClientContent.JSEncoder_RequestLocation,
 				pageUri.Fragment,	// Hash
@@ -1210,17 +1227,20 @@ namespace SalarSoft.ASProxy.BuiltIn
 			);
 
 			StringBuilder result = new StringBuilder();
-			// AJAX wrapper core
-			result.Append(Resources.ASProxyJavaScriptTag("", Consts.FilesConsts.JSAJAXWrapperCore));
-
 			// ASProxy encoder variables
-			result.Append(Resources.ASProxyJavaScriptTag(userConfig + reqInfo + locationObject, ""));
+			result.Append(Resources.ASProxyJavaScriptTag(userConfig + reqInfo + locationObject + cookieNames, ""));
 
 			// Base64 encoder 
 			result.Append(Resources.ASProxyJavaScriptTag("", Consts.FilesConsts.JSBase64));
 
 			// ASProxy encoder 
 			result.Append(Resources.ASProxyJavaScriptTag("", Consts.FilesConsts.JSASProxyEncoder));
+
+			// AJAX wrapper core
+			result.Append(Resources.ASProxyJavaScriptTag("", Consts.FilesConsts.JSAJAXWrapperCore));
+
+			// Cookie Encoder
+			result.Append(Resources.ASProxyJavaScriptTag("", Consts.FilesConsts.JSCookieEncoder));
 
 			return result.ToString();
 		}

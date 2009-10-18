@@ -40,6 +40,8 @@ namespace SalarSoft.ASProxy.BuiltIn
 			IsRunningOnMicrosoftCLR = !Common.IsRunningOnMono();
 		}
 
+		public override string GetCookieNameExt { get { return strCookieNameExt; } }
+
 
 		/// <summary>
 		/// Saves response cookies in a cookie collection
@@ -278,6 +280,15 @@ namespace SalarSoft.ASProxy.BuiltIn
 		}
 
 		/// <summary>
+		/// Cookie names list which appllies to specifed url
+		/// </summary>
+		public override StringCollection GetAppliedCookieNamesList(string urlHost)
+		{
+			return GetCookieNamesListForDomain(urlHost);
+		}
+
+
+		/// <summary>
 		/// Reads request cookie and applies them to cookie container
 		/// </summary>
 		/// <remarks>
@@ -298,7 +309,7 @@ namespace SalarSoft.ASProxy.BuiltIn
 				return;
 
 			// Cookie names list which applies to current url
-			StringCollection cookieNamesList = GetCookieNamesListForDomain(webUri);
+			StringCollection cookieNamesList = GetCookieNamesListForDomain(webUri.ToString());
 
 			// So we have fetch the cookies by specifed names in list
 			for (int i = 0; i < cookieNamesList.Count; i++)
@@ -369,7 +380,26 @@ namespace SalarSoft.ASProxy.BuiltIn
 								cookieObj.Value = HttpUtility.UrlDecode(value);
 								break;
 							case "Expires":
-								cookieObj.Expires = DateTime.Parse(value);
+								// Note: Javascript returns UTC datetime which DateTime class can't parse
+
+								DateTime expires;
+								if (DateTime.TryParse(value, out expires))
+								{
+									cookieObj.Expires = expires;
+								}
+								else
+								{
+									// The javascript UTC format
+									string expectedFormatForUTC = "ddd, d MMM yyyy hh:mm:ss UTC";
+									try
+									{
+										cookieObj.Expires = DateTime.ParseExact(value, expectedFormatForUTC, null);
+									}
+									catch
+									{
+										// Nothing, no chance
+									}
+								}
 								break;
 							case "Domain":
 								cookieObj.Domain = value;
@@ -533,11 +563,12 @@ namespace SalarSoft.ASProxy.BuiltIn
 		/// Returns cookie names applies to specified Domain
 		/// </summary>
 		/// <returns>List of ASProxy cookie names</returns>
-		private StringCollection GetCookieNamesListForDomain(Uri host)
+		private StringCollection GetCookieNamesListForDomain(string urlHost)
 		{
 			StringCollection result = new StringCollection();
 			string cookieName;
 
+			Uri host = new Uri(urlHost);
 
 			// The name of host
 			string hostName = host.Host;

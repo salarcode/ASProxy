@@ -81,9 +81,10 @@ namespace SalarSoft.ASProxy
         /// </summary>
         public class ClientContent
         {
-			public const string JSEncoder_UserConfig = "_userConfig={{EncodeUrl:{0}, OrginalUrl:{1}, Links:{2}, Images:{3}, Forms:{4}, Frames:{5}, Cookies:{6}, RemScripts:{7} }};";
-			public const string JSEncoder_RequestInfo = @"_reqInfo={{pageUrl:""{0}"", pageUrlNoQuery:""{1}"", pagePath:""{2}"", rootUrl:""{3}"", cookieName:'{4}', ASProxyUrl:""{5}"", ASProxyPath:""{6}"", ASProxyRoot:""{7}"", ASProxyPageName:'{8}', UrlUnknowner:'{9}'}};";
-			public const string JSEncoder_RequestLocation = @"_reqInfo.location={{ Hash:'{0}', Host:""{1}"", Hostname:""{2}"", Pathname:""{3}"", Search:""{4}"", Port:'{5}', Protocol:'{6}' }};";
+			public const string JSEncoder_UserConfig = "_userConfig={{EncodeUrl:{0}, OrginalUrl:{1}, Links:{2}, Images:{3}, Forms:{4}, Frames:{5}, Cookies:{6}, RemScripts:{7} }}; ";
+			public const string JSEncoder_RequestInfo = @"_reqInfo={{pageUrl:""{0}"", pageUrlNoQuery:""{1}"", pagePath:""{2}"", rootUrl:""{3}"", cookieName:'{4}', cookieNameExt:'{5}', ASProxyUrl:""{6}"", ASProxyPath:""{7}"", ASProxyRoot:""{8}"", ASProxyPageName:'{9}', UrlUnknowner:'{10}'}}; ";
+			public const string JSEncoder_RequestLocation = @"_reqInfo.location={{ Hash:'{0}', Host:""{1}"", Hostname:""{2}"", Pathname:""{3}"", Search:""{4}"", Port:'{5}', Protocol:'{6}' }}; ";
+			public const string JSEncoder_AppliedCookieNames = @"_reqInfo.appliedCookiesList=[{0}]; ";
 
 			public const string JSEncoder_ASProxyEncoderMethodName = "__UrlEncoder";
 			public const string JSEncoder_ASProxySetCookieMethodName = "__CookieSet";
@@ -124,10 +125,11 @@ namespace SalarSoft.ASProxy
             //public const string PageDirectCSS = "getcss.ashx";
             //public const string PageDirectData = "getdata.ashx";
 
-            public const string JSASProxyEncoder = Dir_Scripts + "/" + "asproxyencoder.js";
-            public const string JSBase64 = Dir_Scripts + "/" + "base64encoder.js";
+			public const string JSASProxyEncoder = Dir_Scripts + "/" + "asproxyencoder.js";
+			public const string JSBase64 = Dir_Scripts + "/" + "base64encoder.js";
 
-            public const string JSAJAXWrapperCore = Dir_Scripts + "/" + "ajaxwrapper.js";
+			public const string JSAJAXWrapperCore = Dir_Scripts + "/" + "ajaxwrapper.js";
+			public const string JSCookieEncoder = Dir_Scripts + "/" + "cookieencoder.js";
 
             public const string PageCustomErrors = "error_page.htm";
         }

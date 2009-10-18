@@ -701,9 +701,10 @@ namespace SalarSoft.ASProxy.BuiltIn
 			webData.RequestInfo.PostDataString = RequestInfo.PostDataString;
 			webData.RequestInfo.ContentType = RequestInfo.ContentTypeString;
 			webData.RequestInfo.InputStream = RequestInfo.InputStream;
-			webData.RequestInfo.AcceptCookies = UserOptions.Cookies;
 			webData.RequestInfo.PrrocessErrorPage = RequestInfo.PrrocessErrorPage;
 			webData.RequestInfo.RequesterType = RequestInfo.RequesterType;
+			webData.RequestInfo.AcceptCookies = UserOptions.Cookies;
+			webData.RequestInfo.TempCookies = UserOptions.TempCookies;
 		}
 
 		protected virtual void ApplyResponseInfo(HttpResponse httpResponse)

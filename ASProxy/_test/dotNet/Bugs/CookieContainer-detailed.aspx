@@ -15,15 +15,18 @@
         string cookieH ;//= @"Test1=val; domain=sub.site.com; path=/";
 		//result.SetCookies(uri, cookieH);
 		
-		Cookie c = new Cookie("Test1", "val", "/", "sub.site.com");
+		Cookie c = new Cookie("Test1", "val1", "/", "sub.site.com");
 		result.Add(c);
 
-        //cookieH = @"Test2=val; domain=.site.com; path=/";
+		cookieH = @"Test4=val4; domain=sub.site.com; path=/";
+		result.SetCookies(uri, cookieH);
+
+		//cookieH = @"Test2=val; domain=.site.com; path=/";
 		//result.SetCookies(uri, cookieH);
 		c = new Cookie("Test2", "val", "/", ".site.com");
 		result.Add(c);
 
-        //cookieH = @"Test3=val; domain=site.com; path=/";
+		//cookieH = @"Test3=val; domain=site.com; path=/";
 		//result.SetCookies(uri, cookieH);
 		c = new Cookie("Test2", "val", "/", "site.com");
 		result.Add(c);

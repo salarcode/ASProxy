@@ -43,6 +43,7 @@ Version 5.5 Beta2 2009/10/16
 * Fixed: HttpComressor increases images size.
 * Fixed: [For Mono] Cookie Manager throws an exception and cookies goes disabled.
 * Fixed: [For Mono] Fails to process html contents. Because of Regex Html Processor.
+* Fixed: "Save Cookies as Temp" option didn't work properly.
 
 Version 5.5 Beta1 2009/09/14
 * New: New look and design.

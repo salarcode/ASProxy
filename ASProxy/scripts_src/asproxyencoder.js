@@ -337,6 +337,24 @@ try{
 		try{ o["on" + evType] = f; }catch(e){_ASProxy.Log('AttachEvent"on"',e);}
 	}
 }catch(e){_ASProxy.Log('AttachEvent',e);}
+}
+
+_ASProxy.TrimLeft = function(str) {
+	return str.replace(/^\s*/, "");
+}
+_ASProxy.TrimRight = function(str) {
+	return str.replace(/\s*$/, "");
+}
+_ASProxy.Trim = function(str) {
+	return str.replace(/^\s+|\s+$/g, '');
+}
+_ASProxy.EndsWith = function(str, check) {
+	if (str.length == 0 || str.length < check.length) { return false; }
+	return (str.substr(str.length - check.length) == check);
+}
+_ASProxy.StartsWith = function(str, check) {
+	if (str.length == 0 || str.length < check.length) { return false; }
+	return (str.substr(0, check.length) == check);
 }
 
 // ---------------------------
@@ -622,97 +640,13 @@ _ASProxy.LocationObject=function(){
 
 // public: Returns current site cookies
 function __CookieGet(_CookieName){
-	var toGetCName=_CookieName;
-	if(toGetCName==null)
-		toGetCName = _reqInfo.cookieName;
-	var cookieString = document.cookie;
-
-	if(typeof(_ASProxy.TraceCookies)!='undefined' && _ASProxy.TraceCookies)
-		_ASProxy.Log("__CookieGet: "+_CookieName);
-
-	var aCookie = cookieString.split("; ");
-	for (var i=0; i < aCookie.length; i++)
-	{
-		var aCrumb = aCookie[i].split("=");
-		if (toGetCName == aCrumb[0]) 
-			return unescape(aCrumb[1]);
-	}
-	return "";
+	return GetDocumentCookie();
 }
 
 // public: Wrapping cookie operation in javascript
 // sCookie: cookie string to set
-function __CookieSet(sCookie){
-var cookieSettingValues="";
-
-if(typeof(_ASProxy.TraceCookies)!='undefined' && _ASProxy.TraceCookies)
-	_ASProxy.Log("__CookieSet: "+sCookie);
-
-
-function GetCookie(cookieString,sName){
-	var aCookie = cookieString.split("; ");
-	for (var i=0; i < aCookie.length; i++)
-	{
-		var aCrumb = aCookie[i].split("=");
-		if (sName == aCrumb[0]) 
-			return unescape(aCrumb[1]);
-	}
-	return null;
-}
-function EscapeCookie(value){
-	return _reqInfo.cookieName + "=" + escape(value) + "; path=/;"+cookieSettingValues;
-}
-function JoinCookies(preCookie,newCookie){
-	cookieSettingValues="";
-	var aPreCookie = preCookie.split("; ");
-	var aNewCookie = newCookie.split("; ");
-	var resultCookie="";
-	var tempColl=new Array();
-	for (var i=0; i < aPreCookie.length; i++)
-	{
-		var preCrumb = aPreCookie[i].split("=");
-		var preName=preCrumb[0];
-		if(preName=="") continue;
-		
-		if(preName=="expires" || preName=="secure")
-		{
-			cookieSettingValues += aPreCookie[i] + "; ";
-			continue;
-		}
-		
-		var exists=false;
-		for(var newI=0; newI < aNewCookie.length; newI++)
-		{
-			var newCrumb = aNewCookie[newI].split("=");
-			var newName=newCrumb[0];
-			if(preName==newName)
-			{
-				exists=true;
-				break;
-			}
-		}
-		if(exists==false)
-			resultCookie += aPreCookie[i] + "; ";
-	}
-	
-	for(var newI=0; newI < aNewCookie.length; newI++)
-	{
-		resultCookie += aNewCookie[newI] + "; ";
-	}
-	if(cookieSettingValues!="")
-		cookieSettingValues="; "+cookieSettingValues;
-	return resultCookie;	
-}
-
-var previousCookie=GetCookie(document.cookie, _reqInfo.cookieName);
-if(previousCookie!="" && previousCookie!=null)
-	previousCookie=(previousCookie);
-else
-	previousCookie="";
-
-// join cookies
-var __cookie=JoinCookies(previousCookie,sCookie);
-return EscapeCookie(__cookie);
+function __CookieSet(sCookie) {
+	return SetDocumentCookie(sCookie);
 }
 
 // ---------------------------
