@@ -34,7 +34,7 @@ function _Page_Initialize(){
 }
 function _Page_SaveOptions(){
 	var cookieOpt=_Page_CookieName+"=";
-	cookieOpt+="&Links="+_XPage.ProcessLinks.checked;
+	cookieOpt+="Links="+_XPage.ProcessLinks.checked;
 	cookieOpt+="&Images="+_XPage.DisplayImages.checked;
 	cookieOpt+="&SubmitForms="+_XPage.Forms.checked;
 	cookieOpt+="&HttpCompression="+_XPage.Compression.checked;

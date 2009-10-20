@@ -90,10 +90,31 @@ namespace SalarSoft.ASProxy.BuiltIn
 				// Response cookies
 				CookieCollection responseCookies = httpWebResponse.Cookies;
 
+
 				// Adding response cookies,
 				// The new cookies will overwite the previous ones
 				// BUG: CookieContainer destoyes Expires value so the cookie never expires!
-				container.Add(responseCookies);
+				// BUFIX: bufix is below
+				// container.Add(responseCookies);
+
+				//-------------------------------
+				CookieCollection expiredCookies = new CookieCollection();
+				// BUFIX: We have to remove expired cookies!
+				// Because of CookieContainer bug, this method should do this for us!
+				// Damn this CookieContainer
+				foreach (Cookie cookie in responseCookies)
+				{
+					// no expired cookies
+					if (cookie.Expired)
+					{
+						expiredCookies.Add(cookie);
+						continue;
+					}
+
+					// good!
+					container.Add(cookie);
+				}
+
 
 				// Only for Micosoft .NET Framework
 				if (IsRunningOnMicrosoftCLR)
@@ -130,6 +151,19 @@ namespace SalarSoft.ASProxy.BuiltIn
 					// BUG: CookieContainer has destoyed Expires value so the cookie never expires!
 					if (cookie.Expired)
 						continue;
+
+					foreach (Cookie expired in expiredCookies)
+					{
+						if (expired.Name == cookie.Name &&
+							expired.Domain == cookie.Domain &&
+							expired.Path == cookie.Path &&
+							expired.Port == cookie.Port
+							)
+						{
+							// just modify expire date to be deleted next time
+							cookie.Expires = expired.Expires;
+						}
+					}
 
 					// Get cookie name for current
 					string cookieName = GetCookieNameByDomain(cookie, responseUrl);
@@ -186,6 +220,11 @@ namespace SalarSoft.ASProxy.BuiltIn
 						// nothing, cookie should expire after the session (when user closed the browser)
 					}
 
+					// SalarSoft:
+					// Expire the cookie if there is no value to store
+					if (string.IsNullOrEmpty(cookiesHeader))
+						frontendCookie.Expires = DateTime.Now.AddYears(-5);
+
 					// Value
 					frontendCookie.Value = cookiesHeader;
 
@@ -194,6 +233,7 @@ namespace SalarSoft.ASProxy.BuiltIn
 				}
 			}
 		}
+
 
 		/// <summary>
 		/// Adds specified cookies to proxy request cookies collection
@@ -447,6 +487,10 @@ namespace SalarSoft.ASProxy.BuiltIn
 					if (string.IsNullOrEmpty(cookieObj.Domain))
 						cookieObj.Domain = webUri.Host;
 
+					// We do not accept expired cookies
+					if (cookieObj.Expired)
+						continue;
+
 					// the name can not be empty
 					if (string.IsNullOrEmpty(cookieObj.Name))
 						continue;
@@ -513,6 +557,12 @@ namespace SalarSoft.ASProxy.BuiltIn
 					// The If condition below only write/included if different than default value to minimize cookie size.
 					// Note that this long property name can be do in short form and remove space to minimize cookie size.
 
+
+					// SalarSoft:
+					// We shouldn't store expired cookies
+					if (cookie.Expired)
+						continue;
+
 					// Required values, I think:
 					cookieStr = "Name=" + cookie.Name;
 
@@ -533,8 +583,9 @@ namespace SalarSoft.ASProxy.BuiltIn
 					if (cookie.HttpOnly)
 						cookieStr += "; HttpOnly=" + cookie.HttpOnly.ToString();
 
-					if (cookie.Expired)
-						cookieStr += "; Expired=" + cookie.Expired.ToString();
+					// No need to store expired cookies
+					// if (cookie.Expired)
+					// 	cookieStr += "; Expired=" + cookie.Expired.ToString();
 
 					if (cookie.Secure)
 						cookieStr += "; Secure=" + cookie.Secure.ToString();
