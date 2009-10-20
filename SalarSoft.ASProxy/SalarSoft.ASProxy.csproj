@@ -116,7 +116,9 @@
     <Compile Include="Definitions\RequestInfo.cs" />
     <Compile Include="Definitions\ResponseInfo.cs" />
     <Compile Include="Definitions\TextRange.cs" />
-    <Compile Include="Definitions\UserOptions.cs" />
+    <Compile Include="Definitions\UserOptions.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Exposed\ExCookieManager.cs" />
     <Compile Include="Exposed\ExDataParser.cs" />
     <Compile Include="Exposed\ExDataProcessor.cs" />

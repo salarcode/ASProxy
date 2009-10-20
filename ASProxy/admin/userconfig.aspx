@@ -65,8 +65,10 @@ Users Configurations
 </asp:Content>
 <asp:Content ID="plhContent" ContentPlaceHolderID="Content" Runat="Server">
 <fieldset><legend>User Config</legend>
+<span class="field_desc">(You can define what options to be enabled by default and what options use can change.)
+<br /><span style="color:Purple;">(Note: Delete your browser cookies after saving the settings, otherwise changes may not affect.)</span>
+</span>
 <table id="config_table">
-
 	<tr>
 		<td style="text-align:center">
 			Config name</td>
@@ -203,10 +205,10 @@ Users Configurations
 			Remove Objects
 			<br /><span class="field_desc">(Removes embedded objects.)</span></td>
 		<td style="text-align:center">
-			<asp:CheckBox ID="chkRemoveObjectsActive" runat="server" /> 
+			<asp:CheckBox ID="chkRemoveObjectsActive" runat="server" Enabled="false" /> 
 		</td>
 		<td style="text-align:center">
-			<asp:CheckBox ID="chkRemoveObjectsChangeable" runat="server" />
+			<asp:CheckBox ID="chkRemoveObjectsChangeable" runat="server" Enabled="false" />
 		</td>
 	</tr>
 	<tr>

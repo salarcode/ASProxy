@@ -1,55 +1,107 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0"?>
 <Configurations>
-  <adminUI isAdminStarted="True" userName="shakh" password="123456789" />
-  <providers>
-    <engine canBeOverwritten="True" />
-    <plugins enabled="True">
-      <disabledPlugins>
-        <plugin name="TemplatePlugin" />
-      </disabledPlugins>
-    </plugins>
-  </providers>
-  <webData maxContentLength="-1" requestTimeout="60000" requestReadWriteTimeOut="70000" sendSignature="True" preferredLocalEncoding="windows-1256">
-    <userAgent mode="Default" custom="ASProxy (compatible; Mozilla/5.0;)" />
-    <downloader resumeSupport="True" maxContentLength="-1" requestTimeout="120000" requestReadWriteTimeOut="300000" />
-  </webData>
-  <pages uiLanguage="en-us" />
-  <authentication enabled="False">
-    <user userName="admin" password="admin" pages="True" images="True" downloads="True" />
-  </authentication>
-  <imageCompressor enabled="False" quality="10" />
-  <autoUpdate updateInfoUrl="http://asproxy.sourceforge.net/update/autoupdate.xml" engine="False" plugins="False" />
-  <logSystem fileFormat="yyyy-MM-dd" maxFileSize="5120">
-    <activityLog enabled="False" location="~/App_Data/DailyLog/{0}.log" pages="True" images="False" />
-    <errorLog enabled="False" location="~/App_Data/ErrorLog/{0}.log" />
-  </logSystem>
-  <netProxy mode="Custom">
-    <custom address="127.0.0.1" port="8888" authentication="False">
-      <authentication userName="" password="" />
-    </custom>
-  </netProxy>
+
+	<!--Administration UI-->
+	<adminUI isAdminStarted="false" userName="admin" password="admin" />
+
+	<providers>
+		<!--Enables third party plugins to overwite the base classes.-->
+		<engine canBeOverwritten="true" />
+    
+		<!--Enables plugins-->
+		<plugins enabled="true">
+			<disabledPlugins>
+				<plugin name="TemplatePlugin" />
+			</disabledPlugins>
+		</plugins>
+	</providers>
+
+	<pages uiLanguage="en-us" />
+	
+	<webData maxContentLength="-1"
+			requestTimeout="60000"
+			requestReadWriteTimeOut="70000"
+			sendSignature="true"
+			preferredLocalEncoding="windows-1256">
+		
+		<downloader resumeSupport="true"
+					maxContentLength="-1"
+					requestTimeout="120000"
+					requestReadWriteTimeOut="300000" />
+		<userAgent mode="Default" custom="ASProxy (compatible; Mozilla/5.0;)" />
+	</webData>
+  
+	<!--Used in private proxy feature to prevent the strangers to access the proxy-->
+	<authentication enabled="false">
+		<user userName="admin" password="admin" pages="true" images="true" downloads="true"></user>
+	</authentication>
+
+	<!--Image compressor config-->
+	<imageCompressor enabled="false" quality="10">
+	</imageCompressor>
+	
+	<userAccessControl enabled="false">
+		<blocked>
+			<!--<ip value="127.0.0.1" />-->
+			<!--<range low="127.0.0.1" high="127.0.0.255" />-->
+		</blocked>
+		<allowed>
+			<!--<ip value="196.40.10.246" />-->
+		</allowed>
+	</userAccessControl>
+
+	<!--Enables auto update-->
+	<autoUpdate updateInfoUrl="http://asproxy.sourceforge.net/update/autoupdate.xml"
+			  engine="false" providers="false" plugins="false">
+	</autoUpdate>
+
+	<!-- Logs user activites to specfied location-->
+	<logSystem maxFileSize="5120" fileFormat="yyyy-MM-dd">
+
+		<!--Browsing activities-->
+		<activityLog enabled="false"
+						location="~/App_Data/DailyLog/{0}.log"
+						pages="true"
+						images="false">
+		</activityLog>
+
+		<!--error log-->
+		<errorLog enabled="false" location="~/App_Data/ErrorLog/{0}.log" />
+	</logSystem>
+
+	<!--
+	If web server is behind a network proxy or firewall, you should config it here to pass
+	direct, SystemDefault, Custom
+	-->
+	<netProxy mode="Direct">
+		<custom address="0.0.0.0" port="8080" authentication="false">
+			<authentication userName="" password="" />
+		</custom>
+	</netProxy>
+
+  <!-- Users default options -->
   <userOptions>
     <options>
-      <Cookies changeable="True">True</Cookies>
-      <TempCookies changeable="True">False</TempCookies>
-      <Images changeable="True">True</Images>
-      <Links changeable="True">True</Links>
-      <Frames changeable="True">True</Frames>
-      <SubmitForms changeable="True">True</SubmitForms>
-      <RemoveObjects changeable="False">False</RemoveObjects>
-      <HttpCompression changeable="True">False</HttpCompression>
-      <EncodeUrl changeable="True">True</EncodeUrl>
-      <OrginalUrl changeable="True">True</OrginalUrl>
-      <PageTitle changeable="True">True</PageTitle>
-      <ForceEncoding changeable="True">False</ForceEncoding>
-      <RemoveScripts changeable="True">False</RemoveScripts>
-      <RemoveImages changeable="True">False</RemoveImages>
-      <DocType changeable="True">True</DocType>
+      <ForceEncoding changeable="true">False</ForceEncoding>
+      <RemoveScripts changeable="true">False</RemoveScripts>
+      <RemoveImages changeable="true">False</RemoveImages>
+      <HttpCompression changeable="true">False</HttpCompression>
+      <EncodeUrl changeable="true">True</EncodeUrl>
+      <Cookies changeable="true">True</Cookies>
+      <TempCookies changeable="true">False</TempCookies>
+      <Images changeable="true">True</Images>
+      <Links changeable="true">True</Links>
+      <Frames changeable="true">True</Frames>
+      <SubmitForms changeable="true">True</SubmitForms>
+      <RemoveObjects changeable="false">False</RemoveObjects>
+      <OrginalUrl changeable="true">True</OrginalUrl>
+      <PageTitle changeable="true">True</PageTitle>
+      <DocType changeable="true">True</DocType>
     </options>
   </userOptions>
-  <userAccessControl enabled="False">
-    <blocked />
-    <allowed />
-  </userAccessControl>
-  <customConfig />
+  
+	<customConfig>
+		<!--<config name="" value=""></config>-->
+	</customConfig>
+  
 </Configurations>

@@ -1296,7 +1296,7 @@ namespace SalarSoft.ASProxy.BuiltIn
 				string result = "<script " + Consts.ClientContent.attrAlreadyEncodedAttributeIgnore;
 				if (!string.IsNullOrEmpty(src))
 					result += " src='" + src + "' ";
-				result += " type='text/javascript' language='javascript'>" + content + "</script>";
+				result += " type='text/javascript'>" + content + "</script>";
 				return result;
 			}
 		}

@@ -640,13 +640,13 @@ _ASProxy.LocationObject=function(){
 
 // public: Returns current site cookies
 function __CookieGet(_CookieName){
-	return GetDocumentCookie();
+	return _ASProxy.GetDocumentCookie();
 }
 
 // public: Wrapping cookie operation in javascript
 // sCookie: cookie string to set
 function __CookieSet(sCookie) {
-	return SetDocumentCookie(sCookie);
+	return _ASProxy.SetDocumentCookie(sCookie);
 }
 
 // ---------------------------

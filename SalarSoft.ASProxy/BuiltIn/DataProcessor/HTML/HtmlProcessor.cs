@@ -468,10 +468,10 @@ namespace SalarSoft.ASProxy.BuiltIn
 			/// </summary>
 			public static string ASProxyJavaScriptTag(string content, string src)
 			{
-				string result = "<script " + Consts.ClientContent.attrAlreadyEncodedAttributeIgnore + " language='javascript' ";
+				string result = "<script " + Consts.ClientContent.attrAlreadyEncodedAttributeIgnore;
 				if (!string.IsNullOrEmpty(src))
-					result += "src='" + src + "'";
-				result += "type='text/javascript'>" + content + "</script>";
+					result += " src='" + src + "' ";
+				result += " type='text/javascript'>" + content + "</script>";
 				return result;
 			}
 

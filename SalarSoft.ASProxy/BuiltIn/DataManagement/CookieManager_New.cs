@@ -92,6 +92,7 @@ namespace SalarSoft.ASProxy.BuiltIn
 
 				// Adding response cookies,
 				// The new cookies will overwite the previous ones
+				// BUG: CookieContainer destoyes Expires value so the cookie never expires!
 				container.Add(responseCookies);
 
 				// Only for Micosoft .NET Framework
@@ -124,6 +125,12 @@ namespace SalarSoft.ASProxy.BuiltIn
 				// applying cookies in groups
 				foreach (Cookie cookie in allCookies)
 				{
+					// Checking cookie expire option
+					// The expired cookie shouldn't be saved
+					// BUG: CookieContainer has destoyed Expires value so the cookie never expires!
+					if (cookie.Expired)
+						continue;
+
 					// Get cookie name for current
 					string cookieName = GetCookieNameByDomain(cookie, responseUrl);
 
@@ -397,7 +404,7 @@ namespace SalarSoft.ASProxy.BuiltIn
 									}
 									catch
 									{
-										// Nothing, no chance
+										// No chance, do nothing
 									}
 								}
 								break;
@@ -610,7 +617,6 @@ namespace SalarSoft.ASProxy.BuiltIn
 
 			return result;
 		}
-
 
 		private static Type _cookieContainerType = Type.GetType("System.Net.CookieContainer, System, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089");
 		private static Type _pathListType = Type.GetType("System.Net.PathList, System, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089");
