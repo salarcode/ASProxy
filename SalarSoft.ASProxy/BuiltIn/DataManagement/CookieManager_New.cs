@@ -24,6 +24,7 @@ namespace SalarSoft.ASProxy.BuiltIn
 	/// </autors>
 	public class CookieManager : ExCookieManager
 	{
+		protected const string strCookieDateTimeFormat = "yyyy/dd/MMM  HH:mm:ss";
 		/// <summary>
 		/// 6 days
 		/// </summary>
@@ -83,6 +84,15 @@ namespace SalarSoft.ASProxy.BuiltIn
 			{
 				CookieContainer container = new CookieContainer();
 
+				// BUGFIX: this is an temporary solution for when cookies are not specifed by back-end website
+				// And HttpWebResponse didn't recognize them well, so it sets extra Path value, which is not correct
+				bool isPathSpecified = false;
+				string setCookieHeader = httpWebResponse.Headers[HttpResponseHeader.SetCookie];
+				if (!string.IsNullOrEmpty(setCookieHeader) && setCookieHeader.ToLower().IndexOf("path=/") != -1)
+				{
+					isPathSpecified = true;
+				}
+
 				// if there is cookies 
 				// restores cookies from user request
 				ApplyRequestCookiesToCookieContainer(container, userRequest, responseUrl);
@@ -90,6 +100,10 @@ namespace SalarSoft.ASProxy.BuiltIn
 				// Response cookies
 				CookieCollection responseCookies = httpWebResponse.Cookies;
 
+				// BUGFIX: httpWebResponse does not parses the cookies in correct format
+				// Trying to parse it by Mono library functions
+				//responseCookies = ParseResponseCookies(httpWebResponse, responseUrl);
+				//---------------
 
 				// Adding response cookies,
 				// The new cookies will overwite the previous ones
@@ -152,18 +166,25 @@ namespace SalarSoft.ASProxy.BuiltIn
 					if (cookie.Expired)
 						continue;
 
+					// Search within expired cookies to locate the original cookie
 					foreach (Cookie expired in expiredCookies)
 					{
+						// note: we do not check for value, because it can be differet
+						// but the import parts are tested
 						if (expired.Name == cookie.Name &&
 							expired.Domain == cookie.Domain &&
 							expired.Path == cookie.Path &&
-							expired.Port == cookie.Port
-							)
+							expired.Port == cookie.Port)
 						{
 							// just modify expire date to be deleted next time
 							cookie.Expires = expired.Expires;
 						}
 					}
+
+					// BUGFIX: read the comments above
+					if (!isPathSpecified)
+						cookie.Path = "/";
+
 
 					// Get cookie name for current
 					string cookieName = GetCookieNameByDomain(cookie, responseUrl);
@@ -335,6 +356,39 @@ namespace SalarSoft.ASProxy.BuiltIn
 		}
 
 
+		//private CookieCollection ParseResponseCookies(HttpWebResponse httpResponse, Uri responseUri)
+		//{
+		//    CookieCollection result = new CookieCollection();
+
+		//    // empty
+		//    if (httpResponse == null)
+		//        return result;
+
+		//    string[] values = httpResponse.Headers.GetValues("Set-Cookie");
+		//    if (values != null)
+		//    {
+		//        foreach (string val in values)
+		//        {
+		//            // parsing Set-Cookies header
+		//            CookieParser.ParseCookie(val, responseUri, result);
+		//        }
+		//    }
+
+		//    // Set-Cookie2 header parsing
+		//    values = httpResponse.Headers.GetValues("Set-Cookie2");
+		//    if (values != null)
+		//    {
+		//        foreach (string val in values)
+		//        {
+		//            // Parsing Set-Cookie2 header
+		//            CookieParser.ParseCookie2(val, responseUri, result);
+		//        }
+		//    }
+
+		//    return result;
+		//}
+
+
 		/// <summary>
 		/// Reads request cookie and applies them to cookie container
 		/// </summary>
@@ -364,8 +418,6 @@ namespace SalarSoft.ASProxy.BuiltIn
 
 				// Get cookie name for specified Url
 				string cookieName = cookieNamesList[i];
-				//string cookieName = GetCookieName(webUri);
-
 
 				// Read the stored cookies for that Url
 				HttpCookie reqCookie = userRequest.Cookies[cookieName];
@@ -424,28 +476,27 @@ namespace SalarSoft.ASProxy.BuiltIn
 								cookieObj.Name = value;
 								break;
 							case "Value":
+
+								// Second layer decode
 								cookieObj.Value = HttpUtility.UrlDecode(value);
 								break;
 							case "Expires":
-								// Note: Javascript returns UTC datetime which DateTime class can't parse
 
+								// Note: Javascript returns GMT or UTC datetimes which DateTime class can't parse
 								DateTime expires;
-								if (DateTime.TryParse(value, out expires))
+								string[] dateTimeFormats = new string[]{
+									strCookieDateTimeFormat,
+									"ddd, d MMM yyyy hh:mm:ss GMT",
+									"ddd, d MMM yyyy hh:mm:ss UTC"};
+
+								if (DateTime.TryParseExact(value, dateTimeFormats, null, DateTimeStyles.None, out expires))
 								{
 									cookieObj.Expires = expires;
 								}
 								else
 								{
-									// The javascript UTC format
-									string expectedFormatForUTC = "ddd, d MMM yyyy hh:mm:ss UTC";
-									try
-									{
-										cookieObj.Expires = DateTime.ParseExact(value, expectedFormatForUTC, null);
-									}
-									catch
-									{
-										// No chance, do nothing
-									}
+									// No chance, do nothing
+									// the cookie will expire after current session
 								}
 								break;
 							case "Domain":
@@ -482,18 +533,18 @@ namespace SalarSoft.ASProxy.BuiltIn
 						}
 					}
 
-					// SalarSoft:
-					// Validating cookie domain name, it should not be empty
-					if (string.IsNullOrEmpty(cookieObj.Domain))
-						cookieObj.Domain = webUri.Host;
+					// the name can not be empty
+					if (string.IsNullOrEmpty(cookieObj.Name))
+						continue;
 
 					// We do not accept expired cookies
 					if (cookieObj.Expired)
 						continue;
 
-					// the name can not be empty
-					if (string.IsNullOrEmpty(cookieObj.Name))
-						continue;
+					// SalarSoft:
+					// Validating cookie domain name, it should not be empty
+					if (string.IsNullOrEmpty(cookieObj.Domain))
+						cookieObj.Domain = webUri.Host;
 
 					// Add generated cookie to the container
 					container.Add(cookieObj);
@@ -566,12 +617,18 @@ namespace SalarSoft.ASProxy.BuiltIn
 					// Required values, I think:
 					cookieStr = "Name=" + cookie.Name;
 
-					// this actual 'cookie value' should be encoded to avoid ,&% and other special char used in the 'cookie value' that will break a seperator and parsing later. This is first layer encode. Compulsory.
+					// this actual 'cookie value' should be encoded to avoid ,&% 
+					// and other special char used in the 'cookie value' that will break a seperator and parsing later.
+					// This is first layer encode. Compulsory.
 					if (!string.IsNullOrEmpty(cookie.Value))
 						cookieStr += "; Value=" + HttpUtility.UrlEncode(cookie.Value);
 
 					if (cookie.Expires != DateTime.MinValue)
-						cookieStr += "; Expires=" + cookie.Expires.ToString();
+					{
+						// Cookie expire date should be in special format
+						cookieStr += "; Expires=" +
+							cookie.Expires.ToString(strCookieDateTimeFormat);
+					}
 
 					if (!string.IsNullOrEmpty(cookie.Domain))
 						cookieStr += "; Domain=" + cookie.Domain;
@@ -601,10 +658,10 @@ namespace SalarSoft.ASProxy.BuiltIn
 						cookieStr += "; Discard=" + cookie.Discard.ToString();
 
 					if (!string.IsNullOrEmpty(cookie.Comment))
-						cookieStr += "; Comment=" + cookie.Comment.ToString();
+						cookieStr += "; Comment=" + HttpUtility.UrlEncode(cookie.Comment);
 
 					if (cookie.CommentUri != null)
-						cookieStr += "; CommentUri=" + cookie.CommentUri.AbsoluteUri;
+						cookieStr += "; CommentUri=" + HttpUtility.UrlEncode(cookie.CommentUri.AbsoluteUri);
 
 					if (!string.IsNullOrEmpty(result))
 						// Use standard & as seperator in cookie value instead of , because Expires can contain comma for GMT date time format.
@@ -630,6 +687,18 @@ namespace SalarSoft.ASProxy.BuiltIn
 
 			// The name of host
 			string hostName = host.Host;
+
+			// For local and debug puposes
+			if (hostName == "localhost")
+			{
+				// Cookies that applies only for this domain
+				cookieName = GetCookieName(host);
+				result.Add(cookieName);
+
+				// This domain cookie for its subdomains
+				cookieName = GetCookieNameByHost("." + hostName);
+				result.Add(cookieName);
+			}
 
 			// Find first dot
 			int index = hostName.LastIndexOf('.');
