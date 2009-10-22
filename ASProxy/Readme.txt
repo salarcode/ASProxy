@@ -1,6 +1,6 @@
 ****************************************
 ASProxy       :version 5.5b2
-Last update   :2009/10/16
+Last update   :2009/10/21
 Official site :http://asproxy.sourceforge.net/
 
 ASProxy is an ASP.NET Web Proxy.
@@ -37,12 +37,15 @@ Changing interface:
 ****************************************
 Version History
 
-Version 5.5 Beta2 2009/10/16
+Version 5.5 Beta2 2009/10/21
 * New: User Access Control behaves like an IP blocker helps you to block or allow certain IPs access to ASProxy.
+* New: An easy way to change ASProxy theme.
+* Improved: Cookies manager is alsmost rewrited and now it handles cookies correctly.
 * Fixed: CustomErrors corruption with HttpCompression.
 * Fixed: HttpComressor increases images size.
 * Fixed: [For Mono] Cookie Manager throws an exception and cookies goes disabled.
 * Fixed: [For Mono] Fails to process html contents. Because of Regex Html Processor.
+* Fixed: Auto redirect with 301 and 301 minor bug.
 * Fixed: "Save Cookies as Temp" option didn't work properly.
 
 Version 5.5 Beta1 2009/09/14

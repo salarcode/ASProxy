@@ -129,7 +129,6 @@ namespace SalarSoft.ASProxy
 			public const string JSBase64 = Dir_Scripts + "/" + "base64encoder.js";
 
 			public const string JSAJAXWrapperCore = Dir_Scripts + "/" + "ajaxwrapper.js";
-			public const string JSCookieEncoder = Dir_Scripts + "/" + "cookieencoder.js";
 
             public const string PageCustomErrors = "error_page.htm";
         }

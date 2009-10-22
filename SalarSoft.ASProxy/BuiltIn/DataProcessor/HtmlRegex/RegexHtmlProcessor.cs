@@ -103,6 +103,7 @@ namespace SalarSoft.ASProxy.BuiltIn
 					rootUrl = UrlProvider.GetRootPath(pagePath);
 				}
 
+				// splitting the code by scripts
 				regexPattarn = @"<script\b[^>]*>(?:.*?)</script>";
 				MatchCollection matchColl = Regex.Matches(codes,
 												regexPattarn,
@@ -1238,9 +1239,6 @@ namespace SalarSoft.ASProxy.BuiltIn
 
 			// AJAX wrapper core
 			result.Append(Resources.ASProxyJavaScriptTag("", Consts.FilesConsts.JSAJAXWrapperCore));
-
-			// Cookie Encoder
-			result.Append(Resources.ASProxyJavaScriptTag("", Consts.FilesConsts.JSCookieEncoder));
 
 			return result.ToString();
 		}

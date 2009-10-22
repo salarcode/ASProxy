@@ -61,6 +61,7 @@
     <Compile Include="BuiltIn\DataManagement\CookieManager_New.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="BuiltIn\DataManagement\CookieParser.cs" />
     <Compile Include="BuiltIn\DataManagement\ResumableDownload.cs">
       <SubType>Code</SubType>
     </Compile>

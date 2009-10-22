@@ -18,19 +18,19 @@ function _Page_Initialize(){
 	_XPage.RemoveScripts =document.getElementById('chkRemoveScripts');
 	_XPage.EncodeUrl =document.getElementById('chkEncodeUrl');
 	
-	if(!_XPage.UrlBox) _XPage.UrlBox=[];
-	if(!_XPage.ProcessLinks) _XPage.ProcessLinks=[];
-	if(!_XPage.DisplayImages) _XPage.DisplayImages=[];
-	if(!_XPage.Forms) _XPage.Forms=[];
-	if(!_XPage.Compression) _XPage.Compression=[];
-	if(!_XPage.Cookies) _XPage.Cookies=[];
-	if(!_XPage.TempCookies) _XPage.TempCookies=[];
-	if(!_XPage.OrginalUrl) _XPage.OrginalUrl=[];
-	if(!_XPage.Frames) _XPage.Frames=[];
-	if(!_XPage.PageTitle) _XPage.PageTitle=[];
-	if(!_XPage.UTF8) _XPage.UTF8=[];
-	if(!_XPage.RemoveScripts) _XPage.RemoveScripts=[];
-	if(!_XPage.EncodeUrl) _XPage.EncodeUrl=[];
+	if(!_XPage.UrlBox) _XPage.UrlBox={};
+	if(!_XPage.ProcessLinks) _XPage.ProcessLinks={};
+	if(!_XPage.DisplayImages) _XPage.DisplayImages={};
+	if(!_XPage.Forms) _XPage.Forms={};
+	if(!_XPage.Compression) _XPage.Compression={};
+	if(!_XPage.Cookies) _XPage.Cookies={};
+	if(!_XPage.TempCookies) _XPage.TempCookies={};
+	if(!_XPage.OrginalUrl) _XPage.OrginalUrl={};
+	if(!_XPage.Frames) _XPage.Frames={};
+	if(!_XPage.PageTitle) _XPage.PageTitle={};
+	if(!_XPage.UTF8) _XPage.UTF8={};
+	if(!_XPage.RemoveScripts) _XPage.RemoveScripts={};
+	if(!_XPage.EncodeUrl) _XPage.EncodeUrl={};
 }
 function _Page_SaveOptions(){
 	var cookieOpt=_Page_CookieName+"=";

@@ -63,7 +63,7 @@ void GetResults(IEngine engine)
 			if (engine.LastStatus == LastStatus.Error)
 			{
 				if (Systems.LogSystem.ErrorLogEnabled)
-					Systems.LogSystem.Log(LogEntity.Error, engine.RequestInfo.RequestUrl, engine.LastErrorMessage);
+					Systems.LogSystem.LogError(engine.LastErrorMessage, engine.RequestInfo.RequestUrl);
 
 				lblErrorMsg.Text = engine.LastErrorMessage;
 				if (string.IsNullOrEmpty(lblErrorMsg.Text))
@@ -119,7 +119,7 @@ void GetResults(IEngine engine)
 		if (engine.LastStatus == LastStatus.Error)
 		{
 			if (Systems.LogSystem.ErrorLogEnabled)
-				Systems.LogSystem.Log(LogEntity.Error, engine.RequestInfo.RequestUrl, engine.LastErrorMessage);
+				Systems.LogSystem.LogError(engine.LastErrorMessage, engine.RequestInfo.RequestUrl);
 
 			lblErrorMsg.Text = engine.LastErrorMessage;
 			lblErrorMsg.Visible = true;
@@ -129,7 +129,7 @@ void GetResults(IEngine engine)
 		else if (engine.LastStatus == LastStatus.ContinueWithError)
 		{
 			if (Systems.LogSystem.ErrorLogEnabled)
-				Systems.LogSystem.Log(LogEntity.Error, engine.RequestInfo.RequestUrl, engine.LastErrorMessage);
+				Systems.LogSystem.LogError(engine.LastErrorMessage, engine.RequestInfo.RequestUrl);
 
 			// if has error but can continue
 			lblErrorMsg.Text = engine.LastErrorMessage;

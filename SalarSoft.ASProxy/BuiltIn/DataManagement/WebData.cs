@@ -404,30 +404,6 @@ namespace SalarSoft.ASProxy.BuiltIn
 				// Response charset encoding, only for HTTP
 				ResponseInfo.ContentEncoding = GetResponseEncoding(httpResponse, DefaultContentEncoding);
 
-				// Redirect Location
-				// ADDED Since 4.0; Ftp fixed in 4.8
-				string redirectLocation = null;
-
-				// only in HTTP
-				redirectLocation = webResponse.Headers[HttpResponseHeader.Location];
-
-				if (!string.IsNullOrEmpty(redirectLocation))
-				{
-					if (UrlProvider.IsVirtualUrl(redirectLocation))
-					{
-						// Get redirection full url
-						redirectLocation = ReplaceResponseRedirectionLocation(webResponse.ResponseUri, redirectLocation);
-						ResponseInfo.AutoRedirectionType = AutoRedirectType.RequestInternal;
-					}
-					else
-						ResponseInfo.AutoRedirectionType = AutoRedirectType.External;
-
-					ResponseInfo.AutoRedirectLocation = redirectLocation;
-					ResponseInfo.AutoRedirect = true;
-				}
-				else
-					ResponseInfo.AutoRedirect = false;
-
 
 				if (_requestProtocol != InternetProtocols.FTP)
 				{
@@ -447,6 +423,33 @@ namespace SalarSoft.ASProxy.BuiltIn
 				// Get response application path
 				ResponseInfo.ContentLength = webResponse.ContentLength;
 
+
+				// Redirect Location
+				// ADDED Since 4.0; Ftp fixed in 4.8
+				string redirectLocation = null;
+
+				// only in HTTP
+				redirectLocation = webResponse.Headers[HttpResponseHeader.Location];
+
+				if (!string.IsNullOrEmpty(redirectLocation))
+				{
+
+					if (UrlProvider.IsVirtualUrl(redirectLocation))
+					{
+						// Get redirection full url
+						redirectLocation = ReplaceResponseRedirectionLocation(webResponse.ResponseUri,
+							ResponseInfo.ResponseRootUrl,
+							redirectLocation);
+						ResponseInfo.AutoRedirectionType = AutoRedirectType.RequestInternal;
+					}
+					else
+						ResponseInfo.AutoRedirectionType = AutoRedirectType.External;
+
+					ResponseInfo.AutoRedirectLocation = redirectLocation;
+					ResponseInfo.AutoRedirect = true;
+				}
+				else
+					ResponseInfo.AutoRedirect = false;
 
 			}
 
@@ -710,28 +713,21 @@ namespace SalarSoft.ASProxy.BuiltIn
 		/// <summary>
 		/// Apply redirect location to request location
 		/// </summary>
-		protected virtual string ReplaceResponseRedirectionLocation(Uri responseUri, string redirectLocation)
+		protected virtual string ReplaceResponseRedirectionLocation(Uri responseUri, string siteRootUrl, string redirectLocation)
 		{
+			string pageUrl = responseUri.ToString();
+			string pagePath = UrlProvider.GetPagePath(pageUrl);
+			string pageUrlNoQuery = UrlProvider.GetPageAbsolutePath(pageUrl);
 
-			if (UrlProvider.IsVirtualUrl(redirectLocation))
+
+			if (redirectLocation[0] != '/' && redirectLocation[0] != '\\')
 			{
-				string pathAndQuery = responseUri.PathAndQuery;
-				if (redirectLocation[0] != '/' && redirectLocation[0] != '\\')
-				{
-					redirectLocation = '/' + redirectLocation;
-
-					if (pathAndQuery.Length > 1)
-						return responseUri.ToString().Replace(pathAndQuery, redirectLocation);
-					else
-						return UrlBuilder.CombinePaths(responseUri.ToString(), redirectLocation);
-				}
-				else
-				{
-					return UrlBuilder.CombinePaths(UrlProvider.GetAppAbsolutePath(responseUri), redirectLocation);
-				}
+				return UrlBuilder.CombinePaths(pagePath ,redirectLocation);
 			}
 			else
-				return redirectLocation;
+			{
+				return UrlBuilder.CombinePaths(siteRootUrl, redirectLocation);
+			}
 		}
 
 		protected virtual Encoding GetResponseEncoding(HttpWebResponse httpReponse, Encoding defaultEncoding)

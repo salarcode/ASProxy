@@ -301,19 +301,19 @@ namespace SalarSoft.ASProxy
 			}
 		}
 
-		public static string FromBase64(string str)
+		public static string FromBase64(string B64String)
 		{
 			string result;
 
-			byte[] buff = Convert.FromBase64String(str);
+			byte[] buff = Convert.FromBase64String(B64String);
 			result = UTF8Encoding.UTF8.GetString(buff);
 			return result;
 		}
 
-		public static string ToBase64(string B64String)
+		public static string ToBase64(string str)
 		{
 			string result;
-			byte[] bytes = UTF8Encoding.UTF8.GetBytes(B64String);
+			byte[] bytes = UTF8Encoding.UTF8.GetBytes(str);
 			result = Convert.ToBase64String(bytes);
 			return result;
 		}

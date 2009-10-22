@@ -62,7 +62,7 @@
 				if (engine.LastStatus == LastStatus.Error)
 				{
 					if (Systems.LogSystem.ErrorLogEnabled)
-						Systems.LogSystem.Log(LogEntity.Error, engine.RequestInfo.RequestUrl, engine.LastErrorMessage);
+						Systems.LogSystem.LogError(engine.LastErrorMessage, engine.RequestInfo.RequestUrl);
 
 					_ErrorMessage = engine.LastErrorMessage;
 					if (string.IsNullOrEmpty(_ErrorMessage))
@@ -111,7 +111,7 @@
 			if (engine.LastStatus == LastStatus.Error)
 			{
 				if (Systems.LogSystem.ErrorLogEnabled)
-					Systems.LogSystem.Log(LogEntity.Error, engine.RequestInfo.RequestUrl, engine.LastErrorMessage);
+					Systems.LogSystem.LogError(engine.LastErrorMessage, engine.RequestInfo.RequestUrl);
 
 				_ErrorMessage = engine.LastErrorMessage;
 				_HasError = true;
@@ -121,7 +121,7 @@
 			else if (engine.LastStatus == LastStatus.ContinueWithError)
 			{
 				if (Systems.LogSystem.ErrorLogEnabled)
-					Systems.LogSystem.Log(LogEntity.Error, engine.RequestInfo.RequestUrl, engine.LastErrorMessage);
+					Systems.LogSystem.LogError(engine.LastErrorMessage, engine.RequestInfo.RequestUrl);
 
 				// if has error but can continue
 				_ErrorMessage = engine.LastErrorMessage;

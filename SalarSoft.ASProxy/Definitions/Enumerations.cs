@@ -127,7 +127,9 @@
 
         DownloadRequested,
 
-        Error,
+		Error,
+
+		DebugInfo,
 
         ASProxyLoginPassed,
 

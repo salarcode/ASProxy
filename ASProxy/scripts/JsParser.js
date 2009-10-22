@@ -1,4 +1,0 @@
-﻿_ASProxy.ParseHtml=function(){
-
-
-}
