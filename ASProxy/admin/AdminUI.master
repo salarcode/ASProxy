@@ -10,8 +10,8 @@
         <title>Administration UI</title>
     </asp:ContentPlaceHolder>
     <link href="theme/style.css" rel="stylesheet" type="text/css" />
-    <link href="../theme/default/style-ltr.css" rel="stylesheet" type="text/css" />
-	<link rel='shortcut icon' href='../theme/default/favicon.ico' />
+    <link href="../theme/style/style-ltr.css" rel="stylesheet" type="text/css" />
+	<link rel='shortcut icon' href='../theme/favicon.ico' />
     <style type="text/css">
         .about h1
         {

@@ -205,10 +205,10 @@ Users Configurations
 			Remove Objects
 			<br /><span class="field_desc">(Removes embedded objects.)</span></td>
 		<td style="text-align:center">
-			<asp:CheckBox ID="chkRemoveObjectsActive" runat="server" Enabled="false" /> 
+			<asp:CheckBox ID="chkRemoveObjectsActive" runat="server" /> 
 		</td>
 		<td style="text-align:center">
-			<asp:CheckBox ID="chkRemoveObjectsChangeable" runat="server" Enabled="false" />
+			<asp:CheckBox ID="chkRemoveObjectsChangeable" runat="server" />
 		</td>
 	</tr>
 	<tr>

@@ -1,4 +1,4 @@
-๏ปฟ<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="windows-1256"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -118,168 +118,111 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="btnASProxyDisplayButton.Text" xml:space="preserve">
-    <value>ูู…ุงูุด</value>
-  </data>
-  <data name="btnASProxyDisplayButton.ToolTip" xml:space="preserve">
-    <value />
+    <value>ไใวํิ</value>
   </data>
   <data name="chkCompression.Text" xml:space="preserve">
-    <value>ูุดุฑุฏู ุณุงุฒÛ</value>
-  </data>
-  <data name="chkCompression.ToolTip" xml:space="preserve">
-    <value />
+    <value>Ýิัฯๅ ำวาํ</value>
   </data>
   <data name="chkCookies.Text" xml:space="preserve">
-    <value>ูููÛ ูุง</value>
-  </data>
-  <data name="chkCookies.ToolTip" xml:space="preserve">
-    <value />
+    <value>฿ๆ฿ํ ๅว</value>
   </data>
   <data name="chkDisplayImages.Text" xml:space="preserve">
-    <value>ุชุตุงููุฑ</value>
-  </data>
-  <data name="chkDisplayImages.ToolTip" xml:space="preserve">
-    <value />
+    <value>สีวๆํั</value>
   </data>
   <data name="chkForms.Text" xml:space="preserve">
-    <value>ูุฑู… ูุง</value>
-  </data>
-  <data name="chkForms.ToolTip" xml:space="preserve">
-    <value />
+    <value>Ýัใ ๅว</value>
   </data>
   <data name="chkFrames.Text" xml:space="preserve">
-    <value>ูุฑูู… ูุง</value>
-  </data>
-  <data name="chkFrames.ToolTip" xml:space="preserve">
-    <value />
+    <value>Ýัํใ ๅว</value>
   </data>
   <data name="chkOrginalUrl.Text" xml:space="preserve">
-    <value>ูู…ุงูุด ู…ุณูุฑ ุงุตูÛ</value>
-  </data>
-  <data name="chkOrginalUrl.ToolTip" xml:space="preserve">
-    <value />
+    <value>ไใวํิ ใำํั วีแํ</value>
   </data>
   <data name="chkPageTitle.Text" xml:space="preserve">
-    <value>ูู…ุงูุด ุนููุงู ุตูุญู</value>
-  </data>
-  <data name="chkPageTitle.ToolTip" xml:space="preserve">
-    <value />
+    <value>ไใวํิ ฺไๆวไ ีÝอๅ</value>
   </data>
   <data name="chkProcessLinks.Text" xml:space="preserve">
-    <value>ูÛูฺฉ ูุง</value>
-  </data>
-  <data name="chkProcessLinks.ToolTip" xml:space="preserve">
-    <value />
+    <value>แํไ ๅว</value>
   </data>
   <data name="chkRemoveScripts.Text" xml:space="preserve">
-    <value>ุญุฐู ุงุณูุฑููพุช ูุง</value>
-  </data>
-  <data name="chkRemoveScripts.ToolTip" xml:space="preserve">
-    <value />
+    <value>อะÝ วำ฿ัํส ๅว</value>
   </data>
   <data name="chkTempCookies.Text" xml:space="preserve">
-    <value>ูููÛ ูุงÛ ู…ููุช</value>
-  </data>
-  <data name="chkTempCookies.ToolTip" xml:space="preserve">
-    <value />
+    <value>฿ๆ฿ํ ๅวํ ใๆÞส</value>
   </data>
   <data name="chkUTF8.Text" xml:space="preserve">
-    <value>ุงุณุชูุงุฏู ุงุฒ UTF-8</value>
-  </data>
-  <data name="chkUTF8.ToolTip" xml:space="preserve">
-    <value />
+    <value>วำสÝวฯๅ วา UTF-8</value>
   </data>
   <data name="lblCompression.Text" xml:space="preserve">
-    <value>ุตูุญู ุฑุง ูุดุฑุฏู ู…Û ฺฉูุฏ ู ุจุงุนุซ ุงูุฒุงÛุด ุณุฑุนุช ุจุงุฑฺฏุฐุงุฑÛ ุตูุญู ู…Û ุดูุฏ.&lt;br /&gt;ุงÛู ูÛฺฺฏÛ ู…ู…ฺฉู ุงุณุช ุฏุฑ ุจุฑุฎÛ ูุงุณุชÛูฺฏ ูุง ุจู ุฏุฑุณุชÛ ฺฉุงุฑ ูฺฉูุฏ.</value>
+    <value>ีÝอๅ ัว Ýิัฯๅ ใํ ไฯ ๆ ศวฺห วÝาวํิ ำัฺส ศวัะวัํ ีÝอๅ ใํ ิๆฯ.&lt;br /&gt;วํไ ๆํํ ใใไ วำส ฯั ศัฮํ ๅวำสํไ ๅว ศๅ ฯัำสํ วั ไไฯ.</value>
   </data>
   <data name="lblCookies.Text" xml:space="preserve">
-    <value>ูพุดุชÛุจุงูÛ ู ุฐุฎÛุฑู ฺฉูฺฉÛ ูุง.</value>
+    <value>ิสํศวไํ ๆ ะฮํัๅ ๆํ ๅว.</value>
   </data>
   <data name="lblDisplayImages.Text" xml:space="preserve">
-    <value>ูู…ุงÛุด ุชุตุงูÛุฑ</value>
+    <value>ไใวํิ สีวๆํั</value>
   </data>
   <data name="lblFootSlogan1.Text" xml:space="preserve">
-    <value>ุจุง ุงุณุชูุงุฏู ุงุฒ</value>
+    <value>ศว วำสÝวฯๅ วา</value>
   </data>
   <data name="lblFootSlogan2.Text" xml:space="preserve">
-    <value>ุจุฑุงÛ ุฎูุฏ ูพุฑุงฺฉุณÛ ุดุฎุตÛ ุฑุงÛฺฏุงู ุฏุงุดุชู ุจุงุดÛุฏ.</value>
+    <value>ศัวํ ฮๆฯ ัวำํ ิฮีํ ัวํวไ ฯวิสๅ ศวิํฯ.</value>
   </data>
   <data name="lblForms.Text" xml:space="preserve">
-    <value>ูพุฑุฏุงุฒุด ูุฑู… ูุง. ู…ุงููุฏ ูุฑู… ูุงÛ ุซุจุช ูุงู…ุ ูุฑูุฏ ู ุบÛุฑู.</value>
+    <value>ัฯวาิ Ýัใ ๅว. ใวไไฯ Ýัใ ๅวํ หศส ไวใก ๆัๆฯ ๆ Ûํัๅ.</value>
   </data>
   <data name="lblFrames.Text" xml:space="preserve">
-    <value>ูุฑÛู… ูุงÛ ุฏุงุฎู ุตูุญู.</value>
+    <value>Ýัํใ ๅวํ ฯวฮแ ีÝอๅ.</value>
   </data>
   <data name="lblLogo2.Text" xml:space="preserve">
-    <value>ุณูุงุฑ ุจุฑ ุงู…ูุงุฌ ูุจ ุจุง</value>
+    <value>ำๆวั ศั วใๆวฬ ๆศ ศว</value>
   </data>
   <data name="lblMainTitle.Text" xml:space="preserve">
-    <value>ASProxy ฺÛุณุชุ</value>
-  </data>
-  <data name="lblMainTitle.ToolTip" xml:space="preserve">
-    <value />
+    <value>ASProxy ํำสฟ</value>
   </data>
   <data name="lblOptions.Text" xml:space="preserve">
-    <value>ุชูุธู€ู€ูู€ู€ู…ู€ุงุช</value>
+    <value>สไูÜÜํÜÜใÜวส</value>
   </data>
   <data name="lblOrginalUrl.Text" xml:space="preserve">
-    <value>ุขุฏุฑุณ ุงุตูÛ ูÛูฺฉÛ ฺฉู ุฏุฑ ุฒÛุฑ ู…ุงูุณ ูุฑุงุฑ ุฏุงุฑุฏ ุฑุง ุฏุฑ Ûฺฉ ููุงุฑ ุดูุงูุฑ ุฏุฑ ุจุงูุงÛ ุตูุญู ูุดุงู ู…Û ุฏูุฏ. ุชูุฌู ฺฉูÛุฏ ฺฉู ุงÛู ูÛฺฺฏÛ ุจุงุนุซ ุงูุฒุงÛุด ุชูุฑÛุจÛ ุญุฌู… ุตูุญู ู…Û ุดูุฏ.
-&lt;br /&gt;(ูฺฉุชู: ุจุฑุงÛ ฺฉูพÛ ุขุฏุฑุณÛ ฺฉู ูุดุงู ุฏุงุฏู ู…Û ุดูุฏ ฺฉูÛุฏ ูุงÛ Ctrl+Shift+X ุฑุง ูุดุงุฑ ุฏูÛุฏ)</value>
+    <value>ยฯัำ วีแํ แํไํ ๅ ฯั าํั ใวๆำ Þัวั ฯวัฯ ัว ฯั ํ ไๆวั ิไวๆั ฯั ศวแวํ ีÝอๅ ไิวไ ใํ ฯๅฯ. สๆฬๅ ไํฯ ๅ วํไ ๆํํ ศวฺห วÝาวํิ สÞัํศํ อฬใ ีÝอๅ ใํ ิๆฯ.
+&lt;br /&gt;(ไสๅ: ศัวํ ํ ยฯัำํ ๅ ไิวไ ฯวฯๅ ใํ ิๆฯ แํฯ ๅวํ Ctrl+Shift+X ัว Ýิวั ฯๅํฯ)</value>
   </data>
   <data name="lblPageTitle.Text" xml:space="preserve">
-    <value>ุนููุงู ุตูุญู ุงุตูÛ ุฑุง ูู…ุงÛุด ู…Û ุฏูุฏ.</value>
+    <value>ฺไๆวไ ีÝอๅ วีแํ ัว ไใวํิ ใํ ฯๅฯ.</value>
   </data>
   <data name="lblProcessLinks.Text" xml:space="preserve">
-    <value>ูÛูฺฉูุงÛ ุตูุญู ุฑุง ูพุฑุฏุงุฒุด ู ฺฉุฏ ู…Û ฺฉูุฏ.</value>
+    <value>แํไๅวํ ีÝอๅ ัว ัฯวาิ ๆ ฯ ใํ ไฯ.</value>
   </data>
   <data name="lblRemoveScripts.Text" xml:space="preserve">
-    <value>ุงุณฺฉุฑÛูพุช ูุงÛ ุตูุญู ุฑุง ุญุฐู ู…Û ฺฉูุฏ. ุจุง ุญุฐู ุงุณฺฉุฑÛูพุช ูุง ุงู…ูÛุช ุจÛุดุชุฑ ุฎูุงูุฏ ุดุฏ ุงู…ุง ู…ู…ฺฉู ุงุณุช ฺฉู ุจุฑุฎÛ ูÛฺฺฏÛูุง ุณุงÛุช ุบÛุฑ ูุนุงู ุดูุฏ.</value>
+    <value>วำัํส ๅวํ ีÝอๅ ัว อะÝ ใํ ไฯ. ศว อะÝ วำัํส ๅว วใไํส ศํิสั ฮๆวๅฯ ิฯ วใว ใใไ วำส ๅ ศัฮํ ๆํํๅว ำวํส Ûํั Ýฺวแ ิๆฯ.</value>
   </data>
   <data name="lblTempCookies.Text" xml:space="preserve">
-    <value>ฺฉูฺฉÛ ูุงÛ ุตูุญู ุฑุง ุจู ุตูุฑุช ู…ููุชÛ ุฐุฎÛุฑู ู…Û ฺฉูุฏ. ูพุณ ุงุฒ ุจุณุชู ุดุฏู ู…ุฑูุฑฺฏุฑ ฺฉูฺฉÛ ูุง ูÛุฒ ุญุฐู ุฎูุงููุฏ ุดุฏ.</value>
+    <value>ๆํ ๅวํ ีÝอๅ ัว ศๅ ีๆัส ใๆÞสํ ะฮํัๅ ใํ ไฯ. ำ วา ศำสๅ ิฯไ ใัๆัั ๆํ ๅว ไํา อะÝ ฮๆวๅไฯ ิฯ.</value>
   </data>
   <data name="lblUrl.Text" xml:space="preserve">
-    <value>ุขุฏุฑุณ ุณุงูุช:</value>
+    <value>ยฯัำ ำวํส:</value>
   </data>
   <data name="lblUTF8.Text" xml:space="preserve">
-    <value>ุงุณุชูุงุฏู ุงุฌุจุงุฑÛ ุงุฒ UTF-8 ฺฉู ู…Û ุชูุงูุฏ ู…ุดฺฉู ุนุฏู… ูู…ุงÛุด ู…ุชูู ุจุฑุฎÛ ุณุงÛุชูุงÛ ูุงุฑุณÛ ุฑุง ุญู ฺฉูุฏ.</value>
+    <value>วำสÝวฯๅ วฬศวัํ วา UTF-8 ๅ ใํ สๆวไฯ ใิแ ฺฯใ ไใวํิ ใสๆไ ศัฮํ ำวํสๅวํ Ýวัำํ ัว อแ ไฯ.</value>
   </data>
   <data name="ltrMainDesc.Text" xml:space="preserve">
-    <value>ASProxy Ûฺฉ ุณุฑูÛุณ ฺฉุฏ ุจุงุฒ (Open Source) ุงุณุช ฺฉู ุจู ฺฉุงุฑุจุฑ ุงÛู ุงุฌุงุฒู ุฑุง ู…Û ุฏูุฏ ุฏุฑ ุงÛูุชุฑูุช ุจู ุตูุฑุช ูุงุดูุงุณ ุจู ฺฏุดุช ู ฺฏุฐุงุฑ ุจูพุฑุฏุงุฒุฏ. ุจุง ุงุณุชูุงุฏู ุงุฒ ASProxy ูู ุชููุง ู…Û ุชูุงูÛุฏ ู…ุฎูÛ ุจู…ุงูÛุฏ ุจูฺฉู ู…Û ุชูุงูÛุฏ ุงุฒ ุณุฏ ูÛูุชุฑูุง ู ูุงÛุฑูุงููุงÛÛ ฺฉู ุจุฑ ุฑูÛ ุฎุทูุท ุงÛูุชุฑูุช ูุฑุงุฑ ุฏุงุฏู ุดุฏู ุงุณุช ูÛุฒ ุนุจูุฑ ฺฉูÛุฏ.
-&lt;br /&gt;ุฏุฑ ุงุบูุจ ู…ูุงุฑุฏ ุฏุฑ ู…ุฏุงุฑุณ Ûุง ุฏุงูุดฺฏุงู ูุงุ ู…ุญÛุท ฺฉุงุฑ ู Ûุง ุญุชÛ ฺฉุดูุฑ ุดู…ุง ู…ู…ฺฉู ุงุณุช ุฏุณุชุฑุณÛ ุจู ุณุงÛุช ู…ูุฑุฏ ุนูุงูู ุดู…ุง ู…ุณุฏูุฏ ุดุฏู ุจุงุดุฏ. ุจุง ASProxy ู…Û ุชูุงูÛุฏ ุงÛู ู…ุญุฏูุฏÛุช ูุง ุฑุง ุฏูุฑ ุจุฒูÛุฏ.
-&lt;br /&gt;ูุฏู ุงÛุฌุงุฏ ASProxy ฺฏุณุชุฑุด ุขุฒุงุฏÛ ู ุฏุณุชุฑุณÛ ุจู ุงุทูุงุนุงุช ุจุฑุงÛ ูู…ู ุฏุฑ ุงÛูุชุฑูุช ุจูุฏู ุงุณุช. ุงู…ุง ุงÛู ูพุฑุงฺฉุณÛ ู…Û ุชูุงูุฏ ุจุฑุงÛ ูุฑ ูุฏูÛ ู…ูุฑุฏ ุงุณุชูุงุฏู ูุฑุงุฑ ฺฏÛุฑุฏ. ASProxy ูÛฺ ู…ุณุฆููÛุชÛ ุฏุฑ ูุจุงู ูุนุงูÛุชÛ ฺฉู ุดู…ุง ุงูุฌุงู… ู…Û ุฏูÛุฏ ูู…Û ูพุฐÛุฑุฏ.</value>
-  </data>
-  <data name="mnuASProxy.Text" xml:space="preserve">
-    <value>ุตูุญู ASProxy</value>
-  </data>
-  <data name="mnuCookie.Text" xml:space="preserve">
-    <value>ู…ุฏÛุฑÛุช ฺฉูฺฉÛ ูุง</value>
-  </data>
-  <data name="mnuDownload.Text" xml:space="preserve">
-    <value>ุงุจุฒุงุฑ ุฏุงูููุฏ</value>
-  </data>
-  <data name="mnuFootCookie.Text" xml:space="preserve">
-    <value>ู…ุฏÛุฑÛุช ฺฉูฺฉÛ ูุง</value>
-  </data>
-  <data name="mnuFootDownload.Text" xml:space="preserve">
-    <value>ุงุจุฒุงุฑ ุฏุงูููุฏ</value>
-  </data>
-  <data name="mnuHome.Text" xml:space="preserve">
-    <value>ุฎุงูู</value>
+    <value>ASProxy ํ ำัๆํำ ฯ ศวา (Open Source) วำส ๅ ศๅ วัศั วํไ วฬวาๅ ัว ใํ ฯๅฯ ฯั วํไสัไส ศๅ ีๆัส ไวิไวำ ศๅ ิส ๆ ะวั ศัฯวาฯ. ศว วำสÝวฯๅ วา ASProxy ไๅ สไๅว ใํ สๆวไํฯ ใฮÝํ ศใวไํฯ ศแๅ ใํ สๆวไํฯ วา ำฯ Ýํแสัๅว ๆ Ýวํัๆวแๅวํํ ๅ ศั ัๆํ ฮุๆุ วํไสัไส Þัวั ฯวฯๅ ิฯๅ วำส ไํา ฺศๆั ไํฯ.
+&lt;br /&gt;ฯั วÛแศ ใๆวัฯ ฯั ใฯวัำ ํว ฯวไิวๅ ๅวก ใอํุ วั ๆ ํว อสํ ิๆั ิใว ใใไ วำส ฯำสัำํ ศๅ ำวํส ใๆัฯ ฺแวÞๅ ิใว ใำฯๆฯ ิฯๅ ศวิฯ. ศว ASProxy ใํ สๆวไํฯ วํไ ใอฯๆฯํส ๅว ัว ฯๆั ศาไํฯ.
+&lt;br /&gt;ๅฯÝ วํฬวฯ ASProxy ำสัิ ยาวฯํ ๆ ฯำสัำํ ศๅ วุแวฺวส ศัวํ ๅใๅ ฯั วํไสัไส ศๆฯๅ วำส. วใว วํไ ัวำํ ใํ สๆวไฯ ศัวํ ๅั ๅฯÝํ ใๆัฯ วำสÝวฯๅ Þัวั ํัฯ. ASProxy ๅํ ใำฦๆแํสํ ฯั Þศวแ Ýฺวแํสํ ๅ ิใว วไฬวใ ใํ ฯๅํฯ ไใํ ะํัฯ.</value>
   </data>
   <data name="Page.Title" xml:space="preserve">
-    <value>Surf the web with ASProxy</value>
-  </data>
-  <data name="txtUrl.Text" xml:space="preserve">
-    <value />
-  </data>
-  <data name="txtUrl.ToolTip" xml:space="preserve">
-    <value />
+    <value>Surf the web with ASProxy111111</value>
   </data>
   <data name="chkEncodeUrl.Text" xml:space="preserve">
-    <value>ฺฉุฏ ฺฉุฑุฏู ุขุฏุฑุณ ูุง</value>
+    <value>ฯ ัฯไ ยฯัำ ๅว</value>
   </data>
   <data name="lblEncodeUrl.Text" xml:space="preserve">
-    <value>ุขุฏุฑุณ ุงุตูÛ ุณุงÛุช ุฑุง ฺฉุฏ ฺฉุฑุฏู ู ู…ุฎูÛ ู…Ûฺฉูุฏ. ุจุฑุงÛ ุนุจูุฑ ุงุฒ ูÛู€ูุชู€ู€ุฑูุง ุชูุตÛู ู…Û ุดูุฏ.</value>
+    <value>ยฯัำ วีแํ ำวํส ัว ฯ ัฯๅ ๆ ใฮÝํ ใํไฯ. ศัวํ ฺศๆั วา ÝํÜแสÜÜัๅว สๆีํๅ ใํ ิๆฯ.</value>
+  </data>
+  <data name="chkRemoveObjects.Text" xml:space="preserve">
+    <value>อะÝ ยศฬส ๅวํ ีÝอๅ</value>
+  </data>
+  <data name="lblRemoveObjects.Text" xml:space="preserve">
+    <value>วใวไ อะÝ วิํวม ไฯ ัำวไๅ วํ ใวไไฯ Ýแิ ๅว ัว วา ีÝอๅ ใํ ฯๅฯ.</value>
   </data>
 </root>

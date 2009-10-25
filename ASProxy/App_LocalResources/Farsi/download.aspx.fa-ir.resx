@@ -1,4 +1,4 @@
-๏ปฟ<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="windows-1256"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -118,81 +118,33 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="btnDisplay.Text" xml:space="preserve">
-    <value>ุฏุงูููุฏ ูุงูู</value>
-  </data>
-  <data name="btnDisplay.ToolTip" xml:space="preserve">
-    <value />
+    <value>ฯวไแๆฯ Ýวํแ</value>
   </data>
   <data name="lblAutoPrompt.Text" xml:space="preserve">
-    <value>&lt;script type="text/javascript"&gt;window.location="{0}";&lt;/script&gt;</value>
-  </data>
-  <data name="lblAutoPrompt.ToolTip" xml:space="preserve">
-    <value />
+    <value>&lt;script type="text/javascript"&gt;window.onload=function(){{window.location="{0}";}}&lt;/script&gt;</value>
   </data>
   <data name="lblErrorMsg.Text" xml:space="preserve">
-    <value>ูพูุบุงู… ุฎุทุง</value>
+    <value>ํÛวใ ฮุว</value>
   </data>
   <data name="lblErrorMsg.ToolTip" xml:space="preserve">
-    <value>ูพูุบุงู… ุฎุทุง</value>
-  </data>
-  <data name="lblFootSlogan1.Text" xml:space="preserve">
-    <value>ุจุง ุงุณุชูุงุฏู ุงุฒ</value>
-  </data>
-  <data name="lblFootSlogan2.Text" xml:space="preserve">
-    <value>ุจุฑุงÛ ุฎูุฏ ูพุฑุงฺฉุณÛ ุดุฎุตÛ ุฑุงÛฺฏุงู ุฏุงุดุชู ุจุงุดÛุฏ.</value>
-  </data>
-  <data name="lblLogo2.Text" xml:space="preserve">
-    <value>ุณูุงุฑ ุจุฑ ุงู…ูุงุฌ ูุจ ุจุง</value>
+    <value>ํÛวใ ฮุว</value>
   </data>
   <data name="lblMainTitle.Text" xml:space="preserve">
-    <value>ุงุจุฒุงุฑ ุฏุงูููุฏ</value>
-  </data>
-  <data name="lblMainTitle.ToolTip" xml:space="preserve">
-    <value />
+    <value>วศาวั ฯวไแๆฯ</value>
   </data>
   <data name="lblPrompt.Text" xml:space="preserve">
-    <value>ุงฺฏุฑ ู…ุฑูุฑฺฏุฑ ุดู…ุง ุจุฑุงÛ ุฏุฑÛุงูุช ูุงÛู ูÛฺ ูพÛุบุงู…Û ุตุงุฏุฑ ูฺฉุฑุฏ ู…Û ุชูุงูÛุฏ ุงุฒ ูÛูฺฉ ุฒÛุฑ ุงูุฏุงู… ฺฉูÛุฏ.</value>
+    <value>วั ใัๆัั ิใว ศัวํ ฯัํวÝส Ýวํแ ๅํ ํÛวใํ ีวฯั ไัฯ ใํ สๆวไํฯ วา แํไ าํั วÞฯวใ ไํฯ.</value>
   </data>
   <data name="lnkDownload.Text" xml:space="preserve">
-    <value>ูÛูฺฉ ุฏุฑÛุงูุช</value>
-  </data>
-  <data name="lnkDownload.ToolTip" xml:space="preserve">
-    <value />
+    <value>แํไ ฯัํวÝส</value>
   </data>
   <data name="ltrMainDesc.Text" xml:space="preserve">
-    <value>ุจุง ุงุณุชูุงุฏู ุงุฒ ุงÛู ุงุจุฒุงุฑ ู…Û ุชูุงูÛุฏ ูุฑ ููุน ูุงÛูÛ ุฑุง ุจุง ูุงุจูÛุช resume-support ุฏุฑÛุงูุช ฺฉูÛุฏ.</value>
-  </data>
-  <data name="ltrMainDesc.ToolTip" xml:space="preserve">
-    <value />
-  </data>
-  <data name="mnuASProxy.Text" xml:space="preserve">
-    <value>ุตูุญู ASProxy</value>
-  </data>
-  <data name="mnuCookie.Text" xml:space="preserve">
-    <value>ู…ุฏÛุฑÛุช ฺฉูฺฉÛ ูุง</value>
-  </data>
-  <data name="mnuDownload.Text" xml:space="preserve">
-    <value>ุงุจุฒุงุฑ ุฏุงูููุฏ</value>
-  </data>
-  <data name="mnuFootCookie.Text" xml:space="preserve">
-    <value>ู…ุฏÛุฑÛุช ฺฉูฺฉÛ ูุง</value>
-  </data>
-  <data name="mnuFootDownload.Text" xml:space="preserve">
-    <value>ุงุจุฒุงุฑ ุฏุงูููุฏ</value>
-  </data>
-  <data name="mnuHome.Text" xml:space="preserve">
-    <value>ุฎุงูู</value>
+    <value>ศว วำสÝวฯๅ วา วํไ วศาวั ใํ สๆวไํฯ ๅั ไๆฺ Ýวํแํ ัว ศว Þวศแํส resume-support ฯัํวÝส ไํฯ.</value>
   </data>
   <data name="Page.Title" xml:space="preserve">
-    <value>ุฏุฑÛุงูุช ูุฑ ููุน ูุงÛูÛ ุชูุณุท ASProxy</value>
-  </data>
-  <data name="txtUrl.Text" xml:space="preserve">
-    <value />
-  </data>
-  <data name="txtUrl.ToolTip" xml:space="preserve">
-    <value />
+    <value>ฯัํวÝส ๅั ไๆฺ Ýวํแํ สๆำุ ASProxy</value>
   </data>
   <data name="lblUrl.Text" xml:space="preserve">
-    <value>ุขุฏุฑุณ ุณุงูุช:</value>
+    <value>ยฯัำ ำวํส:</value>
   </data>
 </root>

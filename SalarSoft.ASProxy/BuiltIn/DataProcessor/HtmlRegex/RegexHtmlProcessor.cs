@@ -90,6 +90,15 @@ namespace SalarSoft.ASProxy.BuiltIn
 				if (_UserOptions.RemoveScripts)
 					HtmlReplacer.RemoveScripts(ref codes);
 
+				// If remove embeded objects is requested
+				if (_UserOptions.RemoveObjects)
+				{
+					// Removing <object> tag
+					HtmlParser.RemoveTagContent(ref codes, "object", true);
+
+					// Removing <embed> tag
+					HtmlParser.RemoveTagContent(ref codes, "embed", true);
+				}
 
 
 				// Applying the BASE tag to the URLs.
@@ -1185,7 +1194,8 @@ namespace SalarSoft.ASProxy.BuiltIn
 				_UserOptions.SubmitForms.ToString().ToLower(),
 				_UserOptions.Frames.ToString().ToLower(),
 				_UserOptions.Cookies.ToString().ToLower(),
-				_UserOptions.RemoveScripts.ToString().ToLower()
+				_UserOptions.RemoveScripts.ToString().ToLower(),
+				_UserOptions.RemoveObjects.ToString().ToLower()
 				);
 
 			reqInfo = string.Format(Consts.ClientContent.JSEncoder_RequestInfo,

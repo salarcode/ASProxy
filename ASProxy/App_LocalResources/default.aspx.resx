@@ -120,74 +120,44 @@
   <data name="btnASProxyDisplayButton.Text" xml:space="preserve">
     <value>Display</value>
   </data>
-  <data name="btnASProxyDisplayButton.ToolTip" xml:space="preserve">
-    <value />
-  </data>
   <data name="chkCompression.Text" xml:space="preserve">
     <value>Compress response</value>
-  </data>
-  <data name="chkCompression.ToolTip" xml:space="preserve">
-    <value />
   </data>
   <data name="chkCookies.Text" xml:space="preserve">
     <value>Cookies</value>
   </data>
-  <data name="chkCookies.ToolTip" xml:space="preserve">
-    <value />
-  </data>
   <data name="chkDisplayImages.Text" xml:space="preserve">
     <value>Images</value>
   </data>
-  <data name="chkDisplayImages.ToolTip" xml:space="preserve">
-    <value />
+  <data name="chkEncodeUrl.Text" xml:space="preserve">
+    <value>Encode URLs</value>
   </data>
   <data name="chkForms.Text" xml:space="preserve">
     <value>Process forms</value>
   </data>
-  <data name="chkForms.ToolTip" xml:space="preserve">
-    <value />
-  </data>
   <data name="chkFrames.Text" xml:space="preserve">
     <value>Frames</value>
-  </data>
-  <data name="chkFrames.ToolTip" xml:space="preserve">
-    <value />
   </data>
   <data name="chkOrginalUrl.Text" xml:space="preserve">
     <value>Original URLs</value>
   </data>
-  <data name="chkOrginalUrl.ToolTip" xml:space="preserve">
-    <value />
-  </data>
   <data name="chkPageTitle.Text" xml:space="preserve">
     <value>Display page title</value>
-  </data>
-  <data name="chkPageTitle.ToolTip" xml:space="preserve">
-    <value />
   </data>
   <data name="chkProcessLinks.Text" xml:space="preserve">
     <value>Links</value>
   </data>
-  <data name="chkProcessLinks.ToolTip" xml:space="preserve">
-    <value />
+  <data name="chkRemoveObjects.Text" xml:space="preserve">
+    <value>Remove Objects</value>
   </data>
   <data name="chkRemoveScripts.Text" xml:space="preserve">
     <value>Remove Scripts</value>
   </data>
-  <data name="chkRemoveScripts.ToolTip" xml:space="preserve">
-    <value />
-  </data>
   <data name="chkTempCookies.Text" xml:space="preserve">
     <value>Save Cookies as Temp</value>
   </data>
-  <data name="chkTempCookies.ToolTip" xml:space="preserve">
-    <value />
-  </data>
   <data name="chkUTF8.Text" xml:space="preserve">
     <value>Force UTF-8</value>
-  </data>
-  <data name="chkUTF8.ToolTip" xml:space="preserve">
-    <value />
   </data>
   <data name="lblCompression.Text" xml:space="preserve">
     <value>Compresses the responded page.&lt;br /&gt;This is a recommended option but it is not compatible with all hosting servers.</value>
@@ -198,11 +168,8 @@
   <data name="lblDisplayImages.Text" xml:space="preserve">
     <value>Displays images.</value>
   </data>
-  <data name="lblFootSlogan1.Text" xml:space="preserve">
-    <value>Have your own</value>
-  </data>
-  <data name="lblFootSlogan2.Text" xml:space="preserve">
-    <value>It's free.</value>
+  <data name="lblEncodeUrl.Text" xml:space="preserve">
+    <value>Encodes original site address and hides it.</value>
   </data>
   <data name="lblForms.Text" xml:space="preserve">
     <value>Processes submit forms.</value>
@@ -210,14 +177,8 @@
   <data name="lblFrames.Text" xml:space="preserve">
     <value>Enables inline frames.</value>
   </data>
-  <data name="lblLogo2.Text" xml:space="preserve">
-    <value>Surf the web with</value>
-  </data>
   <data name="lblMainTitle.Text" xml:space="preserve">
     <value>What is ASProxy?</value>
-  </data>
-  <data name="lblMainTitle.ToolTip" xml:space="preserve">
-    <value />
   </data>
   <data name="lblOptions.Text" xml:space="preserve">
     <value>Options</value>
@@ -229,8 +190,10 @@
     <value>Displays page title in browser title.</value>
   </data>
   <data name="lblProcessLinks.Text" xml:space="preserve">
-    <value>
-						Processes links and encodes them.</value>
+    <value>Processes links and encodes them.</value>
+  </data>
+  <data name="lblRemoveObjects.Text" xml:space="preserve">
+    <value>Removes embedded objects from page. Use this option to get rid of flash and embedded media in pages and save bandwidth.</value>
   </data>
   <data name="lblRemoveScripts.Text" xml:space="preserve">
     <value>Removes scripts from page. This option increases anonymity but may loose some functionalities.</value>
@@ -253,37 +216,7 @@ your favorite websites. ASProxy will circumvent this.&lt;br /&gt;
 The purpose of ASProxy is spreading freedom on the net, but this proxy can be used
 for any purposes. ASProxy is not responsible for your activities.</value>
   </data>
-  <data name="mnuASProxy.Text" xml:space="preserve">
-    <value>ASProxy Page</value>
-  </data>
-  <data name="mnuCookie.Text" xml:space="preserve">
-    <value>Cookie Manager</value>
-  </data>
-  <data name="mnuDownload.Text" xml:space="preserve">
-    <value>Download Tool</value>
-  </data>
-  <data name="mnuFootCookie.Text" xml:space="preserve">
-    <value>Cookie Manager</value>
-  </data>
-  <data name="mnuFootDownload.Text" xml:space="preserve">
-    <value>Download Tool</value>
-  </data>
-  <data name="mnuHome.Text" xml:space="preserve">
-    <value>Home</value>
-  </data>
   <data name="Page.Title" xml:space="preserve">
     <value>Surf the web with ASProxy</value>
-  </data>
-  <data name="txtUrl.Text" xml:space="preserve">
-    <value />
-  </data>
-  <data name="txtUrl.ToolTip" xml:space="preserve">
-    <value />
-  </data>
-  <data name="chkEncodeUrl.Text" xml:space="preserve">
-    <value>Encode URLs</value>
-  </data>
-  <data name="lblEncodeUrl.Text" xml:space="preserve">
-    <value>Encodes original site address and hides it. This is highly recommended option to pass the blockers on the internet connection.</value>
   </data>
 </root>

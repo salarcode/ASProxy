@@ -1,6 +1,6 @@
 ﻿// ASProxy Dynamic Encoder
 // ASProxy encoder for dynamically created objects //
-// Last update: 2009-07-20 coded by Salar Khalilzadeh //
+// Last update: 2009-10-25 coded by Salar Khalilzadeh //
 
 //_userConfig={EncodeUrl:true, OrginalUrl:true, Links:true, Images:true, Forms:true, Frames:true, Cookies:true};
 

@@ -1,4 +1,4 @@
-๏ปฟ<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="windows-1256"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -118,64 +118,31 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="btnClearCookies.Text" xml:space="preserve">
-    <value>ุญุฐู ูู…ู ฺฉูฺฉÛ ูุง</value>
-  </data>
-  <data name="btnClearCookies.ToolTip" xml:space="preserve">
-    <value />
+    <value>อะÝ ๅใๅ ๆํ ๅว</value>
   </data>
   <data name="btnDelete.Text" xml:space="preserve">
-    <value>ุญุฐู</value>
-  </data>
-  <data name="btnDelete.ToolTip" xml:space="preserve">
-    <value />
-  </data>
-  <data name="lblFootSlogan1.Text" xml:space="preserve">
-    <value>ุจุง ุงุณุชูุงุฏู ุงุฒ</value>
-  </data>
-  <data name="lblFootSlogan2.Text" xml:space="preserve">
-    <value>ุจุฑุงÛ ุฎูุฏ ูพุฑุงฺฉุณÛ ุดุฎุตÛ ุฑุงÛฺฏุงู ุฏุงุดุชู ุจุงุดÛุฏ.</value>
+    <value>อะÝ</value>
   </data>
   <data name="lblHeaderDetails.Text" xml:space="preserve">
-    <value>ุฌุฒุฆÛุงุช</value>
+    <value>ฬาฦํวส</value>
   </data>
   <data name="lblHeaderOptions.Text" xml:space="preserve">
-    <value>ุงุฎุชÛุงุฑุงุช</value>
-  </data>
-  <data name="lblLogo2.Text" xml:space="preserve">
-    <value>ุณูุงุฑ ุจุฑ ุงู…ูุงุฌ ูุจ ุจุง</value>
+    <value>วฮสํวัวส</value>
   </data>
   <data name="lblMainDesc.Text" xml:space="preserve">
-    <value>ูุดุฏุงุฑุ ุฏุฑ ุตูุฑุชÛ ฺฉู ุญุฌู… ฺฉูฺฉÛ ูุงÛ ุฐุฎÛุฑู ุดุฏู ุฏุฑ ฺฉุงู…ูพÛูุชุฑ ุดู…ุง ุจÛุด ุงุฒ ุงูุฒุงÛุด ูพÛุฏุง ฺฉูÛุฏุ ู…ู…ฺฉู ุงุณุช ฺฉู ASproxy ุจุง ู…ุดฺฉู ู…ูุงุฌู ุดูุฏ.&lt;br /&gt;
-ุฏุฑ ฺูÛู ุญุงูุชÛ ุชู…ุงู…Û ฺฉูฺฉÛ ูุงÛ ุฐุฎÛุฑู ุดุฏู ุชูุณุท ASProxy ุฏุฑ ฺฉุงู…ูพÛูุชุฑ ุฎูุฏ ุฑุง ุญุฐู ฺฉูÛุฏ.</value>
+    <value>ๅิฯวับ ฯั ีๆัสํ ๅ อฬใ ๆํ ๅวํ ะฮํัๅ ิฯๅ ฯั วใํๆสั ิใว ศํิ วา วÝาวํิ ํฯว ไํฯก ใใไ วำส ๅ ASproxy ศว ใิแ ใๆวฬๅ ิๆฯ.&lt;br /&gt;
+ฯั ไํไ อวแสํ สใวใํ ๆํ ๅวํ ะฮํัๅ ิฯๅ สๆำุ ASProxy ฯั วใํๆสั ฮๆฯ ัว อะÝ ไํฯ.</value>
   </data>
   <data name="lblMainTitle.Text" xml:space="preserve">
-    <value>ู…ุฏÛุฑÛุช ฺฉูฺฉÛ ูุง</value>
-  </data>
-  <data name="mnuASProxy.Text" xml:space="preserve">
-    <value>ุตูุญู ASProxy</value>
-  </data>
-  <data name="mnuCookie.Text" xml:space="preserve">
-    <value>ู…ุฏÛุฑÛุช ฺฉูฺฉÛ ูุง</value>
-  </data>
-  <data name="mnuDownload.Text" xml:space="preserve">
-    <value>ุงุจุฒุงุฑ ุฏุงูููุฏ</value>
-  </data>
-  <data name="mnuFootCookie.Text" xml:space="preserve">
-    <value>ู…ุฏÛุฑÛุช ฺฉูฺฉÛ ูุง</value>
-  </data>
-  <data name="mnuFootDownload.Text" xml:space="preserve">
-    <value>ุงุจุฒุงุฑ ุฏุงูููุฏ</value>
-  </data>
-  <data name="mnuHome.Text" xml:space="preserve">
-    <value>ุฎุงูู</value>
+    <value>ใฯํัํส ๆํ ๅว</value>
   </data>
   <data name="Page.Title" xml:space="preserve">
-    <value>ู…ุฏÛุฑÛุช ฺฉูฺฉÛ ูุงÛ ุฐุฎÛุฑู ุดุฏู ุชูุณุท ASProxy ุฏุฑ ฺฉุงู…ูพÛูุชุฑ ุดู…ุง</value>
+    <value>ใฯํัํส ๆํ ๅวํ ะฮํัๅ ิฯๅ สๆำุ ASProxy ฯั วใํๆสั ิใว</value>
   </data>
   <data name="tdName.Text" xml:space="preserve">
-    <value>ูุงู…</value>
+    <value>ไวใ</value>
   </data>
   <data name="tdValue.Text" xml:space="preserve">
-    <value>ู…ูุฏุงุฑ</value>
+    <value>ใÞฯวั</value>
   </data>
 </root>

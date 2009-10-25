@@ -174,4 +174,7 @@
   <data name="chkEncodeUrl" xml:space="preserve">
     <value>ъо ъяоД бояс Ег</value>
   </data>
+  <data name="chkRemoveObjects" xml:space="preserve">
+    <value>мпщ бхл≤й Ег</value>
+  </data>
 </root>

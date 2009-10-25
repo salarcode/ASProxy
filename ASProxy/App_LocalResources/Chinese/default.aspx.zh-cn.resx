@@ -120,74 +120,38 @@
   <data name="btnASProxyDisplayButton.Text" xml:space="preserve">
     <value>显示</value>
   </data>
-  <data name="btnASProxyDisplayButton.ToolTip" xml:space="preserve">
-    <value />
-  </data>
   <data name="chkCompression.Text" xml:space="preserve">
     <value>压缩回复内容</value>
-  </data>
-  <data name="chkCompression.ToolTip" xml:space="preserve">
-    <value />
   </data>
   <data name="chkCookies.Text" xml:space="preserve">
     <value>Cookies</value>
   </data>
-  <data name="chkCookies.ToolTip" xml:space="preserve">
-    <value />
-  </data>
   <data name="chkDisplayImages.Text" xml:space="preserve">
     <value>图片</value>
-  </data>
-  <data name="chkDisplayImages.ToolTip" xml:space="preserve">
-    <value />
   </data>
   <data name="chkForms.Text" xml:space="preserve">
     <value>处理表单</value>
   </data>
-  <data name="chkForms.ToolTip" xml:space="preserve">
-    <value />
-  </data>
   <data name="chkFrames.Text" xml:space="preserve">
     <value>内置帧页面</value>
-  </data>
-  <data name="chkFrames.ToolTip" xml:space="preserve">
-    <value />
   </data>
   <data name="chkOrginalUrl.Text" xml:space="preserve">
     <value>原始网址</value>
   </data>
-  <data name="chkOrginalUrl.ToolTip" xml:space="preserve">
-    <value />
-  </data>
   <data name="chkPageTitle.Text" xml:space="preserve">
     <value>显示页标题</value>
-  </data>
-  <data name="chkPageTitle.ToolTip" xml:space="preserve">
-    <value />
   </data>
   <data name="chkProcessLinks.Text" xml:space="preserve">
     <value>连接</value>
   </data>
-  <data name="chkProcessLinks.ToolTip" xml:space="preserve">
-    <value />
-  </data>
   <data name="chkRemoveScripts.Text" xml:space="preserve">
     <value>移除脚本</value>
-  </data>
-  <data name="chkRemoveScripts.ToolTip" xml:space="preserve">
-    <value />
   </data>
   <data name="chkTempCookies.Text" xml:space="preserve">
     <value>Save Cookies as Temp</value>
   </data>
-  <data name="chkTempCookies.ToolTip" xml:space="preserve">
-    <value />
-  </data>
   <data name="chkUTF8.Text" xml:space="preserve">
     <value>强制使用UTF-8编码</value>
-  </data>
-  <data name="chkUTF8.ToolTip" xml:space="preserve">
-    <value />
   </data>
   <data name="lblCompression.Text" xml:space="preserve">
     <value>Compresses the responded page.&lt;br /&gt;This is a recommended option but it is not compatible with all hosting servers.</value>
@@ -216,9 +180,6 @@
   <data name="lblMainTitle.Text" xml:space="preserve">
     <value>What is ASProxy?</value>
   </data>
-  <data name="lblMainTitle.ToolTip" xml:space="preserve">
-    <value />
-  </data>
   <data name="lblOptions.Text" xml:space="preserve">
     <value>选项</value>
   </data>
@@ -229,8 +190,7 @@
     <value>Displays page title in browser title.</value>
   </data>
   <data name="lblProcessLinks.Text" xml:space="preserve">
-    <value>
-						Processes links and encodes them.</value>
+    <value>Processes links and encodes them.</value>
   </data>
   <data name="lblRemoveScripts.Text" xml:space="preserve">
     <value>Removes scripts from page. This option increases anonymity but may loose some functionalities.</value>
@@ -253,37 +213,19 @@ your favorite websites. ASProxy will circumvent this.&lt;br /&gt;
 The purpose of ASProxy is spreading freedom on the net, but this proxy can be used
 for any purposes. ASProxy is not responsible for your activities.</value>
   </data>
-  <data name="mnuASProxy.Text" xml:space="preserve">
-    <value>ASProxy Page</value>
-  </data>
-  <data name="mnuCookie.Text" xml:space="preserve">
-    <value>Cookie管理</value>
-  </data>
-  <data name="mnuDownload.Text" xml:space="preserve">
-    <value>下载工具</value>
-  </data>
-  <data name="mnuFootCookie.Text" xml:space="preserve">
-    <value>Cookie管理</value>
-  </data>
-  <data name="mnuFootDownload.Text" xml:space="preserve">
-    <value>下载工具</value>
-  </data>
-  <data name="mnuHome.Text" xml:space="preserve">
-    <value>Home</value>
-  </data>
   <data name="Page.Title" xml:space="preserve">
     <value>Surf the web with ASProxy</value>
-  </data>
-  <data name="txtUrl.Text" xml:space="preserve">
-    <value />
-  </data>
-  <data name="txtUrl.ToolTip" xml:space="preserve">
-    <value />
   </data>
   <data name="chkEncodeUrl.Text" xml:space="preserve">
     <value>Encode URLs</value>
   </data>
   <data name="lblEncodeUrl.Text" xml:space="preserve">
     <value>Encodes original site address and hides it. This is highly recommended option to pass the blockers on the internet connection.</value>
+  </data>
+  <data name="chkRemoveObjects.Text" xml:space="preserve">
+    <value>Remove Objects</value>
+  </data>
+  <data name="lblRemoveObjects.Text" xml:space="preserve">
+    <value>Removes embedded objects from page. Use this option to get rid of flash and embedded media in pages and save bandwidth.</value>
   </data>
 </root>

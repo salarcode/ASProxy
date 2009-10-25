@@ -60,5 +60,10 @@
 		CustomErrors.HandleCustomErrors(ex);
 	}
 
+	protected void Application_BeginRequest(object sender, EventArgs e)
+	{
+		// Page UI
+		System.Threading.Thread.CurrentThread.CurrentUICulture = Configurations.Pages.GetUiLanguage();
+	}
 </script>
 

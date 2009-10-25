@@ -18,7 +18,7 @@ td{font-size: 13px;}
 #menu .first a{background: #983D3A;border: 1px #D45951 solid;}
 #content{background: #E8DBA7 none repeat scroll 0 0;border-bottom: 4px solid #D35406;}
 #content .content{margin: 0 auto;padding: 0 0 20px;width: 778px;}
-.urlBar{text-shadow:0 0 4px white; background: #BBB082 none repeat scroll 0 0;color: black;font-size: 1em;font-weight: bold;margin: 0 0 10px;padding: 5px 10px 10px 10px;-moz-border-radius: 0px 0px 10px 10px;-webkit-border-radius: 0px 0px 10px 10px;border-radius: 0px 0px 10px 10px;}
+.urlBar{text-shadow:0 0 4px white; background: #BBB082 none repeat scroll 0 0;color: black;font-size: 1em;font-weight: bold;padding: 5px 10px 10px 10px;-moz-border-radius: 0px 0px 10px 10px;-webkit-border-radius: 0px 0px 10px 10px;border-radius: 0px 0px 10px 10px;}
 .button{vertical-align: bottom;background: #4C4D51 none repeat scroll 0 0;border: 1px solid silver;color: #FFFFFF;font-size: 11px;font-weight: bold;margin-right: 6px;padding: 3px 14px;text-decoration: none;text-transform: uppercase;height: 30px;cursor: pointer;}
 .button:Hover{background: #983D3A none repeat scroll 0 0;border: 1px solid #D45951;text-decoration: none;}
 .urlBar .urlText{vertical-align: bottom;-height: 20px;padding: 6px;background-color: whitesmoke;border: solid 1px #4C4D51;
@@ -29,7 +29,7 @@ td{font-size: 13px;}
 .urlBar .urlBarDesc{margin-top: 5px;}
 .urlBar A{text-shadow:0px 0px 5px white; outline-width:0px;}
 .urlBar A:hover{text-shadow:0px 0px 10px blue;}
-.about h1{margin: 0px 0;padding: 0 0 10px;font-size: 1.5em;}
+.about h1{margin: 0px 0;padding:10px 0;font-size: 1.5em;}
 .about .title{color: #CC6B47;text-shadow:1px 1px 6px #CC6B47;}
 #options{background: #F4EDD3;border-bottom: 4px #D35406 solid;}
 .options{width: 778px;margin: 0 auto;}

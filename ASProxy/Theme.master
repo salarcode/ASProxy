@@ -1,0 +1,162 @@
+﻿<%@ Master Language="C#" meta:resourcekey="Page"  %>
+<%@ Import Namespace="SalarSoft.ASProxy" %>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<script runat="server">
+	static readonly Type _masterType = typeof(MasterPage);
+	static readonly System.Reflection.PropertyInfo _contentTemplatesProp = _masterType.GetProperty("ContentTemplates",
+		System.Reflection.BindingFlags.GetProperty | System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+
+	public static bool HasContentPageContent(ContentPlaceHolder cph)
+	{
+		IDictionary templates = null;
+		MasterPage master = cph.Page.Master;
+
+		while (templates == null && master != null)
+		{
+			templates = (IDictionary)_contentTemplatesProp.GetValue(master, null);
+			master = master.Master;
+		}
+
+		if (templates == null)
+			return false;
+
+		bool isSpecified = false;
+
+		foreach (string key in templates.Keys)
+		{
+			if (key == cph.ID)
+			{
+				isSpecified = true;
+
+				break;
+			}
+		}
+
+		return isSpecified;
+	}
+
+	public static bool HasNonEmptyControls(ContentPlaceHolder cph)
+	{
+		if (cph.Controls.Count == 0)
+		{
+			return false;
+		}
+		else if (cph.Controls.Count == 1)
+		{
+			LiteralControl c = cph.Controls[0] as LiteralControl;
+
+			if (string.IsNullOrEmpty(c.Text) || IsWhiteSpace(c.Text))
+				return false;
+		}
+
+		return true;
+	}
+
+	static bool IsWhiteSpace(string s)
+	{
+		for (int i = 0; i < s.Length; i++)
+			if (!char.IsWhiteSpace(s[i]))
+				return false;
+
+		return true;
+	}
+
+	public static bool HasContentOrControls(ContentPlaceHolder cph)
+	{
+		return HasNonEmptyControls(cph) || HasContentPageContent(cph);
+		
+	}
+
+	//System.Globalization.CultureInfo.CurrentUICulture.TextInfo.
+</script>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<link href="theme/style/style-<%=Resources.Languages.TextDirection %>.css" rel="stylesheet" type="text/css" />
+<link rel='shortcut icon' href='theme/favicon.ico' />
+<asp:ContentPlaceHolder ID="plhHeadMeta" runat="server">
+</asp:ContentPlaceHolder>
+</head>
+<body>
+	<form id="frmMain" runat="server">
+	<div class="header">
+		<div id="logo">
+			<h1>
+				<a asproxydone="2" href=".">ASProxy</a><span class="super"><%=Consts.General.ASProxyVersion %></span></h1>
+			<h2>
+				<asp:Literal ID="lblLogo2" EnableViewState="False" runat="server" meta:resourcekey="lblLogo2"
+					Text="Surf the web with"></asp:Literal></h2>
+		</div>
+	</div>
+	<div id="menu-wrap">
+		<div id="menu">
+			<ul>
+				<li id="mnuHome"><a asproxydone="2" href="." accesskey="1">
+					<asp:Literal EnableViewState="False" runat="server" meta:resourcekey="mnuHome"
+						Text="Home"></asp:Literal>
+				</a></li>
+				<li id="mnuCookie"><a asproxydone="2" href="cookieman.aspx" accesskey="2">
+					<asp:Literal EnableViewState="False" runat="server" meta:resourcekey="mnuCookie"
+						Text="Cookie Manager"></asp:Literal></a></li>
+				<li id="mnuDownload"><a asproxydone="2" href="download.aspx" accesskey="3">
+					<asp:Literal EnableViewState="False" runat="server" meta:resourcekey="mnuDownload"
+								Text="Download Tool"></asp:Literal>
+						</a></li>
+				<li id="mnuASProxy"><a asproxydone="2" href="surf.aspx?dec=1&amp;url=aHR0cDovL2FzcHJveHkuc291cmNlZm9yZ2UubmV0B64Coded!"
+					target="_blank" accesskey="4">
+					<asp:Literal EnableViewState="False" runat="server" meta:resourcekey="mnuASProxy"
+						Text="ASProxy Page"></asp:Literal>
+				</a></li>
+			</ul>
+		</div>
+	</div>
+	<div id="content">
+		<div class="content">
+			<asp:ContentPlaceHolder ID="plhMainBar" runat="server">
+			</asp:ContentPlaceHolder>
+			<div class="about">
+				<h1 class="title">
+					<asp:ContentPlaceHolder ID="plhMainTitle" runat="server" />
+				</h1>
+			</div>
+			<div class="entry">
+				<asp:ContentPlaceHolder ID="plhContent" runat="server" />
+			</div>
+		</div>
+		<div class="cookies">
+		</div>
+	</div>
+	<%if (HasContentOrControls(plhOptions)){ %>
+	<div id="options">
+		<div class="options">
+			<h2>
+				<asp:ContentPlaceHolder ID="plhOptionsTitle" runat="server" />
+			</h2>
+			<asp:ContentPlaceHolder ID="plhOptions" runat="server" />
+		</div>
+	</div>
+	<%}%>
+	<div id="links">
+		<p>
+			<a asproxydone="2" href="cookieman.aspx" target="_blank">
+				<asp:Literal ID="mnuFootCookie" EnableViewState="False" runat="server" meta:resourcekey="mnuFootCookie"
+					Text="Cookie Manager"></asp:Literal></a> <a asproxydone="2" href="download.aspx"
+						target="_blank">
+						<asp:Literal ID="mnuFootDownload" EnableViewState="False" runat="server" meta:resourcekey="mnuFootDownload"
+							Text="Download Tool"></asp:Literal></a>
+			<asp:Literal ID="lblFootSlogan1" EnableViewState="False" runat="server" meta:resourcekey="lblFootSlogan1"
+				Text="Have your own"></asp:Literal>
+			<a asproxydone="2" href="surf.aspx?dec=1&url=aHR0cDovL2FzcHJveHkuc291cmNlZm9yZ2UubmV0B64Coded!"
+				target="_blank">ASProxy</a>.
+			<asp:Literal ID="lblFootSlogan2" EnableViewState="False" runat="server" meta:resourcekey="lblFootSlogan2"
+				Text="It's free."></asp:Literal>
+		</p>
+	</div>
+	<div id="footer">
+		<p>
+			@2009 ASProxy <%=Consts.General.ASProxyVersion %>: powered by SalarSoft</p>
+	</div>
+	</form>
+</body>
+</html>

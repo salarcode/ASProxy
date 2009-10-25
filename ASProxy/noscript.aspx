@@ -269,5 +269,4 @@ function toggleOpt(lnk){var trMoreOpt=document.getElementById('trMoreOpt'); if (
 <div style="position: relative; left: 0px; top: 5px; width: 100%; height:auto;">
 <asp:Literal ID="ltrHtmlBody" runat="server" EnableViewState="false"></asp:Literal></div>
 </form>
-<script type="text/javascript" src="scripts/versionchecker.js"></script>
 </body></html>

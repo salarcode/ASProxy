@@ -120,20 +120,8 @@
   <data name="btnClearCookies.Text" xml:space="preserve">
     <value>Delete All</value>
   </data>
-  <data name="btnClearCookies.ToolTip" xml:space="preserve">
-    <value />
-  </data>
   <data name="btnDelete.Text" xml:space="preserve">
     <value>Delete</value>
-  </data>
-  <data name="btnDelete.ToolTip" xml:space="preserve">
-    <value />
-  </data>
-  <data name="lblFootSlogan1.Text" xml:space="preserve">
-    <value>Have your own</value>
-  </data>
-  <data name="lblFootSlogan2.Text" xml:space="preserve">
-    <value>It's free.</value>
   </data>
   <data name="lblHeaderDetails.Text" xml:space="preserve">
     <value>Details</value>
@@ -141,32 +129,11 @@
   <data name="lblHeaderOptions.Text" xml:space="preserve">
     <value>Options</value>
   </data>
-  <data name="lblLogo2.Text" xml:space="preserve">
-    <value>Surf the web with</value>
-  </data>
   <data name="lblMainDesc.Text" xml:space="preserve">
     <value>Warning, if the number of ASProxy cookies increases, ASProxy may not be able to load,&lt;br /&gt;In this case remove the cookies.</value>
   </data>
   <data name="lblMainTitle.Text" xml:space="preserve">
     <value>Cookie Manager</value>
-  </data>
-  <data name="mnuASProxy.Text" xml:space="preserve">
-    <value>ASProxy Page</value>
-  </data>
-  <data name="mnuCookie.Text" xml:space="preserve">
-    <value>Cookie Manager</value>
-  </data>
-  <data name="mnuDownload.Text" xml:space="preserve">
-    <value>Download Tool</value>
-  </data>
-  <data name="mnuFootCookie.Text" xml:space="preserve">
-    <value>Cookie Manager</value>
-  </data>
-  <data name="mnuFootDownload.Text" xml:space="preserve">
-    <value>Download Tool</value>
-  </data>
-  <data name="mnuHome.Text" xml:space="preserve">
-    <value>Home</value>
   </data>
   <data name="Page.Title" xml:space="preserve">
     <value>Manage stored cookies by ASProxy in your PC</value>

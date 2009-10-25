@@ -1,6 +1,5 @@
 ﻿// ASProxy AJAX Wrapper Core
 // Last update: 2009-06-26 coded by Salar Khalilzadeh //
-
 var _AJAXWrapperHandler="ajax.ashx";Object.extend=function(dest,source,replace){for(var prop in source){if(replace==false&&dest[prop]!=null){continue;}
 dest[prop]=source[prop];}
 return dest;};function _ArrayAdd(arr,name,value){arr[name]=value;}

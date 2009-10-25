@@ -1,4 +1,4 @@
-๏ปฟ<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="windows-1256"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -118,20 +118,20 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="btnASProxyDisplayButton.Text" xml:space="preserve">
-    <value>ูู…ุงูุด</value>
+    <value>ไใวํิ</value>
   </data>
   <data name="btnASProxyDisplayButton.ToolTip" xml:space="preserve">
     <value />
   </data>
   <data name="lblDesc.Text" xml:space="preserve">
-    <value>ุณุงÛุช ู…ูุฑุฏ ูุธุฑ ุจุฑุงÛ ู…ุดุงูุฏู ูÛุงุฒ ุจู ุชุงÛÛุฏ ููÛุช ุดู…ุง ุฏุงุฑุฏ. ูุทูุง ูุงู… ฺฉุงุฑุจุฑÛ ู ฺฉูู…ู ุนุจูุฑ ุฑุง ูุงุฑุฏ ฺฉูÛุฏ.
-			ูุงู… ฺฉุงุฑุจุฑÛ ู ฺฉูู…ู ุนุจูุฑ ูุงุฑุฏ ุดุฏู ุฏุฑ ุญุงูุธู ู…ููุช ุฐุฎÛุฑู ุฎูุงููุฏ ุดุฏ ู ูพุณ ุงุฒ ูพุงÛุงู ุจุงุฒุฏÛุฏ ุดู…ุง ูพุงฺฉ ุฎูุงููุฏ ุดุฏ..</value>
+    <value>ำวํส ใๆัฯ ไูั ศัวํ ใิวๅฯๅ ไํวา ศๅ สวํํฯ ๅๆํส ิใว ฯวัฯ. แุÝว ไวใ วัศัํ ๆ แใๅ ฺศๆั ัว ๆวัฯ ไํฯ.
+			ไวใ วัศัํ ๆ แใๅ ฺศๆั ๆวัฯ ิฯๅ ฯั อวÝูๅ ใๆÞส ะฮํัๅ ฮๆวๅไฯ ิฯ ๆ ำ วา วํวไ ศวาฯํฯ ิใว ว ฮๆวๅไฯ ิฯ..</value>
   </data>
   <data name="lblErrorMsg.Text" xml:space="preserve">
-    <value>ูพÛุบุงู… ุฎุทุง</value>
+    <value>ํÛวใ ฮุว</value>
   </data>
   <data name="lblErrorMsg.ToolTip" xml:space="preserve">
-    <value>ูพÛุบุงู… ุฎุทุง</value>
+    <value>ํÛวใ ฮุว</value>
   </data>
   <data name="lblRequestedUrl.Text" xml:space="preserve">
     <value />
@@ -140,7 +140,7 @@
     <value />
   </data>
   <data name="Page.Title" xml:space="preserve">
-    <value>ุจุฑุงÛ ู…ุดุงูุฏู ุงÛู ุณุงÛุช ูÛุงุฒ ุจู ุชุงÛÛุฏ ููÛุช ุฎูุฏ ุฏุงุฑÛุฏ.</value>
+    <value>ศัวํ ใิวๅฯๅ วํไ ำวํส ไํวา ศๅ สวํํฯ ๅๆํส ฮๆฯ ฯวัํฯ.</value>
   </data>
   <data name="txtUrl.Text" xml:space="preserve">
     <value />
@@ -152,7 +152,7 @@
     <value />
   </data>
   <data name="wcLogin.FailureText" xml:space="preserve">
-    <value>ูุงู… ฺฉุงุฑุจุฑÛ Ûุง ฺฉูู…ู ุนุจูุฑ ุงุดุชุจุงู ุงุณุช. ู…ุฌุฏุฏุง ุณุนÛ ฺฉูÛุฏ.</value>
+    <value>ไวใ วัศัํ ํว แใๅ ฺศๆั วิสศวๅ วำส. ใฬฯฯว ำฺํ ไํฯ.</value>
   </data>
   <data name="wcLogin.HelpPageText" xml:space="preserve">
     <value />
@@ -161,30 +161,30 @@
     <value />
   </data>
   <data name="wcLogin.LoginButtonText" xml:space="preserve">
-    <value>ูุฑูุฏ</value>
+    <value>ๆัๆฯ</value>
   </data>
   <data name="wcLogin.PasswordLabelText" xml:space="preserve">
-    <value>ฺฉูู…ู ุนุจูุฑ:</value>
+    <value>แใๅ ฺศๆั:</value>
   </data>
   <data name="wcLogin.PasswordRecoveryText" xml:space="preserve">
     <value />
   </data>
   <data name="wcLogin.PasswordRequiredErrorMessage" xml:space="preserve">
-    <value>ฺฉูู…ู ุนุจูุฑ ุงุฌุจุงุฑÛ ุงุณุช.</value>
+    <value>แใๅ ฺศๆั วฬศวัํ วำส.</value>
   </data>
   <data name="wcLogin.RememberMeText" xml:space="preserve">
-    <value>ูุฑูุฏ ุฎูุฏฺฉุงุฑ ุฏุฑ ุจุงุฒุฏÛุฏ ุจุนุฏÛ.</value>
+    <value>ๆัๆฯ ฮๆฯวั ฯั ศวาฯํฯ ศฺฯํ.</value>
   </data>
   <data name="wcLogin.TitleText" xml:space="preserve">
-    <value>ุชุงÛÛุฏ ููÛุช ุจุฑุงÛ ุณุงÛุช ู…ูุฑุฏ ุฏุฑุฎูุงุณุช.</value>
+    <value>สวํํฯ ๅๆํส ศัวํ ำวํส ใๆัฯ ฯัฮๆวำส.</value>
   </data>
   <data name="wcLogin.ToolTip" xml:space="preserve">
     <value />
   </data>
   <data name="wcLogin.UserNameLabelText" xml:space="preserve">
-    <value>ูุงู… ฺฉุงุฑุจุฑÛ:</value>
+    <value>ไวใ วัศัํ:</value>
   </data>
   <data name="wcLogin.UserNameRequiredErrorMessage" xml:space="preserve">
-    <value>ูุงู… ฺฉุงุฑุจุฑÛ ุงุฌุจุงุฑÛ ุงุณุช.</value>
+    <value>ไวใ วัศัํ วฬศวัํ วำส.</value>
   </data>
 </root>

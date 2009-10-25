@@ -174,4 +174,7 @@
   <data name="chkEncodeUrl" xml:space="preserve">
     <value>Encode URLs</value>
   </data>
+  <data name="chkRemoveObjects" xml:space="preserve">
+    <value>Remove Objects</value>
+  </data>
 </root>

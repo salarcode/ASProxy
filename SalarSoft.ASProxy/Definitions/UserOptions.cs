@@ -62,8 +62,8 @@ namespace SalarSoft.ASProxy
             _defaultOptions.TempCookies = config.TempCookies.Enabled;
 
             _defaultOptions._LoadedFromSource = false;
-
         }
+
         /// <summary>
         /// Initialize a new instance of UserOptions with default value
         /// </summary>

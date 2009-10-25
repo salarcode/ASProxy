@@ -81,7 +81,7 @@ namespace SalarSoft.ASProxy
         /// </summary>
         public class ClientContent
         {
-			public const string JSEncoder_UserConfig = "_userConfig={{EncodeUrl:{0}, OrginalUrl:{1}, Links:{2}, Images:{3}, Forms:{4}, Frames:{5}, Cookies:{6}, RemScripts:{7} }}; ";
+			public const string JSEncoder_UserConfig = "_userConfig={{EncodeUrl:{0}, OrginalUrl:{1}, Links:{2}, Images:{3}, Forms:{4}, Frames:{5}, Cookies:{6}, RemScripts:{7}, RemObjects:{8} }}; ";
 			public const string JSEncoder_RequestInfo = @"_reqInfo={{pageUrl:""{0}"", pageUrlNoQuery:""{1}"", pagePath:""{2}"", rootUrl:""{3}"", cookieName:'{4}', cookieNameExt:'{5}', ASProxyUrl:""{6}"", ASProxyPath:""{7}"", ASProxyRoot:""{8}"", ASProxyPageName:'{9}', UrlUnknowner:'{10}'}}; ";
 			public const string JSEncoder_RequestLocation = @"_reqInfo.location={{ Hash:'{0}', Host:""{1}"", Hostname:""{2}"", Pathname:""{3}"", Search:""{4}"", Port:'{5}', Protocol:'{6}' }}; ";
 			public const string JSEncoder_AppliedCookieNames = @"_reqInfo.appliedCookiesList=[{0}]; ";

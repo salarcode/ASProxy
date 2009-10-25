@@ -1,8 +1,9 @@
 // ASProxy Surf page scripts
-// Last update: 2009-10-19 coded by Salar Khalilzadeh //
+// Last update: 2009-10-25 coded by Salar Khalilzadeh //
 
 // Page options
-_XPage={};
+if (typeof (_XPage) == 'undefined')
+	_XPage = {};
 function _Page_Initialize(){
 	_XPage.UrlBox =document.getElementById('txtUrl');
 	_XPage.ProcessLinks =document.getElementById('chkProcessLinks');
@@ -16,6 +17,7 @@ function _Page_Initialize(){
 	_XPage.PageTitle =document.getElementById('chkPageTitle');
 	_XPage.UTF8 =document.getElementById('chkUTF8');
 	_XPage.RemoveScripts =document.getElementById('chkRemoveScripts');
+	_XPage.RemoveObjects = document.getElementById('chkRemoveObjects');
 	_XPage.EncodeUrl =document.getElementById('chkEncodeUrl');
 	
 	if(!_XPage.UrlBox) _XPage.UrlBox={};
@@ -30,6 +32,7 @@ function _Page_Initialize(){
 	if(!_XPage.PageTitle) _XPage.PageTitle={};
 	if(!_XPage.UTF8) _XPage.UTF8={};
 	if(!_XPage.RemoveScripts) _XPage.RemoveScripts={};
+	if(!_XPage.RemoveObjects) _XPage.RemoveObjects={};
 	if(!_XPage.EncodeUrl) _XPage.EncodeUrl={};
 }
 function _Page_SaveOptions(){
@@ -46,7 +49,7 @@ function _Page_SaveOptions(){
 	cookieOpt+="&ForceEncoding="+_XPage.UTF8.checked;
 	cookieOpt+="&RemoveScripts="+_XPage.RemoveScripts.checked;
 	cookieOpt+="&EncodeUrl="+_XPage.EncodeUrl.checked;
-	//cookieOpt+="&RemoveObjects="+_XPage.RemoveObjects.checked;
+	cookieOpt+="&RemoveObjects="+_XPage.RemoveObjects.checked;
 	
 	var dt=new Date();
 	dt.setYear(dt.getFullYear()+1);

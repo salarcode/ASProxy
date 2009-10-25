@@ -1,4 +1,4 @@
-<%@ Page Language="C#" meta:resourcekey="Page" ResponseEncoding="windows-1256"%>
+<%@ Page Language="C#" meta:resourcekey="Page" Inherits="SalarSoft.ASProxy.PageInMasterLocale"%>
 <%@ Import Namespace="SalarSoft.ASProxy.Exposed" %>
 <%@ Import Namespace="SalarSoft.ASProxy" %>
 <%@ Import Namespace="System.Threading" %>
@@ -214,6 +214,7 @@ _XPage.Frames.checked =<%=_userOptions.Frames.ToString().ToLower() %>;
 _XPage.PageTitle.checked =<%=_userOptions.PageTitle.ToString().ToLower() %>;
 _XPage.UTF8.checked =<%=_userOptions.ForceEncoding.ToString().ToLower() %>;
 _XPage.RemoveScripts.checked =<%=_userOptions.RemoveScripts.ToString().ToLower() %>;
+_XPage.RemoveObjects.checked =<%=_userOptions.RemoveObjects.ToString().ToLower() %>;
 _XPage.EncodeUrl.checked=<%=_userOptions.EncodeUrl.ToString().ToLower() %>;
 }
 </script>
@@ -243,6 +244,7 @@ type="submit" value="<%=this.GetLocalResourceObject("btnDisplay")%>" id="btnASPr
 <%if (Configurations.UserOptions.Frames.Changeable){ %><span class="ASProxyOption"><input id="chkFrames" type="checkbox" checked="checked" onclick="_Page_SaveOptions()"/><label for="chkFrames"><%=this.GetLocalResourceObject("chkFrames")%></label></span> <%} %>
 <%if (Configurations.UserOptions.PageTitle.Changeable){ %><span class="ASProxyOption"><input id="chkPageTitle" type="checkbox" checked="checked" onclick="_Page_SaveOptions()" /><label for="chkPageTitle"><%=this.GetLocalResourceObject("chkPageTitle")%></label></span> <%} %>
 <%if (Configurations.UserOptions.SubmitForms.Changeable){ %><span class="ASProxyOption"><input id="chkForms" type="checkbox" checked="checked" onclick="_Page_SaveOptions()" /><label for="chkForms"><%=this.GetLocalResourceObject("chkForms")%></label></span> <%} %>
+<%if (Configurations.UserOptions.RemoveObjects.Changeable){ %><span class="ASProxyOption"><input id="chkRemoveObjects" type="checkbox" checked="checked" onclick="_Page_SaveOptions()" /><label for="chkRemoveObjects"><%=this.GetLocalResourceObject("chkRemoveObjects")%></label></span> <%} %>
 <%if (Configurations.UserOptions.Links.Changeable){ %><span class="ASProxyOption"><input id="chkProcessLinks" type="checkbox" checked="checked" onclick="_Page_SaveOptions()" /><label for="chkProcessLinks"><%=this.GetLocalResourceObject("chkProcessLinks")%></label></span> <%} %>
 <%if (Configurations.UserOptions.TempCookies.Changeable){ %><span class="ASProxyOption"><input id="chkTempCookies" type="checkbox" checked="checked" onclick="_Page_SaveOptions()" /><label for="chkTempCookies"><%=this.GetLocalResourceObject("chkTempCookies")%></label></span> <%} %>
 </div></div>
