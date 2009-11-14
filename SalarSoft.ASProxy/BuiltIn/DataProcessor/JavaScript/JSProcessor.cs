@@ -65,6 +65,9 @@ namespace SalarSoft.ASProxy.BuiltIn
 						PluginMethods.IPluginJSProcessor.BeforeExecute,
 						this, (object)codes, pageUrl, pageUrlNoQuery, pagePath, rootUrl);
 
+				JSReplacer.ReplacePropertySetCommand(ref codes,
+					"document.domain", "document.domain");
+
 				JSReplacer.AddEncoderMethodToPropertySet(ref codes,
 					"location.href",
 					Consts.ClientContent.JSEncoder_ASProxyEncoderMethodName);
@@ -75,6 +78,7 @@ namespace SalarSoft.ASProxy.BuiltIn
 				JSReplacer.AddEncoderMethodToPropertySet(ref codes,
 					"document.location",
 					Consts.ClientContent.JSEncoder_ASProxyEncoderMethodName);
+
 
 				JSReplacer.AddEncoderMethodToPropertySet(ref codes,
 					"document.cookie",

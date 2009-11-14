@@ -8,128 +8,140 @@ using System.IO;
 namespace SalarSoft.ASProxy
 {
 
-    public class EngineRequestInfo
-    {
-        #region varables
-        private string _contentType;
-        #endregion
+	public class EngineRequestInfo
+	{
+		#region varables
+		private string _contentType;
+		#endregion
 
-        #region properties
-        /// <summary>
-        /// Determines if requested url should be sent as referrer to back-end request
-        /// </summary>
-        public bool RequestUrlAsReferrer;
+		#region properties
+		public bool BufferResponse = true;
 
-        /// <summary>
-        /// If enabled the error pages will be shown due an error
-        /// </summary>
-        public bool PrrocessErrorPage;
+		/// <summary>
+		/// Determines if requested url should be sent as referrer to back-end request
+		/// </summary>
+		public bool RequestUrlAsReferrer;
 
-        /// <summary>
-        /// Requested method
-        /// </summary>
-        public string RequestMethod;
-        public string RequestUrl;
+		/// <summary>
+		/// If enabled the error pages will be shown due an error
+		/// </summary>
+		public bool PrrocessErrorPage;
+
+		/// <summary>
+		/// Requested method
+		/// </summary>
+		public string RequestMethod;
+		public string RequestUrl;
 		public RequesterType RequesterType;
 
-        /// <summary>
-        /// Posted data in string format
-        /// </summary>
-        public string PostDataString;
+		/// <summary>
+		/// Posted data in string format
+		/// </summary>
+		public string PostDataString;
 
-        /// <summary>
-        /// behaves like referrer
-        /// </summary>
-        public string RedirectedFrom;
+		/// <summary>
+		/// behaves like referrer
+		/// </summary>
+		public string RedirectedFrom;
 
-        /// <summary>
-        /// Post back data
-        /// </summary>
-        public Stream InputStream;
-        public DateTime IfModifiedSince;
+		/// <summary>
+		/// Post back data
+		/// </summary>
+		public Stream InputStream;
+		public DateTime IfModifiedSince;
 
-        /// <summary>
-        /// Custom headers to send to back-end request
-        /// </summary>
-        public NameValueCollection CustomHeaders;
+		/// <summary>
+		/// Custom headers to send to back-end request
+		/// </summary>
+		public NameValueCollection CustomHeaders;
 
-        /// <summary>
-        /// Requested content type
-        /// </summary>
-        public string ContentTypeString
-        {
-            get { return _contentType; }
-        }
+		public bool RangeRequest;
+		public int RangeBegin;
+		public long RangeEnd;
 
-        /// <summary>
-        /// Requested content type
-        /// </summary>
-        public MimeContentType ContentTypeMime
-        {
-            get { return Common.StringToContentType(_contentType); }
-        }
+		/// <summary>
+		/// Requested content type
+		/// </summary>
+		public string ContentTypeString
+		{
+			get { return _contentType; }
+		}
 
-        #endregion
+		/// <summary>
+		/// Requested content type
+		/// </summary>
+		public MimeContentType ContentTypeMime
+		{
+			get { return Common.StringToContentType(_contentType); }
+		}
 
-        #region public methods
-        public override string ToString()
-        {
-            return RequestMethod + " " + RequestUrl;
-        }
-        public void SetContentType(string contentType)
-        {
-            _contentType = contentType;
-        }
-        public void SetContentType(MimeContentType contentType)
-        {
-            _contentType = Common.ContentTypeToString(contentType);
-        }
-        #endregion
-    }
+		#endregion
 
-    public class WebDataRequestInfo
-    {
-        #region variables
-        private string _Username;
-        private string _Password;
-        #endregion
+		#region public methods
+		public override string ToString()
+		{
+			return RequestMethod + " " + RequestUrl;
+		}
+		public void SetContentType(string contentType)
+		{
+			_contentType = contentType;
+		}
+		public void SetContentType(MimeContentType contentType)
+		{
+			_contentType = Common.ContentTypeToString(contentType);
+		}
+		#endregion
+	}
 
-        #region properties
-        public DateTime IfModifiedSince;
-        public Stream InputStream;
-        public ReferrerType ReferrerUsage;
-        public CookieCollection Cookies;
+	public class WebDataRequestInfo
+	{
+		#region variables
+		private string _Username;
+		private string _Password;
+		#endregion
+
+		#region properties
+		public bool BufferResponse = true;
+
+		public DateTime IfModifiedSince;
+		public Stream InputStream;
+		public ReferrerType ReferrerUsage;
+		public CookieCollection Cookies;
 		public NameValueCollection CustomHeaders;
 		public RequesterType RequesterType;
 		public string PostDataString;
-        public string RequestUrl;
-        public string ContentType;
-        public string UserAgent;
-        public string Referrer;
-        public string RequestMethod;
-        public bool AcceptCookies;
+		public string RequestUrl;
+		public string ContentType;
+		public string UserAgent;
+		public string Referrer;
+		public string RequestMethod;
+		public bool AcceptCookies;
 		public bool TempCookies;
 		public bool IsCertificated;
-        public bool PrrocessErrorPage;
-        #endregion
+		public bool PrrocessErrorPage;
 
-        #region public methods
-        public NetworkCredential GetCertification()
-        {
-            return new NetworkCredential(_Username, _Password);
-        }
+		public bool RangeRequest;
+		public int RangeBegin;
+		public long RangeEnd;
+		#endregion
 
-        public void CertificatRequest(string username, string password)
-        {
-            _Username = username;
-            _Password = password;
-            IsCertificated = true;
-        }
+		#region public methods
+		public NetworkCredential GetCertification()
+		{
+			return new NetworkCredential(_Username, _Password);
+		}
 
-        public override string ToString()
-        {
-            return RequestMethod + " " + RequestUrl;
-        }
-        #endregion
-    }
+		public void CertificatRequest(string username, string password)
+		{
+			_Username = username;
+			_Password = password;
+			IsCertificated = true;
+		}
+
+		public override string ToString()
+		{
+			return RequestMethod + " " + RequestUrl;
+		}
+		#endregion
+	}
 }

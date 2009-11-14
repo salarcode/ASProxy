@@ -69,6 +69,42 @@ namespace SalarSoft.ASProxy.BuiltIn
 		/// <summary>
 		/// Enclose property setter with an encoder method
 		/// </summary>
+		public static void ReplacePropertySetCommand(ref string jsCode, string propertyFullName, string replacemntCommand)
+		{
+			int index = 0;
+			TextRange position;
+
+			do
+			{
+				// Find property position
+				position = JSParser.FindPropertySetterRange(ref jsCode, propertyFullName, index);
+
+				// There is no more property
+				if (position.Start == -1)
+					break;
+
+				// Next search
+				index = position.Start;
+
+				if (position.End > -1)
+				{
+					// Set next searching position
+					index = position.Start + replacemntCommand.Length;
+
+					// remove the original command
+					jsCode = jsCode.Remove(position.Start, position.End - position.Start);
+
+					// insert the new command
+					jsCode = jsCode.Insert(position.Start, replacemntCommand);
+				}
+
+			}
+			while (index != -1);
+		}
+
+		/// <summary>
+		/// Enclose property setter with an encoder method
+		/// </summary>
 		public static void AddEncoderMethodToPropertySet(ref string jsCode, string propertyFullName, string encoderMethodName)
 		{
 			string encodingMethod = encoderMethodName + _JSMethodStart;

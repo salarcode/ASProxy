@@ -4,6 +4,7 @@ using System.Net;
 using System.Collections.Specialized;
 using System.Text;
 using System.IO;
+using SalarSoft.ResumableDownload;
 
 namespace SalarSoft.ASProxy.BuiltIn
 {
@@ -20,6 +21,7 @@ namespace SalarSoft.ASProxy.BuiltIn
 
 		#region variables
 		private WebRequest _webRequest;
+		private WebResponse _webResponse;
 		private InternetProtocols _requestProtocol;
 		private bool _isPluginAvailable;
 		#endregion
@@ -32,7 +34,7 @@ namespace SalarSoft.ASProxy.BuiltIn
 		{
 			RequestInfo = new WebDataRequestInfo();
 			ResponseInfo = new WebDataResponseInfo();
-			ResponseData = new MemoryStream();
+			//ResponseData = new MemoryStream();
 
 			_requestProtocol = InternetProtocols.HTTP;
 
@@ -42,7 +44,17 @@ namespace SalarSoft.ASProxy.BuiltIn
 		public override void Dispose()
 		{
 			if (ResponseData != null)
+			{
 				ResponseData.Dispose();
+			}
+
+			// make sure if response is disposed
+			if (_webResponse != null)
+			{
+				_webResponse.Close();
+				_webResponse = null;
+			}
+
 		}
 		#endregion
 
@@ -56,8 +68,8 @@ namespace SalarSoft.ASProxy.BuiltIn
 		#region protected methods
 		public override void Execute()
 		{
-			// response variable
-			WebResponse webResponse = null;
+			// fresh
+			_webResponse = null;
 			try
 			{
 
@@ -71,6 +83,8 @@ namespace SalarSoft.ASProxy.BuiltIn
 				// Post data
 				ApplyPostDataToRequest(_webRequest);
 
+				// Partial content data ranges
+				ApplyContentRanges(_webRequest);
 
 				// 0- executing plugins
 				if (_isPluginAvailable)
@@ -81,7 +95,7 @@ namespace SalarSoft.ASProxy.BuiltIn
 				try
 				{
 					// Get the response
-					webResponse = _webRequest.GetResponse();
+					_webResponse = _webRequest.GetResponse();
 				}
 				catch (WebException ex)
 				{
@@ -94,12 +108,15 @@ namespace SalarSoft.ASProxy.BuiltIn
 					{
 						if (response is HttpWebResponse)
 						{
-							HttpWebResponse webReq = (HttpWebResponse)response;
-							if (webReq.StatusCode == HttpStatusCode.Unauthorized)
+							HttpWebResponse webRes = (HttpWebResponse)response;
+							if (webRes.StatusCode == HttpStatusCode.Unauthorized)
 							{
 
 								// Set unauthorized response data
-								FinalizeUnauthorizedWebResponse(webReq);
+								FinalizeUnauthorizedWebResponse(webRes);
+
+								// response range
+								ReadResponseRangeInfo(webRes);
 
 								// Set status to normal
 								LastStatus = LastStatus.Normal;
@@ -110,11 +127,14 @@ namespace SalarSoft.ASProxy.BuiltIn
 						}
 						else if (response is FtpWebResponse)
 						{
-							FtpWebResponse ftpReq = (FtpWebResponse)response;
-							if (ftpReq.StatusCode == FtpStatusCode.NotLoggedIn)
+							FtpWebResponse ftpRes = (FtpWebResponse)response;
+							if (ftpRes.StatusCode == FtpStatusCode.NotLoggedIn)
 							{
 								// Set unauthorized response data
-								FinalizeUnauthorizedWebResponse(ftpReq);
+								FinalizeUnauthorizedWebResponse(ftpRes);
+
+								// response range
+								ReadResponseRangeInfo(ftpRes);
 
 								// Set status to normal
 								LastStatus = LastStatus.Normal;
@@ -133,23 +153,26 @@ namespace SalarSoft.ASProxy.BuiltIn
 				if (_isPluginAvailable)
 					Plugins.CallPluginMethod(PluginHosts.IPluginWebData,
 						PluginMethods.IPluginWebData.AfterExecuteGetResponse,
-						this, webResponse);
+						this, _webResponse);
 
 
 				// Check for response persmission set from "Administration UI"
-				ValidateResponse(webResponse);
+				ValidateResponse(_webResponse);
 
 				// Response is successfull, continue to get data
-				FinalizeWebResponse(webResponse);
+				FinalizeWebResponse(_webResponse);
+
+				// response range
+				ReadResponseRangeInfo(_webResponse);
 
 				// 2- executing plugins
 				if (_isPluginAvailable)
 					Plugins.CallPluginMethod(PluginHosts.IPluginWebData,
 						PluginMethods.IPluginWebData.AfterExecuteFinalizeWebResponse,
-						this, webResponse);
+						this, _webResponse);
 
 				// Getting data
-				ReadResponseData(webResponse, ResponseData);
+				ResponseData = ReadResponseData(_webResponse);
 
 				// 3- executing plugins
 				if (_isPluginAvailable)
@@ -194,6 +217,9 @@ namespace SalarSoft.ASProxy.BuiltIn
 				// Continue to get data
 				FinalizeWebResponse(ex.Response);
 
+				// response range
+				ReadResponseRangeInfo(ex.Response);
+
 				// 2- executing plugins
 				if (_isPluginAvailable)
 					Plugins.CallPluginMethod(PluginHosts.IPluginWebData,
@@ -201,7 +227,7 @@ namespace SalarSoft.ASProxy.BuiltIn
 						this, ex.Response);
 
 				// Getting data
-				ReadResponseData(webResponse, ResponseData);
+				ResponseData = ReadResponseData(_webResponse);
 
 				// 3- executing plugins
 				if (_isPluginAvailable)
@@ -224,10 +250,17 @@ namespace SalarSoft.ASProxy.BuiltIn
 			}
 			finally
 			{
-				if (webResponse != null)
-					webResponse.Close();
+				// dispose only if data is ready
+				// not for streaming options
+				if (RequestInfo.BufferResponse)
+					if (_webResponse != null)
+					{
+						_webResponse.Close();
+						_webResponse = null;
+					}
 			}
 		}
+
 
 		private void ValidateResponse(WebResponse webResponse)
 		{
@@ -257,7 +290,7 @@ namespace SalarSoft.ASProxy.BuiltIn
 					}
 					catch (ArgumentException)
 					{
-						if (key.ToString().ToLower() == "content-type")
+						if (key.ToLower() == "content-type")
 						{
 							_webRequest.ContentType = headers[key].ToString();
 						}
@@ -297,9 +330,9 @@ namespace SalarSoft.ASProxy.BuiltIn
 			if (string.IsNullOrEmpty(temp) == false)
 				ResponseInfo.Headers[HttpResponseHeader.Expires] = temp;
 
-			temp = httpResponse.Headers[HttpResponseHeader.ETag];
-			if (string.IsNullOrEmpty(temp) == false)
-				ResponseInfo.Headers[HttpResponseHeader.ETag] = temp;
+			//temp = httpResponse.Headers[HttpResponseHeader.ETag];
+			//if (string.IsNullOrEmpty(temp) == false)
+			//    ResponseInfo.Headers[HttpResponseHeader.ETag] = temp;
 
 			temp = httpResponse.Headers[HttpResponseHeader.Date];
 			if (string.IsNullOrEmpty(temp) == false)
@@ -385,6 +418,8 @@ namespace SalarSoft.ASProxy.BuiltIn
 			// Get response application path
 			ResponseInfo.ContentLength = webResponse.ContentLength;
 
+			// response protocol
+			ResponseInfo.ResponseProtocol = DetectWebResponseProtocol(webResponse);
 
 		}
 
@@ -396,7 +431,7 @@ namespace SalarSoft.ASProxy.BuiltIn
 		{
 			if (webResponse is HttpWebResponse)
 			{
-				HttpWebResponse httpResponse = (HttpWebResponse)webResponse;
+				HttpWebResponse httpResponse = (webResponse as HttpWebResponse);
 
 				// Saves additional headers
 				SaveResponseHeaders(httpResponse);
@@ -452,6 +487,22 @@ namespace SalarSoft.ASProxy.BuiltIn
 					ResponseInfo.AutoRedirect = false;
 
 			}
+			else if (webResponse is FtpWebResponse)
+			{
+				FtpWebResponse ftpResponse = (webResponse as FtpWebResponse);
+
+				// Get response url address
+				ResponseInfo.ResponseUrl = ftpResponse.ResponseUri.OriginalString;
+
+				// Get response url base path
+				ResponseInfo.ResponseRootUrl = UrlProvider.GetRootPath(webResponse.ResponseUri);
+
+				// Get response application path
+				ResponseInfo.ContentLength = ftpResponse.ContentLength;
+			}
+
+			// response protocol
+			ResponseInfo.ResponseProtocol = DetectWebResponseProtocol(webResponse);
 
 			// Restore returned cookies to client
 			if (RequestInfo.AcceptCookies)
@@ -665,6 +716,61 @@ namespace SalarSoft.ASProxy.BuiltIn
 
 
 		/// <summary>
+		/// Reads response content range info
+		/// </summary>
+		protected virtual void ReadResponseRangeInfo(WebResponse webResponse)
+		{
+			int rangeBegin;
+			long rangeEnd;
+			long rangeLength;
+			long dataLength;
+			bool rangeResponse;
+
+			if (webResponse is HttpWebResponse)
+			{
+				if (!ResumableTransfers.ParseResponseHeaderRange(webResponse, out rangeBegin,
+					out rangeEnd, out rangeLength, out dataLength, out rangeResponse))
+				{
+					// invalid headers!
+					// Just ignore the partial content!
+					ResponseInfo.RangeBegin = 0;
+					ResponseInfo.RangeEnd = webResponse.ContentLength;
+					ResponseInfo.RangeResponse = false;
+					ResponseInfo.ContentLength = webResponse.ContentLength;
+				}
+				else
+				{
+					// apply to response
+					ResponseInfo.RangeBegin = rangeBegin;
+					ResponseInfo.RangeEnd = rangeEnd;
+					ResponseInfo.RangeResponse = rangeResponse;
+					ResponseInfo.ContentLength = dataLength;
+				}
+			}
+			else
+			{
+				// Ftp always support resume support but, it is not possible to a proxy to know what content lenght us
+				if (RequestInfo.RangeRequest)
+				{
+					// the requested ranges is sent by ftp
+					ResponseInfo.RangeBegin = RequestInfo.RangeBegin;
+					ResponseInfo.RangeEnd = RequestInfo.RangeEnd;
+					ResponseInfo.ContentLength = webResponse.ContentLength;
+					
+					// always!
+					ResponseInfo.RangeResponse = false;
+				}
+				else
+				{
+					ResponseInfo.RangeBegin = 0;
+					ResponseInfo.RangeEnd = webResponse.ContentLength;
+					ResponseInfo.RangeResponse = false;
+					ResponseInfo.ContentLength = webResponse.ContentLength;
+				}
+			}
+		}
+
+		/// <summary>
 		/// Detects internet protocol used
 		/// </summary>
 		protected virtual InternetProtocols DetectWebRequestProtocol(WebRequest webRequest)
@@ -674,6 +780,21 @@ namespace SalarSoft.ASProxy.BuiltIn
 			else if (webRequest is FtpWebRequest)
 				return InternetProtocols.FTP;
 			else if (webRequest is FileWebRequest)
+				return InternetProtocols.File;
+			else
+				return InternetProtocols.Other;
+		}
+
+		/// <summary>
+		/// Detects internet protocol used
+		/// </summary>
+		protected virtual InternetProtocols DetectWebResponseProtocol(WebResponse webResponse)
+		{
+			if (webResponse is HttpWebResponse)
+				return InternetProtocols.HTTP;
+			else if (webResponse is FtpWebResponse)
+				return InternetProtocols.FTP;
+			else if (webResponse is FileWebResponse)
 				return InternetProtocols.File;
 			else
 				return InternetProtocols.Other;
@@ -722,7 +843,7 @@ namespace SalarSoft.ASProxy.BuiltIn
 
 			if (redirectLocation[0] != '/' && redirectLocation[0] != '\\')
 			{
-				return UrlBuilder.CombinePaths(pagePath ,redirectLocation);
+				return UrlBuilder.CombinePaths(pagePath, redirectLocation);
 			}
 			else
 			{

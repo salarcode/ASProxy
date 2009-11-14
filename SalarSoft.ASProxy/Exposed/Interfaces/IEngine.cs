@@ -24,6 +24,8 @@ namespace SalarSoft.ASProxy.Exposed
         EngineRequestInfo RequestInfo { get; set; }
 
         EngineResponseInfo ResponseInfo { get; set; }
+		IWebData WebData { get; set; }
+
 
         void Initialize(HttpRequest httpRequest);
 

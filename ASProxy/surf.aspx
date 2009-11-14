@@ -3,7 +3,6 @@
 <%@ Import Namespace="SalarSoft.ASProxy" %>
 <%@ Import Namespace="System.Threading" %>
 <html>
-
 <script runat="server">
 	bool _HasError = true;
 	string _ToDisplayUrl = "";
@@ -172,21 +171,21 @@
 	}
 </script>
 <head runat="server"><title runat="server">Surf the web with ASProxy</title>
-<script src="scripts/base64encoder.js" type="text/javascript"></script>
+<script src="scripts/base64encoder.js" type="text/javascript" asproxydone="2"></script>
 <!-- Surf the web invisibly using ASProxy power. A Powerfull web proxy is in your hands. -->
-<style type="text/css">
-.ASProxyBlock, .AddressBar, .FastOptions, #MoreOptions{background-color: #f8f8f8;height: auto !important;margin: 0px 2px;padding: 0px;float: inherit;display: inherit;color: black;font: normal normal normal 100% Tahoma;font-family: Tahoma, sans-serif;font-size: 10pt;}
-.ASProxyBlock{background-color: white;width: 99.5%;display: block;padding: 1px;margin: 0px;border: 2px solid #000000;height: auto !important;float: none;}
-.ASProxyForm{display: block;padding: 0px;margin: 0px;width: auto;height: auto;}
-.ASProxyMain{color: black;padding: 2px;margin: 0px;border: 1px solid #C0C0C0;background-color: #f8f8f8;background-image: none;font-weight: normal;font-style: normal;line-height: normal;visibility: visible;table-layout: auto;white-space: normal;word-spacing: normal;float: none;}
-.ASProxyMain a, .ASProxyMain a:hover, .ASProxyMain a:visited, .ASProxyMain a:active{font: normal normal normal 100% Tahoma;font-family: Tahoma, sans-serif;color: #000099;text-decoration: underline;}
-.AddressBar{margin: 3px 1px;}
+<style type="text/css" asproxydone="2">
+.ASProxyBlock,.AddressBar,.FastOptions,#MoreOptions{background-color: #f8f8f8;height: auto !important;margin: 0px 2px;padding: 0px;float: inherit;display: inherit;color: black;font: normal normal normal 100% Tahoma;font-family: Tahoma, sans-serif;font-size: 10pt;}
+.ASProxyBlock{background-color:white;width: 99.5%;display: block;padding: 1px;margin: 0px;border: 2px solid #000000;height: auto !important;float: none;}
+.ASProxyForm{display:block;padding: 0px;margin: 0px;width: auto;height: auto;}
+.ASProxyMain{color:black;padding: 2px;margin: 0px;border: 1px solid #C0C0C0;background-color: #f8f8f8;background-image: none;font-weight: normal;font-style: normal;line-height: normal;visibility: visible;table-layout: auto;white-space: normal;word-spacing: normal;float: none;}
+.ASProxyMain a,.ASProxyMain a:link,.ASProxyMain a:hover,.ASProxyMain a:visited,.ASProxyMain a:active{font: normal normal normal 100% Tahoma;font-family: Tahoma, sans-serif;color: #000099;text-decoration: underline;}
+.AddressBar{margin:3px 1px;}
 .AddressBar input{width:auto;height:auto;border: solid 1px silver; font:inherit;}
-.AddressBar .Button{width:auto;height: 25px;color: black;float: none;width: auto !important;margin: 0px;background-color: #ECE9D8;border: outset 2px;vertical-align: bottom;font-size: 10pt;padding: 2px 5px;}
-.AddressBar .TextBox{width: auto !important;height: auto;color: black;background-color: #FFFFFF;margin: 0px;float: none;font-size: 10pt;border: solid 1px silver;padding: 3px;}
-.ASProxyOption{background-color: #f8f8f8;height: auto !important;margin: 0px 1px;padding: 0px;float: none;color: black;font: normal normal normal 100% Tahoma;font-family: Tahoma, sans-serif;font-size: 8pt;display: inline;border-width: 0px;text-align: center;}
-.ASProxyOption input{width:auto;height: auto !important;margin: 0px;background-color: #F8F8F8;display: inline;border-width: 0px;float: none;}
-.ASProxyOption label{width:auto;height: auto !important;margin: 0px 2px;padding: 0px;vertical-align: baseline;float: none;color: Black;font: normal normal normal 100% Tahoma;display: inline;border-width: 0px;background-color: #F8F8F8;}
+.AddressBar .Button{width:auto;height: 25px;color: black;float: none;width:auto !important;margin:0px;background-color: #ECE9D8;border: outset 2px;vertical-align: bottom;font-size: 10pt;padding: 2px 5px;}
+.AddressBar .TextBox{width:auto !important;height: auto;color: black;background-color: #FFFFFF;margin:0px;float: none;font-size: 10pt;border: solid 1px silver;padding: 3px;}
+.ASProxyOption{background-color:#f8f8f8;height: auto !important;margin: 0px 1px;padding: 0px;float:none;color: black;font: normal normal normal 100% Tahoma;font-family: Tahoma, sans-serif;font-size: 8pt;display: inline;border-width: 0px;text-align: center;}
+.ASProxyOption input{width:auto;height:auto !important;margin:0px;background-color:#F8F8F8;display:inline;border-width: 0px;float: none;}
+.ASProxyOption label{width:auto;height:auto !important;margin:0px 2px;padding:0px;vertical-align:baseline;float: none;color: Black;font: normal normal normal 100% Tahoma;display: inline;border-width: 0px;background-color: #F8F8F8;}
 </style>
 </head>
 <body>
@@ -220,13 +219,12 @@ _XPage.EncodeUrl.checked=<%=_userOptions.EncodeUrl.ToString().ToLower() %>;
 </script>
 
 <form asproxydone="2" onsubmit="return _PageOnSubmit();" method="post" class="ASProxyForm">
-<div class="ASProxyBlock" dir="<%=Resources.Languages.TextDirection%>">
+<div id="ASProxyFormBlock" class="ASProxyBlock" dir="<%=Resources.Languages.TextDirection%>">
 <div class="ASProxyMain" style="text-align:<%=Resources.Languages.TextAlign%>"><div class="AddressBar">
 <a href="." asproxydone="2" style="font-weight: bold; text-decoration: none">ASProxy <%=Consts.General.ASProxyVersion %></a>
 <!--This is ASProxy powered by SalarSoft. -->
-<input name="url" type="text" size="80" id="txtUrl" dir="ltr" style="width: 550px;"
-class="TextBox" onkeyup="_Page_HandleTextKey(event)" value="<%=_ToDisplayUrl%>" /><input
-type="submit" value="<%=this.GetLocalResourceObject("btnDisplay")%>" id="btnASProxyDisplayButton" class="Button" />
+<input name="url" type="text" size="80" id="txtUrl" dir="ltr" style="width: 550px;" class="TextBox" onkeyup="_Page_HandleTextKey(event)" value="<%=_ToDisplayUrl%>" />
+<input type="submit" value="<%=this.GetLocalResourceObject("btnDisplay")%>" id="btnASProxyDisplayButton" class="Button" />
 <a href="cookieman.aspx" target="_blank" asproxydone="2"><%=this.GetLocalResourceObject("CookieManager")%></a>
 <a href="download.aspx" target="_blank" asproxydone="2"><%=this.GetLocalResourceObject("DownloadTool")%></a>
 </div>
@@ -248,9 +246,12 @@ type="submit" value="<%=this.GetLocalResourceObject("btnDisplay")%>" id="btnASPr
 <%if (Configurations.UserOptions.Links.Changeable){ %><span class="ASProxyOption"><input id="chkProcessLinks" type="checkbox" checked="checked" onclick="_Page_SaveOptions()" /><label for="chkProcessLinks"><%=this.GetLocalResourceObject("chkProcessLinks")%></label></span> <%} %>
 <%if (Configurations.UserOptions.TempCookies.Changeable){ %><span class="ASProxyOption"><input id="chkTempCookies" type="checkbox" checked="checked" onclick="_Page_SaveOptions()" /><label for="chkTempCookies"><%=this.GetLocalResourceObject("chkTempCookies")%></label></span> <%} %>
 </div></div>
-<script type="text/javascript">
+<script type="text/javascript" asproxydone="2">
 _Page_Initialize();
 _Page_SetOptions();
+
+// Iframed, disable the form
+if(window.self != window.top)document.getElementById('ASProxyFormBlock').style.display='none';
 </script>
 
 <%if (_HasError){ %>

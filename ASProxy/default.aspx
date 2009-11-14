@@ -130,6 +130,11 @@ and firewalls from an internet connection.
 your favorite websites. ASProxy will circumvent this.&lt;br /&gt;
 The purpose of ASProxy is spreading freedom on the net, but this proxy can be used
 for any purposes. ASProxy is not responsible for your activities." EnableViewState="False"></asp:Literal>
+<%--<div id="ads">
+<a href="#"><div class="ad_item"><h3>website.com</h3>Best web hosting ever</div></a>
+<a href="#"><div class="ad_item"><h3>website.com</h3>Best web hosting ever</div></a>
+</div>
+--%>
 </asp:Content>
 
 

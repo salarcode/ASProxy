@@ -2,7 +2,7 @@
 <ASPorxyProviders active="Default">
   
   <provider name="Default">
-		<!-- typeName syntax: "Class.Full.Path, Assembly.Name"-->
+	<!-- typeName syntax: "Class.Full.Path, Assembly.Name"-->
     <add name="IEngine" typeName="SalarSoft.ASProxy.BuiltIn.ASProxyEngine, SalarSoft.ASProxy"></add>
     <add name="IWebData" typeName="SalarSoft.ASProxy.BuiltIn.WebData, SalarSoft.ASProxy"></add>
     <add name="ICredentialCache" typeName="SalarSoft.ASProxy.BuiltIn.ASProxyCredentialCache, SalarSoft.ASProxy"></add>

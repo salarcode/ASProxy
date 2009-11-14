@@ -709,7 +709,7 @@ _ASProxy.ParseASProxyCookie = function(asproxyCookie) {
 			// combine them
 			var theVal = cookieName + '=' + cookieValue;
 
-			// TODO: check cookiePath for current request path, if it is valid!
+			// check cookiePath for current request path, if it is valid!
 			if (cookiePath == null || cookiePath == "")
 				cookiePath = "/";
 

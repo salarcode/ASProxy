@@ -52,6 +52,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BuiltIn\DataManagement\ResumableResponseData.cs" />
+    <Compile Include="BuiltIn\DataManagement\ResumableTransfers.cs" />
     <Compile Include="BuiltIn\DataManagement\ASProxyCredentialCache.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -59,10 +61,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="BuiltIn\DataManagement\CookieManager_New.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="BuiltIn\DataManagement\CookieParser.cs" />
-    <Compile Include="BuiltIn\DataManagement\ResumableDownload.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="BuiltIn\DataManagement\WebData.cs">
@@ -104,6 +102,7 @@
     <Compile Include="BuiltIn\Plugins\AjaxEngine.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="BuiltIn\DataManagement\ResumableResponse.cs" />
     <Compile Include="BuiltIn\UserAccessControl\UAC.cs" />
     <Compile Include="Configurations\Configurations.cs" />
     <Compile Include="Configurations\CurrentContext.cs" />

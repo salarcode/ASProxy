@@ -420,6 +420,12 @@ namespace SalarSoft.ASProxy
 			public bool Downloader_ResumeSupport;
 
 			/// <summary>
+			/// Enables Resume-Support even if back-end site doesn't support it.
+			/// Warning, ASProxy will use memory to buffer the whole download data.
+			/// </summary>
+			public bool Downloader_ForceResumeSupport;
+
+			/// <summary>
 			/// Downloader specific. In bytes, -1 for unlimited.
 			/// </summary>
 			public long Downloader_MaxContentLength;
@@ -482,6 +488,10 @@ namespace SalarSoft.ASProxy
 				attribute.Value = this.Downloader_ResumeSupport.ToString();
 				downloader.Attributes.Append(attribute);
 
+				attribute = xmlDoc.CreateAttribute("forceResumeSupport");
+				attribute.Value = this.Downloader_ForceResumeSupport.ToString();
+				downloader.Attributes.Append(attribute);
+
 				attribute = xmlDoc.CreateAttribute("maxContentLength");
 				attribute.Value = this.Downloader_MaxContentLength.ToString();
 				downloader.Attributes.Append(attribute);
@@ -516,6 +526,7 @@ namespace SalarSoft.ASProxy
 				// downloader node
 				XmlNode downloaderNode = node.SelectSingleNode("downloader");
 				this.Downloader_ResumeSupport = Convert.ToBoolean(downloaderNode.Attributes["resumeSupport"].Value);
+				this.Downloader_ForceResumeSupport = Convert.ToBoolean(downloaderNode.Attributes["forceResumeSupport"].Value);
 				this.Downloader_MaxContentLength = Convert.ToInt64(downloaderNode.Attributes["maxContentLength"].Value);
 				this.Downloader_Timeout = Convert.ToInt32(downloaderNode.Attributes["requestTimeout"].Value);
 				this.Downloader_ReadWriteTimeOut = Convert.ToInt32(downloaderNode.Attributes["requestReadWriteTimeOut"].Value);

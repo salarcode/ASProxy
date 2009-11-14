@@ -27,7 +27,7 @@ namespace SalarSoft.ASProxy.Exposed
         #endregion
 
         #region properties
-        protected IWebData WebData
+		public IWebData WebData
         {
             get { return _webData; }
             set { _webData = value; }
@@ -82,7 +82,9 @@ namespace SalarSoft.ASProxy.Exposed
         #region public methods
         public void Dispose()
         {
-
+			if (_webData != null)
+				_webData.Dispose();
+			_webData = null;
         }
 
         /// <summary>

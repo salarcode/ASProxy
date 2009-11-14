@@ -14,7 +14,7 @@ namespace SalarSoft.ASProxy
         public class General
         {
             public const string ASProxyName = "ASProxy";
-            public const string ASProxyVersion = "5.5b2";
+            public const string ASProxyVersion = "5.5b3";
 
 			public const string ContextUserOptionsKey = "ContextUserOptions";
         }

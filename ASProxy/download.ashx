@@ -44,7 +44,8 @@ public class Download : IHttpHandler, System.Web.SessionState.IReadOnlySessionSt
 			if (Systems.LogSystem.ErrorLogEnabled)
 				Systems.LogSystem.LogError(ex, ex.Message, context.Request.Url.ToString());
 
-			context.Response.StatusCode = (int)Common.GetExceptionHttpErrorCode(ex);
+			if (context.Response.BufferOutput)
+				context.Response.StatusCode = (int)Common.GetExceptionHttpErrorCode(ex);
 			context.Response.ContentType = "text/html";
 			context.Response.Write(ex.Message);
 
@@ -80,77 +81,177 @@ public class Download : IHttpHandler, System.Web.SessionState.IReadOnlySessionSt
 	public void DownloadUrl(HttpContext context)
 	{
 		IEngine engine = null;
-		MemoryStream responseData = null;
-		ResumableDownload download = null;
 		try
 		{
+			bool reqRangeRequest;
+			int reqRangeBegin = 0;
+			long reqRangeEnd = -1;
+
 			engine = (IEngine)Provider.GetProvider(ProviderType.IEngine);
 			engine.UserOptions = UserOptions.ReadFromRequest();
 
+			ResumableTransfers.ParseRequestHeaderRange(context.Request, out reqRangeBegin, out reqRangeEnd, out reqRangeRequest);
+			if (Configurations.WebData.Downloader_ResumeSupport)
+			{
+				engine.RequestInfo.RangeBegin = reqRangeBegin;
+				engine.RequestInfo.RangeEnd = reqRangeEnd;
+				engine.RequestInfo.RangeRequest = reqRangeRequest;
+			}
+
 			engine.DataTypeToProcess = DataTypeToProcess.None;
 			engine.RequestInfo.SetContentType(MimeContentType.application);
-	
+
 			// we request for a download
 			engine.RequestInfo.RequesterType = RequesterType.Download;
-			
+
+			// disable buffering, use streaming
+			engine.RequestInfo.BufferResponse = false;
+
 			// Initializing the engine
 			engine.Initialize(context.Request);
 
 			// communicate with back-end
 			engine.ExecuteHandshake();
 
+			if (engine.LastStatus == LastStatus.Error)
+			{
+				if (Systems.LogSystem.ErrorLogEnabled)
+					Systems.LogSystem.LogError(engine.LastException, engine.LastErrorMessage, engine.RequestInfo.RequestUrl);
+
+				context.Response.Clear();
+				Common.ClearHeadersButSaveEncoding(context.Response);
+				context.Response.ContentType = "text/html";
+				context.Response.Write(engine.LastErrorMessage);
+				context.Response.StatusCode = (int)Common.GetExceptionHttpErrorCode(engine.LastException);
+
+				context.ApplicationInstance.CompleteRequest();
+				return;
+			}
+
 			if (Configurations.WebData.Downloader_ResumeSupport)
 			{
-
-				// the data stream
-				responseData = new MemoryStream();
-
-				// Execute the response
-				engine.ExecuteToStream(responseData);
-
-				if (engine.LastStatus == LastStatus.Error)
-				{
-					if (Systems.LogSystem.ErrorLogEnabled)
-						Systems.LogSystem.LogError(engine.LastException, engine.LastErrorMessage, engine.RequestInfo.RequestUrl);
-
-					context.Response.Clear();
-					SalarSoft.ASProxy.Common.ClearHeadersButSaveEncoding(context.Response);
-					context.Response.ContentType = "text/html";
-					context.Response.Write("//" + engine.LastErrorMessage);
-					context.Response.StatusCode = (int)Common.GetExceptionHttpErrorCode(engine.LastException);
-
-					context.ApplicationInstance.CompleteRequest();
-					return;
-				}
-
 				context.Response.ClearContent();
 				Common.ClearHeadersButSaveEncoding(context.Response);
 
-				download = new ResumableDownload();
-				download.ClearResponseData();
-				download.ContentType = "application/octet-stream";
-
-				string filename;
-				//====Get file name====
-				if (string.IsNullOrEmpty(engine.ResponseInfo.ContentFilename) == false)
-					filename = engine.ResponseInfo.ContentFilename;
+				string resFilename;
+				if (!string.IsNullOrEmpty(engine.ResponseInfo.ContentFilename))
+					resFilename = engine.ResponseInfo.ContentFilename;
 				else
-					filename = System.IO.Path.GetFileName(engine.RequestInfo.RequestUrl);
+					resFilename = Path.GetFileName(engine.RequestInfo.RequestUrl);
 
+				ResumableResponseData responseData = new ResumableResponseData(engine.WebData.ResponseData, resFilename);
+
+				// beause the data is using streaming, the content dosnn't support seeking
+				responseData.ApplyRangeToStream = false;
+				responseData.DataLength = engine.WebData.ResponseInfo.ContentLength;
+
+				string matchedETag;
+				int responseStatusCode = context.Response.StatusCode;
+				if (!ResumableTransfers.ValidatePartialRequest(context.Request, responseData, out matchedETag, ref responseStatusCode))
+				{
+					// the request is invalid
+					context.Response.StatusCode = responseStatusCode;
+					if (!string.IsNullOrEmpty(matchedETag))
+						context.Response.AppendHeader("ETag", matchedETag);
+
+					// stop the preoccess
+					// but don't hassle with error messages
+					return;
+				}
+
+				// if back-end site supports resuming
+				if (engine.WebData.ResponseInfo.RangeResponse)
+				{
+					// no need to seek in the data stream
+					responseData.ApplyRangeToStream = false;
+
+					// the data itself is in the range, no need to 
+					responseData.RangeRequest = true;
+					responseData.RangeBegin = engine.WebData.ResponseInfo.RangeBegin;
+					responseData.RangeEnd = engine.WebData.ResponseInfo.RangeEnd;
+				}
+				else
+				{
+					// forcing to enable resume support
+					if (reqRangeRequest && Configurations.WebData.Downloader_ForceResumeSupport)
+					{
+						// Forced resume-support feature
+						// here the back-end site doesn't support resume downloading
+						// try to buffer the response in the memory and send as resume supported
+						// Note: most of hosting services won't let app to use more than 10MB memory
+
+						Stream backEndStream = responseData.DataStream;
+
+						// this code also downloads data from back-end site
+						Stream bufferedStream = ResumableResponseData.ReadToBuffer(backEndStream);
+						backEndStream.Dispose();
+
+						// save the buffered data
+						responseData.DataStream = bufferedStream;
+
+						// the ranges will apply to the buffered stream
+						responseData.ApplyRangeToStream = true;
+						responseData.RangeBegin = reqRangeBegin;
+						responseData.RangeEnd = reqRangeEnd;
+						responseData.RangeRequest = reqRangeRequest;
+
+						if (responseData.RangeBegin > responseData.RangeEnd)
+							responseData.RangeEnd = reqRangeBegin + bufferedStream.Length;
+
+						if (engine.WebData.ResponseInfo.ResponseProtocol == InternetProtocols.FTP)
+						{
+							// Ftp always support resume-support but content length is unknown!
+							// So the response is in range itself.
+							// No need to apply ranges again
+							responseData.ApplyRangeToStream = false;
+
+							// data lenght is unknown most of the time
+							if (responseData.DataLength == -1)
+							{
+								responseData.DataLength = reqRangeBegin + bufferedStream.Length;
+							}
+						}
+
+					}
+					else
+					{
+						// just disable anything
+						responseData.ApplyRangeToStream = false;
+						responseData.RangeRequest = false;
+
+						if (Configurations.WebData.Downloader_ForceResumeSupport)
+						{
+							if (engine.WebData.ResponseInfo.ResponseProtocol == InternetProtocols.FTP)
+							{
+								if (responseData.DataLength == -1)
+								{
+									Stream backEndStream = responseData.DataStream;
+
+									// this code also downloads data from back-end site
+									Stream bufferedStream = ResumableResponseData.ReadToBuffer(backEndStream);
+									backEndStream.Dispose();
+
+									// save the buffered data
+									responseData.DataStream = bufferedStream;
+
+									// data lenght is unknown most of the time
+									responseData.DataLength = reqRangeBegin + bufferedStream.Length;
+								}
+							}
+						}
+					}
+				}
 
 				// Log download status
 				if (Systems.LogSystem.ActivityLogEnabled)
-					Systems.LogSystem.Log(LogEntity.DownloadRequested, engine.RequestInfo.RequestUrl, filename, responseData.Length.ToString());
+					Systems.LogSystem.Log(LogEntity.DownloadRequested, engine.RequestInfo.RequestUrl, resFilename, responseData.DataLength.ToString());
 
-
-				//********************************************//
-				//	Important note!
-				//	MemoryStream.ToArray() is slower than MemoryStream.GetBuffer()
-				//	Because the MemoryStream.ToArray function returns a copy of stream content,
-				//  but MemoryStream.GetBuffer() returns a refrence of stream contents.
-				//	So i used GetBuffer()!!
-				//********************************************//
-				download.ProcessDownload(responseData.GetBuffer(), engine.RequestInfo.RequestUrl, filename);
+				// downloader
+				using (ResumableResponse downloader = new ResumableResponse(responseData))
+				{
+					// start the resume supported download
+					downloader.ProcessDownload(context.Response);
+				}
 			}
 			else
 			{
@@ -168,15 +269,13 @@ public class Download : IHttpHandler, System.Web.SessionState.IReadOnlySessionSt
 					context.Response.Clear();
 					SalarSoft.ASProxy.Common.ClearHeadersButSaveEncoding(context.Response);
 					context.Response.ContentType = "text/html";
-					context.Response.Write("//" + engine.LastErrorMessage);
+					context.Response.Write(engine.LastErrorMessage);
 					context.Response.StatusCode = (int)Common.GetExceptionHttpErrorCode(engine.LastException);
 
 					context.ApplicationInstance.CompleteRequest();
 					return;
 				}
-
 			}
-
 		}
 		catch (System.Threading.ThreadAbortException) { }
 		catch (Exception ex)
@@ -185,21 +284,19 @@ public class Download : IHttpHandler, System.Web.SessionState.IReadOnlySessionSt
 				Systems.LogSystem.LogError(ex, ex.Message, engine.RequestInfo.RequestUrl);
 
 			context.Response.Clear();
-			SalarSoft.ASProxy.Common.ClearHeadersButSaveEncoding(context.Response);
+			Common.ClearHeadersButSaveEncoding(context.Response);
 			context.Response.ContentType = "text/html";
 			context.Response.Write(ex.Message);
-			context.Response.StatusCode = (int)Common.GetExceptionHttpErrorCode(engine.LastException);
+			if (context.Response.BufferOutput)
+				context.Response.StatusCode = (int)Common.GetExceptionHttpErrorCode(engine.LastException);
 
 			context.ApplicationInstance.CompleteRequest();
 		}
 		finally
 		{
-			if (download != null)
-				download.Dispose();
 			if (engine != null)
 				engine.Dispose();
 		}
-
 	}
 
 

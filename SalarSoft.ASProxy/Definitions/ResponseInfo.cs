@@ -38,7 +38,11 @@ namespace SalarSoft.ASProxy
         public int HttpStatusCode;
         public CookieCollection Cookies;
         public WebHeaderCollection Headers;
-        #endregion
+		public bool RangeResponse;
+		public int RangeBegin;
+		public long RangeEnd;
+		public InternetProtocols ResponseProtocol;
+		#endregion
 
         #region public methods
         public override string ToString()

@@ -227,7 +227,7 @@ namespace SalarSoft.ASProxy.BuiltIn
 					HttpCookie frontendCookie = new HttpCookie(entry.Key);
 
 					// Header
-					string cookiesHeader = GetCookieHeader(entry.Value);
+					string cookiesHeader = GetASProxyCookieHeader(entry.Value);
 
 					// Encode cookie header to make it safe
 					// CallMeLaNN: This is second layer encode
@@ -430,124 +430,28 @@ namespace SalarSoft.ASProxy.BuiltIn
 				// This is second layer decode. (optional but required if encoded)
 				string header = HttpUtility.UrlDecode(reqCookie.Value);
 
+				// if it is empty
 				if (string.IsNullOrEmpty(header.Trim()))
 					continue;
-
-				// New cookie
-				Cookie cookieObj;
 
 				// Use standard & as seperator in 'cookie value' instead of , because Expires can contain comma for GMT date time format and split by , will doing the wrong split.
 				string[] cookies = header.Trim().Split('&');
 				foreach (string cookie in cookies)
 				{
+					// not empty headers
 					if (string.IsNullOrEmpty(cookie.Trim()))
 						continue;
 
-					// cookie properties seperated by ;
-					string[] cookieProperties = cookie.Trim().Split(';');
+					// New cookie
+					Cookie cookieObj;
 
-					// a new cookie
-					cookieObj = new Cookie();
+					// parse the header
+					cookieObj = ParseASProxyCookieHeader(cookie, webUri);
 
-					foreach (string cookieProperty in cookieProperties)
-					{
-						string name, value;
-						string prop = cookieProperty.Trim();
-
-						if (string.IsNullOrEmpty(prop))
-							continue;
-
-						// Can't use split by equal sign method since 'cookie value' can contain equal sign (like in google, PREF='ID=...') and break this parsing,
-						// instead, find the first equal sign.
-						// cookieKVP = prop.Split('=');
-						int equIndex = prop.IndexOf('=');
-						name = prop.Substring(0, equIndex).Trim();
-						value = prop.Substring(equIndex + 1, prop.Length - equIndex - 1).Trim();
-
-						// Note that this long property name (Name, Value, Expires, Domain, etc)
-						// can be do in short form (N, V, E, D, etc) to minimize cookie size.
-						switch (name)
-						{
-							case "Name":
-								// the name can not be empty
-								if (string.IsNullOrEmpty(value))
-									continue;
-
-								cookieObj.Name = value;
-								break;
-							case "Value":
-
-								// Second layer decode
-								cookieObj.Value = HttpUtility.UrlDecode(value);
-								break;
-							case "Expires":
-
-								// Note: Javascript returns GMT or UTC datetimes which DateTime class can't parse
-								DateTime expires;
-								string[] dateTimeFormats = new string[]{
-									strCookieDateTimeFormat,
-									"ddd, d MMM yyyy hh:mm:ss GMT",
-									"ddd, d MMM yyyy hh:mm:ss UTC"};
-
-								if (DateTime.TryParseExact(value, dateTimeFormats, null, DateTimeStyles.None, out expires))
-								{
-									cookieObj.Expires = expires;
-								}
-								else
-								{
-									// No chance, do nothing
-									// the cookie will expire after current session
-								}
-								break;
-							case "Domain":
-								cookieObj.Domain = value;
-								break;
-							case "Path":
-								cookieObj.Path = value;
-								break;
-							case "HttpOnly":
-								cookieObj.HttpOnly = bool.Parse(value);
-								break;
-							case "Expired":
-								cookieObj.Expired = bool.Parse(value);
-								break;
-							case "Secure":
-								cookieObj.Secure = bool.Parse(value);
-								break;
-							case "Port":
-								// noted that I am not sure about port number, not tested yet to filter it.
-								cookieObj.Port = value;
-								break;
-							case "Version":
-								cookieObj.Version = int.Parse(value);
-								break;
-							case "Discard":
-								cookieObj.Discard = bool.Parse(value);
-								break;
-							case "Comment":
-								cookieObj.Comment = value;
-								break;
-							case "CommentUri":
-								cookieObj.CommentUri = new Uri(value);
-								break;
-						}
-					}
-
-					// the name can not be empty
-					if (string.IsNullOrEmpty(cookieObj.Name))
-						continue;
-
-					// We do not accept expired cookies
-					if (cookieObj.Expired)
-						continue;
-
-					// SalarSoft:
-					// Validating cookie domain name, it should not be empty
-					if (string.IsNullOrEmpty(cookieObj.Domain))
-						cookieObj.Domain = webUri.Host;
-
-					// Add generated cookie to the container
-					container.Add(cookieObj);
+					// if is parsed, add to the container
+					if (cookieObj != null)
+						// Add generated cookie to the container
+						container.Add(cookieObj);
 				}
 
 				// End of cookie names list
@@ -559,6 +463,122 @@ namespace SalarSoft.ASProxy.BuiltIn
 				// To get around this bug, the domains should start with a DOT
 				BugFix_CookieContaierFix(container);
 		}
+
+
+		/// <summary>
+		/// Parses ASProxy cookie header to a cookie object
+		/// </summary>
+		private Cookie ParseASProxyCookieHeader(string cookieHeader, Uri webUri)
+		{
+			// New cookie
+			Cookie cookieObj;
+
+			// cookie properties seperated by ;
+			string[] cookieProperties = cookieHeader.Trim().Split(';');
+
+			// a new cookie
+			cookieObj = new Cookie();
+
+			foreach (string cookieProperty in cookieProperties)
+			{
+				string name, value;
+				string prop = cookieProperty.Trim();
+
+				if (string.IsNullOrEmpty(prop))
+					continue;
+
+				// Can't use split by equal sign method since 'cookie value' can contain equal sign (like in google, PREF='ID=...') and break this parsing,
+				// instead, find the first equal sign.
+				// cookieKVP = prop.Split('=');
+				int equIndex = prop.IndexOf('=');
+				name = prop.Substring(0, equIndex).Trim();
+				value = prop.Substring(equIndex + 1, prop.Length - equIndex - 1).Trim();
+
+				// Note that this long property name (Name, Value, Expires, Domain, etc)
+				// can be do in short form (N, V, E, D, etc) to minimize cookie size.
+				switch (name)
+				{
+					case "Name":
+						// the name can not be empty
+						if (string.IsNullOrEmpty(value))
+							continue;
+
+						cookieObj.Name = value;
+						break;
+					case "Value":
+
+						// Second layer decode
+						cookieObj.Value = HttpUtility.UrlDecode(value);
+						break;
+					case "Expires":
+
+						// Note: Javascript returns GMT or UTC datetimes which DateTime class can't parse
+						DateTime expires;
+						string[] dateTimeFormats = new string[]{
+									strCookieDateTimeFormat,
+									"ddd, d MMM yyyy hh:mm:ss GMT",
+									"ddd, d MMM yyyy hh:mm:ss UTC"};
+
+						if (DateTime.TryParseExact(value, dateTimeFormats, null, DateTimeStyles.None, out expires))
+						{
+							cookieObj.Expires = expires;
+						}
+						else
+						{
+							// No chance, do nothing
+							// the cookie will expire after current session
+						}
+						break;
+					case "Domain":
+						cookieObj.Domain = value;
+						break;
+					case "Path":
+						cookieObj.Path = value;
+						break;
+					case "HttpOnly":
+						cookieObj.HttpOnly = bool.Parse(value);
+						break;
+					case "Expired":
+						cookieObj.Expired = bool.Parse(value);
+						break;
+					case "Secure":
+						cookieObj.Secure = bool.Parse(value);
+						break;
+					case "Port":
+						// noted that I am not sure about port number, not tested yet to filter it.
+						cookieObj.Port = value;
+						break;
+					case "Version":
+						cookieObj.Version = int.Parse(value);
+						break;
+					case "Discard":
+						cookieObj.Discard = bool.Parse(value);
+						break;
+					case "Comment":
+						cookieObj.Comment = value;
+						break;
+					case "CommentUri":
+						cookieObj.CommentUri = new Uri(value);
+						break;
+				}
+			}
+
+			// the name can not be empty
+			if (string.IsNullOrEmpty(cookieObj.Name))
+				return null;
+
+			// We do not accept expired cookies
+			if (cookieObj.Expired)
+				return null;
+
+			// SalarSoft:
+			// Validating cookie domain name, it should not be empty
+			if (string.IsNullOrEmpty(cookieObj.Domain))
+				cookieObj.Domain = webUri.Host;
+
+			return cookieObj;
+		}
+
 
 		/// <summary>
 		/// Returns all cookies stored in CookieContainer
@@ -593,7 +613,7 @@ namespace SalarSoft.ASProxy.BuiltIn
 		/// </summary>
 		/// <returns>cookie object -> string</returns>
 		/// <autor>CallMeLaNN</autor>
-		private string GetCookieHeader(CookieCollection cookieCollection)
+		private string GetASProxyCookieHeader(CookieCollection cookieCollection)
 		{
 			string result = "";
 			if (cookieCollection != null)

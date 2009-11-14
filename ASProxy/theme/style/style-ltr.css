@@ -1,6 +1,10 @@
 ﻿*{margin:0;padding:0;}
 body{background: #FFFFFF none repeat-x;text-align: justify;font-family: Arial, Helvetica, sans-serif;font-size: 13px;color: #333333;}
 td{font-size: 13px;}
+#ads{margin:5px;display:block;height:40px;text-align:left;}
+#ads a{ color:#333333; text-decoration:none;}
+#ads a:hover div{outline:silver dashed 1px;}
+#ads .ad_item{font-size:x-small;width:138px;float:left;background-color:#F4EDD3;padding:5px;display:block;min-height:40px;margin:0px 5px 5px 0px;}
 .header{background: #2E2E2E none repeat scroll 0 0;height: 110px;margin: 0 auto;}
 #logo{height: 110px;margin: 0 auto;width: 778px;}
 #logo h1{float: left;font-size: 4em;padding-top: 40px;}

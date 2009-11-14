@@ -695,16 +695,21 @@ namespace SalarSoft.ASProxy.BuiltIn
 					webData.RequestInfo.ReferrerUsage = ReferrerType.None;
 			}
 
+			webData.RequestInfo.AcceptCookies = UserOptions.Cookies;
+			webData.RequestInfo.TempCookies = UserOptions.TempCookies;
 			webData.RequestInfo.IfModifiedSince = RequestInfo.IfModifiedSince;
 			webData.RequestInfo.CustomHeaders = RequestInfo.CustomHeaders;
 			webData.RequestInfo.RequestMethod = RequestInfo.RequestMethod;
 			webData.RequestInfo.PostDataString = RequestInfo.PostDataString;
 			webData.RequestInfo.ContentType = RequestInfo.ContentTypeString;
 			webData.RequestInfo.InputStream = RequestInfo.InputStream;
-			webData.RequestInfo.PrrocessErrorPage = RequestInfo.PrrocessErrorPage;
 			webData.RequestInfo.RequesterType = RequestInfo.RequesterType;
-			webData.RequestInfo.AcceptCookies = UserOptions.Cookies;
-			webData.RequestInfo.TempCookies = UserOptions.TempCookies;
+			webData.RequestInfo.PrrocessErrorPage = RequestInfo.PrrocessErrorPage;
+			webData.RequestInfo.BufferResponse = RequestInfo.BufferResponse;
+
+			webData.RequestInfo.RangeBegin = RequestInfo.RangeBegin;
+			webData.RequestInfo.RangeEnd = RequestInfo.RangeEnd;
+			webData.RequestInfo.RangeRequest = RequestInfo.RangeRequest;
 		}
 
 		protected virtual void ApplyResponseInfo(HttpResponse httpResponse)
