@@ -447,6 +447,22 @@
 			return Failed(ex.Message);
 		}
 	}
+	string FindPropertyRange_Test13()
+	{
+		try
+		{
+			string searchFor = "location.href";
+			string test = @"var str=' location.href=\""hel'lo.htm\""; ';";
+			string expected = @"\""hel'lo.htm\""";
+
+
+			return AssertResult(GetRangeString(test, JSParser.FindPropertySetterRange(ref test, searchFor, 0)), expected);
+		}
+		catch (Exception ex)
+		{
+			return Failed(ex.Message);
+		}
+	}
 	#endregion
 
 	#region FindPropertyGetterRange
@@ -757,6 +773,9 @@
 		<br />
 		Test 12:
 		<%=FindPropertyRange_Test12()%>
+		<br />
+		Test 13:
+		<%=FindPropertyRange_Test13()%>
 		<br />
 		<!--================================-->
 		<h3>

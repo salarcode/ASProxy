@@ -157,13 +157,13 @@ namespace SalarSoft.ASProxy.BuiltIn
 			DataTypeToProcess processType = DataTypeToProcess;
 
 			// gets mime type of content type
-			MimeContentType mime = Common.StringToContentType(_webData.ResponseInfo.ContentType);
+			MimeContentType contentMimeType = _webData.ResponseInfo.ContentTypeMime;
 
 			// detecting processing method by response content type
 			if (processType == DataTypeToProcess.AutoDetect)
 			{
 				// gets its process type
-				processType = Common.MimeTypeToToProcessType(mime);
+				processType = Common.MimeTypeToToProcessType(contentMimeType);
 			}
 
 			if (processType == DataTypeToProcess.Html && Systems.LogSystem.ActivityLogEnabled)
@@ -277,17 +277,17 @@ namespace SalarSoft.ASProxy.BuiltIn
 			DataTypeToProcess processType = DataTypeToProcess;
 
 			// gets mime type of content type
-			MimeContentType mimeType = Common.StringToContentType(_webData.ResponseInfo.ContentType);
+			MimeContentType contentMimeType = _webData.ResponseInfo.ContentTypeMime;
 
 			// detecting processing method by response content type
 			if (processType == DataTypeToProcess.AutoDetect)
 			{
 				// gets its process type
-				processType = Common.MimeTypeToToProcessType(mimeType);
+				processType = Common.MimeTypeToToProcessType(contentMimeType);
 			}
 
 			// BUGFIX: v5.5b2, HttpCompression increases images size
-			VerifyHttpCompressionByMimeType(httpResponse, mimeType);
+			VerifyHttpCompressionByMimeType(httpResponse, contentMimeType);
 
 			IDataProcessor dataProcessor = null;
 
@@ -375,7 +375,7 @@ namespace SalarSoft.ASProxy.BuiltIn
 
 				// if response is a image
 				if ((Configurations.ImageCompressor.Enabled) &&
-					(mimeType == MimeContentType.image_gif || mimeType == MimeContentType.image_jpeg))
+					(contentMimeType == MimeContentType.image_gif || contentMimeType == MimeContentType.image_jpeg))
 				{
 					// apply response info to response
 					ApplyResponseInfo(httpResponse);
@@ -519,13 +519,13 @@ namespace SalarSoft.ASProxy.BuiltIn
 			DataTypeToProcess processType = DataTypeToProcess;
 
 			// gets mime type of content type
-			MimeContentType mimeType = Common.StringToContentType(_webData.ResponseInfo.ContentType);
+			MimeContentType contentMimeType = _webData.ResponseInfo.ContentTypeMime;
 
 			// detecting processing method by response content type
 			if (processType == DataTypeToProcess.AutoDetect)
 			{
 				// gets its process type
-				processType = Common.MimeTypeToToProcessType(mimeType);
+				processType = Common.MimeTypeToToProcessType(contentMimeType);
 			}
 
 			IDataProcessor dataProcessor = null;
@@ -614,7 +614,7 @@ namespace SalarSoft.ASProxy.BuiltIn
 
 				// if response is a image
 				if ((Configurations.ImageCompressor.Enabled) &&
-					(mimeType == MimeContentType.image_gif || mimeType == MimeContentType.image_jpeg))
+					(contentMimeType == MimeContentType.image_gif || contentMimeType == MimeContentType.image_jpeg))
 				{
 					using (MemoryStream imgMem = ImageCompressor.CompressImage(
 						_webData.ResponseData))

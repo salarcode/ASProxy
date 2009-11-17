@@ -12,6 +12,7 @@ namespace SalarSoft.ASProxy
 	{
 		#region varables
 		private string _contentType;
+		private MimeContentType _contentTypeMime;
 		#endregion
 
 		#region properties
@@ -72,7 +73,7 @@ namespace SalarSoft.ASProxy
 		/// </summary>
 		public MimeContentType ContentTypeMime
 		{
-			get { return Common.StringToContentType(_contentType); }
+			get { return _contentTypeMime; }
 		}
 
 		#endregion
@@ -85,9 +86,11 @@ namespace SalarSoft.ASProxy
 		public void SetContentType(string contentType)
 		{
 			_contentType = contentType;
+			_contentTypeMime = Common.StringToContentType(contentType);
 		}
 		public void SetContentType(MimeContentType contentType)
 		{
+			_contentTypeMime = contentType;
 			_contentType = Common.ContentTypeToString(contentType);
 		}
 		#endregion

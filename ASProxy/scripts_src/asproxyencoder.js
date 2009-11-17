@@ -1,6 +1,6 @@
 ﻿// ASProxy Dynamic Encoder
 // ASProxy encoder for dynamically created objects //
-// Last update: 2009-10-25 coded by Salar Khalilzadeh //
+// Last update: 2009-11-16 coded by Salar Khalilzadeh //
 
 //_userConfig={EncodeUrl:true, OrginalUrl:true, Links:true, Images:true, Forms:true, Frames:true, Cookies:true};
 
@@ -48,6 +48,7 @@ document.OriginalWriteLn = document.writeln;
 window.OriginalOpen=window.open;
 window.LocationReplace=window.location.replace;
 window.LocationAssign=window.location.assign;
+window.LocationReload=window.location.reload;
 
 
 // ---------------------------
@@ -604,6 +605,11 @@ _ASProxy.LocationObject=function(){
 	this.protocol= _reqInfo.location.Protocol;
 	this.replace=window.LocationReplace;
 	this.assign=window.LocationAssign;
+	
+	this.replace=_ASProxy.LocationReplace;
+	this.assign=_ASProxy.LocationAssign;
+	this.reload=_ASProxy.LocationReload;
+	
 	this.URL= _reqInfo.pageUrl;
 	
 	this.toString=function(){return _reqInfo.pageUrl;};
@@ -871,15 +877,10 @@ _ASProxy.ParseStandardCookieForSet = function(stdCookie) {
 
 _ASProxy.GetCookieByName = function(_cookieName) {
 	var toGetCName = _cookieName;
-
 	var aCookie = _ASProxy.DocCookieString.split(";");
-
 	for (var i = 0; i < aCookie.length; i++) {
-
 		var cParts = aCookie[i].split("=");
-
 		var cName = _ASProxy.StrTrim(cParts[0]);
-
 		if (toGetCName == cName)
 			return unescape(cParts[1]);
 	}
@@ -1118,7 +1119,7 @@ try{
 }
 
 // Overriding standard functions
-_ASProxy.OverrideStandards=function() {
+_ASProxy.OverrideStandardsDeclare=function(){ 
 	_ASProxy.WindowOpen=function(url,name,features,replace){
 		if(_ASProxy.IsEncodedByASProxy(url))
 			return window.OriginalOpen(url,name,features,replace);
@@ -1126,14 +1127,7 @@ _ASProxy.OverrideStandards=function() {
 			return window.OriginalOpen(__UrlEncoder(url),name,features,replace);
 	}
 
-	_ASProxy.LocationAssign=function(url){
-		if(_ASProxy.IsEncodedByASProxy(url))
-			return window.LocationAssign(url);
-		else
-			return window.LocationAssign(__UrlEncoder(url));
-	}
-
-	_ASProxy.LocationReplace=function(url){
+	_ASProxy.LocationAssign = function(url) {
 		// checking to see if it is not previously coded
 		if(_ASProxy.IsEncodedByASProxy(url))
 			window.location.href=url;
@@ -1143,6 +1137,25 @@ _ASProxy.OverrideStandards=function() {
 			window.location.href=url;
 		}
 		return url;
+	}
+
+	_ASProxy.LocationReplace=function(url){
+		var codedUrl;
+		if(_ASProxy.IsEncodedByASProxy(url))
+			codedUrl=url;
+		else
+			codedUrl=__UrlEncoder(url);
+		if (window.location.replace == _ASProxy.LocationReplace)
+			return window.LocationReplace(codedUrl);
+		else
+			return window.location.replace(codedUrl);
+	}
+
+	_ASProxy.LocationReload=function(){
+		if (window.location.reload == _ASProxy.LocationReload)
+			return window.LocationReload();
+		else
+			return window.location.reload();
 	}
 
 	_ASProxy.DocumentWrite=function(){
@@ -1160,7 +1173,11 @@ _ASProxy.OverrideStandards=function() {
 			return document.OriginalWriteLn(text);
 		}
 	}
-
+}
+_ASProxy.OverrideStandards=function() {
+	try{
+		document.Domain= _WindowLocation.host;
+	}catch(e){_ASProxy.Log('document.DOMAIN failed',e);}
 	try{
 		window.open=_ASProxy.WindowOpen;
 	}catch(e){_ASProxy.Log('OVR window.open failed',e);}
@@ -1211,6 +1228,9 @@ _ASProxy.StartupDynamicEncoders=function() {
 }
 
 _ASProxy.Initialize=function() {
+	// Apply overriding
+	_ASProxy.OverrideStandardsDeclare();
+	
 	// The replacement location object
 	_WindowLocation=new _ASProxy.LocationObject();
 	_ASProxy.ReqLocation = _WindowLocation;

@@ -72,7 +72,7 @@ void GetResults(IEngine engine)
 				ltrHtmlBody.Text = "";
 				return;
 			}
-			pageContentType = Common.StringToContentType(engine.ResponseInfo.ContentType);
+			pageContentType = engine.ResponseInfo.ContentTypeMime;
 		}
 		else
 			pageContentType = MimeContentType.application;
@@ -99,6 +99,10 @@ void GetResults(IEngine engine)
 		if (pageContentType == MimeContentType.text_css || pageContentType == MimeContentType.text_plain || pageContentType == MimeContentType.text_javascript)
 			engine.DataTypeToProcess = DataTypeToProcess.None;
 
+
+		// apply http compression
+		SalarSoft.ASProxy.BuiltIn.HttpCompressor.ApplyCompression(engine.ResponseInfo.ContentTypeMime);
+		
 		// Execute the request
 		responseContent = engine.ExecuteToString();
 

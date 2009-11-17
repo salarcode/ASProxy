@@ -44,8 +44,8 @@ namespace SalarSoft.ASProxy
         public class FrontEndPresentation
         {
             public const string UserOptionsCookieName = "ASProxyConfig";
-			public const string HttpCompressorCookieName = "HttpCompressor";
-			public const string HttpCompressEncoding = "CompressEncoding";
+			public const string HttpCompressEncoding = "Encoding";
+			public const string HttpCompressor = "Compression";
 
         }
 
@@ -90,6 +90,7 @@ namespace SalarSoft.ASProxy
 			public const string JSEncoder_ASProxySetCookieMethodName = "__CookieSet";
 			public const string JSEncoder_ASProxyGetCookieMethodName = "__CookieGet";
 			public const string JSEncoder_ASProxyWindowLocOverrider = "_WindowLocation";
+			public const string JSEncoder_ASProxyWindowLocHostName = "_WindowLocation.host";
 
             public const string attrAlreadyEncodedAttribute = "asproxydone";
 			public const string attrAlreadyEncodedValue = "1";

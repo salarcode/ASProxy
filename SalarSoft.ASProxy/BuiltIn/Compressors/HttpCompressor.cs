@@ -4,41 +4,34 @@ using System.Web;
 
 namespace SalarSoft.ASProxy.BuiltIn
 {
-	public class HttpCompressor : IHttpModule
+	public class HttpCompressor
 	{
 
-		public void Dispose()
+		static void AddToCookie(HttpResponse response, HttpRequest request, string encode)
 		{
-		}
-
-		public void Init(HttpApplication context)
-		{
-			context.BeginRequest += new EventHandler(context_BeginRequest);
-			//context.EndRequest += new EventHandler(context_BeginRequest);
-		}
-
-		void context_BeginRequest(object sender, EventArgs e)
-		{
-			HttpApplication app = (HttpApplication)sender;
-			HttpRequest request = app.Request;
-			HttpResponse response = app.Response;
-
-			ApplyCompression(request, response);
-
-		}
-
-		void AddToCookie(HttpResponse response, string encode)
-		{
-			HttpCookie cookie = response.Cookies[Consts.FrontEndPresentation.HttpCompressorCookieName];
-			if (cookie == null)
+			HttpCookie reqCookie = request.Cookies[Consts.FrontEndPresentation.UserOptionsCookieName];
+			if (reqCookie != null)
 			{
-				cookie = new HttpCookie(Consts.FrontEndPresentation.HttpCompressorCookieName);
-				response.Cookies.Add(cookie);
+				string currentEncoding = reqCookie[Consts.FrontEndPresentation.HttpCompressEncoding];
+				if (!string.IsNullOrEmpty(currentEncoding) && currentEncoding.ToLower() == encode.ToLower())
+				{
+					// already saved
+					return;
+				}
 			}
-			cookie.Values.Add(Consts.FrontEndPresentation.HttpCompressEncoding, encode);
+
+
+			HttpCookie resCookie = response.Cookies[Consts.FrontEndPresentation.HttpCompressor];
+			if (resCookie == null)
+			{
+				resCookie = new HttpCookie(Consts.FrontEndPresentation.HttpCompressEncoding);
+				response.Cookies.Add(resCookie);
+			}
+			resCookie.Values.Add(Consts.FrontEndPresentation.HttpCompressEncoding, encode);
 		}
 
-		bool IsCompressEnabled(HttpRequest request)
+
+		static bool IsCompressEnabled(HttpRequest request)
 		{
 			HttpCookie cookie = request.Cookies[Consts.FrontEndPresentation.UserOptionsCookieName];
 			if (cookie == null)
@@ -60,7 +53,32 @@ namespace SalarSoft.ASProxy.BuiltIn
 		}
 
 
-		void ApplyCompression(HttpRequest Request, HttpResponse Response)
+		public static void ApplyCompression(MimeContentType contentType)
+		{
+			// only text contents
+			switch (contentType)
+			{
+				case MimeContentType.text_html:
+				case MimeContentType.text_plain:
+				case MimeContentType.text_css:
+				case MimeContentType.text_javascript:
+					ApplyCompression(HttpContext.Current.Request, HttpContext.Current.Response);
+					break;
+
+				case MimeContentType.image_jpeg:
+				case MimeContentType.image_gif:
+				case MimeContentType.application:
+				default:
+					break;
+			}
+		}
+
+		public static void ApplyCompression()
+		{
+			ApplyCompression(HttpContext.Current.Request, HttpContext.Current.Response);
+		}
+
+		public static void ApplyCompression(HttpRequest Request, HttpResponse Response)
 		{
 			if (IsCompressEnabled(Request) == false)
 				return;
@@ -85,12 +103,12 @@ namespace SalarSoft.ASProxy.BuiltIn
 				case "gzip":
 					Response.AppendHeader("Content-Encoding", "gzip");
 					Response.Filter = new GZipStream(Response.Filter, CompressionMode.Compress);
-					AddToCookie(Response, "gzip");
+					AddToCookie(Response, Request, "gzip");
 					break;
 				case "deflate":
 					Response.AppendHeader("Content-Encoding", "deflate");
 					Response.Filter = new DeflateStream(Response.Filter, CompressionMode.Compress);
-					AddToCookie(Response, "deflate");
+					AddToCookie(Response, Request, "deflate");
 					break;
 				case "identity":
 				default:

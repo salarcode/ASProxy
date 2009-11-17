@@ -65,8 +65,12 @@ namespace SalarSoft.ASProxy.BuiltIn
 						PluginMethods.IPluginJSProcessor.BeforeExecute,
 						this, (object)codes, pageUrl, pageUrlNoQuery, pagePath, rootUrl);
 
-				JSReplacer.ReplacePropertySetCommand(ref codes,
-					"document.domain", "document.domain");
+				// BugFix: setting document.domain will cause error in javascript
+				// Also checking the value of document.domain may cause bad behaviours
+				// so both are going ot be disabled here
+				JSReplacer.ReplacePropertyUsages(ref codes,
+					"document.domain", "document.Domain");
+
 
 				JSReplacer.AddEncoderMethodToPropertySet(ref codes,
 					"location.href",
@@ -75,6 +79,7 @@ namespace SalarSoft.ASProxy.BuiltIn
 				JSReplacer.AddEncoderMethodToPropertySet(ref codes,
 					"window.location",
 					Consts.ClientContent.JSEncoder_ASProxyEncoderMethodName);
+				
 				JSReplacer.AddEncoderMethodToPropertySet(ref codes,
 					"document.location",
 					Consts.ClientContent.JSEncoder_ASProxyEncoderMethodName);

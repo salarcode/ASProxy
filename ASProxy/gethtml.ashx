@@ -36,7 +36,10 @@ public class GetHtml : IHttpHandler, System.Web.SessionState.IReadOnlySessionSta
                 engine.Initialize(context.Request);
                 engine.ExecuteHandshake();
 
-                // execute and apply it to response
+				// apply http compression
+				SalarSoft.ASProxy.BuiltIn.HttpCompressor.ApplyCompression(engine.ResponseInfo.ContentTypeMime);
+				
+				// execute and apply it to response
                 engine.ExecuteToResponse(context.Response);
 
                 if (engine.LastStatus == LastStatus.Error)

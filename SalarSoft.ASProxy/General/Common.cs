@@ -208,14 +208,12 @@ namespace SalarSoft.ASProxy
 		public static void ClearHeadersButSaveEncoding(HttpResponse response)
 		{
 			HttpCookieCollection cool = response.Cookies;
-
-			HttpCookie cookie = response.Cookies[Consts.FrontEndPresentation.HttpCompressorCookieName];
+			HttpCookie cookie = response.Cookies[Consts.FrontEndPresentation.HttpCompressor];
 			string encode = cookie[Consts.FrontEndPresentation.HttpCompressEncoding];
 			response.ClearHeaders();
 
 			if (string.IsNullOrEmpty(encode))
 				return;
-
 			response.AppendHeader("Content-Encoding", encode);
 		}
 

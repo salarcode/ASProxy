@@ -26,6 +26,9 @@ public class GetJS : IHttpHandler, System.Web.SessionState.IReadOnlySessionState
 				engine.Initialize(context.Request);
 				engine.ExecuteHandshake();
 
+				// apply http compression
+				SalarSoft.ASProxy.BuiltIn.HttpCompressor.ApplyCompression(engine.ResponseInfo.ContentTypeMime);
+				
 				// execute and apply it to response
 				engine.ExecuteToResponse(context.Response);
 

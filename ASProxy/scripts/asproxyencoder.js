@@ -1,8 +1,8 @@
 ﻿// ASProxy Dynamic Encoder
 // ASProxy encoder for dynamically created objects //
-// Last update: 2009-10-25 coded by Salar Khalilzadeh //
+// Last update: 2009-11-16 coded by Salar Khalilzadeh //
 _ASProxy={Debug_UseAbsoluteUrl:false,TraceCookies:false,LogEnabled:false,Activities:{},Pages:{pgGetAny:'getany.ashx',pgGetHtml:'gethtml.ashx',pgGetJS:'getjs.ashx',pgImages:'images.ashx',pgDownload:'download.ashx',pgAuthorization:'authorization.aspx'},ClientSideUrls:["mailto:","file://","javascript:","vbscript:","jscript:","vbs:","ymsgr:","data:"],NonVirtualUrls:["http://","https://","mailto:","ftp://","file://","telnet://","news://","nntp://","ldap://","ymsgr:","javascript:","vbscript:","jscript:","vbs:","data:"]}
-_ASProxy.EncodedUrls=[_reqInfo.ASProxyPageName+"?dec=",_ASProxy.Pages.pgGetHtml+"?dec=",_ASProxy.Pages.pgImages+"?dec=",_ASProxy.Pages.pgGetJS+"?dec=",_ASProxy.Pages.pgDownload+"?dec=",_ASProxy.Pages.pgAuthorization+"?dec=",_ASProxy.Pages.pgGetAny+"?dec="];document.OriginalWrite=document.write;document.OriginalWriteLn=document.writeln;window.OriginalOpen=window.open;window.LocationReplace=window.location.replace;window.LocationAssign=window.location.assign;ENC_Page=0;ENC_Images=1;ENC_Any=2;ENC_Frames=3;function __UrlEncoder(url,type,notCorrectLocalUrl,extraQuery){if(_ASProxy.IsClientSideUrl(url)||_ASProxy.IsSelfBookmarkUrl(url))
+_ASProxy.EncodedUrls=[_reqInfo.ASProxyPageName+"?dec=",_ASProxy.Pages.pgGetHtml+"?dec=",_ASProxy.Pages.pgImages+"?dec=",_ASProxy.Pages.pgGetJS+"?dec=",_ASProxy.Pages.pgDownload+"?dec=",_ASProxy.Pages.pgAuthorization+"?dec=",_ASProxy.Pages.pgGetAny+"?dec="];document.OriginalWrite=document.write;document.OriginalWriteLn=document.writeln;window.OriginalOpen=window.open;window.LocationReplace=window.location.replace;window.LocationAssign=window.location.assign;window.LocationReload=window.location.reload;ENC_Page=0;ENC_Images=1;ENC_Any=2;ENC_Frames=3;function __UrlEncoder(url,type,notCorrectLocalUrl,extraQuery){if(_ASProxy.IsClientSideUrl(url)||_ASProxy.IsSelfBookmarkUrl(url))
 return url;if(notCorrectLocalUrl!=true)
 url=_ASProxy.CorrectLocalUrlToOrginal(url);if(_ASProxy.IsVirtualUrl(url))
 url=_ASProxy.JoinUrls(url,_reqInfo.pagePath,_reqInfo.rootUrl);var asproxyBasePath;if(type==ENC_Images)
@@ -112,7 +112,7 @@ _ASProxy.Enc.EncodeInputImages=function(){if(_userConfig.Images!=true)return;var
 window.setTimeout("_ASProxy.Enc.EncodeInputImages();",4000);}
 _ASProxy.Enc.EncodeScriptSources=function(){var scripts=document.documentElement.getElementsByTagName("script");try{_ASProxy.Enc.EncodeElements(scripts,"src",2,false);}catch(e){_ASProxy.Log('Enc.EncodeScriptSources',e);}
 window.setTimeout("_ASProxy.Enc.EncodeScriptSources();",4000);}
-_ASProxy.LocationObject=function(){this.search=_reqInfo.location.Search;this.href=_reqInfo.pageUrl;this.hash=(window.location.hash!=null&&window.location.hash!='')?window.location.hash:_reqInfo.location.Hash;this.host=_reqInfo.location.Host;this.hostname=_reqInfo.location.Hostname;this.pathname=_reqInfo.location.Pathname;this.port=_reqInfo.location.Port;this.protocol=_reqInfo.location.Protocol;this.replace=window.LocationReplace;this.assign=window.LocationAssign;this.URL=_reqInfo.pageUrl;this.toString=function(){return _reqInfo.pageUrl;};this.toLocaleString=function(){return _reqInfo.pageUrl;};this.length=this.href.length;this.anchor=this.href.anchor;this.big=this.href.big;this.blink=this.href.blink;this.bold=this.href.bold;this.charAt=this.href.charAt;this.charCodeAt=this.href.charCodeAt;this.fixed=this.href.fixed;this.fontcolor=this.href.fontcolor;this.fontsize=this.href.fontsize;this.fromCharCode=this.href.fromCharCode;this.indexOf=this.href.indexOf;this.italics=this.href.italics;this.lastIndexOf=this.href.lastIndexOf;this.link=this.href.link;this.match=this.href.match;this.slice=this.href.slice;this.small=this.href.small;this.split=this.href.split;this.strike=this.href.strike;this.sub=this.href.sub;this.substr=this.href.substr;this.substring=this.href.substring;this.toLowerCase=this.href.toLowerCase;this.toUpperCase=this.href.toUpperCase;};function __CookieGet(_CookieName){return _ASProxy.GetDocumentCookie();}
+_ASProxy.LocationObject=function(){this.search=_reqInfo.location.Search;this.href=_reqInfo.pageUrl;this.hash=(window.location.hash!=null&&window.location.hash!='')?window.location.hash:_reqInfo.location.Hash;this.host=_reqInfo.location.Host;this.hostname=_reqInfo.location.Hostname;this.pathname=_reqInfo.location.Pathname;this.port=_reqInfo.location.Port;this.protocol=_reqInfo.location.Protocol;this.replace=window.LocationReplace;this.assign=window.LocationAssign;this.replace=_ASProxy.LocationReplace;this.assign=_ASProxy.LocationAssign;this.reload=_ASProxy.LocationReload;this.URL=_reqInfo.pageUrl;this.toString=function(){return _reqInfo.pageUrl;};this.toLocaleString=function(){return _reqInfo.pageUrl;};this.length=this.href.length;this.anchor=this.href.anchor;this.big=this.href.big;this.blink=this.href.blink;this.bold=this.href.bold;this.charAt=this.href.charAt;this.charCodeAt=this.href.charCodeAt;this.fixed=this.href.fixed;this.fontcolor=this.href.fontcolor;this.fontsize=this.href.fontsize;this.fromCharCode=this.href.fromCharCode;this.indexOf=this.href.indexOf;this.italics=this.href.italics;this.lastIndexOf=this.href.lastIndexOf;this.link=this.href.link;this.match=this.href.match;this.slice=this.href.slice;this.small=this.href.small;this.split=this.href.split;this.strike=this.href.strike;this.sub=this.href.sub;this.substr=this.href.substr;this.substring=this.href.substring;this.toLowerCase=this.href.toLowerCase;this.toUpperCase=this.href.toUpperCase;};function __CookieGet(_CookieName){return _ASProxy.GetDocumentCookie();}
 function __CookieSet(sCookie){return _ASProxy.SetDocumentCookie(sCookie);}
 _ASProxy.DocCookieString=document.cookie;_ASProxy.GetDocumentCookie=function(){_ASProxy.DocCookieString=document.cookie;var result='';for(var i=0;i<_reqInfo.appliedCookiesList.length;i++){var cookieName=_reqInfo.appliedCookiesList[i];var cookie=_ASProxy.GetCookieByName(cookieName);if(cookie==null)
 continue;var cookieValue=_ASProxy.ParseASProxyCookie(cookie);if(cookieValue!=null&&cookieValue.length>0)
@@ -188,18 +188,24 @@ frmMethod=frmMethod.value;else
 frmMethod=element.method;element.OriginalSetAttribute("asproxydone","1");element.OriginalSetAttribute("methodorginal",frmMethod);var newFrmAction;if(_ASProxy.IsEncodedByASProxy(value)==false)
 newFrmAction=__UrlEncoder(value,ENC_Page,false,"method="+frmMethod);else
 newFrmAction=value;element.OriginalSetAttribute("action",newFrmAction);element.method="POST";element.OriginalSetAttribute("encodedurl",newFrmAction);};_ASProxy.Setter_Src=function(value){this.OriginalSetAttribute('src',_EncodeSetAttributeValue('src',value,this.tagName));};_ASProxy.Setter_Href=function(value){this.OriginalSetAttribute('href',_EncodeSetAttributeValue('href',value,this.tagName));};_ASProxy.Setter_Background=function(value){this.OriginalSetAttribute('background',_EncodeSetAttributeValue('background',value,this.tagName));};_ASProxy.Setter_InnerHtml=function(value){this.OriginalSetAttribute('innerHtml',_EncodeSetAttributeValue('innerHtml',value,this.tagName));};_ASProxy.Setter_Action=function(value){try{if(this.tagName.toLowerCase()=='form'){_ASProxy.Setter_FormAction(this,value);}else{this.OriginalSetAttribute('action',_EncodeSetAttributeValue('action',value,this.tagName));}}catch(e){_ASProxy.Log('Setter_Action',e);}};for(i=0;i<interfaces.length;i++){var elm=interfaces[i].prototype;if(elm==null)continue;elm.OriginalSetAttribute=elm.setAttribute;elm.setAttribute=_ASProxy.SetAttribute;elm.__defineSetter__('src',_ASProxy.Setter_Src);elm.__defineSetter__('action',_ASProxy.Setter_Action);elm.__defineSetter__('href',_ASProxy.Setter_Href);elm.__defineSetter__('background',_ASProxy.Setter_Background);elm.__defineSetter__('innerHtml',_ASProxy.Setter_InnerHtml);}}catch(e){_ASProxy.Log('OverrideHtmlSetters ALL',e);}}
-_ASProxy.OverrideStandards=function(){_ASProxy.WindowOpen=function(url,name,features,replace){if(_ASProxy.IsEncodedByASProxy(url))
+_ASProxy.OverrideStandardsDeclare=function(){_ASProxy.WindowOpen=function(url,name,features,replace){if(_ASProxy.IsEncodedByASProxy(url))
 return window.OriginalOpen(url,name,features,replace);else
 return window.OriginalOpen(__UrlEncoder(url),name,features,replace);}
 _ASProxy.LocationAssign=function(url){if(_ASProxy.IsEncodedByASProxy(url))
-return window.LocationAssign(url);else
-return window.LocationAssign(__UrlEncoder(url));}
-_ASProxy.LocationReplace=function(url){if(_ASProxy.IsEncodedByASProxy(url))
 window.location.href=url;else
 {url=__UrlEncoder(url);window.location.href=url;}
 return url;}
+_ASProxy.LocationReplace=function(url){var codedUrl;if(_ASProxy.IsEncodedByASProxy(url))
+codedUrl=url;else
+codedUrl=__UrlEncoder(url);if(window.location.replace==_ASProxy.LocationReplace)
+return window.LocationReplace(codedUrl);else
+return window.location.replace(codedUrl);}
+_ASProxy.LocationReload=function(){if(window.location.reload==_ASProxy.LocationReload)
+return window.LocationReload();else
+return window.location.reload();}
 _ASProxy.DocumentWrite=function(){var text=arguments[0];if(_ASProxy.ParseHtml){text=_ASProxy.ParseHtml(text);return document.OriginalWrite(text);}}
-_ASProxy.DocumentWriteLn=function(){var text=arguments[0];if(_ASProxy.ParseHtml){text=_ASProxy.ParseHtml(text);return document.OriginalWriteLn(text);}}
+_ASProxy.DocumentWriteLn=function(){var text=arguments[0];if(_ASProxy.ParseHtml){text=_ASProxy.ParseHtml(text);return document.OriginalWriteLn(text);}}}
+_ASProxy.OverrideStandards=function(){try{document.Domain=_WindowLocation.host;}catch(e){_ASProxy.Log('document.DOMAIN failed',e);}
 try{window.open=_ASProxy.WindowOpen;}catch(e){_ASProxy.Log('OVR window.open failed',e);}
 try{document.open=_ASProxy.WindowOpen;}catch(e){_ASProxy.Log('OVR document.open failed',e);}
 try{open=_ASProxy.WindowOpen;}catch(e){_ASProxy.Log('OVR open failed',e);}
@@ -208,5 +214,5 @@ try{location.replace=_ASProxy.LocationReplace;}catch(e){_ASProxy.Log('OVR locati
 try{document.write=_ASProxy.DocumentWrite;}catch(e){_ASProxy.Log('OVR document.write failed',e);}
 try{document.writeln=_ASProxy.DocumentWriteLn;}catch(e){_ASProxy.Log('OVR document.writeln failed',e);}}
 _ASProxy.StartupDynamicEncoders=function(){window.setTimeout("_ASProxy.Enc.EncodeLinks();",500);window.setTimeout("_ASProxy.Enc.EncodeImages();",700);window.setTimeout("_ASProxy.Enc.EncodeInputImages();",2000);window.setTimeout("_ASProxy.Enc.EncodeForms();",1000);window.setTimeout("_ASProxy.Enc.EncodeFrames();",2000);window.setTimeout("_ASProxy.Enc.EncodeScriptSources();",4000);}
-_ASProxy.Initialize=function(){_WindowLocation=new _ASProxy.LocationObject();_ASProxy.ReqLocation=_WindowLocation;_ASProxy.OverrideStandards();_ASProxy.OverrideHtmlSetters();_ASProxy.StartupDynamicEncoders();}
+_ASProxy.Initialize=function(){_ASProxy.OverrideStandardsDeclare();_WindowLocation=new _ASProxy.LocationObject();_ASProxy.ReqLocation=_WindowLocation;_ASProxy.OverrideStandards();_ASProxy.OverrideHtmlSetters();_ASProxy.StartupDynamicEncoders();}
 _ASProxy.Initialize();

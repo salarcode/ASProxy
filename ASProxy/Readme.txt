@@ -40,7 +40,10 @@ Version History
 Version 5.5 Beta3 2009/11/14
 * New: Streaming download. ASProxy will stream resume supported downloads. This will decrease presure on the server to buffer all the download data.
 	But still it is possible to force ASProxy enable resume-support feature to not supported site byt buffering.
+* Fixed: Http compression content type detecttion improved to prevent compressing unexpected data.
 * Fixed: Setting document.domain throws exception in javasceript which is striped in this version.
+* Fixed: JavaScript parser minor bugs.
+* Fixed: Javascript dynamic encoder minor bugs.
 
 Version 5.5 Beta2 2009/10/25
 * New: User Access Control behaves like an IP blocker and helps you to block or allow certain IPs access to ASProxy.

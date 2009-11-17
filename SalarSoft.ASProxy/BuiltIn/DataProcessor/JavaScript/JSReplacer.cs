@@ -67,6 +67,80 @@ namespace SalarSoft.ASProxy.BuiltIn
 		}
 
 		/// <summary>
+		/// Replaces the command itself when it is setting by other command
+		/// </summary>
+		/// <example> document.cookie='test'; will be something like new.cookie='test'; </example>
+		public static void ReplacePropertyUsages(ref string jsCode, string propertyFullName, string replacemntCommand)
+		{
+			int index = 0;
+			TextRange position;
+
+			do
+			{
+				// Find property position
+				position = JSParser.FindPropertyCommandRange(ref jsCode, propertyFullName, index);
+
+				// There is no more property
+				if (position.Start == -1)
+					break;
+
+				// Next search
+				index = position.Start;
+
+				if (position.End > -1)
+				{
+					// Set next searching position
+					index = position.Start + replacemntCommand.Length;
+
+					// remove the original command
+					jsCode = jsCode.Remove(position.Start, position.End - position.Start);
+
+					// insert the new command
+					jsCode = jsCode.Insert(position.Start, replacemntCommand);
+				}
+
+			}
+			while (index != -1);
+		}
+
+		/// <summary>
+		/// Replaces the command itself when it is setting by other command
+		/// </summary>
+		/// <example> document.cookie='test'; will be something like new.cookie='test'; </example>
+		public static void ReplacePropertyInSetCommand(ref string jsCode, string propertyFullName, string replacemntCommand)
+		{
+			int index = 0;
+			TextRange position;
+
+			do
+			{
+				// Find property position
+				position = JSParser.FindPropertyCommandRange(ref jsCode, propertyFullName, index);
+
+				// There is no more property
+				if (position.Start == -1)
+					break;
+
+				// Next search
+				index = position.Start;
+
+				if (position.End > -1)
+				{
+					// Set next searching position
+					index = position.Start + replacemntCommand.Length;
+
+					// remove the original command
+					jsCode = jsCode.Remove(position.Start, position.End - position.Start);
+
+					// insert the new command
+					jsCode = jsCode.Insert(position.Start, replacemntCommand);
+				}
+
+			}
+			while (index != -1);
+		}
+
+		/// <summary>
 		/// Enclose property setter with an encoder method
 		/// </summary>
 		public static void ReplacePropertySetCommand(ref string jsCode, string propertyFullName, string replacemntCommand)
@@ -101,6 +175,42 @@ namespace SalarSoft.ASProxy.BuiltIn
 			}
 			while (index != -1);
 		}
+
+		/// <summary>
+		/// Replaces property getter with an encoder method
+		/// </summary>
+		internal static void ReplacePropertyGetCommand(ref string jsCode, string propertyFullName, string replacemntCommand)
+		{
+			int index = 0;
+			TextRange position;
+
+			do
+			{
+				// Find property position
+				position = JSParser.FindPropertyGetterRange(ref jsCode, propertyFullName, index);
+
+				// There is no more property
+				if (position.Start == -1)
+					break;
+
+				// Next search
+				index = position.Start;
+
+				if (position.End > -1)
+				{
+					// Set next searching position
+					index = position.Start + replacemntCommand.Length;
+
+					// first remove previous value, then add new method
+					jsCode = jsCode.Remove(position.Start, position.End - position.Start);
+					jsCode = jsCode.Insert(position.Start, replacemntCommand);
+				}
+
+			}
+			while (index != -1);
+		}
+
+
 
 		/// <summary>
 		/// Enclose property setter with an encoder method

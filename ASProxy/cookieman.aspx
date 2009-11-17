@@ -13,7 +13,7 @@
 			if (cookie.Name != sessionStateCookie &&
 				cookie.Name != authenticationCookie &&
 				cookie.Name != Consts.FrontEndPresentation.UserOptionsCookieName &&
-				cookie.Name != Consts.FrontEndPresentation.HttpCompressorCookieName)
+				cookie.Name != Consts.FrontEndPresentation.HttpCompressor)
 			{
 				result.Add(cookie);
 			}

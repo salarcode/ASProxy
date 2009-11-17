@@ -29,10 +29,11 @@ public class GetAny : IHttpHandler, System.Web.SessionState.IReadOnlySessionStat
 				if (!string.IsNullOrEmpty(engine.ResponseInfo.ContentType))
 				{
 					// gets mime type of content type
-					MimeContentType mime = Common.StringToContentType(engine.ResponseInfo.ContentType);
+					MimeContentType mimeContentType = engine.ResponseInfo.ContentTypeMime;
 
 					if (Configurations.Authentication.Enabled &&
-						(mime == MimeContentType.image_gif || mime == MimeContentType.image_jpeg))
+						(mimeContentType == MimeContentType.image_gif ||
+						mimeContentType == MimeContentType.image_jpeg))
 					{
 						if (!Configurations.Authentication.HasPermission(context.User.Identity.Name,
 							Configurations.AuthenticationConfig.UserPermission.Images))
@@ -44,6 +45,9 @@ public class GetAny : IHttpHandler, System.Web.SessionState.IReadOnlySessionStat
 						}
 					}
 				}
+
+				// apply http compression
+				SalarSoft.ASProxy.BuiltIn.HttpCompressor.ApplyCompression(engine.ResponseInfo.ContentTypeMime);
 
 				// Execute the response
 				engine.ExecuteToResponse(context.Response);

@@ -26,6 +26,9 @@ public class GetCss : IHttpHandler, System.Web.SessionState.IReadOnlySessionStat
 				engine.Initialize(context.Request);
 				engine.ExecuteHandshake();
 
+				// apply compression
+				SalarSoft.ASProxy.BuiltIn.HttpCompressor.ApplyCompression(engine.ResponseInfo.ContentTypeMime);
+
 				// Execute the request and apply it response
 				engine.ExecuteToResponse(context.Response);
 

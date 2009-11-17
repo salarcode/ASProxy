@@ -45,6 +45,150 @@ namespace SalarSoft.ASProxy.BuiltIn
 			}
 
 		}
+
+		/// <summary>
+		/// This function locates property setter location.
+		/// </summary>
+		/// <param name="source">Search place</param>
+		/// <param name="propertyFullName">Name of property including dot for searching</param>
+		/// <returns>All value</returns>
+		public static TextRange FindPropertyCommandRange(
+			ref string source,
+			string propertyFullName,
+			int searchingStartIndex)
+		{
+			char propertyStart = '=';
+			TextRange result;// = new TextRange(-1, -1);
+
+			int searchIndex = searchingStartIndex;
+
+			do
+			{
+				// Locate start position of property
+				result = FindDottedCommandItselfPosition(ref source, propertyFullName, searchIndex, propertyStart);
+
+				// If nothing found, go away.
+				if (result.Start == -1)
+					break;
+
+				// something found
+				if (result.End > -1)
+					break;
+
+				// Next search
+				searchIndex = result.Start;
+			}
+			while (true);// Extreme loop? No.
+
+			return result;
+		}
+
+		private static TextRange FindDottedCommandItselfPosition(
+			ref string source,
+			string commandFullName,
+			int searchingStartIndex,
+			char commandStartCharacter)
+		{
+			TextRange result = new TextRange(-1, -1);
+			const char dot = '.';
+			int partSearchStartIndex = searchingStartIndex;
+
+
+			// Split full name of property using dot. 
+			string[] commandParts = commandFullName.Split(new char[] { dot }, StringSplitOptions.RemoveEmptyEntries);
+
+
+			// locate property parts
+			for (int i = 0; i < commandParts.Length; i++)
+			{
+				string commandPart = commandParts[i];
+				int partIndex;
+				//--------------------------------------------------
+				// locate current part position with match case searching
+				partIndex = StringCompare.IndexOfMatchCase(ref source, commandPart, partSearchStartIndex);
+
+				// One part of property does not exists, so we should run away!
+				if (partIndex == -1)
+				{
+					// if this is first part, is seems there isn't any more of this
+					// else return last found position
+					if (i == 0)
+						result.Start = -1;
+					else
+						result.Start = partSearchStartIndex;
+
+					// This negative result show's that the process failed
+					result.End = -1;
+					return result;
+				}
+
+
+				//--------------------------------------------------
+				// Test for free spaces after first part of name only
+				if (i > 0)
+				{
+					// Test for free space between equal mark and semicolon (ex. window.location = 'text' )
+					string shouldBeFreeSpace = source.Substring(partSearchStartIndex, partIndex - partSearchStartIndex);
+
+					// Oops! this isn't our victim!
+					if (shouldBeFreeSpace.Trim().Length > 0)
+					{
+						if (i == 0)
+							result.Start = -1;
+						else
+							result.Start = partSearchStartIndex;
+						result.End = -1;
+						return result;
+					}
+				}
+
+				// Set part position and its length to result
+				if (i == 0)
+					result.Start = partIndex;
+				else if (i == commandParts.Length - 1)
+				{
+					result.End = partIndex + commandPart.Length;
+				}
+
+				partSearchStartIndex = partIndex + commandPart.Length;
+
+				//--------------------------------------------------
+				// If this isn't last part, we should locate next dot
+				if (i < commandParts.Length - 1)
+				{
+					int dotPos;
+
+					// Locate dot position after a part
+					dotPos = StringCompare.IndexOfMatchCase(ref source, dot, partSearchStartIndex);
+
+					// There is no dot around here?!!
+					if (dotPos == -1)
+					{
+						result.Start = partSearchStartIndex;
+						result.End = -1;
+						return result;
+					}
+
+					// Test for free space between equal mark and semicolon (ex. window.location ('text'))
+					string shouldBeFreeSpace = source.Substring(partSearchStartIndex, dotPos - partSearchStartIndex);
+
+					// Oops! this isn't our victim!
+					if (shouldBeFreeSpace.Trim().Length > 0)
+					{
+						result.Start = partSearchStartIndex;
+						result.End = -1;
+						return result;
+					}
+
+					// Set last position to dot position
+					partSearchStartIndex = dotPos + 1;
+				}
+
+			}
+
+			return result;
+		}
+
 		/// <summary>
 		/// This function locates property setter location.
 		/// </summary>
@@ -314,7 +458,7 @@ namespace SalarSoft.ASProxy.BuiltIn
 		#region core functions
 
 		/// <summary>
-		/// Location start postiion of any dotted command or nodot command. ex. window.location='salarsoft';
+		/// Location start position of any dotted command or nodot command. ex. window.location='salarsoft';
 		/// </summary>
 		/// <param name="source">Source of codes provided for searching</param>
 		/// <param name="commandFullName">Name of command including dots</param>
@@ -830,13 +974,7 @@ namespace SalarSoft.ASProxy.BuiltIn
 					case ('\''):// Apostrophe
 						if (countQuote % 2 == 0)
 						{
-							if (previous == '\\')
-							{
-								if (!(countQuote % 2 != 0 || countApostrophe % 2 != 0))
-									countApostrophe++;
-							}
-							else
-								countApostrophe++;
+							countApostrophe++;
 						}
 						break;
 
@@ -845,13 +983,7 @@ namespace SalarSoft.ASProxy.BuiltIn
 
 						if (countApostrophe % 2 == 0)
 						{
-							if (previous == '\\')
-							{
-								if (!(countQuote % 2 != 0 || countApostrophe % 2 != 0))
-									countQuote++;
-							}
-							else
-								countQuote++;
+							countQuote++;
 						}
 						break;
 
@@ -875,7 +1007,8 @@ namespace SalarSoft.ASProxy.BuiltIn
 
 					case (')'):// EndParenthesis
 
-						if ((countQuote % 2 == 0) && (countApostrophe % 2 == 0) && (countEndParenthesis == countStartParenthesis))
+						if ((countQuote % 2 == 0) && (countApostrophe % 2 == 0)
+							&& (countEndParenthesis == countStartParenthesis))
 						{
 							methodParameterEnd = i;
 
@@ -948,13 +1081,7 @@ namespace SalarSoft.ASProxy.BuiltIn
 					case ('\''):// Apostrophe
 						if (countQuote % 2 == 0)
 						{
-							if (previous == '\\')
-							{
-								if (!(countQuote % 2 != 0 || countApostrophe % 2 != 0))
-									countApostrophe++;
-							}
-							else
-								countApostrophe++;
+							countApostrophe++;
 						}
 						break;
 
@@ -963,13 +1090,7 @@ namespace SalarSoft.ASProxy.BuiltIn
 
 						if (countApostrophe % 2 == 0)
 						{
-							if (previous == '\\')
-							{
-								if (!(countQuote % 2 != 0 || countApostrophe % 2 != 0))
-									countQuote++;
-							}
-							else
-								countQuote++;
+							countQuote++;
 						}
 						break;
 
@@ -995,7 +1116,6 @@ namespace SalarSoft.ASProxy.BuiltIn
 						break;
 
 					case (')'):// EndParenthesis
-
 						if ((countQuote % 2 == 0) && (countApostrophe % 2 == 0))
 						{
 							// Return method hole paremeters, if there is no more parameter
@@ -1005,8 +1125,7 @@ namespace SalarSoft.ASProxy.BuiltIn
 								return methodParameterEnd;
 							}
 							else
-								if (countQuote % 2 == 0 && countApostrophe % 2 == 0)
-									countEndParenthesis++;
+								countEndParenthesis++;
 						}
 						break;
 
@@ -1056,28 +1175,15 @@ namespace SalarSoft.ASProxy.BuiltIn
 					case ('\''):// Apostrophe
 						if (countQuote % 2 == 0)
 						{
-							if (previous == '\\')
-							{
-								if (!(countQuote % 2 != 0 || countApostrophe % 2 != 0))
-									countApostrophe++;
-							}
-							else
-								countApostrophe++;
+							countApostrophe++;
 						}
 						break;
 
 
 					case ('\"'): // Quote
-
 						if (countApostrophe % 2 == 0)
 						{
-							if (previous == '\\')
-							{
-								if (!(countQuote % 2 != 0 || countApostrophe % 2 != 0))
-									countQuote++;
-							}
-							else
-								countQuote++;
+							countQuote++;
 						}
 						break;
 
@@ -1102,7 +1208,17 @@ namespace SalarSoft.ASProxy.BuiltIn
 					case (')'):// EndParenthesis
 
 						if (!(countQuote % 2 != 0 || countApostrophe % 2 != 0))
-							countEndParenthesis++;
+						{
+							if ((countLeftBrace == countRightBrace)
+								&& countStartParenthesis == countEndParenthesis)
+							{
+								// this is end of statement or it is syntax error
+								propertySetEnd = i;
+								return propertySetEnd;
+							}
+							else
+								countEndParenthesis++;
+						}
 						break;
 
 
