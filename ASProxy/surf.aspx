@@ -183,7 +183,7 @@
 .ASProxyMain{color:black;padding: 2px;margin: 0px;border: 1px solid #C0C0C0;background-color: #f8f8f8;background-image: none;font-weight: normal;font-style: normal;line-height: normal;visibility: visible;table-layout: auto;white-space: normal;word-spacing: normal;float: none;}
 .ASProxyMain a,.ASProxyMain a:link,.ASProxyMain a:hover,.ASProxyMain a:visited,.ASProxyMain a:active{font: normal normal normal 100% Tahoma;font-family: Tahoma, sans-serif;color: #000099;text-decoration: underline;}
 .AddressBar{margin:3px 1px;}
-.AddressBar input{width:auto;height:auto;border: solid 1px silver; font:inherit;}
+.AddressBar input{width:auto;height:auto;border: solid 1px silver; font:inherit; color:Black;}
 .AddressBar .Button{width:auto;height: 25px;color: black;float: none;width:auto !important;margin:0px;background-color: #ECE9D8;border: outset 2px;vertical-align: bottom;font-size: 10pt;padding: 2px 5px;}
 .AddressBar .TextBox{width:auto !important;height: auto;color: black;background-color: #FFFFFF;margin:0px;float: none;font-size: 10pt;border: solid 1px silver;padding: 3px;}
 .ASProxyOption{background-color:#f8f8f8;height: auto !important;margin: 0px 1px;padding: 0px;float:none;color: black;font: normal normal normal 100% Tahoma;font-family: Tahoma, sans-serif;font-size: 8pt;display: inline;border-width: 0px;text-align: center;}

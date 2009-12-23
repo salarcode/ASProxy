@@ -69,7 +69,7 @@ namespace SalarSoft.ASProxy.BuiltIn
 				// Also checking the value of document.domain may cause bad behaviours
 				// so both are going ot be disabled here
 				JSReplacer.ReplacePropertyUsages(ref codes,
-					"document.domain", "document.Domain");
+					"document.domain", Consts.ClientContent.JSEncoder_ASProxyLocationXDomain);
 
 
 				JSReplacer.AddEncoderMethodToPropertySet(ref codes,
@@ -92,7 +92,14 @@ namespace SalarSoft.ASProxy.BuiltIn
 				// Cookie get, Since v5.0
 				JSReplacer.AddEncoderMethodToPropertyGet(ref codes,
 					"document.cookie",
-					Consts.ClientContent.JSEncoder_ASProxyGetCookieMethodName);
+					Consts.ClientContent.JSEncoder_ASProxyGetCookieMethodName, true);
+
+				JSReplacer.AddEncoderMethodToPropertyGet(ref codes,
+					"top.location",
+					Consts.ClientContent.JSEncoder_ASProxyWindowLocForTop, false);
+				JSReplacer.AddEncoderMethodToPropertyGet(ref codes,
+					"parent.location",
+					Consts.ClientContent.JSEncoder_ASProxyWindowLocForParent);
 
 				// fisrt test location with base objects
 				JSReplacer.AddEncoderMethodToPropertyGet(ref codes,

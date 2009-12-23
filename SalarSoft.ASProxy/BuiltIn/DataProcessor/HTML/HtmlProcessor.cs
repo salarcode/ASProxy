@@ -495,7 +495,7 @@ namespace SalarSoft.ASProxy.BuiltIn
 					"_wparent=_wparent ? _wparent : window;" +
 					"var _document=_wparent.document;" +
 					"var ASProxyOriginalURL=_document.getElementById('__ASProxyOriginalURL');" +
-				//"if(ASProxyOriginalURL==null){_document=_wparent.document; ASProxyOriginalURL=_document.getElementById('__ASProxyOriginalURL');}" +
+					//"if(ASProxyOriginalURL==null){_document=_wparent.document; ASProxyOriginalURL=_document.getElementById('__ASProxyOriginalURL');}" +
 					"var ASProxyUnvisibleHide;" +
 					"function ORG_Position_(){if(!ASProxyOriginalURL)return;var topValue='0';topValue=_document.body.scrollTop+'';" +
 					"if(topValue=='0' || topValue=='undefined')topValue=_wparent.scrollY+'';" +

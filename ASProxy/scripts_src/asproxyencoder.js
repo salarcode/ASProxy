@@ -1,6 +1,6 @@
-﻿// ASProxy Dynamic Encoder
+// ASProxy Dynamic Encoder
 // ASProxy encoder for dynamically created objects //
-// Last update: 2009-11-16 coded by Salar Khalilzadeh //
+// Last update: 2009-11-17 coded by Salar Khalilzadeh //
 
 //_userConfig={EncodeUrl:true, OrginalUrl:true, Links:true, Images:true, Forms:true, Frames:true, Cookies:true};
 
@@ -1176,8 +1176,8 @@ _ASProxy.OverrideStandardsDeclare=function(){
 }
 _ASProxy.OverrideStandards=function() {
 	try{
-		document.Domain= _WindowLocation.host;
-	}catch(e){_ASProxy.Log('document.DOMAIN failed',e);}
+		document.XDomain= _WindowLocation.host;
+	}catch(e){_ASProxy.Log('document.XDOMAIN failed',e);}
 	try{
 		window.open=_ASProxy.WindowOpen;
 	}catch(e){_ASProxy.Log('OVR window.open failed',e);}

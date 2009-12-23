@@ -1,4 +1,4 @@
-﻿// ASProxy AJAX Wrapper Core
+// ASProxy AJAX Wrapper Core
 // Last update: 2009-06-26 coded by Salar Khalilzadeh //
 
 // Global

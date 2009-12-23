@@ -976,8 +976,12 @@ namespace SalarSoft.ASProxy.BuiltIn
 		{
 			try
 			{
+
+				//const string regexString = @"(?><[A-Z][A-Z0-9]{0,15})(?>\s+[^>\s]+)*?\s*(?>on\w{1,15}\s*=(?!\\)\s*)(?>(['""])?)(?<URL>(?(1)(?(?<="")[^""]+|[^']+)|[^ >]+))(?(1)\1|)";
+				const string regexString = @"\b(on(?<!\.on)[a-z]{2,20})\s*=\s*([\'""])?(?<URL>(?(2)(?(?<="")[^""]+|[^\']+)|[^\s""\'>]+))(?(2)\2|)";
+
 				// any event name in tags which starts with "on" for example "onclick"
-				Regex regex = new Regex(@"(?><[A-Z][A-Z0-9]{0,15})(?>\s+[^>\s]+)*?\s*(?>on\w{1,15}\s*=(?!\\)\s*)(?>(['""])?)(?<URL>(?(1)(?(?<="")[^""]+|[^']+)|[^ >]+))(?(1)\1|)",
+				Regex regex = new Regex(regexString,
 					RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
 				// find matches
@@ -993,6 +997,11 @@ namespace SalarSoft.ASProxy.BuiltIn
 					{
 						// Get clear url
 						string eventCode = group.Value;
+
+						// ignore empty events
+						if (eventCode.Length == 0)
+							continue;
+
 						string eventCodeOrg = eventCode;
 
 						// appy changes
@@ -1002,7 +1011,9 @@ namespace SalarSoft.ASProxy.BuiltIn
 							pagePath,
 							rootUrl);
 
-						if (eventCodeOrg != eventCode)
+						// instead of heavy but accurate (eventCodeOrg != eventCode)
+						// we use a fast and dirty check
+						if (eventCodeOrg.Length != eventCode.Length)
 						{
 							// Repace the change!
 							codes = codes.Remove(group.Index, group.Length);

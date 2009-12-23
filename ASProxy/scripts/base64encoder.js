@@ -1,10 +1,3 @@
 /** Base64 encode / decode   http://www.webtoolkit.info   **/
-var _keyStr="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=";function _Base64_encode(input){var output="";var chr1,chr2,chr3,enc1,enc2,enc3,enc4;var i=0;input=_Base64_utf8_encode(input);while(i<input.length){chr1=input.charCodeAt(i++);chr2=input.charCodeAt(i++);chr3=input.charCodeAt(i++);enc1=chr1>>2;enc2=((chr1&3)<<4)|(chr2>>4);enc3=((chr2&15)<<2)|(chr3>>6);enc4=chr3&63;if(isNaN(chr2)){enc3=enc4=64;}else if(isNaN(chr3)){enc4=64;}
-output=output+
-this._keyStr.charAt(enc1)+this._keyStr.charAt(enc2)+
-this._keyStr.charAt(enc3)+this._keyStr.charAt(enc4);}
-return output;}
-function _Base64_utf8_encode(string){string=string.replace(/\r\n/g,"\n");var utftext="";for(var n=0;n<string.length;n++){var c=string.charCodeAt(n);if(c<128){utftext+=String.fromCharCode(c);}
-else if((c>127)&&(c<2048)){utftext+=String.fromCharCode((c>>6)|192);utftext+=String.fromCharCode((c&63)|128);}
-else{utftext+=String.fromCharCode((c>>12)|224);utftext+=String.fromCharCode(((c>>6)&63)|128);utftext+=String.fromCharCode((c&63)|128);}}
-return utftext;}
+var _keyStr="abcdefghijkml012345nopqrstuvwxyz6789ABCDEFGHIJKLMNOPQRSTUVWXYZ+/=";function _Base64_encode(b){var c="",d,a,e,i,h,f,g=0;for(b=_Base64_utf8_encode(b);g<b.length;){d=b.charCodeAt(g++);a=b.charCodeAt(g++);e=b.charCodeAt(g++);i=d>>2;d=(d&3)<<4|a>>4;h=(a&15)<<2|e>>6;f=e&63;if(isNaN(a))h=f=64;else if(isNaN(e))f=64;c=c+this._keyStr.charAt(i)+this._keyStr.charAt(d)+this._keyStr.charAt(h)+this._keyStr.charAt(f)}return c}
+function _Base64_utf8_encode(b){b=b.replace(/\r\n/g,"\n");for(var c="",d=0;d<b.length;d++){var a=b.charCodeAt(d);if(a<128)c+=String.fromCharCode(a);else{if(a>127&&a<2048)c+=String.fromCharCode(a>>6|192);else{c+=String.fromCharCode(a>>12|224);c+=String.fromCharCode(a>>6&63|128)}c+=String.fromCharCode(a&63|128)}}return c};

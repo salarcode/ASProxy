@@ -395,9 +395,13 @@ namespace SalarSoft.ASProxy.BuiltIn
 			bool encodeUrl)
 		{
 
+			//const string regexString = @"(?><[A-Z][A-Z0-9]{0,15})(?>\s+[^>\s]+)*?\s*(?>on\w{1,15}\s*=(?!\\)\s*)(?>(['""])?)(?<URL>(?(1)(?(?<="")[^""]+|[^']+)|[^ >]+))(?(1)\1|)";
+			const string regexString = @"\b(on(?<!\.on)[a-z]{2,20})\s*=\s*([\'""])?(?<URL>(?(2)(?(?<="")[^""]+|[^\']+)|[^\s""\'>]+))(?(2)\2|)";
+
 			// any event name in tags which starts with "on" for example "onclick"
-			Regex regex = new Regex(@"<.*[\n]*on\w{1,15}\s*=\s*(['""])?(?<URL>(?(1)(?(?<="")[^""]+|[^']+)|[^\s""'>]+))(?(1)\1|)[^>]*>",
+			Regex regex = new Regex(regexString,
 				RegexOptions.Compiled | RegexOptions.IgnoreCase);
+
 
 			// find matches
 			MatchCollection mColl = regex.Matches(codes);
@@ -432,7 +436,7 @@ namespace SalarSoft.ASProxy.BuiltIn
 						pagePath,
 						siteRootUrl);
 
-					if (eventCodeOrg != eventCode)
+					if (eventCodeOrg.Length != eventCode.Length)
 					{
 						// Apply the changes!
 						codes = codes.Remove(group.Index, group.Length);

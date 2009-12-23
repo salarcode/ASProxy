@@ -64,7 +64,7 @@ namespace SalarSoft.ASProxy
             /// <summary>
             /// Used to make base64 coding unknown for filtering machines
             /// </summary>
-            public const string Base64Unknowner = "B64Coded!";
+            public const string Base64Unknowner = "B6X!";
         }
 
         /// <summary>
@@ -91,6 +91,9 @@ namespace SalarSoft.ASProxy
 			public const string JSEncoder_ASProxyGetCookieMethodName = "__CookieGet";
 			public const string JSEncoder_ASProxyWindowLocOverrider = "_WindowLocation";
 			public const string JSEncoder_ASProxyWindowLocHostName = "_WindowLocation.host";
+			public const string JSEncoder_ASProxyWindowLocForTop = "top._WindowLocation";
+			public const string JSEncoder_ASProxyWindowLocForParent = "parent._WindowLocation";
+			public const string JSEncoder_ASProxyLocationXDomain = "document.XDomain";
 
             public const string attrAlreadyEncodedAttribute = "asproxydone";
 			public const string attrAlreadyEncodedValue = "1";

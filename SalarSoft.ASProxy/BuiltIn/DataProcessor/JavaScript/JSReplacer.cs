@@ -285,6 +285,46 @@ namespace SalarSoft.ASProxy.BuiltIn
 		/// <summary>
 		/// Replaces property getter with an encoder method
 		/// </summary>
+		internal static void AddEncoderMethodToPropertyGet(ref string jsCode, string propertyFullName, string encoderMethodName, bool addMethodParenthesis)
+		{
+			string encodingMethod;
+			if (addMethodParenthesis)
+				encodingMethod = encoderMethodName + _JSMethodStart + _JSMethodEnd;
+			else
+				encodingMethod = encoderMethodName;
+
+			int index = 0;
+			TextRange position;
+
+			do
+			{
+				// Find property position
+				position = JSParser.FindPropertyGetterRange(ref jsCode, propertyFullName, index);
+
+				// There is no more property
+				if (position.Start == -1)
+					break;
+
+				// Next search
+				index = position.Start;
+
+				if (position.End > -1)
+				{
+					// Set next searching position
+					index = position.Start + encodingMethod.Length;
+
+					// first remove previous value, then add new method
+					jsCode = jsCode.Remove(position.Start, position.End - position.Start);
+					jsCode = jsCode.Insert(position.Start, encodingMethod);
+				}
+
+			}
+			while (index != -1);
+		}
+
+		/// <summary>
+		/// Replaces property getter with an encoder method
+		/// </summary>
 		internal static void AddEncoderMethodToPropertyGet(ref string jsCode, string[] commandFirstBase, string[] commandSecondItem, string encoderMethodName, bool addMethodParenthesis)
 		{
 			string encodingMethod;

@@ -60,7 +60,7 @@
     <Compile Include="BuiltIn\DataManagement\ASProxyEngine.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="BuiltIn\DataManagement\CookieManager_New.cs">
+    <Compile Include="BuiltIn\DataManagement\CookieManager.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="BuiltIn\DataManagement\WebData.cs">
@@ -155,6 +155,16 @@
     <Compile Include="General\Common.cs" />
     <Compile Include="General\Consts.cs" />
     <Compile Include="Configurations\Systems.cs" />
+    <Compile Include="General\UrlEncoders.cs" />
+    <Compile Include="General\Encoders\ASProxyBase64.cs" />
+    <Compile Include="General\Encoders\Base64.cs" />
+    <Compile Include="General\Encoders\Decoder00E.cs" />
+    <Compile Include="General\Encoders\Decoder3To4.cs" />
+    <Compile Include="General\Encoders\DecoderBase64.cs" />
+    <Compile Include="General\Encoders\Encoder00E.cs" />
+    <Compile Include="General\Encoders\Encoder3To4.cs" />
+    <Compile Include="General\Encoders\EncoderBase64.cs" />
+    <Compile Include="General\Encoders\XXE.cs" />
     <Compile Include="Pages\PageInMasterLocale.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
