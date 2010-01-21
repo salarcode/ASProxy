@@ -1,8 +1,8 @@
 // ASProxy Dynamic Encoder
 // ASProxy encoder for dynamically created objects //
-// Last update: 2009-11-17 coded by Salar Khalilzadeh //
+// Last update: 2010-01-20 coded by Salar Khalilzadeh //
 
-//_userConfig={EncodeUrl:true, OrginalUrl:true, Links:true, Images:true, Forms:true, Frames:true, Cookies:true};
+//_userConfig={EncodeUrl:true, OrginalUrl:true, Links:true, Images:true, Forms:true, Frames:true, Cookies:true, RemScripts:false, RemObjects:false, TempCookies:false };
 
 //_reqInfo={
 //	pageUrl:'http://blocked.com:8080/sub/hi/tester.html?param=1&hi=2',
@@ -22,7 +22,8 @@
 
 // ASProxy object
 _ASProxy={
-	Debug_UseAbsoluteUrl:false,
+    Debug_UseAbsoluteUrl: false,
+	DynamicEncoders:true,
 	TraceCookies:false,
 	LogEnabled:false,
 	Activities:{},
@@ -32,13 +33,14 @@ _ASProxy={
 		pgGetJS:'getjs.ashx',
 		pgImages:'images.ashx',
 		pgDownload:'download.ashx',
-		pgAuthorization:'authorization.aspx'
+		pgAuthorization:'authorization.aspx',
+		pgAjax:'ajax.ashx'
 	},
 	ClientSideUrls:["mailto:", "file://", "javascript:", "vbscript:", "jscript:", "vbs:","ymsgr:","data:"],
 	NonVirtualUrls:["http://", "https://", "mailto:", "ftp://", "file://", "telnet://", "news://", "nntp://", "ldap://","ymsgr:", "javascript:", "vbscript:", "jscript:", "vbs:", "data:" ]
 }
 
-_ASProxy.EncodedUrls=[_reqInfo.ASProxyPageName+"?dec=",
+_ASProxy.EncodedUrls=[_reqInfo.ASProxyPageName+"?dec=",_ASProxy.Pages.pgAjax+"?dec=",
 		_ASProxy.Pages.pgGetHtml+"?dec=",_ASProxy.Pages.pgImages+"?dec=",_ASProxy.Pages.pgGetJS+"?dec=",
 		_ASProxy.Pages.pgDownload+"?dec=",_ASProxy.Pages.pgAuthorization+"?dec=",_ASProxy.Pages.pgGetAny+"?dec="];
 
@@ -261,6 +263,18 @@ _ASProxy.B64UnknownerAdd = function(url) {
 	else return url;
 }
 
+// private: Removes url unknowner
+_ASProxy.B64UnknownerRemove = function(url) {
+	if (url == null) return null;
+	var unknowner = _reqInfo.UrlUnknowner.toLowerCase();
+	var urlAddr = url.toLowerCase();
+	var position = urlAddr.indexOf(unknowner);
+	if (position > -1)
+		return url.substring(0, position);
+	else
+		return url;
+}
+
 // ---------------------------
 // END
 // ---------------------------
@@ -341,7 +355,18 @@ _ASProxy.StrEndsWith = function(str, check) {
 	return (str.substr(str.length - check.length) == check);
 }
 
-
+_ASProxy.GetUrlParamValue = function(name, url) {
+	if (url == null || name == null) return "";
+	name = name.replace(/[\[]/, "\\\[").replace(/[\]]/, "\\\]");
+	var regexS = "[\\?&]" + name + "=([^&#]*)";
+	var regex = new RegExp(regexS);
+	var results = regex.exec(url);
+	if (results == null)
+		return "";
+	else
+		return results[1];
+}
+  
 // ---------------------------
 // Automated encoders
 // ---------------------------
@@ -455,7 +480,6 @@ for(i=0;i<elementsArray.length;i++){
 			//Saving base64 coded url to monitor changes
 			_ASProxy.CallOriginalSetAttr(item, "encodedurl" , newValue);
 		}
-		
 	}
 }}
 
@@ -505,8 +529,7 @@ for(i=0;i<document.forms.length;i++)
 			}
 
 			// Checks only Action changes and does not support Method changes
-			if(frmAction!=orgEncodedUrl)
-			{
+			if(frmAction!=orgEncodedUrl){
 				applyEncoding=true;
 			}
 		}
@@ -519,7 +542,6 @@ for(i=0;i<document.forms.length;i++)
 			var newFrmAction=__UrlEncoder(frmAction,ENC_Page,false,"method="+frmMethod);
 
 			_ASProxy.CallOriginalSetAttr(frm,"action", newFrmAction);
-
 			_ASProxy.CallOriginalSetAttr(frm,"encodedurl", newFrmAction);
 
 			//override from method
@@ -527,8 +549,9 @@ for(i=0;i<document.forms.length;i++)
 		}
 	}
 }
-//After 2 seconds
-window.setTimeout("_ASProxy.Enc.EncodeForms();",2000);
+if(_ASProxy.DynamicEncoders)
+    //After 2 seconds
+    window.setTimeout("_ASProxy.Enc.EncodeForms();",2000);
 }
 
 // private: encode all frames
@@ -540,8 +563,9 @@ _ASProxy.Enc.EncodeFrames=function(){
 	_ASProxy.Enc.EncodeElements(frames,"src",3,false,null,null,"onload","_ASProxy.Enc.EncodeFrames()");
 	}catch(e){_ASProxy.Log('Enc.EncodeFrames',e);}
 
-	//After 4 seconds
-	window.setTimeout("_ASProxy.Enc.EncodeFrames();",5000);
+	if (_ASProxy.DynamicEncoders)
+    	//After 4 seconds
+	    window.setTimeout("_ASProxy.Enc.EncodeFrames();",5000);
 }
 
 // private: encode all links
@@ -551,8 +575,9 @@ _ASProxy.Enc.EncodeLinks=function(){
 	_ASProxy.Enc.EncodeElements(document.links,"href",0,true);
 	}catch(e){_ASProxy.Log('Enc.EncodeLinks',e);}
 
-	//After 1 second 
-	window.setTimeout("_ASProxy.Enc.EncodeLinks();",1000);
+	if (_ASProxy.DynamicEncoders)
+	    //After 1 second 
+	    window.setTimeout("_ASProxy.Enc.EncodeLinks();",1000);
 }
 
 // private: encode all images
@@ -562,8 +587,9 @@ _ASProxy.Enc.EncodeImages=function(){
 	_ASProxy.Enc.EncodeElements(document.images,"src",1,true);
 	}catch(e){_ASProxy.Log('Enc.EncodeImages',e);}
 
-	//After 1 second
-	window.setTimeout("_ASProxy.Enc.EncodeImages();",1000);
+	if (_ASProxy.DynamicEncoders)
+	    //After 1 second
+	    window.setTimeout("_ASProxy.Enc.EncodeImages();",1000);
 }
 
 // private: encode all input images
@@ -575,8 +601,9 @@ _ASProxy.Enc.EncodeInputImages=function(){
 	_ASProxy.Enc.EncodeElements(inputImages,"src",1,true,"type","image");
 	}catch(e){_ASProxy.Log('Enc.EncodeInputImages',e);}
 
-	//After 4 seconds
-	window.setTimeout("_ASProxy.Enc.EncodeInputImages();",4000);
+	if (_ASProxy.DynamicEncoders)
+	    //After 4 seconds
+	    window.setTimeout("_ASProxy.Enc.EncodeInputImages();",4000);
 }
 
 // private: encode all scripts
@@ -586,8 +613,9 @@ _ASProxy.Enc.EncodeScriptSources=function(){
 	_ASProxy.Enc.EncodeElements(scripts,"src",2,false);
 	}catch(e){_ASProxy.Log('Enc.EncodeScriptSources',e);}
 
-	//After 4 second 
-	window.setTimeout("_ASProxy.Enc.EncodeScriptSources();",4000);
+	if (_ASProxy.DynamicEncoders)
+	    //After 4 second 
+	    window.setTimeout("_ASProxy.Enc.EncodeScriptSources();",4000);
 }
 // ---------------------------
 // END
@@ -651,7 +679,6 @@ _ASProxy.GetDocumentCookie = function() {
 
 		// our cookie for this name
 		var cookie = _ASProxy.GetCookieByName(cookieName);
-
 		if (cookie == null)
 			continue;
 
@@ -668,14 +695,12 @@ _ASProxy.GetDocumentCookie = function() {
 
 // private: parses ASProxy cookie and returns standard cookie
 _ASProxy.ParseASProxyCookie = function(asproxyCookie) {
-
 	var result = '';
 
 	// asproxy cookie parts are seperated by (&)
 	var cookies = asproxyCookie.split("&");
 
 	for (var i = 0; i < cookies.length; i++) {
-
 		var cookieName = null;
 		var cookieValue = null;
 		var cookiePath = null;
@@ -747,7 +772,6 @@ _ASProxy.SetDocumentCookie = function(cookieString) {
 
 // private: parses standard cookie and returns ASProxy cookie
 _ASProxy.ParseStandardCookieForSet = function(stdCookie) {
-
 	var result = '';
 
 	var cookieName = null;
@@ -860,13 +884,17 @@ _ASProxy.ParseStandardCookieForSet = function(stdCookie) {
 	// the name=value
 	toSaveCookieString = toSaveCookieName + '=' + toSaveCookieValue;
 
-	// only expires and max-age to save asproxy cookie
-	if (cookieExpires != null)
-		toSaveCookieString += '; expires=' + cookieExpires;
+	// set expire date if cookies allowed to be stored more than session
+	if (!_userConfig.TempCookies)
+	{
+		// only expires and max-age to save asproxy cookie
+		if (cookieExpires != null)
+			toSaveCookieString += '; expires=' + cookieExpires;
 
-	if (cookieMaxAge != null)
-		toSaveCookieString += '; max-age=' + cookieMaxAge;
-
+		if (cookieMaxAge != null)
+			toSaveCookieString += '; max-age=' + cookieMaxAge;
+	}
+	
 	// To save ASProxy cookies the path should be always (/)
 	toSaveCookieString += '; path=/';
 
@@ -1241,8 +1269,9 @@ _ASProxy.Initialize=function() {
 	// Html setters
 	_ASProxy.OverrideHtmlSetters();
 
-	// start encoders
-	_ASProxy.StartupDynamicEncoders();
+	if(_ASProxy.DynamicEncoders)
+		// start encoders
+		_ASProxy.StartupDynamicEncoders();
 }
 
 // start immediately

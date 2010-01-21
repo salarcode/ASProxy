@@ -328,7 +328,7 @@ namespace SalarSoft.ASProxy
         /// <param name="url">A url address</param>
         public static string EncodeUrl(string url)
         {
-            byte[] bytes = Encoding.UTF8.GetBytes(url);
+            //byte[] bytes = Encoding.UTF8.GetBytes(url);
             //string result = Convert.ToBase64String(bytes);
             string result = UrlEncoders.EncodeToASProxyBase64(url);
 

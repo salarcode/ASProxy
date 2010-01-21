@@ -1,6 +1,6 @@
 ****************************************
-ASProxy       :version 5.5b3
-Last update   :2009/12/23
+ASProxy       :version 5.5b4
+Last update   :2010/01/19
 Official site :http://asproxy.sourceforge.net/
 
 ASProxy is an ASP.NET Web Proxy.
@@ -37,9 +37,14 @@ Changing interface:
 ****************************************
 Version History
 
+Version 5.5 Beta4 2010/01/19
+* Fixed: ASProxy login remember me check.
+* Improved: Javascript encoder.
+* Improved: Serveral javascript issues.
+
 Version 5.5 Beta3 2009/12/23
 * New: Streaming download. ASProxy will stream resume supported downloads. This will decrease presure on the server to buffer all the download data.
-	But still it is possible to force ASProxy enable resume-support feature to not supported site byt buffering.
+	The previous option which is forcing ASProxy to enable resume-support feature to all sites still is available.
 * Change: Base64 url encoding method is changed to a custom encoding scheme.
 * Fixed: Http compression content type detecttion improved to prevent compressing unexpected data.
 * Fixed: Setting document.domain throws exception in javasceript which is striped in this version.

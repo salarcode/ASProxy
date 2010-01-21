@@ -169,7 +169,7 @@ namespace SalarSoft.ASProxy
 			return GetString(stream, null, ignorePageEncoding, detectHtmlContentType, out DetectedEncode);
 		}
 
-		public static string GetString_OLD(Stream stream, bool ignorePageEncoding, out Encoding DetectedEncode)
+		private static string GetString_OLD(Stream stream, bool ignorePageEncoding, out Encoding DetectedEncode)
 		{
 			string result = "";
 			StreamReader reader;
@@ -250,7 +250,7 @@ namespace SalarSoft.ASProxy
 		/// <summary>
 		/// For test
 		/// </summary>
-		public static string GetString__HARD(Stream stream, bool ignorePageEncoding, out Encoding DetectedEncode)
+        private static string GetString__HARD(Stream stream, bool ignorePageEncoding, out Encoding DetectedEncode)
 		{
 			string result = "";
 			StreamReader reader;

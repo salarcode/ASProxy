@@ -1206,8 +1206,9 @@ namespace SalarSoft.ASProxy.BuiltIn
 				_UserOptions.Frames.ToString().ToLower(),
 				_UserOptions.Cookies.ToString().ToLower(),
 				_UserOptions.RemoveScripts.ToString().ToLower(),
-				_UserOptions.RemoveObjects.ToString().ToLower()
-				);
+				_UserOptions.RemoveObjects.ToString().ToLower(),
+				_UserOptions.TempCookies.ToString().ToLower()
+			);
 
 			reqInfo = string.Format(Consts.ClientContent.JSEncoder_RequestInfo,
 				pageUrl,
@@ -1289,21 +1290,21 @@ namespace SalarSoft.ASProxy.BuiltIn
 					"var _wparent=window.top ? window.top : window.parent;" +
 					"_wparent=_wparent ? _wparent : window;" +
 					"var _document=_wparent.document;" +
-					"var ASProxyOriginalURL=_document.getElementById('__ASProxyOriginalURL');" +
-					"ASProxyOriginalURL.Freeze=false; ASProxyOriginalURL.CurrentUrl=''; var ASProxyUnvisibleHide;" +
-					"function ORG_Position_(){if(!ASProxyOriginalURL)return;var topValue='0';topValue=_document.body.scrollTop+'';" +
+					"var _XFloatBar=_document.getElementById('__ASProxyOriginalURL');" +
+					"_XFloatBar.Freeze=false; _XFloatBar.CurrentUrl=''; var ASProxyUnvisibleHide;" +
+					"function ORG_Position_(){if(!_XFloatBar)return;var topValue='0';topValue=_document.body.scrollTop+'';" +
 					"if(topValue=='0' || topValue=='undefined')topValue=_wparent.scrollY+'';" +
 					"if(topValue=='0' || topValue=='undefined')topValue=_document.documentElement.scrollTop+'';" +
-					"if(topValue!='undefined')ASProxyOriginalURL.style.top=topValue+'px';}" +
-					"function ORG_IN_(obj){if(!ASProxyOriginalURL || ASProxyOriginalURL.Freeze)return;ORG_Position_();var attrib=obj.attributes['originalurl'];if(attrib!=null)attrib=attrib.value; else attrib=null;if(attrib!='undefined' && attrib!='' && attrib!=null){_wparent.clearTimeout(ASProxyUnvisibleHide);ASProxyOriginalURL.CurrentUrl=''+attrib;ASProxyOriginalURL.innerHTML='URL: <span style=\"color:maroon;\">'+attrib+'</span>';ASProxyOriginalURL.style.visibility='visible';}}" +
-					"function ORG_OUT_(){if(!ASProxyOriginalURL || ASProxyOriginalURL.Freeze)return;ASProxyOriginalURL.innerHTML='URL: ';ASProxyOriginalURL.CurrentUrl='';_wparent.clearTimeout(ASProxyUnvisibleHide);ASProxyUnvisibleHide=_wparent.setTimeout(ORG_HIDE_IT,500);}" +
-					"function ORG_HIDE_IT(){if(ASProxyOriginalURL.Freeze)return;ASProxyOriginalURL.style.visibility='hidden';ASProxyOriginalURL.innerHTML='';}" +
+					"if(topValue!='undefined')_XFloatBar.style.top=topValue+'px';}" +
+					"function ORG_IN_(obj){if(!_XFloatBar || _XFloatBar.Freeze)return;ORG_Position_();var attrib=obj.attributes['originalurl'];if(attrib!=null)attrib=attrib.value; else attrib=null;if(attrib!='undefined' && attrib!='' && attrib!=null){_wparent.clearTimeout(ASProxyUnvisibleHide);_XFloatBar.CurrentUrl=''+attrib;_XFloatBar.innerHTML='URL: <span style=\"color:maroon;\">'+attrib+'</span>';_XFloatBar.style.visibility='visible';}}" +
+					"function ORG_OUT_(){if(!_XFloatBar || _XFloatBar.Freeze)return;_XFloatBar.innerHTML='URL: ';_XFloatBar.CurrentUrl='';_wparent.clearTimeout(ASProxyUnvisibleHide);ASProxyUnvisibleHide=_wparent.setTimeout(ORG_HIDE_IT,500);}" +
+					"function ORG_HIDE_IT(){if(_XFloatBar.Freeze)return;_XFloatBar.style.visibility='hidden';_XFloatBar.innerHTML='';}" +
 					"_wparent.onscroll=ORG_Position_;" +
 					"_ASProxy.AttachEvent(document,'keydown',function(aEvent){var ev = window.event ? window.event : aEvent;" +
 					"if(ev.ctrlKey && ev.shiftKey && ev.keyCode==88){" +
-					"if(ASProxyOriginalURL.Freeze){ASProxyOriginalURL.Freeze=false;ORG_HIDE_IT();}" +
-					"else if(ASProxyOriginalURL.CurrentUrl!=''){ASProxyOriginalURL.Freeze=true;" +
-					"ASProxyOriginalURL.innerHTML=ASProxyOriginalURL.innerHTML+\"<br /><span style='color:navy;'>Press Ctrl+Shift+X again to unfreeze this bar.<span/>\";" +
+					"if(_XFloatBar.Freeze){_XFloatBar.Freeze=false;ORG_HIDE_IT();}" +
+					"else if(_XFloatBar.CurrentUrl!=''){_XFloatBar.Freeze=true;" +
+					"_XFloatBar.innerHTML=_XFloatBar.innerHTML+\"<br /><span style='color:navy;'>Press Ctrl+Shift+X again to unfreeze this bar.<span/>\";" +
 					"}}});" +
 					"</script>";
 

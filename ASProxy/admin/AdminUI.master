@@ -43,7 +43,7 @@
                 <li><a asproxydone="2" href="../download.aspx" accesskey="3">
                     <asp:Literal ID="mnuDownload" EnableViewState="False" runat="server" meta:resourcekey="mnuDownload"
                         Text="Download Tool"></asp:Literal></a></li>
-                <li><a asproxydone="2" href="../surf.aspx?dec=1&amp;url=aHR0cDovL2FzcHJveHkuc291cmNlZm9yZ2UubmV0B64Coded!"
+                <li><a asproxydone="2" href="../surf.aspx?dec=1&amp;url=uh4QwdELmSfPwhjLyhAKwSZRwC0BtCZOtSoKvCpQmM==B6X!"
                     target="_blank" accesskey="4">
                     <asp:Literal ID="mnuASProxy" EnableViewState="False" runat="server" meta:resourcekey="mnuASProxy"
                         Text="ASProxy Page"></asp:Literal></a></li>
@@ -87,7 +87,7 @@
                             Text="Download Tool"></asp:Literal></a>
             <asp:Literal ID="lblFootSlogan1" EnableViewState="False" runat="server" meta:resourcekey="lblFootSlogan1"
                 Text="Have your own"></asp:Literal>
-            <a asproxydone="2" href="../surf.aspx?dec=1&url=aHR0cDovL2FzcHJveHkuc291cmNlZm9yZ2UubmV0B64Coded!"
+            <a asproxydone="2" href="../surf.aspx?dec=1&url=uh4QwdELmSfPwhjLyhAKwSZRwC0BtCZOtSoKvCpQmM==B6X!"
                 target="_blank">ASProxy</a>.
             <asp:Literal ID="lblFootSlogan2" EnableViewState="False" runat="server" meta:resourcekey="lblFootSlogan2"
                 Text="It's free."></asp:Literal>

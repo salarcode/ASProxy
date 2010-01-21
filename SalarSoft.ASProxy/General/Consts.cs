@@ -14,7 +14,8 @@ namespace SalarSoft.ASProxy
         public class General
         {
             public const string ASProxyName = "ASProxy";
-            public const string ASProxyVersion = "5.5b3";
+            public const string ASProxyVersion = "5.5b4";
+            public const string ASProxyVersionFull = "5.5.0.4";
 
 			public const string ContextUserOptionsKey = "ContextUserOptions";
         }
@@ -81,7 +82,7 @@ namespace SalarSoft.ASProxy
         /// </summary>
         public class ClientContent
         {
-			public const string JSEncoder_UserConfig = "_userConfig={{EncodeUrl:{0}, OrginalUrl:{1}, Links:{2}, Images:{3}, Forms:{4}, Frames:{5}, Cookies:{6}, RemScripts:{7}, RemObjects:{8} }}; ";
+			public const string JSEncoder_UserConfig = "_userConfig={{EncodeUrl:{0}, OrginalUrl:{1}, Links:{2}, Images:{3}, Forms:{4}, Frames:{5}, Cookies:{6}, RemScripts:{7}, RemObjects:{8}, TempCookies:{9} }}; ";
 			public const string JSEncoder_RequestInfo = @"_reqInfo={{pageUrl:""{0}"", pageUrlNoQuery:""{1}"", pagePath:""{2}"", rootUrl:""{3}"", cookieName:'{4}', cookieNameExt:'{5}', ASProxyUrl:""{6}"", ASProxyPath:""{7}"", ASProxyRoot:""{8}"", ASProxyPageName:'{9}', UrlUnknowner:'{10}'}}; ";
 			public const string JSEncoder_RequestLocation = @"_reqInfo.location={{ Hash:'{0}', Host:""{1}"", Hostname:""{2}"", Pathname:""{3}"", Search:""{4}"", Port:'{5}', Protocol:'{6}' }}; ";
 			public const string JSEncoder_AppliedCookieNames = @"_reqInfo.appliedCookiesList=[{0}]; ";
@@ -91,8 +92,6 @@ namespace SalarSoft.ASProxy
 			public const string JSEncoder_ASProxyGetCookieMethodName = "__CookieGet";
 			public const string JSEncoder_ASProxyWindowLocOverrider = "_WindowLocation";
 			public const string JSEncoder_ASProxyWindowLocHostName = "_WindowLocation.host";
-			public const string JSEncoder_ASProxyWindowLocForTop = "top._WindowLocation";
-			public const string JSEncoder_ASProxyWindowLocForParent = "parent._WindowLocation";
 			public const string JSEncoder_ASProxyLocationXDomain = "document.XDomain";
 
             public const string attrAlreadyEncodedAttribute = "asproxydone";

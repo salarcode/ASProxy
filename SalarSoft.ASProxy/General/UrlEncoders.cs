@@ -4,7 +4,7 @@ using System.Text;
 using System.IO;
 using SalarSoft.ASProxy.General.Encoders;
 
-namespace SalarSoft.ASProxy.General
+namespace SalarSoft.ASProxy
 {
     public static class UrlEncoders
     {

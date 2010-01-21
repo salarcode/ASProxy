@@ -410,7 +410,8 @@ namespace SalarSoft.ASProxy.BuiltIn
 				_UserOptions.Frames.ToString().ToLower(),
 				_UserOptions.Cookies.ToString().ToLower(),
 				_UserOptions.RemoveScripts.ToString().ToLower(),
-				_UserOptions.RemoveObjects.ToString().ToLower()
+				_UserOptions.RemoveObjects.ToString().ToLower(),
+				_UserOptions.TempCookies.ToString().ToLower()
 				);
 
 			reqInfo = string.Format(Consts.ClientContent.JSEncoder_RequestInfo,
@@ -488,25 +489,30 @@ namespace SalarSoft.ASProxy.BuiltIn
 			public const string STR_IFrame_ExtraAttribute = " onload=ASProxyEncodeFrames() ";
 			public const string STR_OrginalUrl_TagAttributeFormat = " onmouseout=ORG_OUT_() onmouseover=ORG_IN_(this) originalurl=\"{0}\" ";
 
-			public const string STR_OrginalUrl_FloatBar = "<div id='__ASProxyOriginalURL' dir='ltr' style='display:block;font-family:verdana;color:black;font-size:11px;padding:2px 5px 2px 5px;margin:0;position:absolute;left:0px;top:0px;width:98%;background:whitesmoke none;border:solid 2px black;overflow: visible;z-index:999999999;visibility:hidden;text-align:left;'></div>";
-			public const string STR_OrginalUrl_Functions =
-					"<script language='javascript' type='text/javascript'>" +
-					"var _wparent=window.top ? window.top : window.parent;" +
-					"_wparent=_wparent ? _wparent : window;" +
-					"var _document=_wparent.document;" +
-					"var ASProxyOriginalURL=_document.getElementById('__ASProxyOriginalURL');" +
-					//"if(ASProxyOriginalURL==null){_document=_wparent.document; ASProxyOriginalURL=_document.getElementById('__ASProxyOriginalURL');}" +
-					"var ASProxyUnvisibleHide;" +
-					"function ORG_Position_(){if(!ASProxyOriginalURL)return;var topValue='0';topValue=_document.body.scrollTop+'';" +
-					"if(topValue=='0' || topValue=='undefined')topValue=_wparent.scrollY+'';" +
-					"if(topValue=='0' || topValue=='undefined')topValue=_document.documentElement.scrollTop+'';" +
-					"if(topValue!='undefined')ASProxyOriginalURL.style.top=topValue+'px';}" +
-					"function ORG_IN_(obj){if(!ASProxyOriginalURL)return;ORG_Position_();var attrib=obj.attributes['originalurl'];if(attrib!=null)attrib=attrib.value; else attrib=null;if(attrib!='undefined' && attrib!='' && attrib!=null){_wparent.clearTimeout(ASProxyUnvisibleHide);ASProxyOriginalURL.CurrentUrl=''+attrib;ASProxyOriginalURL.innerHTML='URL: <span style=\"color:maroon;\">'+attrib+'</span>';ASProxyOriginalURL.style.visibility='visible';}}" +
-					"function ORG_OUT_(){if(!ASProxyOriginalURL)return;ASProxyOriginalURL.innerHTML='URL: ';ASProxyOriginalURL.CurrentUrl='';_wparent.clearTimeout(ASProxyUnvisibleHide);ASProxyUnvisibleHide=_wparent.setTimeout(ORG_HIDE_IT,500);}" +
-					"function ORG_HIDE_IT(){ASProxyOriginalURL.style.visibility='hidden';ASProxyOriginalURL.innerHTML='';}" +
-					"_wparent.onscroll=ORG_Position_;" +
-					"</script>";
-		}
+            public const string STR_OrginalUrl_FloatBar = "<div id='__ASProxyOriginalURL' dir='ltr' style='display:block;font-family:verdana;color:black;font-size:11px;padding:2px 5px 2px 5px;margin:0;position:absolute;left:0px;top:0px;width:98%;background:whitesmoke none;border:solid 2px black;overflow: visible;z-index:999999999;visibility:hidden;text-align:left;line-height:100%;'></div>";
+            public const string STR_OrginalUrl_Functions =
+                    "<script language='javascript' type='text/javascript'>" +
+                    "var _wparent=window.top ? window.top : window.parent;" +
+                    "_wparent=_wparent ? _wparent : window;" +
+                    "var _document=_wparent.document;" +
+                    "var _XFloatBar=_document.getElementById('__ASProxyOriginalURL');" +
+                    "_XFloatBar.Freeze=false; _XFloatBar.CurrentUrl=''; var ASProxyUnvisibleHide;" +
+                    "function ORG_Position_(){if(!_XFloatBar)return;var topValue='0';topValue=_document.body.scrollTop+'';" +
+                    "if(topValue=='0' || topValue=='undefined')topValue=_wparent.scrollY+'';" +
+                    "if(topValue=='0' || topValue=='undefined')topValue=_document.documentElement.scrollTop+'';" +
+                    "if(topValue!='undefined')_XFloatBar.style.top=topValue+'px';}" +
+                    "function ORG_IN_(obj){if(!_XFloatBar || _XFloatBar.Freeze)return;ORG_Position_();var attrib=obj.attributes['originalurl'];if(attrib!=null)attrib=attrib.value; else attrib=null;if(attrib!='undefined' && attrib!='' && attrib!=null){_wparent.clearTimeout(ASProxyUnvisibleHide);_XFloatBar.CurrentUrl=''+attrib;_XFloatBar.innerHTML='URL: <span style=\"color:maroon;\">'+attrib+'</span>';_XFloatBar.style.visibility='visible';}}" +
+                    "function ORG_OUT_(){if(!_XFloatBar || _XFloatBar.Freeze)return;_XFloatBar.innerHTML='URL: ';_XFloatBar.CurrentUrl='';_wparent.clearTimeout(ASProxyUnvisibleHide);ASProxyUnvisibleHide=_wparent.setTimeout(ORG_HIDE_IT,500);}" +
+                    "function ORG_HIDE_IT(){if(_XFloatBar.Freeze)return;_XFloatBar.style.visibility='hidden';_XFloatBar.innerHTML='';}" +
+                    "_wparent.onscroll=ORG_Position_;" +
+                    "_ASProxy.AttachEvent(document,'keydown',function(aEvent){var ev = window.event ? window.event : aEvent;" +
+                    "if(ev.ctrlKey && ev.shiftKey && ev.keyCode==88){" +
+                    "if(_XFloatBar.Freeze){_XFloatBar.Freeze=false;ORG_HIDE_IT();}" +
+                    "else if(_XFloatBar.CurrentUrl!=''){_XFloatBar.Freeze=true;" +
+                    "_XFloatBar.innerHTML=_XFloatBar.innerHTML+\"<br /><span style='color:navy;'>Press Ctrl+Shift+X again to unfreeze this bar.<span/>\";" +
+                    "}}});" +
+                    "</script>";
+        }
 
 	}
 }

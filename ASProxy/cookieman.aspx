@@ -162,7 +162,7 @@ Text="Warning, if the number of ASProxy cookies increases, ASProxy may not be ab
 	<td>
 	</td>
 	<td class="desc2" colspan="2">
-		<div class="cookieValue"><%#Request.Cookies[Container.DataItem.ToString()].Value%></div>
+		<div class="cookieValue"><%#HttpUtility.HtmlEncode(HttpUtility.UrlDecode(Request.Cookies[Container.DataItem.ToString()].Value)).Replace("&amp; Name=","&amp;<br /> Name=")%></div>
 	</td>
 </tr>
 </ItemTemplate>

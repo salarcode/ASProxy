@@ -1,51 +1,1281 @@
 // ASProxy Dynamic Encoder
 // ASProxy encoder for dynamically created objects //
-// Last update: 2009-11-17 coded by Salar Khalilzadeh //
-_ASProxy={Debug_UseAbsoluteUrl:false,TraceCookies:false,LogEnabled:false,Activities:{},Pages:{pgGetAny:"getany.ashx",pgGetHtml:"gethtml.ashx",pgGetJS:"getjs.ashx",pgImages:"images.ashx",pgDownload:"download.ashx",pgAuthorization:"authorization.aspx"},ClientSideUrls:["mailto:","file://","javascript:","vbscript:","jscript:","vbs:","ymsgr:","data:"],NonVirtualUrls:["http://","https://","mailto:","ftp://","file://","telnet://","news://","nntp://","ldap://","ymsgr:","javascript:","vbscript:","jscript:",
-"vbs:","data:"]};_ASProxy.EncodedUrls=[_reqInfo.ASProxyPageName+"?dec=",_ASProxy.Pages.pgGetHtml+"?dec=",_ASProxy.Pages.pgImages+"?dec=",_ASProxy.Pages.pgGetJS+"?dec=",_ASProxy.Pages.pgDownload+"?dec=",_ASProxy.Pages.pgAuthorization+"?dec=",_ASProxy.Pages.pgGetAny+"?dec="];document.OriginalWrite=document.write;document.OriginalWriteLn=document.writeln;window.OriginalOpen=window.open;window.LocationReplace=window.location.replace;window.LocationAssign=window.location.assign;window.LocationReload=window.location.reload;
-ENC_Page=0;ENC_Images=1;ENC_Any=2;ENC_Frames=3;
-function __UrlEncoder(a,b,c,f){if(_ASProxy.IsClientSideUrl(a)||_ASProxy.IsSelfBookmarkUrl(a))return a;if(c!=true)a=_ASProxy.CorrectLocalUrlToOrginal(a);if(_ASProxy.IsVirtualUrl(a))a=_ASProxy.JoinUrls(a,_reqInfo.pagePath,_reqInfo.rootUrl);c=b==ENC_Images?_ASProxy.Pages.pgImages:b==ENC_Any?_ASProxy.Pages.pgGetAny:b==ENC_Frames?_ASProxy.Pages.pgGetHtml:_reqInfo.ASProxyPageName;if(typeof _ASProxy.Debug_UseAbsoluteUrl!="undefined"&&_ASProxy.Debug_UseAbsoluteUrl)c=_reqInfo.ASProxyPath+c;c+="?dec="+(_userConfig.EncodeUrl+
-0)+"&url=";b=_ASProxy.ReturnBookmarkPart(a);if(b!="")a=_ASProxy.RemoveBookmarkPart(a);c=c;c+=_userConfig.EncodeUrl?_ASProxy.B64UnknownerAdd(_Base64_encode(a)):a;if(f!=null)c+="&"+f;c+=b;return c}_ASProxy.JoinUrls=function(a,b,c){if(b.lastIndexOf("/")!=b.length-1)b+="/";if(c.lastIndexOf("/")!=c.length-1)c+="/";return a=a.indexOf("/",0)==0?c+"."+a:b+a};
-_ASProxy.IsClientSideUrl=function(a){if(typeof a!="string")return false;a=a.toLowerCase();for(i=0;i<_ASProxy.ClientSideUrls.length;i++)if(_ASProxy.StrStartsWith(a,_ASProxy.ClientSideUrls[i]))return true;return false};_ASProxy.IsVirtualUrl=function(a){if(typeof a!="string")return true;a=a.toLowerCase();for(i=0;i<_ASProxy.NonVirtualUrls.length;i++)if(_ASProxy.StrStartsWith(a,_ASProxy.NonVirtualUrls[i]))return false;return true};
-_ASProxy.IsSelfBookmarkUrl=function(a){if(typeof a!="string")return false;a=a.toLowerCase();if(_ASProxy.StrStartsWith(a,"#"))return true;var b=window.location.href.toLowerCase()+"#";if(a.indexOf(b,0)==0)return true;return false};_ASProxy.ReturnBookmarkPart=function(a){if(typeof a!="string")return"";var b=a.indexOf("#",0);if(b!=-1)return a=a.substring(b,a.length);else return""};
-_ASProxy.RemoveBookmarkPart=function(a){if(typeof a!="string")return null;var b=a.indexOf("#",0);if(b!=-1)a=a.substring(0,b);return a};_ASProxy.CorrectLocalUrlToOrginalCheck=function(a){if(_ASProxy.IsClientSideUrl(a)||_ASProxy.IsSelfBookmarkUrl(a))return a;return _ASProxy.CorrectLocalUrlToOrginal(a)};
-_ASProxy.CorrectLocalUrlToOrginal=function(a){if(typeof a!="string")return null;var b=a.toLowerCase(),c=_reqInfo.ASProxyRoot.toLowerCase(),f=_reqInfo.ASProxyPath.toLowerCase(),g=_reqInfo.ASProxyPageName.toLowerCase(),d=_reqInfo.pageUrlNoQuery,e=false,j=b.indexOf(g,0);g=g.length;if(j==-1){j=b.indexOf(f,0);g=f.length;d=_reqInfo.pagePath;e=true}if(j==-1){j=b.indexOf(c,0);g=c.length;d=_reqInfo.rootUrl;e=true}if(d.substr(d.length-1,1)=="/"){d=d.substr(0,d.length-1);e=true}if(j==0){a=a.substr(g,a.length);
-b="/";if(a.substr(0,1)=="/")b="";if(e==false)b="";return d+b+a}else return a};_ASProxy.B64UnknownerAdd=function(a){if(typeof a!="string")return _reqInfo.UrlUnknowner;var b=_reqInfo.UrlUnknowner.toLowerCase(),c=a.toLowerCase();return(b=!_ASProxy.StrEndsWith(c,b))?a+_reqInfo.UrlUnknowner:a};_ASProxy.Log=function(){if(_ASProxy.LogEnabled&&typeof console!="undefined")try{console.debug("ASProxy log:");for(var a="",b=0;b<arguments.length;b++)a+=arguments[b]+"\n";console.debug(a)}catch(c){}};
-_ASProxy.IsEncodedByASProxy=function(a){if(typeof a!="string")return false;a=a.toLowerCase();var b=_reqInfo.ASProxyPath.toLowerCase();for(i=0;i<_ASProxy.EncodedUrls.length;i++)if(_ASProxy.StrStartsWith(a,_ASProxy.EncodedUrls[i]))return true;else if(_ASProxy.StrStartsWith(a,b+_ASProxy.EncodedUrls[i]))return true;return false};
-_ASProxy.GetBookmarkOnlyForCurrentPage=function(a){var b=document.location.href.toLowerCase(),c=a.toLowerCase(),f=a.indexOf("#",0);if(f!=-1){b=c.indexOf(b,0);return b==-1?a:_reqInfo.pageUrl+a.substring(f,a.length)}else return a};
-_ASProxy.AttachEvent=function(a,b,c,f){try{if(a==null)return false;if(a.addEventListener){a.addEventListener(b,c,f);return true}else if(a.attachEvent){var g=a.attachEvent("on"+b,c);return g}else try{a["on"+b]=c}catch(d){_ASProxy.Log('AttachEvent"on"',d)}}catch(e){_ASProxy.Log("AttachEvent",e)}};_ASProxy.StrTrimLeft=function(a){return a.replace(/^\s*/,"")};_ASProxy.StrTrimRight=function(a){return a.replace(/\s*$/,"")};_ASProxy.StrTrim=function(a){return a.replace(/^\s+|\s+$/g,"")};
-_ASProxy.StrStartsWith=function(a,b){if(a.length==0||a.length<b.length)return false;return a.substr(0,b.length)==b};_ASProxy.StrEndsWith=function(a,b){if(a.length==0||a.length<b.length)return false;return a.substr(a.length-b.length)==b};_ASProxy.Enc={};
-_ASProxy.Enc.EncodeElements=function(a,b,c,f,g,d,e,j){var k=0,h;for(k=0;k<a.length;k++){h=a[k];var l=h.attributes[b],n=h[b];l=l!=null?l.value:n;if(_ASProxy.IsEncodedByASProxy(l)==false){var o=false;if(g!=null&&d!=null){var m=h.attributes[g];m=m!=null?m.value:h[g];if(m!=null)if(m.toLowerCase()!=d.toLowerCase())continue}m=h.attributes.asproxydone;if(m==null||m.value!="1"&&m.value!="2")o=true;else if(m.value=="1"){m=h.attributes.encodedurl;if(m==null){_ASProxy.CallOriginalSetAttr(h,"encodedurl",l);c==
-3&&e&&_ASProxy.CallOriginalSetAttr(h,e,j);o=true}else m=m.value;if(l!=m)if(l==window.location)continue;else o=true}if(o){o=_ASProxy.CorrectLocalUrlToOrginalCheck(l);n=_ASProxy.CorrectLocalUrlToOrginalCheck(n);_ASProxy.CallOriginalSetAttr(h,"asproxydone","1");_ASProxy.CallOriginalSetAttr(h,"originalurl",_ASProxy.GetBookmarkOnlyForCurrentPage(n));c==3&&e&&_ASProxy.CallOriginalSetAttr(h,e,j);if(f&&_userConfig.OrginalUrl){typeof ORG_IN_!="undefined"&&_ASProxy.AttachEvent(h,"mouseover",function(){ORG_IN_(this)});
-typeof ORG_OUT_!="undefined"&&_ASProxy.AttachEvent(h,"mouseout",function(){ORG_OUT_()})}if(!(l==window.location&&o==l)){o=__UrlEncoder(o,c,true,null);_ASProxy.CallOriginalSetAttr(h,b,o);h[b]=o;_ASProxy.CallOriginalSetAttr(h,"encodedurl",o)}}}}};
-_ASProxy.Enc.EncodeForms=function(){if(_userConfig.Forms==true){var a=0,b;for(a=0;a<document.forms.length;a++){b=document.forms.item(a);var c=b.attributes.action;c=c!=null?c.value:b.action;if(_ASProxy.IsEncodedByASProxy(c)==false){var f=false,g=b.attributes.asproxydone,d=b.method;if(g==null||g.value!="1"&&g.value!="2")f=true;else if(g.value=="1"){g=b.attributes.encodedurl;g=g==null?"":g.value;d=b.attributes.methodorginal;d=d==null?b.method:d.value;var e=g.indexOf("://",0);if(e==-1)g=document.location.protocol+
-"//"+document.location.host+"/"+g;if(c!=g)f=true}if(f){_ASProxy.CallOriginalSetAttr(b,"asproxydone","1");_ASProxy.CallOriginalSetAttr(b,"methodorginal",d);c=__UrlEncoder(c,ENC_Page,false,"method="+d);_ASProxy.CallOriginalSetAttr(b,"action",c);_ASProxy.CallOriginalSetAttr(b,"encodedurl",c);b.method="POST"}}}window.setTimeout("_ASProxy.Enc.EncodeForms();",2E3)}};
-_ASProxy.Enc.EncodeFrames=function(){if(_userConfig.Frames==true){var a=document.documentElement.getElementsByTagName("iframe");try{_ASProxy.Enc.EncodeElements(a,"src",3,false,null,null,"onload","_ASProxy.Enc.EncodeFrames()")}catch(b){_ASProxy.Log("Enc.EncodeFrames",b)}window.setTimeout("_ASProxy.Enc.EncodeFrames();",5E3)}};
-_ASProxy.Enc.EncodeLinks=function(){if(_userConfig.Links==true){try{_ASProxy.Enc.EncodeElements(document.links,"href",0,true)}catch(a){_ASProxy.Log("Enc.EncodeLinks",a)}window.setTimeout("_ASProxy.Enc.EncodeLinks();",1E3)}};_ASProxy.Enc.EncodeImages=function(){if(_userConfig.Images==true){try{_ASProxy.Enc.EncodeElements(document.images,"src",1,true)}catch(a){_ASProxy.Log("Enc.EncodeImages",a)}window.setTimeout("_ASProxy.Enc.EncodeImages();",1E3)}};
-_ASProxy.Enc.EncodeInputImages=function(){if(_userConfig.Images==true){var a=document.documentElement.getElementsByTagName("input");try{_ASProxy.Enc.EncodeElements(a,"src",1,true,"type","image")}catch(b){_ASProxy.Log("Enc.EncodeInputImages",b)}window.setTimeout("_ASProxy.Enc.EncodeInputImages();",4E3)}};
-_ASProxy.Enc.EncodeScriptSources=function(){var a=document.documentElement.getElementsByTagName("script");try{_ASProxy.Enc.EncodeElements(a,"src",2,false)}catch(b){_ASProxy.Log("Enc.EncodeScriptSources",b)}window.setTimeout("_ASProxy.Enc.EncodeScriptSources();",4E3)};
-_ASProxy.LocationObject=function(){this.search=_reqInfo.location.Search;this.href=_reqInfo.pageUrl;this.hash=window.location.hash!=null&&window.location.hash!=""?window.location.hash:_reqInfo.location.Hash;this.host=_reqInfo.location.Host;this.hostname=_reqInfo.location.Hostname;this.pathname=_reqInfo.location.Pathname;this.port=_reqInfo.location.Port;this.protocol=_reqInfo.location.Protocol;this.replace=window.LocationReplace;this.assign=window.LocationAssign;this.replace=_ASProxy.LocationReplace;
-this.assign=_ASProxy.LocationAssign;this.reload=_ASProxy.LocationReload;this.URL=_reqInfo.pageUrl;this.toString=function(){return _reqInfo.pageUrl};this.toLocaleString=function(){return _reqInfo.pageUrl};this.length=this.href.length;this.anchor=this.href.anchor;this.big=this.href.big;this.blink=this.href.blink;this.bold=this.href.bold;this.charAt=this.href.charAt;this.charCodeAt=this.href.charCodeAt;this.fixed=this.href.fixed;this.fontcolor=this.href.fontcolor;this.fontsize=this.href.fontsize;this.fromCharCode=
-this.href.fromCharCode;this.indexOf=this.href.indexOf;this.italics=this.href.italics;this.lastIndexOf=this.href.lastIndexOf;this.link=this.href.link;this.match=this.href.match;this.slice=this.href.slice;this.small=this.href.small;this.split=this.href.split;this.strike=this.href.strike;this.sub=this.href.sub;this.substr=this.href.substr;this.substring=this.href.substring;this.toLowerCase=this.href.toLowerCase;this.toUpperCase=this.href.toUpperCase};
-function __CookieGet(a){return _ASProxy.GetDocumentCookie()}function __CookieSet(a){return _ASProxy.SetDocumentCookie(a)}_ASProxy.DocCookieString=document.cookie;_ASProxy.GetDocumentCookie=function(){_ASProxy.DocCookieString=document.cookie;for(var a="",b=0;b<_reqInfo.appliedCookiesList.length;b++){var c=_reqInfo.appliedCookiesList[b];c=_ASProxy.GetCookieByName(c);if(c!=null){c=_ASProxy.ParseASProxyCookie(c);if(c!=null&&c.length>0)a+=c}}return a};
-_ASProxy.ParseASProxyCookie=function(a){var b="";a=a.split("&");for(var c=0;c<a.length;c++){var f=null,g=null,d=null,e=a[c];e=e.split(";");for(var j=0;j<e.length;j++){var k=e[j],h=k.indexOf("="),l=k.substr(0,h).replace("+","");l=_ASProxy.StrTrim(l);k=_ASProxy.StrTrim(k.substr(h+1,k.length-h-1));if(l=="Name")f=k;else if(l=="Value")g=k=unescape(k);else if(l=="Path")d=k}if(f!=null&&g!=null){f=f+"="+g;if(d==null||d=="")d="/";d=d.toLowerCase();g=_reqInfo.location.Pathname.toLowerCase();if(g.indexOf(d)==
-0)b+=f+"; "}}return b};_ASProxy.SetDocumentCookie=function(a){if(!(a==null||a==""))return a=_ASProxy.ParseStandardCookieForSet(a)};
-_ASProxy.ParseStandardCookieForSet=function(a){var b=null,c=null,f=null,g=null,d=null,e=null,j=false;a=a.split(";");for(var k=0;k<a.length;k++){var h=a[k],l=h.indexOf("="),n=h.substr(0,l).replace("+","");n=_ASProxy.StrTrim(n);h=_ASProxy.StrTrim(h.substr(l+1,h.length-l-1));if(k==0){b=n;c=h}else if(n=="expires")f=h;else if(n=="max-age")g=h;else if(n=="domain")d=h;else if(n=="path")e=h;else if(n=="secure")j=true}a="";if(b==null||c==null)return null;else{a="Name="+b;a+="; Value="+escape(c);if(f!=null)a+=
-"; Expires="+f;if(g!=null)a+="; Max-Age="+g;if(d!=null)a+="; Domain="+d;if(e!=null)a+="; Path="+e;if(j)a+="; Secure=True"}b=_reqInfo.cookieName;c=c="";if(d!=null&&d!="")b=_ASProxy.GetASProxyCookieName(d);c=a;d=_ASProxy.GetCookieByName(b);if(d!=null&&d!="")c+="& "+d;c=escape(c);c=b+"="+c;if(f!=null)c+="; expires="+f;if(g!=null)c+="; max-age="+g;c+="; path=/";return c};
-_ASProxy.GetCookieByName=function(a){a=a;for(var b=_ASProxy.DocCookieString.split(";"),c=0;c<b.length;c++){var f=b[c].split("="),g=_ASProxy.StrTrim(f[0]);if(a==g)return unescape(f[1])}return null};_ASProxy.GetASProxyCookieName=function(a){return a+_reqInfo.cookieNameExt};
-_ASProxy.ParseHtml=function(a){if(typeof a!="string")return a;var b=/\.(src)\s*=\s*([^;}]+)/ig;a=a.replace(b,".$1=__UrlEncoder($2,ENC_Any)");b=/\.(action|location|href)\s*=\s*([^;}]+)/ig;a=a.replace(b,".$1=__UrlEncoder($2)");b=/\.innerHTML\s*(\+)?=\s*([^};]+)\s*/ig;a=a.replace(b,".innerHTML$1=_ASProxy.ParseHtml($2)");for(b=/\s(href|action)\s*=\s*(["']?)([^"'\s>]+)/ig;match=b.exec(a);)a=a.replace(match[0]," "+match[1]+"="+match[2]+__UrlEncoder(match[3]));for(b=/\s(src|background)\s*=\s*(["']?)([^"'\s>]+)/ig;match=
-b.exec(a);)a=a.replace(match[0]," "+match[1]+"="+match[2]+__UrlEncoder(match[3],ENC_Any));for(b=/url\s*\(['"]?([^'"\)]+)['"]?\)/ig;match=b.exec(a);)a=a.replace(match[0],"url("+__UrlEncoder(match[1],ENC_Any)+")");for(b=/@import\s*['"]([^'"\(\)]+)['"]/ig;match=b.exec(a);)a=a.replace(match[0],'@import "'+__UrlEncoder(match[1],ENC_Any)+'"');return a};_ASProxy.ParseJs=function(){};
-_ASProxy.CallOriginalSetAttr=function(a,b,c){if(a!=null)typeof a.OriginalSetAttribute=="undefined"?a.setAttribute(b,c):a.OriginalSetAttribute(b,c)};
-_ASProxy.OverrideHtmlSetters=function(){if(typeof window.__defineSetter__!="undefined")try{var a=[HTMLTitleElement,HTMLTextAreaElement,HTMLTableSectionElement,HTMLTableRowElement,HTMLTableElement,HTMLTableColElement,HTMLTableCellElement,HTMLTableCaptionElement,HTMLStyleElement,HTMLSelectElement,HTMLScriptElement,HTMLParamElement,HTMLParagraphElement,HTMLOptionElement,HTMLOListElement,HTMLObjectElement,HTMLMetaElement,HTMLMapElement,HTMLMapElement,HTMLLinkElement,HTMLLIElement,HTMLLegendElement,HTMLLabelElement,
-HTMLIsIndexElement,HTMLInputElement,HTMLImageElement,HTMLIFrameElement,HTMLHtmlElement,HTMLHRElement,HTMLHeadingElement,HTMLHeadElement,HTMLFrameSetElement,HTMLFrameElement,HTMLFormElement,HTMLFontElement,HTMLFieldSetElement,HTMLEmbedElement,HTMLDocument,HTMLDListElement,HTMLDivElement,HTMLButtonElement,HTMLBRElement,HTMLBodyElement,HTMLBaseFontElement,HTMLBaseElement,HTMLAreaElement,HTMLAnchorElement];try{a.push([HTMLElement,HTMLUListElement,HTMLQuoteElement,HTMLPreElement,HTMLModElement,HTMLMenuElement,
-HTMLDirectoryElement,HTMLAppletElement])}catch(b){_ASProxy.Log("OverrideHtmlSetters interfaces.push",b)}var c=function(d,e,j){if(_ASProxy.IsEncodedByASProxy(e))return e;try{var k=d.toLowerCase();d=j;d=d==null?(this.tagName+"").toLowerCase():(d+"").toLowerCase();if(k=="src")e=d=="img"?__UrlEncoder(e,ENC_Images):d=="iframe"||d=="frame"?__UrlEncoder(e,ENC_Frames):__UrlEncoder(e,ENC_Any);else if(k=="href")e=d=="a"||d=="base"?__UrlEncoder(e):__UrlEncoder(e,ENC_Any);else if(k=="background")e=__UrlEncoder(e,
-ENC_Images);else if(k=="action")e=d=="form"?e:__UrlEncoder(e,ENC_Any);else if(k=="innerHtml")e=_ASProxy.ParseHtml(e)}catch(h){_ASProxy.Log("_EncodeSetAttributeValue",h)}return e};_ASProxy.SetAttribute=function(d,e){try{if(d.toLowerCase()=="action"&&this.tagName.toLowerCase()=="form")_ASProxy.Setter_FormAction(this,e);else{e=c(d,e,this.tagName);this.OriginalSetAttribute(d,e)}}catch(j){_ASProxy.Log("_ASProxy.SetAttribute",j)}};_ASProxy.Setter_FormAction=function(d,e){var j=d.attributes.methodorginal;
-j=j==null?j.value:d.method;d.OriginalSetAttribute("asproxydone","1");d.OriginalSetAttribute("methodorginal",j);e=_ASProxy.IsEncodedByASProxy(e)==false?__UrlEncoder(e,ENC_Page,false,"method="+j):e;d.OriginalSetAttribute("action",e);d.method="POST";d.OriginalSetAttribute("encodedurl",e)};_ASProxy.Setter_Src=function(d){this.OriginalSetAttribute("src",c("src",d,this.tagName))};_ASProxy.Setter_Href=function(d){this.OriginalSetAttribute("href",c("href",d,this.tagName))};_ASProxy.Setter_Background=function(d){this.OriginalSetAttribute("background",
-c("background",d,this.tagName))};_ASProxy.Setter_InnerHtml=function(d){this.OriginalSetAttribute("innerHtml",c("innerHtml",d,this.tagName))};_ASProxy.Setter_Action=function(d){try{this.tagName.toLowerCase()=="form"?_ASProxy.Setter_FormAction(this,d):this.OriginalSetAttribute("action",c("action",d,this.tagName))}catch(e){_ASProxy.Log("Setter_Action",e)}};for(i=0;i<a.length;i++){var f=a[i].prototype;if(f!=null){f.OriginalSetAttribute=f.setAttribute;f.setAttribute=_ASProxy.SetAttribute;f.__defineSetter__("src",
-_ASProxy.Setter_Src);f.__defineSetter__("action",_ASProxy.Setter_Action);f.__defineSetter__("href",_ASProxy.Setter_Href);f.__defineSetter__("background",_ASProxy.Setter_Background);f.__defineSetter__("innerHtml",_ASProxy.Setter_InnerHtml)}}}catch(g){_ASProxy.Log("OverrideHtmlSetters ALL",g)}};
-_ASProxy.OverrideStandardsDeclare=function(){_ASProxy.WindowOpen=function(a,b,c,f){return _ASProxy.IsEncodedByASProxy(a)?window.OriginalOpen(a,b,c,f):window.OriginalOpen(__UrlEncoder(a),b,c,f)};_ASProxy.LocationAssign=function(a){_ASProxy.IsEncodedByASProxy(a)||(a=__UrlEncoder(a));return window.location.href=a};_ASProxy.LocationReplace=function(a){a=_ASProxy.IsEncodedByASProxy(a)?a:__UrlEncoder(a);return window.location.replace==_ASProxy.LocationReplace?window.LocationReplace(a):window.location.replace(a)};
-_ASProxy.LocationReload=function(){return window.location.reload==_ASProxy.LocationReload?window.LocationReload():window.location.reload()};_ASProxy.DocumentWrite=function(a){a=a;if(_ASProxy.ParseHtml){a=_ASProxy.ParseHtml(a);return document.OriginalWrite(a)}};_ASProxy.DocumentWriteLn=function(a){a=a;if(_ASProxy.ParseHtml){a=_ASProxy.ParseHtml(a);return document.OriginalWriteLn(a)}}};
-_ASProxy.OverrideStandards=function(){try{document.XDomain=_WindowLocation.host}catch(a){_ASProxy.Log("document.XDOMAIN failed",a)}try{window.open=_ASProxy.WindowOpen}catch(b){_ASProxy.Log("OVR window.open failed",b)}try{document.open=_ASProxy.WindowOpen}catch(c){_ASProxy.Log("OVR document.open failed",c)}try{open=_ASProxy.WindowOpen}catch(f){_ASProxy.Log("OVR open failed",f)}try{window.location.replace=_ASProxy.LocationReplace}catch(g){_ASProxy.Log("OVR window.location failed",g)}try{location.replace=
-_ASProxy.LocationReplace}catch(d){_ASProxy.Log("OVR location.replace failed",d)}try{document.write=_ASProxy.DocumentWrite}catch(e){_ASProxy.Log("OVR document.write failed",e)}try{document.writeln=_ASProxy.DocumentWriteLn}catch(j){_ASProxy.Log("OVR document.writeln failed",j)}};
-_ASProxy.StartupDynamicEncoders=function(){window.setTimeout("_ASProxy.Enc.EncodeLinks();",500);window.setTimeout("_ASProxy.Enc.EncodeImages();",700);window.setTimeout("_ASProxy.Enc.EncodeInputImages();",2E3);window.setTimeout("_ASProxy.Enc.EncodeForms();",1E3);window.setTimeout("_ASProxy.Enc.EncodeFrames();",2E3);window.setTimeout("_ASProxy.Enc.EncodeScriptSources();",4E3)};
-_ASProxy.Initialize=function(){_ASProxy.OverrideStandardsDeclare();_WindowLocation=new _ASProxy.LocationObject;_ASProxy.ReqLocation=_WindowLocation;_ASProxy.OverrideStandards();_ASProxy.OverrideHtmlSetters();_ASProxy.StartupDynamicEncoders()};_ASProxy.Initialize();
+// Last update: 2010-01-19 coded by Salar Khalilzadeh //
+
+//_userConfig={EncodeUrl:true, OrginalUrl:true, Links:true, Images:true, Forms:true, Frames:true, Cookies:true};
+
+//_reqInfo={
+//	pageUrl:'http://blocked.com:8080/sub/hi/tester.html?param=1&hi=2',
+//	pageUrlNoQuery:'http://blocked.com:8080/sub/hi/tester.html',
+//	pagePath:'http://blocked.com:8080/sub/hi/',
+//	rootUrl:'http://blocked.com:8080/', 
+//	cookieName:'blocked_Cookies',
+//	ASProxyUrl:'http://site.com:8080/asproxy/default.aspx', // or 'http://site.com/default.aspx';
+//	ASProxyPath:'http://site.com:8080/asproxy/', // or 'http://site.com/';
+//	ASProxyRoot:'http://site.com:8080/' ,
+//	ASProxyPageName:'default.aspx',
+//	UrlUnknowner:'B64Coded!'
+//};
+
+// regested site url information
+//_reqInfo.location={ Hash:'#hi', Host:"site.com:8080", Hostname:"site.com", Pathname:"/dir/page.htm", Search:'?test=1', Port:"8080", Protocol:"http:" }
+
+// ASProxy object
+_ASProxy={
+    Debug_UseAbsoluteUrl: false,
+	DynamicEncoders:true,
+	TraceCookies:false,
+	LogEnabled:false,
+	Activities:{},
+	Pages:{
+		pgGetAny:'getany.ashx',
+		pgGetHtml:'gethtml.ashx',
+		pgGetJS:'getjs.ashx',
+		pgImages:'images.ashx',
+		pgDownload:'download.ashx',
+		pgAuthorization:'authorization.aspx',
+		pgAjax:'ajax.ashx'
+	},
+	ClientSideUrls:["mailto:", "file://", "javascript:", "vbscript:", "jscript:", "vbs:","ymsgr:","data:"],
+	NonVirtualUrls:["http://", "https://", "mailto:", "ftp://", "file://", "telnet://", "news://", "nntp://", "ldap://","ymsgr:", "javascript:", "vbscript:", "jscript:", "vbs:", "data:" ]
+}
+
+_ASProxy.EncodedUrls=[_reqInfo.ASProxyPageName+"?dec=",_ASProxy.Pages.pgAjax+"?dec=",
+		_ASProxy.Pages.pgGetHtml+"?dec=",_ASProxy.Pages.pgImages+"?dec=",_ASProxy.Pages.pgGetJS+"?dec=",
+		_ASProxy.Pages.pgDownload+"?dec=",_ASProxy.Pages.pgAuthorization+"?dec=",_ASProxy.Pages.pgGetAny+"?dec="];
+
+// original write methods should be on document
+document.OriginalWrite = document.write;
+document.OriginalWriteLn = document.writeln;
+window.OriginalOpen=window.open;
+window.LocationReplace=window.location.replace;
+window.LocationAssign=window.location.assign;
+window.LocationReload=window.location.reload;
+
+
+// ---------------------------
+// UrlEncoder required methods
+// ---------------------------
+
+// Content type constants
+ENC_Page=0;
+ENC_Images=1;
+ENC_Any=2;
+ENC_Frames=3;
+
+// public: encodes urls
+// type: 0-page, 1-images, 2-anything, 3-frames
+// notCorrectLocalUrl: shouldn't correct url address to original site
+// extraQuery: additional query to add to method
+function __UrlEncoder(url,type,notCorrectLocalUrl,extraQuery){
+	if(_ASProxy.IsClientSideUrl(url) || _ASProxy.IsSelfBookmarkUrl(url))
+		return url;
+	
+	if(notCorrectLocalUrl!=true)
+		url=_ASProxy.CorrectLocalUrlToOrginal(url);
+	
+	if(_ASProxy.IsVirtualUrl(url))
+		url=_ASProxy.JoinUrls(url,_reqInfo.pagePath,_reqInfo.rootUrl);
+
+	var asproxyBasePath;
+	if(type == ENC_Images)
+		asproxyBasePath=_ASProxy.Pages.pgImages; // images
+	else if(type == ENC_Any)
+		asproxyBasePath=_ASProxy.Pages.pgGetAny;
+	else if(type == ENC_Frames)
+		asproxyBasePath=_ASProxy.Pages.pgGetHtml;
+	else
+		asproxyBasePath=_reqInfo.ASProxyPageName;
+
+	// UseAbsoluteUrl, only for debug
+	if(typeof(_ASProxy.Debug_UseAbsoluteUrl)!='undefined' && _ASProxy.Debug_UseAbsoluteUrl)
+		asproxyBasePath=_reqInfo.ASProxyPath + asproxyBasePath;
+
+	// config parameters
+	asproxyBasePath+='?dec='+(_userConfig.EncodeUrl+0)+'&url=';
+
+	var bookmark;
+	var result;
+	bookmark=_ASProxy.ReturnBookmarkPart(url);
+
+	if(bookmark!="")
+		url=_ASProxy.RemoveBookmarkPart(url);
+
+	result=asproxyBasePath;
+	if(_userConfig.EncodeUrl)
+		result+=_ASProxy.B64UnknownerAdd(_Base64_encode(url));
+	else
+		result+=url;
+
+	if(extraQuery!=null)
+		result+="&"+extraQuery;
+
+	result=(result)+bookmark;
+	return result;
+}
+
+// private: combine page url with base path and return full url
+// exam: in "http://test.com/sub/" site, cenverts "/page.htm" to "http://test.com/page.htm" 
+//	 and converts "page.htm" to "http://test.com/sub/page.htm"
+_ASProxy.JoinUrls = function(url,pagePath,rootUrl)
+{
+	if(pagePath.lastIndexOf("/")!=pagePath.length-1)
+		pagePath+="/";
+
+	if(rootUrl.lastIndexOf("/")!=rootUrl.length-1)
+		rootUrl+="/";
+
+	var result;
+	if(url.indexOf("/",0)==0)// check if slash is in the first
+		result= rootUrl +"."+ url;
+	else
+		result= pagePath + url;
+	return result;
+}
+
+
+// private: Is url client-side
+_ASProxy.IsClientSideUrl=function(url){
+	if (typeof (url) != "string") return false;
+	url=url.toLowerCase();
+	for (i = 0; i < _ASProxy.ClientSideUrls.length; i++)
+	{
+		if(_ASProxy.StrStartsWith(url,_ASProxy.ClientSideUrls[i]))
+			return true;
+	}
+	return false;
+}
+
+// private: Is url virtual
+_ASProxy.IsVirtualUrl=function(url){
+	if (typeof (url) != "string") return true;
+	url=url.toLowerCase();
+	for (i = 0; i < _ASProxy.NonVirtualUrls.length; i++)
+	{
+		if(_ASProxy.StrStartsWith(url,_ASProxy.NonVirtualUrls[i]))
+			return false;
+	}
+	return true;
+}
+
+// private: checks that url is a self bookmark in current page
+_ASProxy.IsSelfBookmarkUrl=function(url){
+	if (typeof (url) != "string") return false;
+	url=url.toLowerCase();
+	if(_ASProxy.StrStartsWith(url,'#'))
+		return true;
+	
+	var location = window.location.href.toLowerCase()+'#';
+	if(url.indexOf(location,0)==0)
+		return true;
+	return false;
+}
+
+// private: returns bookmark part of url
+_ASProxy.ReturnBookmarkPart=function(url){
+	if (typeof (url) != "string") return "";
+	var pos=url.indexOf("#",0);
+	if(pos!=-1){
+		url=url.substring(pos,url.length);
+		return url;
+	}
+	else return "";
+}
+
+// private: removes bookmark part of url
+_ASProxy.RemoveBookmarkPart=function(url){
+	if (typeof (url) != "string") return null;
+	var result;
+	var pos=url.indexOf("#",0);
+	if(pos!=-1){
+		url=url.substring(0,pos);
+		return url;
+	}
+	else return url;
+}
+
+// private: convert url to requested url if started with proxy address AND checks if this is not a client url
+_ASProxy.CorrectLocalUrlToOrginalCheck =function(url) {
+	if(_ASProxy.IsClientSideUrl(url) || _ASProxy.IsSelfBookmarkUrl(url))
+		return url;
+	return _ASProxy.CorrectLocalUrlToOrginal(url);
+}
+
+// private: converts url to requested url if it is started with proxy address
+_ASProxy.CorrectLocalUrlToOrginal = function(requestUrl){
+	if (typeof (requestUrl) != "string") return null;
+	var url=requestUrl.toLowerCase();
+	var baseBasePath=_reqInfo.ASProxyRoot.toLowerCase();
+	var basePath=_reqInfo.ASProxyPath.toLowerCase();
+	var pagePath=_reqInfo.ASProxyPageName.toLowerCase();
+	var willBeBase=_reqInfo.pageUrlNoQuery; // Current url without parameters
+	var addSeperator=false;
+
+	// Checking page url
+	var position=url.indexOf(pagePath,0);
+	var pathLength=pagePath.length;
+
+	if(position==-1){
+		// Checking site url
+		position=url.indexOf(basePath,0);
+		pathLength=basePath.length;
+		willBeBase=_reqInfo.pagePath;
+		addSeperator=true;
+	}
+
+	if(position==-1){
+		// Checking host url
+		position=url.indexOf(baseBasePath,0);
+		pathLength=baseBasePath.length;
+		willBeBase=_reqInfo.rootUrl; // root of current page
+		addSeperator=true;
+	}
+
+	if(willBeBase.substr(willBeBase.length-1,1)=='/'){
+		willBeBase=willBeBase.substr(0,willBeBase.length-1);
+		addSeperator=true;
+	}
+
+	if(position==0){
+		// If something found replace ASProxy url with orginal url
+		var reqUrl=requestUrl.substr(pathLength,requestUrl.length);
+		var seperator='/';
+		if(reqUrl.substr(0,1)=='/')
+			seperator="";
+		if(addSeperator==false)
+			seperator="";
+			
+		return willBeBase + seperator + reqUrl;
+	}
+	else
+		return requestUrl;
+}
+
+// private: Adds url unknowner
+_ASProxy.B64UnknownerAdd = function(url) {
+	if (typeof (url) != "string") return _reqInfo.UrlUnknowner;
+	var unknowner=_reqInfo.UrlUnknowner.toLowerCase();
+	var urlAddr=url.toLowerCase();
+	
+	var add=!_ASProxy.StrEndsWith(urlAddr,unknowner);
+	
+	if(add) return url+_reqInfo.UrlUnknowner;
+	else return url;
+}
+
+// private: Removes url unknowner
+_ASProxy.B64UnknownerRemove = function(url) {
+	if (url == null) return null;
+	var unknowner = _reqInfo.UrlUnknowner.toLowerCase();
+	var urlAddr = url.toLowerCase();
+	var position = urlAddr.indexOf(unknowner);
+	if (position > -1)
+		return url.substring(0, position);
+	else
+		return url;
+}
+
+// ---------------------------
+// END
+// ---------------------------
+_ASProxy.Log=function(){
+if(_ASProxy.LogEnabled &&  typeof(console)!='undefined'){
+	try{
+		console.debug('ASProxy log:');
+		var log='';
+		for(var i=0;i<arguments.length;i++){
+			log+=arguments[i]+'\n';
+		}
+		console.debug(log);
+	}catch(e){}
+}}
+_ASProxy.IsEncodedByASProxy = function(url){
+	if(typeof(url)!="string") return false;
+	url=url.toLowerCase();
+	var baseUrl=_reqInfo.ASProxyPath.toLowerCase();
+	for (i = 0; i < _ASProxy.EncodedUrls.length; i++)
+	{
+		if(_ASProxy.StrStartsWith(url,_ASProxy.EncodedUrls[i]))
+			return true;
+		else if(_ASProxy.StrStartsWith(url,baseUrl+_ASProxy.EncodedUrls[i]))
+			return true;
+	}
+	return false;
+}
+
+// private: return bookmark only if the link is for current page
+_ASProxy.GetBookmarkOnlyForCurrentPage=function(url){
+	var currUrl=document.location.href.toLowerCase();
+	var reqUrl=url.toLowerCase();
+	
+	var markPos=url.indexOf("#",0);
+	if(markPos!=-1){
+		
+		var urlPos=reqUrl.indexOf(currUrl,0);
+		if(urlPos==-1)
+			return url;
+		else
+			// we add current page url with bookmark part
+			return _reqInfo.pageUrl + url.substring(markPos,url.length);
+	}
+	else return url;
+}
+
+// private: Event attacher
+_ASProxy.AttachEvent = function(o, evType, f, capture) {
+try{
+	if(o == null) { return false; }
+	if(o.addEventListener) {
+		o.addEventListener(evType, f, capture);
+		return true;
+	} else if (o.attachEvent) {
+		var r = o.attachEvent("on" + evType, f);
+		return r;
+	} else {
+		try{ o["on" + evType] = f; }catch(e){_ASProxy.Log('AttachEvent"on"',e);}
+	}
+}catch(e){_ASProxy.Log('AttachEvent',e);}
+}
+
+_ASProxy.StrTrimLeft = function(str) {
+	return str.replace(/^\s*/, "");
+}
+_ASProxy.StrTrimRight = function(str) {
+	return str.replace(/\s*$/, "");
+}
+_ASProxy.StrTrim = function(str) {
+	return str.replace(/^\s+|\s+$/g, '');
+}
+_ASProxy.StrStartsWith = function(str, check) {
+	if (str.length == 0 || str.length < check.length) { return false; }
+	return (str.substr(0, check.length) == check);
+}
+_ASProxy.StrEndsWith = function(str, check) {
+	if (str.length == 0 || str.length < check.length) { return false; }
+	return (str.substr(str.length - check.length) == check);
+}
+
+_ASProxy.GetUrlParamValue = function(name, url) {
+	if (url == null || name == null) return "";
+	name = name.replace(/[\[]/, "\\\[").replace(/[\]]/, "\\\]");
+	var regexS = "[\\?&]" + name + "=([^&#]*)";
+	var regex = new RegExp(regexS);
+	var results = regex.exec(url);
+	if (results == null)
+		return "";
+	else
+		return results[1];
+}
+  
+// ---------------------------
+// Automated encoders
+// ---------------------------
+_ASProxy.Enc={};
+
+
+// private: items collection
+// contentType: 0-page, 1-images, 2-anything, 3-frames
+// conditionProp,conditionValue: optional condition to proccess an element
+// additionalKey,additionalValue: additional attribute to add to element
+_ASProxy.Enc.EncodeElements=function(elementsArray,propName,contentType,applyFloatBar,conditionProp,conditionValue,additionalKey,additionalValue)
+{
+var i=0;
+var item;
+for(i=0;i<elementsArray.length;i++){
+	item=elementsArray[i];
+	
+	// get element value
+	var propValue=item.attributes[propName];
+	var propValueFull=item[propName];
+	
+	if(propValue!=null)
+		propValue=propValue.value;
+	else
+		propValue=propValueFull;
+
+	// is element already coded?
+	if(_ASProxy.IsEncodedByASProxy(propValue)==false){
+
+		var applyEncoding=false;
+		
+		// checking for condition supplied
+		if(conditionProp!=null && conditionValue!=null){
+			var cValue=item.attributes[conditionProp];
+			if(cValue!=null)
+				cValue=cValue.value;
+			else
+				cValue=item[conditionProp];
+			if(cValue!=null){
+				if(cValue.toLowerCase() != conditionValue.toLowerCase())
+				 continue;
+			}
+		}
+		
+		// status of ecoded by asproxy before
+		var isDone=item.attributes["asproxydone"];
+		if(isDone==null || (isDone.value!="1" && isDone.value!="2"))
+		{
+			applyEncoding=true;
+		}
+		else if( isDone.value=="1"){
+			// last encodec url address
+			var orgEncodedUrl=item.attributes["encodedurl"];
+			if(orgEncodedUrl==null){	
+				_ASProxy.CallOriginalSetAttr(item,"encodedurl",propValue);
+				
+				// if frames is proccessing and additional key is available
+				if(contentType==3 && additionalKey){
+					_ASProxy.CallOriginalSetAttr(item,additionalKey,additionalValue);
+				}
+				
+				applyEncoding=true;
+				//continue; // commented v5.0. do not ignore, proccess it!
+			}
+			else orgEncodedUrl=orgEncodedUrl.value;
+			
+			// checking previous address
+			if(propValue!=orgEncodedUrl){
+				if(propValue==window.location)
+					continue;
+				else
+				{
+					applyEncoding=true;
+				}
+			}
+		}
+		
+		if(applyEncoding){
+			// corrects address to site original address
+			var newValue = _ASProxy.CorrectLocalUrlToOrginalCheck(propValue);
+			propValueFull=_ASProxy.CorrectLocalUrlToOrginalCheck(propValueFull);
+			
+			// set encoding done flag
+			_ASProxy.CallOriginalSetAttr(item,"asproxydone","1");
+			
+			// set original address
+			_ASProxy.CallOriginalSetAttr(item,"originalurl",_ASProxy.GetBookmarkOnlyForCurrentPage(propValueFull));
+
+			// if frames is proccessing and additional key is available
+			if(contentType==3 && additionalKey){
+				_ASProxy.CallOriginalSetAttr(item,additionalKey,additionalValue);
+			}
+
+			// set float bar variables
+			if(applyFloatBar && _userConfig.OrginalUrl){
+				if(typeof ORG_IN_!='undefined')
+					_ASProxy.AttachEvent(item,"mouseover",function(){ORG_IN_(this)});
+				if(typeof ORG_OUT_!='undefined')
+					_ASProxy.AttachEvent(item,"mouseout",function(){ORG_OUT_()});
+			}
+
+			if(propValue==window.location && newValue==propValue)
+				continue;
+			else
+				newValue= __UrlEncoder(newValue,contentType,true,null);
+			
+			// apply new value
+			_ASProxy.CallOriginalSetAttr(item, propName , newValue);
+			item[propName] = newValue;
+			
+			//Saving base64 coded url to monitor changes
+			_ASProxy.CallOriginalSetAttr(item, "encodedurl" , newValue);
+		}
+		
+	}
+}}
+
+// private: encodes all forms
+_ASProxy.Enc.EncodeForms=function(){
+if(_userConfig.Forms!=true) return;
+
+var i=0; var frm;
+for(i=0;i<document.forms.length;i++)
+{
+	frm=document.forms.item(i);
+
+	var frmAction=frm.attributes["action"];
+	if(frmAction!=null)
+		frmAction=frmAction.value;
+	else
+		frmAction=frm.action;
+
+	// is already encoded
+	if(_ASProxy.IsEncodedByASProxy(frmAction)==false){
+
+		var applyEncoding=false;
+		var isDone = frm.attributes["asproxydone"];
+		var frmMethod = frm.method;
+
+		// is already encoded
+		if(isDone==null || (isDone.value!="1" && isDone.value!="2"))
+		{
+			applyEncoding=true;
+		}
+		else if( isDone.value=="1"){
+			var orgEncodedUrl=frm.attributes["encodedurl"];
+			if(orgEncodedUrl == null)
+				orgEncodedUrl = "";
+			else
+				orgEncodedUrl = orgEncodedUrl.value;
+
+			frmMethod = frm.attributes["methodorginal"];
+			if(frmMethod == null)
+				frmMethod = frm.method;
+			else
+				frmMethod = frmMethod.value;
+			
+			var position=orgEncodedUrl.indexOf("://",0);
+			if(position==-1){
+				orgEncodedUrl=document.location.protocol+"//"+document.location.host+"/"+orgEncodedUrl;
+			}
+
+			// Checks only Action changes and does not support Method changes
+			if(frmAction!=orgEncodedUrl)
+			{
+				applyEncoding=true;
+			}
+		}
+
+		if(applyEncoding){
+			_ASProxy.CallOriginalSetAttr(frm,"asproxydone","1");
+			_ASProxy.CallOriginalSetAttr(frm,"methodorginal" , frmMethod);
+
+			// encodes action
+			var newFrmAction=__UrlEncoder(frmAction,ENC_Page,false,"method="+frmMethod);
+
+			_ASProxy.CallOriginalSetAttr(frm,"action", newFrmAction);
+
+			_ASProxy.CallOriginalSetAttr(frm,"encodedurl", newFrmAction);
+
+			//override from method
+			frm.method="POST";
+		}
+	}
+}
+if(_ASProxy.DynamicEncoders)
+    //After 2 seconds
+    window.setTimeout("_ASProxy.Enc.EncodeForms();",2000);
+}
+
+// private: encode all frames
+_ASProxy.Enc.EncodeFrames=function(){
+	if(_userConfig.Frames!=true) return;
+
+	var frames=document.documentElement.getElementsByTagName("iframe");
+	try{
+	_ASProxy.Enc.EncodeElements(frames,"src",3,false,null,null,"onload","_ASProxy.Enc.EncodeFrames()");
+	}catch(e){_ASProxy.Log('Enc.EncodeFrames',e);}
+
+	if (_ASProxy.DynamicEncoders)
+    	//After 4 seconds
+	    window.setTimeout("_ASProxy.Enc.EncodeFrames();",5000);
+}
+
+// private: encode all links
+_ASProxy.Enc.EncodeLinks=function(){
+	if(_userConfig.Links!=true) return;
+	try{
+	_ASProxy.Enc.EncodeElements(document.links,"href",0,true);
+	}catch(e){_ASProxy.Log('Enc.EncodeLinks',e);}
+
+	if (_ASProxy.DynamicEncoders)
+	    //After 1 second 
+	    window.setTimeout("_ASProxy.Enc.EncodeLinks();",1000);
+}
+
+// private: encode all images
+_ASProxy.Enc.EncodeImages=function(){
+	if(_userConfig.Images!=true) return;
+	try{
+	_ASProxy.Enc.EncodeElements(document.images,"src",1,true);
+	}catch(e){_ASProxy.Log('Enc.EncodeImages',e);}
+
+	if (_ASProxy.DynamicEncoders)
+	    //After 1 second
+	    window.setTimeout("_ASProxy.Enc.EncodeImages();",1000);
+}
+
+// private: encode all input images
+_ASProxy.Enc.EncodeInputImages=function(){
+	if(_userConfig.Images!=true) return;
+	
+	var inputImages=document.documentElement.getElementsByTagName("input");
+	try{
+	_ASProxy.Enc.EncodeElements(inputImages,"src",1,true,"type","image");
+	}catch(e){_ASProxy.Log('Enc.EncodeInputImages',e);}
+
+	if (_ASProxy.DynamicEncoders)
+	    //After 4 seconds
+	    window.setTimeout("_ASProxy.Enc.EncodeInputImages();",4000);
+}
+
+// private: encode all scripts
+_ASProxy.Enc.EncodeScriptSources=function(){
+	var scripts=document.documentElement.getElementsByTagName("script");
+	try{
+	_ASProxy.Enc.EncodeElements(scripts,"src",2,false);
+	}catch(e){_ASProxy.Log('Enc.EncodeScriptSources',e);}
+
+	if (_ASProxy.DynamicEncoders)
+	    //After 4 second 
+	    window.setTimeout("_ASProxy.Enc.EncodeScriptSources();",4000);
+}
+// ---------------------------
+// END
+// ---------------------------
+
+// The location object will be replaced by this object
+_ASProxy.LocationObject=function(){
+	this.search= _reqInfo.location.Search;
+	this.href= _reqInfo.pageUrl;
+	this.hash=(window.location.hash!=null && window.location.hash!='')?window.location.hash: _reqInfo.location.Hash;
+	this.host= _reqInfo.location.Host;
+	this.hostname= _reqInfo.location.Hostname;
+	this.pathname= _reqInfo.location.Pathname;
+	this.port= _reqInfo.location.Port;
+	this.protocol= _reqInfo.location.Protocol;
+	this.replace=window.LocationReplace;
+	this.assign=window.LocationAssign;
+	
+	this.replace=_ASProxy.LocationReplace;
+	this.assign=_ASProxy.LocationAssign;
+	this.reload=_ASProxy.LocationReload;
+	
+	this.URL= _reqInfo.pageUrl;
+	
+	this.toString=function(){return _reqInfo.pageUrl;};
+	this.toLocaleString=function(){return _reqInfo.pageUrl;};
+	this.length=this.href.length;
+	//this.replace=this.href.replace;this.search=this.href.search;
+	this.anchor=this.href.anchor;this.big=this.href.big;this.blink=this.href.blink;this.bold=this.href.bold;this.charAt=this.href.charAt;
+	this.charCodeAt=this.href.charCodeAt;this.fixed=this.href.fixed;this.fontcolor=this.href.fontcolor;this.fontsize=this.href.fontsize;
+	this.fromCharCode=this.href.fromCharCode;this.indexOf=this.href.indexOf;this.italics=this.href.italics;this.lastIndexOf=this.href.lastIndexOf;
+	this.link=this.href.link;this.match=this.href.match;this.slice=this.href.slice;
+	this.small=this.href.small;this.split=this.href.split;this.strike=this.href.strike;this.sub=this.href.sub;this.substr=this.href.substr;
+	this.substring=this.href.substring;this.toLowerCase=this.href.toLowerCase;this.toUpperCase=this.href.toUpperCase;
+};
+
+// ---------------------------
+// Client Cookies
+// ---------------------------
+
+// public: Returns current site cookies
+function __CookieGet(_CookieName){
+	return _ASProxy.GetDocumentCookie();
+}
+
+// public: Wrapping cookie operation in javascript
+// sCookie: cookie string to set
+function __CookieSet(sCookie) {
+	return _ASProxy.SetDocumentCookie(sCookie);
+}
+
+_ASProxy.DocCookieString = document.cookie;
+_ASProxy.GetDocumentCookie = function() {
+
+	// document cookie
+	_ASProxy.DocCookieString = document.cookie;
+
+	var result = '';
+	for (var i = 0; i < _reqInfo.appliedCookiesList.length; i++) {
+		var cookieName = _reqInfo.appliedCookiesList[i];
+
+		// our cookie for this name
+		var cookie = _ASProxy.GetCookieByName(cookieName);
+
+		if (cookie == null)
+			continue;
+
+		// now it's time to decode it!
+		var cookieValue = _ASProxy.ParseASProxyCookie(cookie);
+
+		if (cookieValue != null && cookieValue.length > 0)
+		// add to the result
+			result += cookieValue; //+ '; ';
+	}
+
+	return result;
+}
+
+// private: parses ASProxy cookie and returns standard cookie
+_ASProxy.ParseASProxyCookie = function(asproxyCookie) {
+
+	var result = '';
+
+	// asproxy cookie parts are seperated by (&)
+	var cookies = asproxyCookie.split("&");
+
+	for (var i = 0; i < cookies.length; i++) {
+
+		var cookieName = null;
+		var cookieValue = null;
+		var cookiePath = null;
+
+		// the cookie
+		var cookie = cookies[i];
+
+		// cookie properties are seperated by (;)
+		var cookieParts = cookie.split(';');
+
+		for (var pIndex = 0; pIndex < cookieParts.length; pIndex++) {
+
+			var cPart = cookieParts[pIndex];
+
+			// Can't use split by equal sign method since 'cookie value' can contain equal sign (like in google, PREF='ID=...') and break this parsing,
+			var equIndex = cPart.indexOf('=');
+
+			var name = cPart.substr(0, equIndex).replace('+', '');
+			name = _ASProxy.StrTrim(name);
+
+			var value = _ASProxy.StrTrim(cPart.substr(equIndex + 1, cPart.length - equIndex - 1));
+
+			if (name == "Name")
+				cookieName = value;
+			else if (name == "Value") {
+				// this is first layer decode, required
+				value = unescape(value);
+				cookieValue = value;
+			}
+			else if (name == "Path") {
+				cookiePath = value;
+			}
+		}
+
+		// the cookie is parsed successfully
+		if (cookieName != null && cookieValue != null) {
+			// combine them
+			var theVal = cookieName + '=' + cookieValue;
+
+			// check cookiePath for current request path, if it is valid!
+			if (cookiePath == null || cookiePath == "")
+				cookiePath = "/";
+
+			var cPath = cookiePath.toLowerCase();
+			var reqPath = _reqInfo.location.Pathname.toLowerCase();
+
+			// cookie should contain part of current request path
+			if (reqPath.indexOf(cPath) != 0)
+				continue;
+
+			// add to result
+			result += theVal + '; ';
+		}
+	}
+
+	// done
+	return result;
+}
+
+
+_ASProxy.SetDocumentCookie = function(cookieString) {
+	if (cookieString == null || cookieString == '')
+		return;
+
+	// Parse the standard cookie and get asproxy cookie
+	var asproxyCookieString = _ASProxy.ParseStandardCookieForSet(cookieString);
+	return asproxyCookieString;
+}
+
+// private: parses standard cookie and returns ASProxy cookie
+_ASProxy.ParseStandardCookieForSet = function(stdCookie) {
+
+	var result = '';
+
+	var cookieName = null;
+	var cookieValue = null;
+	var cookieExpires = null;
+	var cookieMaxAge = null;
+	var cookieDomain = null;
+	var cookiePath = null;
+	var cookieSecure = false;
+
+	// the cookie set header which is going to "document.cookie" is seperated by (;)
+	var cookieParts = stdCookie.split(";");
+	for (var i = 0; i < cookieParts.length; i++) {
+
+		// the cookie
+		var cPart = cookieParts[i];
+
+		// The seperator
+		var equIndex = cPart.indexOf('=');
+
+		// The name
+		var name = cPart.substr(0, equIndex).replace('+', '');
+		name = _ASProxy.StrTrim(name);
+
+		// The value
+		var value = _ASProxy.StrTrim(cPart.substr(equIndex + 1, cPart.length - equIndex - 1));
+
+
+		if (i == 0) {
+			// First pair is allways name=value
+			cookieName = name;
+			cookieValue = value;
+		}
+		else if (name == 'expires') {
+			cookieExpires = value;
+		}
+		else if (name == 'max-age') {
+			cookieMaxAge = value;
+		}
+		else if (name == 'domain') {
+			cookieDomain = value;
+		}
+		else if (name == 'path') {
+			cookiePath = value;
+		}
+		else if (name == 'secure') {
+			cookieSecure = true;
+		}
+	}
+
+	// the cookie to be saved
+	var asproxyCookieString = '';
+
+	// cookie name and value are required
+	if (cookieName == null || cookieValue == null) {
+
+		// no chance, go away!
+		return null;
+	}
+	else {
+		// building the cookie
+		asproxyCookieString = 'Name=' + cookieName;
+
+		// this includes first layer value encode
+		asproxyCookieString += '; Value=' + escape(cookieValue);
+
+		if (cookieExpires != null)
+			asproxyCookieString += '; Expires=' + cookieExpires;
+
+		if (cookieMaxAge != null)
+			asproxyCookieString += '; Max-Age=' + cookieMaxAge;
+
+		if (cookieDomain != null)
+			asproxyCookieString += '; Domain=' + cookieDomain;
+
+		if (cookiePath != null)
+			asproxyCookieString += '; Path=' + cookiePath;
+
+		if (cookieSecure)
+			asproxyCookieString += '; Secure=True';
+	}
+
+	// default cookie name to save
+	var toSaveCookieName = _reqInfo.cookieName;
+	var toSaveCookieValue = '';
+	var toSaveCookieString = '';
+
+	// check if user have specifed domain
+	if (cookieDomain != null && cookieDomain != '') {
+		toSaveCookieName = _ASProxy.GetASProxyCookieName(cookieDomain);
+	}
+
+	// Starting to build the result
+	toSaveCookieValue = asproxyCookieString;
+
+	// Now we have to look for other cookies
+	var otherSaveCookies = _ASProxy.GetCookieByName(toSaveCookieName);
+
+	// if there is some previous cookies, we have to save them too
+	if (otherSaveCookies != null && otherSaveCookies != '') {
+		toSaveCookieValue += '& ' + otherSaveCookies;
+	}
+
+	// building 'document.cookie' friendly cookie
+	// first we need encode the value, this is second layer encode
+	toSaveCookieValue = escape(toSaveCookieValue);
+
+
+	// the building the ASPrxy cookie as standard cookie
+	// the name=value
+	toSaveCookieString = toSaveCookieName + '=' + toSaveCookieValue;
+
+	// only expires and max-age to save asproxy cookie
+	if (cookieExpires != null)
+		toSaveCookieString += '; expires=' + cookieExpires;
+
+	if (cookieMaxAge != null)
+		toSaveCookieString += '; max-age=' + cookieMaxAge;
+
+	// To save ASProxy cookies the path should be always (/)
+	toSaveCookieString += '; path=/';
+
+	// return the result
+	return toSaveCookieString;
+}
+
+
+_ASProxy.GetCookieByName = function(_cookieName) {
+	var toGetCName = _cookieName;
+	var aCookie = _ASProxy.DocCookieString.split(";");
+	for (var i = 0; i < aCookie.length; i++) {
+		var cParts = aCookie[i].split("=");
+		var cName = _ASProxy.StrTrim(cParts[0]);
+		if (toGetCName == cName)
+			return unescape(cParts[1]);
+	}
+	return null;
+}
+
+_ASProxy.GetASProxyCookieName = function(domain) {
+	return domain + _reqInfo.cookieNameExt;
+}
+
+// ---------------------------
+// Client processors
+// ---------------------------
+
+// parses html codes
+_ASProxy.ParseHtml=function(codes){
+	if(typeof(codes)!='string')
+		return codes;
+		
+	// can be anything
+	var pattern = /\.(src)\s*=\s*([^;}]+)/ig;
+	codes =codes.replace(pattern,".$1=__UrlEncoder($2,ENC_Any)");
+
+	// goes to default page
+	pattern = /\.(action|location|href)\s*=\s*([^;}]+)/ig;
+	codes =codes.replace(pattern,".$1=__UrlEncoder($2)");
+
+	// dynamic content change should call this method again
+	pattern = /\.innerHTML\s*(\+)?=\s*([^};]+)\s*/ig;
+	codes = codes.replace(pattern,'.innerHTML$1=_ASProxy.ParseHtml($2)');
+
+	 // processing location attributes
+	pattern = /\s(href|action)\s*=\s*(["']?)([^"'\s>]+)/ig;
+	while ( match = pattern.exec(codes) ) {
+		codes = codes.replace(match[0],' ' + match[1] + '=' + match[2] + __UrlEncoder(match[3]) );
+	}
+
+	 // processing attributes
+	pattern = /\s(src|background)\s*=\s*(["']?)([^"'\s>]+)/ig;
+	while ( match = pattern.exec(codes) ) {
+		codes = codes.replace(match[0],' ' + match[1] + '=' + match[2] + __UrlEncoder(match[3],ENC_Any) );
+	}
+
+	// processing styles url
+	pattern = /url\s*\(['"]?([^'"\)]+)['"]?\)/ig;
+	while ( match = pattern.exec(codes) )
+		codes = codes.replace(match[0],'url('+__UrlEncoder(match[1],ENC_Any)+')');
+
+	// Css import rule
+	pattern = /@import\s*['"]([^'"\(\)]+)['"]/ig;
+	while ( match = pattern.exec(codes) )
+		codes = codes.replace(match[0],'@import "'+__UrlEncoder(match[1],ENC_Any)+'"');
+
+	return codes;
+}
+
+// parses javascript codes
+_ASProxy.ParseJs=function(codes){
+
+}
+
+// ---------------------------
+// Overriding standard methods
+// ---------------------------
+
+// private: calls original sett attribute
+_ASProxy.CallOriginalSetAttr=function(element,attr,value){
+if(element==null) return;
+if (typeof element.OriginalSetAttribute == 'undefined')
+	element.setAttribute(attr,value);
+else
+	element.OriginalSetAttribute(attr,value);
+}
+
+// private: overrides html elements setter
+_ASProxy.OverrideHtmlSetters=function(){
+
+// Only modern browsers
+if (typeof window.__defineSetter__ == 'undefined')
+	return;
+// Tested and worked in Firefox 3+, Opera 9.6+, Chrome 2+
+
+try{
+	var interfaces = [
+		HTMLTitleElement, HTMLTextAreaElement, HTMLTableSectionElement, HTMLTableRowElement, HTMLTableElement, 
+		HTMLTableColElement, HTMLTableCellElement, HTMLTableCaptionElement, HTMLStyleElement, HTMLSelectElement, 
+		HTMLScriptElement, HTMLParamElement, HTMLParagraphElement, HTMLOptionElement, HTMLOListElement, HTMLObjectElement, 
+		HTMLMetaElement, HTMLMapElement, HTMLMapElement, HTMLLinkElement, HTMLLIElement, HTMLLegendElement, HTMLLabelElement, 
+		HTMLIsIndexElement, HTMLInputElement, HTMLImageElement, HTMLIFrameElement, HTMLHtmlElement, HTMLHRElement, 
+		HTMLHeadingElement, HTMLHeadElement, HTMLFrameSetElement, HTMLFrameElement, HTMLFormElement, HTMLFontElement, 
+		HTMLFieldSetElement, HTMLEmbedElement, HTMLDocument, HTMLDListElement, HTMLDivElement, HTMLButtonElement, 
+		HTMLBRElement, HTMLBodyElement, HTMLBaseFontElement, HTMLBaseElement, HTMLAreaElement, HTMLAnchorElement
+	];
+
+	try{
+		// Try to add Html element interfaces which is not supported in all browsers
+		// These Html element interfaces are not implemented by IE8 standard mode
+		interfaces.push([HTMLElement, HTMLUListElement, HTMLQuoteElement, HTMLPreElement, HTMLModElement, HTMLMenuElement, HTMLDirectoryElement, HTMLAppletElement ]);
+	}catch(e){_ASProxy.Log('OverrideHtmlSetters interfaces.push',e);}
+
+	// Default attribute setter
+	var _EncodeSetAttributeValue=function(attr,value,refTagName){
+		if(_ASProxy.IsEncodedByASProxy(value))
+			return value; // if alreay encoded don't change anything
+
+		try{
+			var attrName = attr.toLowerCase();
+			var tag=refTagName;
+			if(tag==null)
+				tag=(this.tagName+'').toLowerCase();
+			else
+				tag=(tag+'').toLowerCase();
+			
+			if(attrName == 'src')
+			{
+				if(tag=='img')
+					value = __UrlEncoder(value ,ENC_Images);
+				else if(tag=='iframe' || tag=='frame')
+					value = __UrlEncoder(value ,ENC_Frames);
+				else // any other
+					value = __UrlEncoder(value ,ENC_Any); 
+			}
+			else if(attrName == 'href')
+			{
+				if(tag=='a' || tag=='base')
+					value = __UrlEncoder(value);
+				else // any other
+					value = __UrlEncoder(value ,ENC_Any); 
+			}
+			else if(attrName == 'background')
+			{
+				value = __UrlEncoder(value ,ENC_Images); 
+			}
+			else if(attrName == 'action')
+			{
+				if(tag=='form')
+				{
+					// the Setter_FormAction will be used instead
+					value = value;
+				}
+				else // any other
+					value = __UrlEncoder(value ,ENC_Any); 
+			}
+			else if(attrName == 'innerHtml')
+			{
+				value = _ASProxy.ParseHtml(value); 
+			}
+		}catch(e){_ASProxy.Log('_EncodeSetAttributeValue',e);}
+		return value;
+	}
+	
+	_ASProxy.SetAttribute= function(attr, value){
+		try{ 
+			if(attr.toLowerCase() == 'action' && this.tagName.toLowerCase()=='form'){
+				_ASProxy.Setter_FormAction(this,value);
+				// no any other action required
+			}else{
+				// encode the value
+				value = _EncodeSetAttributeValue(attr, value, this.tagName);
+
+				// call original method
+				this.OriginalSetAttribute(attr, value);
+			}
+		}catch(e){_ASProxy.Log('_ASProxy.SetAttribute',e);}
+	};
+	
+	// changes the form element and dosn't need any action
+	_ASProxy.Setter_FormAction= function(element,value){
+		// the element is a FORM element
+		// value is ACTION of FORM element
+		var frmMethod = element.attributes["methodorginal"];
+		if(frmMethod == null)
+			frmMethod = frmMethod.value;// attrib value
+		else
+			frmMethod = element.method;// FORM method value
+			
+		// setting done flag
+		element.OriginalSetAttribute("asproxydone","1");
+		element.OriginalSetAttribute("methodorginal" , frmMethod);
+		
+		var newFrmAction;
+		
+		// check if is encoded before
+		if(_ASProxy.IsEncodedByASProxy(value)==false)
+			// encodes action
+			newFrmAction=__UrlEncoder(value,ENC_Page,false,"method="+frmMethod);
+		else
+			newFrmAction=value;
+
+		// overriding the element
+		//element.action=newFrmAction;
+		element.OriginalSetAttribute("action", newFrmAction);
+		element.method="POST";
+
+		//Saving encoded url to monitor the changes
+		element.OriginalSetAttribute("encodedurl", newFrmAction);
+	};
+	
+	// Element setters
+	_ASProxy.Setter_Src = function(value){this.OriginalSetAttribute('src',_EncodeSetAttributeValue('src',value,this.tagName));};
+	_ASProxy.Setter_Href = function(value){this.OriginalSetAttribute('href',_EncodeSetAttributeValue('href',value,this.tagName));};
+	_ASProxy.Setter_Background = function(value){this.OriginalSetAttribute('background',_EncodeSetAttributeValue('background',value,this.tagName));};
+	_ASProxy.Setter_InnerHtml = function(value){this.OriginalSetAttribute('innerHtml',_EncodeSetAttributeValue('innerHtml',value,this.tagName));};
+	_ASProxy.Setter_Action = function(value){
+		try{ 
+			if(this.tagName.toLowerCase()=='form'){
+				_ASProxy.Setter_FormAction(this,value);
+				// no any other action required
+			}else{
+				this.OriginalSetAttribute('action',_EncodeSetAttributeValue('action',value,this.tagName));
+			}
+		}catch(e){_ASProxy.Log('Setter_Action',e);}
+	};
+	
+	// overriding elements properties
+	for( i=0; i< interfaces.length ;i++ ){
+		// element definition
+		var elm = interfaces[i].prototype;
+		
+		// Does it have a prototype?
+		if(elm==null) continue;
+		
+		// overridding element 'setAttribute' method
+		elm.OriginalSetAttribute = elm.setAttribute;
+		elm.setAttribute = _ASProxy.SetAttribute;
+
+		// overridding element properties
+		elm.__defineSetter__('src', _ASProxy.Setter_Src);
+		elm.__defineSetter__('action', _ASProxy.Setter_Action);
+		elm.__defineSetter__('href', _ASProxy.Setter_Href);
+		elm.__defineSetter__('background', _ASProxy.Setter_Background);
+		elm.__defineSetter__('innerHtml', _ASProxy.Setter_InnerHtml);
+
+	}
+}catch(e){_ASProxy.Log('OverrideHtmlSetters ALL',e);}
+}
+
+// Overriding standard functions
+_ASProxy.OverrideStandardsDeclare=function(){ 
+	_ASProxy.WindowOpen=function(url,name,features,replace){
+		if(_ASProxy.IsEncodedByASProxy(url))
+			return window.OriginalOpen(url,name,features,replace);
+		else
+			return window.OriginalOpen(__UrlEncoder(url),name,features,replace);
+	}
+
+	_ASProxy.LocationAssign = function(url) {
+		// checking to see if it is not previously coded
+		if(_ASProxy.IsEncodedByASProxy(url))
+			window.location.href=url;
+		else
+		{
+			url=__UrlEncoder(url);
+			window.location.href=url;
+		}
+		return url;
+	}
+
+	_ASProxy.LocationReplace=function(url){
+		var codedUrl;
+		if(_ASProxy.IsEncodedByASProxy(url))
+			codedUrl=url;
+		else
+			codedUrl=__UrlEncoder(url);
+		if (window.location.replace == _ASProxy.LocationReplace)
+			return window.LocationReplace(codedUrl);
+		else
+			return window.location.replace(codedUrl);
+	}
+
+	_ASProxy.LocationReload=function(){
+		if (window.location.reload == _ASProxy.LocationReload)
+			return window.LocationReload();
+		else
+			return window.location.reload();
+	}
+
+	_ASProxy.DocumentWrite=function(){
+		var text=arguments[0];
+		if(_ASProxy.ParseHtml){
+			text=_ASProxy.ParseHtml(text);
+			return document.OriginalWrite(text);
+		}
+	}
+
+	_ASProxy.DocumentWriteLn=function(){
+		var text=arguments[0];
+		if(_ASProxy.ParseHtml){
+			text=_ASProxy.ParseHtml(text);
+			return document.OriginalWriteLn(text);
+		}
+	}
+}
+_ASProxy.OverrideStandards=function() {
+	try{
+		document.XDomain= _WindowLocation.host;
+	}catch(e){_ASProxy.Log('document.XDOMAIN failed',e);}
+	try{
+		window.open=_ASProxy.WindowOpen;
+	}catch(e){_ASProxy.Log('OVR window.open failed',e);}
+	try{
+		document.open=_ASProxy.WindowOpen;
+	}catch(e){_ASProxy.Log('OVR document.open failed',e);}
+	try{
+		open=_ASProxy.WindowOpen;
+	}catch(e){_ASProxy.Log('OVR open failed',e);}
+	try{
+		window.location.replace=_ASProxy.LocationReplace;
+	}catch(e){_ASProxy.Log('OVR window.location failed',e);}
+	try{
+		location.replace=_ASProxy.LocationReplace;
+	}catch(e){_ASProxy.Log('OVR location.replace failed',e);}
+	
+	try{
+		document.write=_ASProxy.DocumentWrite;
+	}catch(e){_ASProxy.Log('OVR document.write failed',e);}
+	try{
+		document.writeln=_ASProxy.DocumentWriteLn;
+	}catch(e){_ASProxy.Log('OVR document.writeln failed',e);}
+}
+
+// ---------------------------
+// END
+// ---------------------------
+
+// private: run encoders
+_ASProxy.StartupDynamicEncoders=function() {
+	//After 0.5 second 
+	window.setTimeout("_ASProxy.Enc.EncodeLinks();",500);
+
+	//After 0.7 second 
+	window.setTimeout("_ASProxy.Enc.EncodeImages();",700);
+
+	//After 2 second 
+	window.setTimeout("_ASProxy.Enc.EncodeInputImages();",2000);
+
+	//After 1 second 
+	window.setTimeout("_ASProxy.Enc.EncodeForms();",1000);
+
+	//After 2 second 
+	window.setTimeout("_ASProxy.Enc.EncodeFrames();",2000);
+
+	//After 4 second 
+	window.setTimeout("_ASProxy.Enc.EncodeScriptSources();",4000);
+}
+
+_ASProxy.Initialize=function() {
+	// Apply overriding
+	_ASProxy.OverrideStandardsDeclare();
+	
+	// The replacement location object
+	_WindowLocation=new _ASProxy.LocationObject();
+	_ASProxy.ReqLocation = _WindowLocation;
+	
+	// Apply overriding
+	_ASProxy.OverrideStandards();
+	
+	// Html setters
+	_ASProxy.OverrideHtmlSetters();
+
+	if(_ASProxy.DynamicEncoders)
+		// start encoders
+		_ASProxy.StartupDynamicEncoders();
+}
+
+// start immediately
+_ASProxy.Initialize();

@@ -1,6 +1,6 @@
 /** Base64 encode / decode   http://www.webtoolkit.info/   **/
 // private property
-var _keyStr = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=";
+var _keyStr = "abcdefghijkml012345nopqrstuvwxyz6789ABCDEFGHIJKLMNOPQRSTUVWXYZ+/=";
 // public method for encoding
 function _Base64_encode(input) {
 var output = "";
