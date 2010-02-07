@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<provider>
+	<info ASProxyVersion="5.*">
+		<Name>TemplateProvider</Name>
+		<Author>ASProxy, SalarSoft</Author>
+		<Version>1.0</Version>
+		<Description>This is a template provider</Description>
+		<Date>2010-01-24</Date>
+	</info>
+
+	<update enabled="false" updateInfoUrl="http://localhost:3000/ASProxy/_dev/!Release/ProviderUpdateInfo.xml">
+	</update>
+
+	<providers>
+		<add providerName="IEngine" typeName="Namespace.Classname, Assembly.Name"></add>
+	</providers>
+</provider>

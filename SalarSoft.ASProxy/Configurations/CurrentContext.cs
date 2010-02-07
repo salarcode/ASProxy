@@ -9,7 +9,7 @@ namespace SalarSoft.ASProxy
 	{
 
 		/// <summary>
-		/// current context user options
+		/// Current request user options
 		/// </summary>
 		public static UserOptions UserOptions
 		{

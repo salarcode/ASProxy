@@ -25,7 +25,7 @@ public class Images : IHttpHandler, System.Web.SessionState.IReadOnlySessionStat
 			}
             if (UrlProvider.IsASProxyAddressUrlIncluded(context.Request.QueryString))
             {
-                IEngine engine = (IEngine)Provider.GetProvider(ProviderType.IEngine);
+                IEngine engine = (IEngine)Providers.GetProvider(ProviderType.IEngine);
                 engine.UserOptions = UserOptions.ReadFromRequest();
                 
                 engine.DataTypeToProcess = DataTypeToProcess.None;

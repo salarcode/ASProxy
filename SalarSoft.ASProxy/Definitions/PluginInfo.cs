@@ -5,7 +5,7 @@ using System.Xml;
 
 namespace SalarSoft.ASProxy
 {
-	public struct PluginInfo
+	public class PluginInfo
 	{
 		public string ASProxyVersion;
 		public string Name;
@@ -19,7 +19,7 @@ namespace SalarSoft.ASProxy
 
 		static internal PluginInfo ReadFromXml(XmlNode rootNode)
 		{
-			PluginInfo result;
+			PluginInfo result = new PluginInfo();
 			// info
 			XmlNode node = rootNode.SelectSingleNode("info");
 			result.ASProxyVersion = node.Attributes["ASProxyVersion"].Value;

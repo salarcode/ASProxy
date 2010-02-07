@@ -1,17 +1,19 @@
 using System;
 using System.Collections;
 using System.Collections.Specialized;
-using System.IO;
-using System.Text;
-using System.Web;
-using System.Net;
-using System.Collections.Generic;
-using System.Text.RegularExpressions;
 using System.Globalization;
+using System.IO;
+using System.Net;
+using System.Text;
+using System.Text.RegularExpressions;
+using System.Web;
 
 namespace SalarSoft.ASProxy
 {
-    public class Common
+    /// <summary>
+    /// Genereal functions for public use
+    /// </summary>
+	public class Common
     {
         #region public static
 
@@ -23,6 +25,57 @@ namespace SalarSoft.ASProxy
             return Type.GetType("Mono.Runtime") != null;
         }
 
+		/// <summary>
+		/// Compares ASProxy version numbers, (5.5 > 5.5b1) and (5.5b3 > 5.5b1) and so.
+		/// The results would be (version1>version2)==1 , (version2>version1)==-1 , (version1=version2)==0
+		/// </summary>
+		public static int CompareASProxyVersions(string version1, string version2)
+		{
+			version1 = version1.ToLower();
+			version2 = version2.ToLower();
+			if (version1.Length > version2.Length)
+			{
+				string ver1 = version1.Substring(0, version2.Length);
+				int compare = string.Compare(ver1, version2);
+
+				// if they are same
+				if (compare == 0)
+				{
+					if (version1[version2.Length] == 'b' || version1[version2.Length] == 'a')
+						return -1; // version 2 is bigger
+					else
+						return 1;
+				}
+				else
+					return compare;
+
+			}
+			else if (version1.Length == version2.Length)
+			{
+				return string.Compare(version1, version2);
+			}
+			else
+			{
+				string ver2 = version2.Substring(0, version1.Length);
+				int compare = string.Compare(version1, ver2);
+
+				// if they are same
+				if (compare == 0)
+				{
+					if (version2[version1.Length] == 'b' || version2[version1.Length] == 'a')
+						return 1; // version 1 is bigger
+					else
+						return -1;
+				}
+				else
+					return compare;
+			}
+		}
+
+		/// <summary>
+		/// List of installed languages, the collection will contain their culture names.
+		/// The method uses the installed ResX files in App_LocalResources folder to generate the list.
+		/// </summary>
         public static NameValueCollection GetInstalledLanguagesList()
         {
             NameValueCollection languages = new NameValueCollection();
@@ -57,7 +110,12 @@ namespace SalarSoft.ASProxy
             return languages;
         }
 
-        public static int GetExceptionHttpDetailedErrorCode(Exception exception)
+		/// <summary>
+		/// Retrieve http-status code for the specified exception, default is InternalServerError(500).
+		/// Returns negative error number if error is WebException but is not Http error.
+		/// </summary>
+		/// <returns>Integer number</returns>
+		public static int GetExceptionHttpDetailedErrorCode(Exception exception)
         {
             if (exception != null)
             {
@@ -82,6 +140,10 @@ namespace SalarSoft.ASProxy
             return (int)HttpStatusCode.InternalServerError;
         }
 
+		/// <summary>
+		/// Retrieve http-status code for the specified exception, default is InternalServerError(500)
+		/// </summary>
+		/// <returns>HttpStatusCode</returns>
         public static HttpStatusCode GetExceptionHttpErrorCode(Exception exception)
         {
             if (exception != null)
@@ -102,6 +164,10 @@ namespace SalarSoft.ASProxy
             return HttpStatusCode.InternalServerError;
         }
 
+		/// <summary>
+		/// Generares ASProxy usergaent for browsers,
+		/// it will have asproxy signature in the of user-agent string
+		/// </summary>
         public static string GenerateUserAgent(HttpContext context)
         {
             string userAgent;
@@ -118,7 +184,7 @@ namespace SalarSoft.ASProxy
 
 
         /// <summary>
-        /// Get string of a query collection
+        /// Generates string of a name-value collection
         /// </summary>
         public static string NameValueCollectionToString(NameValueCollection queryCollection)
         {
@@ -132,7 +198,10 @@ namespace SalarSoft.ASProxy
             return result;
         }
 
-        public static byte[] AspDotNetViewStateResetToDef(Stream src)
+		/// <summary>
+		/// Renames ASP.NET VIEW_STATE input field name to some more secure name
+		/// </summary>
+		public static byte[] AspDotNetViewStateResetToDef(Stream src)
         {
             byte[] result;
             try
@@ -163,7 +232,10 @@ namespace SalarSoft.ASProxy
             return result;
         }
 
-        public static byte[] ApplyViewStateResetRename(byte[] buff)
+		/// <summary>
+		/// Renames ASP.NET VIEW_STATE input field name to some more secure name
+		/// </summary>
+		public static byte[] ApplyViewStateResetRename(byte[] buff)
         {
             string str = Encoding.ASCII.GetString(buff);
             int pos = str.IndexOf(Consts.DataProccessing.ASPDotNETRenamedViewState);
@@ -194,7 +266,9 @@ namespace SalarSoft.ASProxy
                 return buff;
         }
 
-
+		/// <summary>
+		/// Restores renamed VIEW_STATE input field name
+		/// </summary>
         public static string AspDotNetViewStateResetToDef(string query)
         {
             return query.Replace(
@@ -203,11 +277,10 @@ namespace SalarSoft.ASProxy
         }
 
         /// <summary>
-        /// Clears response header then recovers compression header
+        /// Clears response header whitout harming http-compression header
         /// </summary>
         public static void ClearHeadersButSaveEncoding(HttpResponse response)
         {
-            HttpCookieCollection cool = response.Cookies;
             HttpCookie cookie = response.Cookies[Consts.FrontEndPresentation.HttpCompressor];
             string encode = cookie[Consts.FrontEndPresentation.HttpCompressEncoding];
             response.ClearHeaders();
@@ -217,14 +290,9 @@ namespace SalarSoft.ASProxy
             response.AppendHeader("Content-Encoding", encode);
         }
 
-        /// <summary>
-        /// Is this url a FTP url
-        /// </summary>
-        public static bool IsFTPUrl(string url)
-        {
-            return url.Trim().StartsWith("ftp://", StringComparison.CurrentCultureIgnoreCase);
-        }
-
+		/// <summary>
+		/// Converts contentType to DataTypeToProcess
+		/// </summary>
         public static DataTypeToProcess MimeTypeToToProcessType(MimeContentType mime)
         {
             switch (mime)
@@ -248,6 +316,9 @@ namespace SalarSoft.ASProxy
             }
         }
 
+		/// <summary>
+		/// Converts content type enum value to HTTP content-type header value
+		/// </summary>
         public static string ContentTypeToString(MimeContentType type)
         {
             if (type == MimeContentType.application)
@@ -255,6 +326,9 @@ namespace SalarSoft.ASProxy
             return type.ToString().Replace('_', '/');
         }
 
+		/// <summary>
+		/// Converts HTTP Content-Type to enum type
+		/// </summary>
         public static MimeContentType StringToContentType(string type)
         {
             if (string.IsNullOrEmpty(type))
@@ -299,7 +373,10 @@ namespace SalarSoft.ASProxy
             }
         }
 
-        public static string FromBase64(string B64String)
+		/// <summary>
+		/// Base64 decoder
+		/// </summary>
+		public static string ConvertFromBase64(string B64String)
         {
             string result;
 
@@ -308,50 +385,52 @@ namespace SalarSoft.ASProxy
             return result;
         }
 
-        public static string ToBase64(string str)
+		/// <summary>
+		/// Base64 encoder
+		/// </summary>
+		public static string ConvertToBase64(string str)
         {
             string result;
             byte[] bytes = UTF8Encoding.UTF8.GetBytes(str);
             result = Convert.ToBase64String(bytes);
             return result;
         }
-        #endregion
 
         /// <summary>
         /// Performs the ROT13 character rotation.
         /// </summary>
-        public static string Rot13Transform(string value)
-        {
-            char[] array = value.ToCharArray();
-            for (int i = 0; i < array.Length; i++)
-            {
-                int number = (int)array[i];
-
-                if (number >= 'a' && number <= 'z')
-                {
-                    if (number > 'm')
-                    {
-                        number -= 13;
-                    }
-                    else
-                    {
-                        number += 13;
-                    }
-                }
-                else if (number >= 'A' && number <= 'Z')
-                {
-                    if (number > 'M')
-                    {
-                        number -= 13;
-                    }
-                    else
-                    {
-                        number += 13;
-                    }
-                }
-                array[i] = (char)number;
-            }
-            return new string(array);
-        }
+        //public static string Rot13Transform(string value)
+        //{
+        //    char[] array = value.ToCharArray();
+        //    for (int i = 0; i < array.Length; i++)
+        //    {
+        //        int number = (int)array[i];
+        //        if (number >= 'a' && number <= 'z')
+        //        {
+        //            if (number > 'm')
+        //            {
+        //                number -= 13;
+        //            }
+        //            else
+        //            {
+        //                number += 13;
+        //            }
+        //        }
+        //        else if (number >= 'A' && number <= 'Z')
+        //        {
+        //            if (number > 'M')
+        //            {
+        //                number -= 13;
+        //            }
+        //            else
+        //            {
+        //                number += 13;
+        //            }
+        //        }
+        //        array[i] = (char)number;
+        //    }
+        //    return new string(array);
+        //}
+        #endregion
     }
 }

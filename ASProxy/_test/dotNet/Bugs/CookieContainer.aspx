@@ -97,6 +97,7 @@
 	private CookieCollection GetCookies(CookieContainer container, Uri reqUri)
 	{
 		return container.GetCookies(reqUri);
+
 		string url = reqUri.Scheme + "://" + DateTime.Now.Ticks.ToString()+"." + reqUri.Authority + reqUri.PathAndQuery;
 		Uri cookieUri = new Uri(url);
 		CookieCollection reqUriColl = container.GetCookies(reqUri);

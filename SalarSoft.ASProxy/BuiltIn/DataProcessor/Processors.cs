@@ -18,15 +18,13 @@ namespace SalarSoft.ASProxy.BuiltIn
 
 		static void InitlizeClasses()
 		{
-			_HtmlProcessor = (IHtmlProcessor)Provider.GetProvider(ProviderType.IHtmlProcessor);
-			_CssProcessor = (ICssProcessor)Provider.GetProvider(ProviderType.ICssProcessor);
-			_JSProcessor = (IJSProcessor)Provider.GetProvider(ProviderType.IJSProcessor);
+			_HtmlProcessor = (IHtmlProcessor)Providers.GetProvider(ProviderType.IHtmlProcessor);
+			_CssProcessor = (ICssProcessor)Providers.GetProvider(ProviderType.ICssProcessor);
+			_JSProcessor = (IJSProcessor)Providers.GetProvider(ProviderType.IJSProcessor);
 		}
 
 		public static IHtmlProcessor HtmlProcessor { get { return _HtmlProcessor; } }
 		public static ICssProcessor CssProcessor { get { return _CssProcessor; } }
 		public static IJSProcessor JSProcessor { get { return _JSProcessor; } }
-
-
 	}
 }

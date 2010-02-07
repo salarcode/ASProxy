@@ -406,17 +406,6 @@ namespace SalarSoft.ASProxy.BuiltIn
 			// find matches
 			MatchCollection mColl = regex.Matches(codes);
 
-			//IJSProcessor processor = null;
-			//if (mColl.Count > 0)
-			//{
-			//    processor = (IJSProcessor)Provider.CreateProviderInstance(ProviderType.IJSProcessor);
-			//    processor.UserOptions = UserOptions.ReadFromRequest();
-			//}
-
-			//UserOptions opt = UserOptions.LoadDefaults(true);
-			//opt.EncodeUrl = encodeUrl;
-			//Processors.JSProcessor.UserOptions = opt;
-
 			// match collection
 			for (int i = mColl.Count - 1; i >= 0; i--)
 			{

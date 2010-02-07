@@ -21,8 +21,8 @@
     </fieldset>
     <fieldset>
         <legend>Image Compressor</legend>
-        <asp:CheckBox ID="chkImageCompressor" runat="server" Text="Image compressor is enabled" />
-        <br /><span class="field_desc">(Enables image compression with specified quality. Be aware this feature may have some overhead to your server.)</span>
+        <asp:CheckBox ID="chkImageCompressor" runat="server" Text="Image compressor config is enabled" />
+        <br /><span class="field_desc">(Enables image compression with specified quality. Be aware this feature may have some overhead to your server. To apply this config please refer to 'User Options' tab.)</span>
         
         <br />
         <br />

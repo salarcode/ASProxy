@@ -211,7 +211,7 @@
 &lt;br /&gt;еѕЁ «нћ«ѕ ASProxy Р” —‘ ¬“«ѕн ж ѕ” —”н »е «Ўб«Џ«  »—«н еге ѕ— «нд —д  »жѕе «” . «г« «нд Б—«Ш”н гн  ж«дѕ »—«н е— еѕЁн гж—ѕ «” Ё«ѕе ё—«— Рн—ѕ. ASProxy енН г”∆жбн н ѕ— ё»«б ЁЏ«бн н Ше ‘г« «дћ«г гн ѕенѕ дгн Б–н—ѕ.</value>
   </data>
   <data name="Page.Title" xml:space="preserve">
-    <value>Surf the web with ASProxy111111</value>
+    <value>Surf the web with ASProxy</value>
   </data>
   <data name="chkEncodeUrl.Text" xml:space="preserve">
     <value>Шѕ Ш—ѕд ¬ѕ—” е«</value>
@@ -224,5 +224,11 @@
   </data>
   <data name="lblRemoveObjects.Text" xml:space="preserve">
     <value>«гШ«д Ќ–Ё «‘н«Ѕ Ндѕ —”«де «н г«ддѕ Ёб‘ е« —« «“ ’ЁЌе гн ѕеѕ.</value>
+  </data>
+	<data name="chkImgCompressor.Text" xml:space="preserve">
+    <value>Ё‘—ѕе ”«“н  ’«жн—</value>
+  </data>
+	<data name="lblImgCompressor.Text" xml:space="preserve">
+    <value> ’«жн— —« Ё‘—ѕе гнШдѕ.&lt;br /&gt;«нд Ш«— »« Ш«е‘ ШнЁн   ’жн— «дћ«г гн‘жѕ.</value>
   </data>
 </root>

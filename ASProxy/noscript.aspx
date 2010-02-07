@@ -9,34 +9,41 @@ UserOptions _userOptions;
 void ReadFromUserOptions(UserOptions opt)
 {
 	chkRemoveScripts.Checked = opt.RemoveScripts;
-	chkProcessLinks.Checked = opt.Links;
 	chkDisplayImages.Checked = opt.Images;
-	chkForms.Checked = opt.SubmitForms;
 	chkCompression.Checked = opt.HttpCompression;
 	chkCookies.Checked = opt.Cookies;
-	chkOrginalUrl.Checked = opt.OrginalUrl;
-	chkFrames.Checked = opt.Frames;
-	chkPageTitle.Checked = opt.PageTitle;
 	chkUTF8.Checked = opt.ForceEncoding;
-	chkTempCookies.Checked = opt.TempCookies;
+	chkOrginalUrl.Checked = opt.OrginalUrl;
 }
+
+/// <summary>
+/// If we don't set the visible of checkboxes, they will return false for unchangeable options anyway
+/// </summary>
 UserOptions ApplyToUserOptions(UserOptions defaultOptions)
 {
-	UserOptions opt;
-	opt = defaultOptions;
-	opt.RemoveScripts = chkRemoveScripts.Checked;
-	opt.Links = chkProcessLinks.Checked;
-	opt.Images = chkDisplayImages.Checked;
-	opt.SubmitForms = chkForms.Checked;
-	opt.HttpCompression = chkCompression.Checked;
-	opt.Cookies = chkCookies.Checked;
-	opt.OrginalUrl = chkOrginalUrl.Checked;
-	opt.Frames = chkFrames.Checked;
-	opt.PageTitle = chkPageTitle.Checked;
-	opt.ForceEncoding = chkUTF8.Checked;
-	opt.TempCookies = chkTempCookies.Checked;
+	UserOptions opt = defaultOptions;
+	SalarSoft.ASProxy.Configurations.UserOptionsConfig userOptions = Configurations.UserOptions;
+	if (userOptions.RemoveScripts.Changeable)
+		opt.RemoveScripts = chkRemoveScripts.Checked;
+
+	if (userOptions.Images.Changeable)
+		opt.Images = chkDisplayImages.Checked;
+
+	if (userOptions.HttpCompression.Changeable)
+		opt.HttpCompression = chkCompression.Checked;
+
+	if (userOptions.Cookies.Changeable)
+		opt.Cookies = chkCookies.Checked;
+
+	if (userOptions.OrginalUrl.Changeable)
+		opt.OrginalUrl = chkOrginalUrl.Checked;
+
+	if (userOptions.ForceEncoding.Changeable)
+		opt.ForceEncoding = chkUTF8.Checked;
 	return opt;
 }
+
+
 void ApplyFramesetResults(IEngine engine)
 {
 	if (engine.ResponseInfo.HtmlIsFrameSet)
@@ -56,7 +63,7 @@ void GetResults(IEngine engine)
 	try
 	{
 		MimeContentType pageContentType;
-		if (!Common.IsFTPUrl(engine.RequestInfo.RequestUrl))
+		if (!UrlProvider.IsFTPUrl(engine.RequestInfo.RequestUrl))
 		{
 			engine.ExecuteHandshake();
 
@@ -105,6 +112,10 @@ void GetResults(IEngine engine)
 		
 		// Execute the request
 		responseContent = engine.ExecuteToString();
+		
+		// Append extra content
+		if (!string.IsNullOrEmpty(engine.ResponseInfo.ExtraCodesForBody))
+			responseContent = engine.ResponseInfo.ExtraCodesForBody + responseContent;
 
 
 		// If content is text format
@@ -144,7 +155,7 @@ void GetResults(IEngine engine)
 		{
 			Response.Write(engine.ResponseInfo.HtmlDocType);
 		}
-		Response.Write(engine.ResponseInfo.HtmlInitilizerCodes);
+		Response.Write(engine.ResponseInfo.ExtraCodesForPage);
 
 		if (engine.UserOptions.PageTitle)
 		{
@@ -176,7 +187,7 @@ void ProccessRequest()
 
 		if (UrlProvider.IsASProxyAddressUrlIncluded(Request.QueryString))
 		{
-			using (IEngine engine = (IEngine)Provider.GetProvider(ProviderType.IEngine))
+			using (IEngine engine = (IEngine)Providers.GetProvider(ProviderType.IEngine))
 			{
 
 				engine.UserOptions = _userOptions;
@@ -199,25 +210,29 @@ protected void btnDisplay_Click(object sender, EventArgs e)
 	_userOptions = ApplyToUserOptions(_userOptions);
 	_userOptions.SaveToResponse();
 		
-	using (IEngine engine = (IEngine)Provider.GetProvider(ProviderType.IEngine))
+	using (IEngine engine = (IEngine)Providers.GetProvider(ProviderType.IEngine))
 	{
 		engine.RequestInfo.RequestUrl = txtUrl.Text;
-			
+
 		engine.UserOptions = _userOptions;
 		engine.DataTypeToProcess = DataTypeToProcess.Html;
 		engine.RequestInfo.SetContentType(MimeContentType.text_html);
 
-		engine.Initialize(Request);
 		engine.RequestInfo.RequestUrl = UrlProvider.CorrectInputUrl(engine.RequestInfo.RequestUrl);
+		engine.Initialize(engine.RequestInfo.RequestUrl);
 
 		GetResults(engine);
 	}
+}
+protected void Page_Init(object sender, EventArgs e)
+{
+	_userOptions = UserOptions.ReadFromRequest();
+	ReadFromUserOptions(_userOptions);
 }
 
 protected void Page_Load(object sender, EventArgs e)
 {
 	Consts.FilesConsts.PageDefault_Dynamic = System.IO.Path.GetFileName(Request.Url.AbsolutePath).ToLower();
-	_userOptions = UserOptions.ReadFromRequest();
 
 	if (Configurations.Authentication.Enabled)
 	{
@@ -239,38 +254,55 @@ protected void Page_Load(object sender, EventArgs e)
 <head runat="server">
 <title runat="server">Surf the web with ASProxy</title>
 <!-- Surf the web invisibly using ASProxy power. A Powerfull web proxy is in your hands. -->
-<style type="text/css">
-#ASProxyMain{width:99.5%;display:block;padding:1px;margin:0px;border:2px solid #000000;text-align: center;}
-#ASProxyMain table{margin:0; padding:0px;}
-#ASProxyMainTable{color:black;padding:0px;margin:0px;border:1px solid #C0C0C0;background-color:#f8f8f8;background-image:none;font-weight:normal;font-style:normal;line-height:normal;visibility:visible;table-layout:auto;white-space:normal;word-spacing:normal;}
-#ASProxyMainTable td{margin:0; padding:0px; border-width:0px;color:black;font-family: Tahoma, sans-serif;font-size: 8pt;text-align: center;float:none;background-color:#f8f8f8;}
-#ASProxyMainTable .Button{background-color: #ECE9D8;border:2px outset;float:none;}
-#ASProxyMainTable .Sides{width: 140px;}
-#ASProxyMainTable a,#ASProxyMainTable a:hover,#ASProxyMainTable a:visited,#ASProxyMainTable a:active{font:normal normal normal 100% Tahoma;font-family: Tahoma, sans-serif; color: #000099; text-decoration:underline;}
-#ASProxyMainTable input{width:auto !important; font-size: 10pt;border:solid 1px silver;background-color: #FFFFFF;margin:1px 2px 1px 2px;}
-#ASProxyMainTable label{color:Black;font:normal normal normal 100% Tahoma;}
-#ASProxyMainTable span input{display:inline;border-width: 0px;float:none;height:auto !important;}
-#ASProxyMainTable span label{display:inline;float:none;height:auto !important;}
-.ASProxyCheckBox{display:inline;border-width:0px;background-color:#F8F8F8;padding:0px;margin:0px 0px 0px 0px;float:none;height:auto !important;}
+<style type="text/css" asproxydone="2">
+.ASProxyBlock,.AddressBar,.FastOptions,#MoreOptions{background-color: #f8f8f8;height: auto !important;margin: 0px 2px;padding: 0px;float: inherit;display: inherit;color: black;font: normal normal normal 100% Tahoma;font-family: Tahoma, sans-serif;font-size: 10pt;}
+.ASProxyBlock{background-color:white;width: 99.5%;display: block;padding: 1px;margin: 0px;border: 2px solid #000000;height: auto !important;float: none;}
+.ASProxyForm{display:block;padding: 0px;margin: 0px;width: auto;height: auto;}
+.ASProxyMain{color:black;padding: 2px;margin: 0px;border: 1px solid #C0C0C0;background-color: #f8f8f8;background-image: none;font-weight: normal;font-style: normal;line-height: normal;visibility: visible;table-layout: auto;white-space: normal;word-spacing: normal;float: none;}
+.ASProxyMain a,.ASProxyMain a:link,.ASProxyMain a:hover,.ASProxyMain a:visited,.ASProxyMain a:active{font: normal normal normal 100% Tahoma;font-family: Tahoma, sans-serif;color: #000099;text-decoration: underline;}
+.AddressBar{margin:3px 1px;}
+.AddressBar input{width:auto;height:auto;border: solid 1px silver; font:inherit; color:Black;}
+.AddressBar .Button{width:auto;height: 25px;color: black;float: none;width:auto !important;margin:0px;background-color: #ECE9D8;border: outset 2px;vertical-align: bottom;font-size: 10pt;padding: 2px 5px;}
+.AddressBar .TextBox{width:auto !important;height: auto;color: black;background-color: #FFFFFF;margin:0px;float: none;font-size: 10pt;border: solid 1px silver;padding: 3px;}
+.ASProxyOption{background-color:#f8f8f8;height: auto !important;margin: 0px 1px;padding: 0px;float:none;color: black;font: normal normal normal 100% Tahoma;font-family: Tahoma, sans-serif;font-size: 8pt;display: inline;border-width: 0px;text-align: center;}
+.ASProxyOption input{width:auto;height:auto !important;margin:0px;background-color:#F8F8F8;display:inline;border-width: 0px;float: none;}
+.ASProxyOption label{width:auto;height:auto !important;margin:0px 2px;padding:0px;vertical-align:baseline;float: none;color: Black;font: normal normal normal 100% Tahoma;display: inline;border-width: 0px;background-color: #F8F8F8;}
 </style></head><body>
-<script language="javascript" type="text/javascript">
+<script asproxydone="2" type="text/javascript">
 var _ASProxyVersion="<%=Consts.General.ASProxyVersion %>";
-function toggleOpt(lnk){var trMoreOpt=document.getElementById('trMoreOpt'); if (trMoreOpt.style.display=='none'){trMoreOpt.style.display='';lnk.innerHTML='Options...<small>&lt;</small>';
-}else{trMoreOpt.style.display='none';lnk.innerHTML='Options...<small>&gt;</small>';}}
 </script>
-<form id="frmASProxyDefault" runat="server" asproxydone="2" style="height:auto; margin-bottom:0px;">
-<div id="ASProxyMain" dir="ltr">
-<table id="ASProxyMainTable" style="width: 100%; ">
-<tr><td style="padding:0px; margin:0px;"><table style="width: 100%;border-width:0px;" cellpadding="0" cellspacing="0">
-<tr><td class="Sides"><a href="." asproxydone="2">ASProxy <%=Consts.General.ASProxyVersion %></a></td><td style="font-size:small;"><strong>Surf the web with ASProxy</strong></td><td class="Sides">powered by SalarSoft</td></tr>
-</table></td></tr><tr><td><!--This is ASProxy powered by SalarSoft. --><asp:TextBox ID="txtUrl" runat="server" Columns="60" dir="ltr" Width="450px"></asp:TextBox><asp:Button ID="btnASProxyDisplayButton" runat="server" Style="height: 22px" CssClass="Button" OnClick="btnDisplay_Click" Text="Display" />&nbsp;<br />
-<asp:CheckBox CssClass="ASProxyCheckBox" ID="chkUTF8" runat="server" Checked="False" Text="Force UTF-8" />&nbsp;<asp:CheckBox CssClass="ASProxyCheckBox" ID="chkOrginalUrl" runat="server" Checked="True" Text="Original URLs" />&nbsp;<asp:CheckBox CssClass="ASProxyCheckBox" ID="chkRemoveScripts" runat="server" Text="Remove scripts" />&nbsp;<asp:CheckBox CssClass="ASProxyCheckBox" ID="chkDisplayImages" runat="server" Checked="True" Text="Images" />&nbsp;<asp:CheckBox CssClass="ASProxyCheckBox" ID="chkCookies" runat="server" Checked="True" Text="Cookies" />&nbsp;<asp:CheckBox CssClass="ASProxyCheckBox" ID="chkCompression" runat="server" Checked="False" Text="Compress response" />&nbsp;<a asproxydone="2" id="lnkMoreOpt" href="javascript:void(0);" onclick="toggleOpt(this);">Options...<small>&lt;</small></a></td>
-</tr><tr id="trMoreOpt" style=""><td id="tdMoreOpt"><asp:CheckBox CssClass="ASProxyCheckBox" ID="chkFrames" runat="server" Checked="True" Text="Frames" />&nbsp;<asp:CheckBox CssClass="ASProxyCheckBox" ID="chkPageTitle" runat="server" Text="Display page title" Checked="True" />&nbsp;<asp:CheckBox CssClass="ASProxyCheckBox" ID="chkForms" runat="server" Checked="True" Text="Process forms" />&nbsp;<asp:CheckBox CssClass="ASProxyCheckBox" ID="chkProcessLinks" runat="server" Checked="True" Text="Links" />&nbsp;<asp:CheckBox CssClass="ASProxyCheckBox" ID="chkTempCookies" runat="server" Checked="False" Text="Save Cookies as Temp" /></td></tr>
-<tr><td><a asproxydone="2" href="cookieman.aspx" target="_blank">Cookie Manager</a>&nbsp;&nbsp;<a asproxydone="2" href="download.aspx" target="_blank">Download Tool</a>&nbsp;&nbsp;Have your own <a asproxydone="2" href="?decode=1&amp;url=aHR0cDovL2FzcHJveHkuc291cmNlZm9yZ2UubmV0B64Coded!" target="_blank">ASProxy</a>. It's free.&nbsp;&nbsp;<span id="lblVersionNotifier"></span></td>
-</tr></table><asp:Label ID="lblErrorMsg" runat="server" EnableTheming="False" EnableViewState="False" Font-Bold="True" Font-Names="Tahoma" Font-Size="10pt" ForeColor="Red" Text="Error message" ToolTip="Error message" Visible="False"></asp:Label>
+<form id="frmSurfNoScript" runat="server" asproxydone="2" class="ASProxyForm">
+<div id="ASProxyFormBlock" class="ASProxyBlock" dir="<%=Resources.Languages.TextDirection%>">
+<div class="ASProxyMain" style="text-align:<%=Resources.Languages.TextAlign%>"><div class="AddressBar">
+<a href="." asproxydone="2" style="font-weight: bold; text-decoration: none">ASProxy <%=Consts.General.ASProxyVersion %></a>
+<!--This is ASProxy powered by SalarSoft. -->
+<asp:TextBox runat="server" type="text" size="80" id="txtUrl" dir="ltr" style="width: 550px;" class="TextBox"/>
+<asp:Button ID="btnASProxyDisplayButton" runat="server" CssClass="Button" OnClick="btnDisplay_Click" Text="Display" />
+<a href="cookieman.aspx" target="_blank" asproxydone="2"><%=this.GetLocalResourceObject("CookieManager")%></a>
+<a href="download.aspx" target="_blank" asproxydone="2"><%=this.GetLocalResourceObject("DownloadTool")%></a>
 </div>
+<div class="FastOptions">
+<%if (Configurations.UserOptions.ForceEncoding.Changeable){ %><span class="ASProxyOption"><asp:CheckBox runat="server" id="chkUTF8"  /><label for="chkUTF8"><%=this.GetLocalResourceObject("chkUTF8")%></label></span> <%} %>
+<%if (Configurations.UserOptions.OrginalUrl.Changeable){ %><span class="ASProxyOption"><asp:CheckBox runat="server" id="chkOrginalUrl" /><label for="chkOrginalUrl"><%=this.GetLocalResourceObject("chkOrginalUrl")%></label></span> <%} %>
+<%if (Configurations.UserOptions.RemoveScripts.Changeable){ %><span class="ASProxyOption"><asp:CheckBox runat="server" id="chkRemoveScripts"  /><label for="chkRemoveScripts"><%=this.GetLocalResourceObject("chkRemoveScripts")%></label></span> <%} %>
+<%if (Configurations.UserOptions.Images.Changeable){ %><span class="ASProxyOption"><asp:CheckBox runat="server" id="chkDisplayImages" /><label for="chkDisplayImages"><%=this.GetLocalResourceObject("chkDisplayImages")%></label></span> <%} %>
+<%if (Configurations.UserOptions.Cookies.Changeable){ %><span class="ASProxyOption"><asp:CheckBox runat="server" id="chkCookies" /><label for="chkCookies"><%=this.GetLocalResourceObject("chkCookies")%></label></span> <%} %>
+<%if (Configurations.UserOptions.HttpCompression.Changeable){ %><span class="ASProxyOption"><asp:CheckBox runat="server" id="chkCompression" /><label for="chkCompression"><%=this.GetLocalResourceObject("chkCompression")%></label></span> <%} %>
+<%if (Configurations.UserOptions.ImageCompressor.Changeable&&Configurations.ImageCompressor.Enabled){ %><span class="ASProxyOption"><input id="chkImgCompressor" type="checkbox" onclick="_Page_SaveOptions()" /><label for="chkImgCompressor"><%=this.GetLocalResourceObject("chkImgCompressor")%></label></span> <%} %>
+</div></div>
+<script type="text/javascript" asproxydone="2">
+// iframes, hide the form
+if(window.self != window.top)document.getElementById('ASProxyFormBlock').style.display='none';
+</script>
+<div title="Error message" style="text-align: center; color: Red; font-weight: bold;font-family: Tahoma; font-size: 10pt;">
+<asp:Label ID="lblErrorMsg" runat="server" EnableTheming="False" EnableViewState="False" Visible="False"></asp:Label>
+</div>
+</div>
+
 <asp:Literal ID="ltrBeforeContent" runat="server" EnableViewState="false"></asp:Literal>
-<div style="position: relative; left: 0px; top: 5px; width: 100%; height:auto;">
-<asp:Literal ID="ltrHtmlBody" runat="server" EnableViewState="false"></asp:Literal></div>
+<div style="position: relative; left: 0px; top: 5px; width: 100%; height: auto;">
+<asp:Literal ID="ltrHtmlBody" runat="server" EnableViewState="false"></asp:Literal>
+</div>
+
 </form>
 </body></html>

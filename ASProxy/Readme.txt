@@ -1,6 +1,6 @@
 ****************************************
 ASProxy       :version 5.5b4
-Last update   :2010/01/19
+Last update   :2010/02/07
 Official site :http://asproxy.sourceforge.net/
 
 ASProxy is an ASP.NET Web Proxy.
@@ -20,27 +20,37 @@ Installing to a subdirectory:
 	*- Create a subdomain and copy all files there.
 
 Administration UI Installation:
-	Just copy the "admin" folder from inside of "AdminUI" folder to the server, where you have installed ASProxy.
+	Just copy the "admin" folder from "AdminUI" folder to the server, where you have installed ASProxy.
 	In other word the folder "admin" should be along with "web.config", "bin" and other ASProxy files.
 
 Important:
 	Be sure that your server supports ASP.NET 2 and then set your server ASP.NET version to 2.0.50727.
 
 Applying language:
-	* Manual: Open "/App_Data/Configurations.xml" file in an editor. Locate "pages" section and change the "uiLanguage" value.
 	* AdminUI: Go to "/admin/general.aspx", in the "UI Language" section choice desired language and press "Save" button.
+	* Manual: Open "/App_Data/Configurations.xml" file in an editor. Locate "pages" section and change the "uiLanguage" value.
 
 Changing interface:
 	If you don't like default interface, there is some. Go and get them right here: http://asproxy.sourceforge.net/download.html
-	To install an interface, please read instructions with the package. It is easy.
+	To install an interface, please read instructions in the package. It is easy.
 
 ****************************************
 Version History
 
-Version 5.5 Beta4 2010/01/19
-* Fixed: ASProxy login remember me check.
+Version 5.5 Beta4 2010/02/07
+* New: Plugins and Providers autoupdate feature is available.
+* New: Plugins and Providers manual update check.
+* New: Compressed (gzip, deflate) reponse detection.
+* New: Image compressor option is added to user options in default page.
+* New: Russian translation is added. Thanks to Alexey Agapov <agapov@amigors.com>.
+* Improved: ASProxy engine autoupdate.
+* Improved: Providers installation made easy.
 * Improved: Javascript encoder.
-* Improved: Serveral javascript issues.
+* Improved: noscript.aspx is redesigned and bugs fixed.
+* Improved: More friendly address in float bar to display origonal URLs.
+* Fixed: Serveral javascript parser issues.
+* Fixed: ASProxy login remember me check.
+* Fixed: Several minor bugs.
 
 Version 5.5 Beta3 2009/12/23
 * New: Streaming download. ASProxy will stream resume supported downloads. This will decrease presure on the server to buffer all the download data.
@@ -395,4 +405,4 @@ Version 1.0 2005/12/08:
 
 
 Contact me:
-Salar Khalilzadeh < salarsoftwares [at] gmail [dot] com >
+Salar.Kh < salarsoftwares [at] gmail [dot] com >

@@ -1,5 +1,5 @@
 // ASProxy AJAX Wrapper Core
-// Last update: 2010-01-20 coded by Salar Khalilzadeh //
+// Last update: 2010-01-23 coded by Salar.Kh //
 
 // Utilities
 Object.extend = function(dest, source, replace) {
@@ -16,12 +16,12 @@ function _ArrayAdd(arr, name, value) {
 
 // internal ajax object
 if (typeof XMLHttpRequest != 'undefined')
-    _OriginalXMLHttpRequest = XMLHttpRequest;
+    _ASProxyXMLHttpRequest = XMLHttpRequest;
 else
-    _OriginalXMLHttpRequest = null;
+    _ASProxyXMLHttpRequest = null;
 
 _AJAXInternal = function() {
-    try { return new _OriginalXMLHttpRequest(); } catch (e) { }
+    try { return new _ASProxyXMLHttpRequest(); } catch (e) { }
     try { return new ActiveXObject("Msxml2.XMLHTTP.6.0") } catch (e) { }
     try { return new ActiveXObject("Msxml2.XMLHTTP.3.0") } catch (e) { }
     try { return new ActiveXObject("Msxml2.XMLHTTP") } catch (e) { }
@@ -417,5 +417,5 @@ Object.extend(XMLHttpRequest.prototype, {
 }, true);
 
 // BUGFIX: Firefox with Firebug bugfix
-if (_OriginalXMLHttpRequest && _OriginalXMLHttpRequest.wrapped)
-    XMLHttpRequest.wrapped = _OriginalXMLHttpRequest.wrapped;
+if (_ASProxyXMLHttpRequest && _ASProxyXMLHttpRequest.wrapped)
+    XMLHttpRequest.wrapped = _ASProxyXMLHttpRequest.wrapped;

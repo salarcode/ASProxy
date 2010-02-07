@@ -6,7 +6,8 @@ using SalarSoft.ASProxy.Exposed;
 namespace SalarSoft.ASProxy
 {
     /// <summary>
-	/// Instances of utility classes to use in everywhere. These classes are shared between requests.
+	/// Instances of utility classes to use in everywhere.
+	/// These classes are shared in application to be used between requests.
     /// </summary>
     public static class Systems
     {
@@ -18,18 +19,33 @@ namespace SalarSoft.ASProxy
 		#endregion
 
         #region properties
+		/// <summary>
+		/// General cookie manager
+		/// </summary>
         public static ICookieManager CookieManager
         {
             get { return Systems._exCookieManager; }
         }
+
+		/// <summary>
+		/// General LogSystem
+		/// </summary>
         public static ILogSystem LogSystem
         {
             get { return Systems._exLogSystem; }
         }
+
+		/// <summary>
+		/// General credential cache system
+		/// </summary>
 		public static ICredentialCache CredentialCache
 		{
 			get { return Systems._exCredentialCache; }
 		}
+
+		/// <summary>
+		/// General UAC
+		/// </summary>
 		public static IUAC UAC
 		{
 			get { return Systems._exUAC; }
@@ -39,10 +55,10 @@ namespace SalarSoft.ASProxy
         #region static methods
         static Systems()
         {
-            _exCookieManager = (ICookieManager)Provider.GetProvider(ProviderType.ICookieManager);
-            _exLogSystem = (ILogSystem)Provider.GetProvider(ProviderType.ILogSystem);
-			_exCredentialCache = (ICredentialCache)Provider.GetProvider(ProviderType.ICredentialCache);
-			_exUAC = (IUAC)Provider.GetProvider(ProviderType.IUAC);
+            _exCookieManager = (ICookieManager)Providers.GetProvider(ProviderType.ICookieManager);
+            _exLogSystem = (ILogSystem)Providers.GetProvider(ProviderType.ILogSystem);
+			_exCredentialCache = (ICredentialCache)Providers.GetProvider(ProviderType.ICredentialCache);
+			_exUAC = (IUAC)Providers.GetProvider(ProviderType.IUAC);
 		}
         #endregion
     }

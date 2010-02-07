@@ -6,6 +6,7 @@ using System.IO;
 using System.Web;
 using System.Reflection;
 using System.Collections;
+using SalarSoft.ASProxy.Exposed;
 
 namespace SalarSoft.ASProxy
 {
@@ -23,20 +24,20 @@ namespace SalarSoft.ASProxy
         /// <summary>
         /// List of available plugins to load
         /// </summary>
-        static List<PluginInfo> _availablePlugins;
+        static List<PluginInfo> _loadedPlugins;
 
         /// <summary>
         /// List of installed plugins in ASProxy
         /// </summary>
-        static List<PluginInfo> _allASProxyPlugins;
+        static List<PluginInfo> _installedPlugins;
 
         static Dictionary<PluginHosts, ArrayList> _pluginsClassType;
         static bool _pluginsEnabled;
 
         static Plugins()
         {
-            _availablePlugins = new List<PluginInfo>();
-            _allASProxyPlugins = new List<PluginInfo>();
+            _loadedPlugins = new List<PluginInfo>();
+            _installedPlugins = new List<PluginInfo>();
             _pluginsClassType = new Dictionary<PluginHosts, ArrayList>();
 
             _pluginsEnabled = Configurations.Providers.PluginsEnabled;
@@ -45,21 +46,21 @@ namespace SalarSoft.ASProxy
         }
 
         /// <summary>
-        /// Available plugins which will apply to the engine, except disabled plugins
+        /// Loaded plugins which will apply to the engine
         /// </summary>
-        internal static List<PluginInfo> AvailablePlugins
+        internal static List<PluginInfo> LoadedPlugins
         {
-            get { return _availablePlugins; }
+            get { return _loadedPlugins; }
         }
 
         /// <summary>
-        /// All asproxy plugins, included disabled and failed to load
+        /// All installed plugins, includes disabled and failed to load plugins
         /// </summary>
-        internal static List<PluginInfo> AllASProxyPlugins
+        internal static List<PluginInfo> InstalledPlugins
         {
             get
             {
-                return _allASProxyPlugins;
+                return _installedPlugins;
             }
         }
         /// <summary>
@@ -159,26 +160,41 @@ namespace SalarSoft.ASProxy
         /// <param name="enabled"></param>
         internal static void SetPluginEnableStatus(string pluginName, bool enabled)
         {
-            for (int i = 0; i < _availablePlugins.Count; i++)
+            for (int i = 0; i < _loadedPlugins.Count; i++)
             {
-                PluginInfo plugin = _availablePlugins[i];
+                PluginInfo plugin = _loadedPlugins[i];
                 if (plugin.Name == pluginName)
                 {
                     plugin.Disabled = !enabled;
-                    _availablePlugins[i] = plugin;
+                    //_loadedPlugins[i] = plugin; // required for structs
                 }
             }
 
-            for (int i = 0; i < _allASProxyPlugins.Count; i++)
+            for (int i = 0; i < _installedPlugins.Count; i++)
             {
-                PluginInfo plugin = _allASProxyPlugins[i];
+                PluginInfo plugin = _installedPlugins[i];
                 if (plugin.Name == pluginName)
                 {
                     plugin.Disabled = !enabled;
-                    _allASProxyPlugins[i] = plugin;
+					//_installedPlugins[i] = plugin; // required for structs
                 }
             }
         }
+
+		/// <summary>
+		/// Finds plugin
+		/// </summary>
+		internal static PluginInfo FindPlugin(List<PluginInfo> plugins, string pluginName)
+		{
+			foreach (PluginInfo plugin in plugins)
+			{
+				if (plugin.Name == pluginName)
+				{
+					return plugin; 
+				}
+			}
+			return null;
+		}
 
         /// <summary>
         /// Calls specified method of all specified hosts.
@@ -207,12 +223,12 @@ namespace SalarSoft.ASProxy
                     }
                     catch (EPluginStopRequest)
                     {
-                        // The plugin is requested to stop the process
+                        // The plugin requested to stop the process
                         throw;
                     }
                     catch (Exception ex)
                     {
-                        // the plugin is requested to stop any operation
+                        // the plugin requested to stop any operation
                         if (ex.InnerException is EPluginStopRequest)
                             throw;
 
@@ -312,10 +328,10 @@ namespace SalarSoft.ASProxy
                                      SearchOption.TopDirectoryOnly);
 
 
-            if (_allASProxyPlugins == null)
-                _allASProxyPlugins = new List<PluginInfo>();
+            if (_installedPlugins == null)
+                _installedPlugins = new List<PluginInfo>();
             else
-                _allASProxyPlugins.Clear();
+                _installedPlugins.Clear();
 
             for (int i = 0; i < pluginsList.Length; i++)
             {
@@ -323,10 +339,10 @@ namespace SalarSoft.ASProxy
                 PluginInfo info = ReadPluginInfo(pluginsList[i]);
 
                 // and adds to the available plugins list
-                _allASProxyPlugins.Add(info);
+                _installedPlugins.Add(info);
             }
 
-            LoadPluginInfo(_allASProxyPlugins);
+            LoadPluginInfo(_installedPlugins);
         }
 
 
@@ -363,9 +379,12 @@ namespace SalarSoft.ASProxy
                         // calls plugin initialization
                         object plugObj = InvokeDefaultCreateInstance(classType);
 
+						// Call plugin register method
+						InvokePluginHostRegister(classType, plugObj);
+
                         // everything is ok
                         // Plugin is added to successfully loaded plugins
-                        _availablePlugins.Add(info);
+                        _loadedPlugins.Add(info);
                     }
                     catch (Exception ex)
                     {
@@ -394,6 +413,38 @@ namespace SalarSoft.ASProxy
             }
             return false;
         }
+
+		/// <summary>
+		/// Calling plugin RegisterPlugin method
+		/// </summary>
+		static void InvokePluginHostRegister(Type pluginClassType, object pluginInstance)
+		{
+			string methodName = PluginMethods.IPluginHost.RegisterPlugin.ToString();
+			try
+			{
+				// getting requested method info using reflection
+				MethodInfo info = pluginClassType
+					.GetMethod(methodName,
+					BindingFlags.Instance | BindingFlags.Public);
+
+				// call plugin with specifed arguments
+				info.Invoke(pluginInstance, new object[] { });
+			}
+			catch (EPluginStopRequest)
+			{
+				// The plugin requested to stop the process
+				throw;
+			}
+			catch (Exception ex)
+			{
+				// the plugin requested to stop any operation
+				if (ex.InnerException is EPluginStopRequest)
+					throw;
+
+				if (Systems.LogSystem.ErrorLogEnabled)
+					Systems.LogSystem.LogError(ex, "Plugin method failed. IPluginEngine Plugin=" + pluginClassType + " MethodName=" + methodName, string.Empty);
+			}
+		}
 
         /// <summary>
         /// Reads plugin info from specifed plugin xml file

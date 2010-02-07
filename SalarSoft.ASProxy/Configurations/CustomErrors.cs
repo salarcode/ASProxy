@@ -17,7 +17,6 @@ namespace SalarSoft.ASProxy
 
 		public static void HandleCustomErrors(Exception ex)
 		{
-
 			try
 			{
 				HttpContext context = HttpContext.Current;

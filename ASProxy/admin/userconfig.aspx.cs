@@ -24,6 +24,10 @@ public partial class Admin_UserConfig : System.Web.UI.Page
         userConfig.HttpCompression.Enabled = chkCompressionActive.Checked;
         userConfig.HttpCompression.Changeable = chkCompressionChangeable.Checked;
 
+        userConfig.ImageCompressor.Enabled = chkImgCompressorActive.Checked;
+		userConfig.ImageCompressor.Changeable = chkImgCompressorChangeable.Checked;
+
+
         userConfig.Cookies.Enabled = chkCookiesActive.Checked;
         userConfig.Cookies.Changeable = chkCookiesChangeable.Checked;
 
@@ -70,10 +74,20 @@ public partial class Admin_UserConfig : System.Web.UI.Page
     private void LoadFormData()
     {
         Configurations.UserOptionsConfig userConfig = Configurations.UserOptions;
-        chkCompressionActive.Checked = userConfig.HttpCompression.Enabled;
-        chkCompressionChangeable.Checked = userConfig.HttpCompression.Changeable;
+		chkCompressionActive.Checked = userConfig.HttpCompression.Enabled;
+		chkCompressionChangeable.Checked = userConfig.HttpCompression.Changeable;
 
-        chkCookiesActive.Checked = userConfig.Cookies.Enabled;
+		chkImgCompressorActive.Checked = userConfig.ImageCompressor.Enabled;
+		chkImgCompressorChangeable.Checked = userConfig.ImageCompressor.Changeable;
+		
+		// If Image compressor is completly diabled
+		if (!Configurations.ImageCompressor.Enabled)
+		{
+			chkImgCompressorActive.Enabled = false;
+			chkImgCompressorChangeable.Enabled = false;
+		}
+
+		chkCookiesActive.Checked = userConfig.Cookies.Enabled;
         chkCookiesChangeable.Checked = userConfig.Cookies.Changeable;
 
         chkDocTypeActive.Checked = userConfig.DocType.Enabled;

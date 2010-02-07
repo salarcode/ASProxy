@@ -25,6 +25,8 @@ td{font-size: 13px;}
 .urlBar{text-shadow:0 0 4px white; background: #BBB082 none repeat scroll 0 0;color: black;font-size: 1em;font-weight: bold;padding: 5px 10px 10px 10px;-moz-border-radius: 0px 0px 10px 10px;-webkit-border-radius: 0px 0px 10px 10px;border-radius: 0px 0px 10px 10px;}
 .button{vertical-align: bottom;background: #4C4D51 none repeat scroll 0 0;border: 1px solid silver;color: #FFFFFF;font-size: 11px;font-weight: bold;margin-right: 6px;padding: 3px 14px;text-decoration: none;text-transform: uppercase;height: 30px;cursor: pointer;}
 .button:Hover{background: #983D3A none repeat scroll 0 0;border: 1px solid #D45951;text-decoration: none;}
+.button[disabled],.button[disabled]:hover{color:Gray;background-color:#4C4D51;border-color:silver;}
+
 .urlBar .urlText{vertical-align: bottom;-height: 20px;padding: 6px;background-color: whitesmoke;border: solid 1px #4C4D51;
 -moz-box-shadow:0 0 10px gray;box-shadow:1px 1px 3px silver;text-shadow:2px 2px 3px gray;
 }

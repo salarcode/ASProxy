@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace SalarSoft.ASProxy.General.Encoders
+namespace SalarSoft.ASProxy.Encoders
 {
     public class DecoderBase64 : Decoder3To4
     {

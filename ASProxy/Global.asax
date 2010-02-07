@@ -10,10 +10,27 @@
 		System.Net.ServicePointManager.Expect100Continue = false;
 
 		// auto update reminder
+		if (Configurations.AutoUpdate.Plugins)
+			SalarSoft.ASProxy.Update.PluginsUpdater.StartWaiter();
+
+		if (Configurations.AutoUpdate.Providers)
+			SalarSoft.ASProxy.Update.ProvidersUpdater.StartWaiter();
+
 		if (Configurations.AutoUpdate.Engine)
-		{
-			SalarSoft.ASProxy.Updater.AddUpdateReminder();
-		}
+			SalarSoft.ASProxy.Update.EngineUpdater.StartWaiter();
+	}
+
+	void Application_End(object sender, EventArgs e)
+	{
+		// auto update reminder
+		if (Configurations.AutoUpdate.Plugins)
+			SalarSoft.ASProxy.Update.PluginsUpdater.StopWaiter();
+
+		if (Configurations.AutoUpdate.Providers)
+			SalarSoft.ASProxy.Update.ProvidersUpdater.StopWaiter();
+
+		if (Configurations.AutoUpdate.Engine)
+			SalarSoft.ASProxy.Update.EngineUpdater.StopWaiter();
 	}
 
 

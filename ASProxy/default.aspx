@@ -12,6 +12,7 @@
 		chkDisplayImages.Checked = opt.Images;
 		chkForms.Checked = opt.SubmitForms;
 		chkCompression.Checked = opt.HttpCompression;
+		chkImgCompressor.Checked = opt.ImageCompressor;
 		chkCookies.Checked = opt.Cookies;
 		chkOrginalUrl.Checked = opt.OrginalUrl;
 		chkFrames.Checked = opt.Frames;
@@ -19,24 +20,54 @@
 		chkUTF8.Checked = opt.ForceEncoding;
 		chkTempCookies.Checked = opt.TempCookies;
 	}
+	/// <summary>
+	/// If we don't set the visible of checkboxes, they will return false for unchangeable options anyway
+	/// </summary>
 	UserOptions ApplyToUserOptions(UserOptions defaultOptions)
 	{
-		UserOptions opt;
-		opt = defaultOptions;
-		opt.RemoveScripts = chkRemoveScripts.Checked;
-		opt.Links = chkProcessLinks.Checked;
-		opt.Images = chkDisplayImages.Checked;
-		opt.SubmitForms = chkForms.Checked;
-		opt.HttpCompression = chkCompression.Checked;
-		opt.Cookies = chkCookies.Checked;
-		opt.OrginalUrl = chkOrginalUrl.Checked;
-		opt.Frames = chkFrames.Checked;
-		opt.PageTitle = chkPageTitle.Checked;
-		opt.ForceEncoding = chkUTF8.Checked;
-		opt.TempCookies = chkTempCookies.Checked;
+		UserOptions opt = defaultOptions;
+		SalarSoft.ASProxy.Configurations.UserOptionsConfig userOptions=Configurations.UserOptions;
+		if (userOptions.RemoveScripts.Changeable)
+			opt.RemoveScripts = chkRemoveScripts.Checked;
+		
+		if (userOptions.RemoveObjects.Changeable)
+			opt.RemoveObjects = chkRemoveObjects.Checked;
+
+		if (userOptions.Links.Changeable)
+			opt.Links = chkProcessLinks.Checked;
+
+		if (userOptions.Images.Changeable)
+			opt.Images = chkDisplayImages.Checked;
+		
+		if (userOptions.SubmitForms.Changeable)
+			opt.SubmitForms = chkForms.Checked;
+
+		if (userOptions.HttpCompression.Changeable)
+			opt.HttpCompression = chkCompression.Checked;
+
+		if (userOptions.ImageCompressor.Changeable)
+			opt.ImageCompressor = chkImgCompressor.Checked;
+
+		if (userOptions.Cookies.Changeable)
+			opt.Cookies = chkCookies.Checked;
+		
+		if (userOptions.OrginalUrl.Changeable)
+			opt.OrginalUrl = chkOrginalUrl.Checked;
+		
+		if (userOptions.Frames.Changeable)
+			opt.Frames = chkFrames.Checked;
+		
+		if (userOptions.PageTitle.Changeable)
+			opt.PageTitle = chkPageTitle.Checked;
+		
+		if (userOptions.ForceEncoding.Changeable)
+			opt.ForceEncoding = chkUTF8.Checked;
+		
+		if (userOptions.TempCookies.Changeable)
+			opt.TempCookies = chkTempCookies.Checked;
 		return opt;
 	}
-
+	
 	protected void btnDisplay_Click(object sender, EventArgs e)
 	{
 		txtUrl.Text = UrlProvider.CorrectInputUrl(txtUrl.Text);
@@ -56,9 +87,13 @@
 		ReadFromUserOptions(_userOptions);
 	}
 
-	protected void Page_Load(object sender, EventArgs e)
+	protected void Page_Init(object sender, EventArgs e)
 	{
 		_userOptions = UserOptions.ReadFromRequest();
+		ReadFromUserOptions(_userOptions);
+	}
+	protected void Page_Load(object sender, EventArgs e)
+	{
 		if (UrlProvider.IsASProxyAddressUrlIncluded(Request.QueryString))
 		{
 			string queries = Request.Url.Query;
@@ -123,7 +158,7 @@ function _Page_HandleTextKey(ev){
 
 <asp:Content ContentPlaceHolderID="plhContent" Runat="Server">
 <asp:Literal ID="ltrMainDesc" runat="server" meta:resourcekey="ltrMainDesc"
-Text="ASProxy is an open-source service which allows the user to surf the net anonymously. When using
+Text="ASProxy is an open-source web proxy service which allows the user to surf the net anonymously. When using
 ASProxy, not only is your identity hidden but you will be able to escape filters
 and firewalls from an internet connection.
 &lt;br /&gt;In most cases your job, school, or even your country may prevent you from accessing
@@ -160,20 +195,24 @@ for any purposes. ASProxy is not responsible for your activities." EnableViewSta
 </td><td class="desc"><asp:Literal ID="lblCompression" EnableViewState="False" runat="server" meta:resourcekey="lblCompression" Text="Compresses the responded page.&lt;br /&gt;This is a recommended option but it is not compatible with all hosting servers."></asp:Literal>
 </td></tr>
 <%} %>
+<%if (Configurations.UserOptions.ImageCompressor.Changeable && Configurations.ImageCompressor.Enabled){ %>
+<tr class="option"><td class="name">
+<asp:CheckBox ID="chkImgCompressor" runat="server" Text="Compress images" meta:resourcekey="chkImgCompressor" />
+</td><td class="desc"><asp:Literal ID="lblImgCompressor" EnableViewState="False" runat="server" meta:resourcekey="lblImgCompressor" Text="Compresses the images.&lt;br /&gt;This option decreases images size by decreasing their quality."></asp:Literal>
+</td></tr>
+<%} %>
 <%if (Configurations.UserOptions.RemoveScripts.Changeable){ %>
 <tr class="option"><td class="name">
 <asp:CheckBox ID="chkRemoveScripts" runat="server" Text="Remove Scripts" Checked="True" meta:resourcekey="chkRemoveScripts" />
 </td><td class="desc"><asp:Literal ID="lblRemoveScripts" EnableViewState="False" runat="server" meta:resourcekey="lblRemoveScripts" Text="Removes scripts from page. This option increases anonymity but may loose some functionalities."></asp:Literal>
 </td></tr>
 <%} %>
-
 <%if (Configurations.UserOptions.RemoveObjects.Changeable){ %>
 <tr class="option"><td class="name">
 <asp:CheckBox ID="chkRemoveObjects" runat="server" Text="Remove Objects" Checked="True" meta:resourcekey="chkRemoveObjects" />
 </td><td class="desc"><asp:Literal ID="lblRemoveObjects" EnableViewState="False" runat="server" meta:resourcekey="lblRemoveObjects" Text="Removes embedded objects from page. Use this option to get rid of flash and embedded media in pages and save bandwidth."></asp:Literal>
 </td></tr>
 <%} %>
-
 <%if (Configurations.UserOptions.OrginalUrl.Changeable){ %>
 <tr class="option"><td class="name">
 <asp:CheckBox ID="chkOrginalUrl" runat="server" Checked="True" Text="Original URLs" meta:resourcekey="chkOrginalUrl" /></td><td class="desc">

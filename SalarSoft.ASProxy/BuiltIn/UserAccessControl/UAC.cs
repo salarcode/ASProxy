@@ -25,14 +25,14 @@ namespace SalarSoft.ASProxy.BuiltIn
 		/// </summary>
 		public override bool ValidateContext(HttpContext context)
 		{
-			if (!Configurations.UserAccessControl.Enabled)
-				return true;
-
 			// executing plugins
 			if (_isPluginAvailable)
 				Plugins.CallPluginMethod(PluginHosts.IPluginUAC,
 					PluginMethods.IPluginUAC.ValidateContext,
 					this, context);
+
+			if (!Configurations.UserAccessControl.Enabled)
+				return true;
 
 			// user ip
 			string userIP = context.Request.UserHostAddress;

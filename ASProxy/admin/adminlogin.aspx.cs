@@ -14,13 +14,20 @@ public partial class Admin_AdminLogin : System.Web.UI.Page
 		btnAdminLogin.Visible = false;
 		lblRegisterMessage.Visible = false;
 		lblLoginMessage.Visible = false;
+		lblTitleRegister.Visible = false;
+		lblTitleLogin.Visible = false;
+
 		if (Configurations.AdminUI.IsAdminStarted == false)
 		{
+			Page.Title = "Register Your Administration UI User";
+			lblTitleRegister.Visible = true;
 			btnAdminRegister.Visible = true;
 			lblRegisterMessage.Visible = true;
 		}
 		else
 		{
+			Page.Title = "Login to Administration UI";
+			lblTitleLogin.Visible = true;
 			btnAdminLogin.Visible = true;
 			lblLoginMessage.Visible = true;
 		}

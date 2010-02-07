@@ -6,53 +6,6 @@ namespace SalarSoft.ASProxy.BuiltIn
 {
 	public class HttpCompressor
 	{
-
-		static void AddToCookie(HttpResponse response, HttpRequest request, string encode)
-		{
-			HttpCookie reqCookie = request.Cookies[Consts.FrontEndPresentation.UserOptionsCookieName];
-			if (reqCookie != null)
-			{
-				string currentEncoding = reqCookie[Consts.FrontEndPresentation.HttpCompressEncoding];
-				if (!string.IsNullOrEmpty(currentEncoding) && currentEncoding.ToLower() == encode.ToLower())
-				{
-					// already saved
-					return;
-				}
-			}
-
-
-			HttpCookie resCookie = response.Cookies[Consts.FrontEndPresentation.HttpCompressor];
-			if (resCookie == null)
-			{
-				resCookie = new HttpCookie(Consts.FrontEndPresentation.HttpCompressEncoding);
-				response.Cookies.Add(resCookie);
-			}
-			resCookie.Values.Add(Consts.FrontEndPresentation.HttpCompressEncoding, encode);
-		}
-
-
-		static bool IsCompressEnabled(HttpRequest request)
-		{
-			HttpCookie cookie = request.Cookies[Consts.FrontEndPresentation.UserOptionsCookieName];
-			if (cookie == null)
-				return false;
-
-			string compress = cookie["HttpCompression"];
-
-			if (string.IsNullOrEmpty(compress))
-				return false;
-
-			try
-			{
-				return (Convert.ToBoolean(compress));
-			}
-			catch
-			{
-				return false;
-			}
-		}
-
-
 		public static void ApplyCompression(MimeContentType contentType)
 		{
 			// only text contents
@@ -114,8 +67,52 @@ namespace SalarSoft.ASProxy.BuiltIn
 				default:
 					break;
 			}
-
 		}
+
+		static bool IsCompressEnabled(HttpRequest request)
+		{
+			HttpCookie cookie = request.Cookies[Consts.FrontEndPresentation.UserOptionsCookieName];
+			if (cookie == null)
+				return false;
+
+			string compress = cookie["HttpCompression"];
+
+			if (string.IsNullOrEmpty(compress))
+				return false;
+
+			try
+			{
+				return (Convert.ToBoolean(compress));
+			}
+			catch
+			{
+				return false;
+			}
+		}
+
+		static void AddToCookie(HttpResponse response, HttpRequest request, string encode)
+		{
+			HttpCookie reqCookie = request.Cookies[Consts.FrontEndPresentation.UserOptionsCookieName];
+			if (reqCookie != null)
+			{
+				string currentEncoding = reqCookie[Consts.FrontEndPresentation.HttpCompressEncoding];
+				if (!string.IsNullOrEmpty(currentEncoding) && currentEncoding.ToLower() == encode.ToLower())
+				{
+					// already saved
+					return;
+				}
+			}
+
+
+			HttpCookie resCookie = response.Cookies[Consts.FrontEndPresentation.HttpCompressor];
+			if (resCookie == null)
+			{
+				resCookie = new HttpCookie(Consts.FrontEndPresentation.HttpCompressEncoding);
+				response.Cookies.Add(resCookie);
+			}
+			resCookie.Values.Add(Consts.FrontEndPresentation.HttpCompressEncoding, encode);
+		}
+
 
 	}
 }

@@ -8,8 +8,8 @@
 </asp:Content>
 <asp:Content ID="plhContent" ContentPlaceHolderID="Content" runat="Server">
 	<div class="error_list">
-		<asp:Literal ID="ltErrorsList" runat="server"></asp:Literal>
-		<asp:ValidationSummary ID="vldErrorsList" runat="server" />
+		<asp:Literal ID="ltErrorsList" EnableViewState="false" runat="server"></asp:Literal>
+		<asp:ValidationSummary ID="vldErrorsList" runat="server" EnableViewState="false" />
 	</div>
 	<fieldset>
 		<legend>Authentication</legend>

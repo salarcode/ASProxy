@@ -26,7 +26,7 @@ public class GetHtml : IHttpHandler, System.Web.SessionState.IReadOnlySessionSta
 			}
 			if (UrlProvider.IsASProxyAddressUrlIncluded(context.Request.QueryString))
             {
-                engine = (IEngine)Provider.GetProvider(ProviderType.IEngine);
+                engine = (IEngine)Providers.GetProvider(ProviderType.IEngine);
                 engine.UserOptions = UserOptions.ReadFromRequest();
 
                 engine.DataTypeToProcess = DataTypeToProcess.Html;

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using System.IO;
-using SalarSoft.ASProxy.General.Encoders;
+using SalarSoft.ASProxy.Encoders;
 
 namespace SalarSoft.ASProxy
 {
@@ -17,7 +17,6 @@ namespace SalarSoft.ASProxy
         {
             ASProxyDecoderBase64 decoder = new ASProxyDecoderBase64();
             return decoder.DecodeString(b64input);
-            
         }
     }
 }

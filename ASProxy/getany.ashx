@@ -15,7 +15,7 @@ public class GetAny : IHttpHandler, System.Web.SessionState.IReadOnlySessionStat
 		{
 			if (UrlProvider.IsASProxyAddressUrlIncluded(context.Request.QueryString))
 			{
-				engine = (IEngine)Provider.GetProvider(ProviderType.IEngine);
+				engine = (IEngine)Providers.GetProvider(ProviderType.IEngine);
 				engine.UserOptions = UserOptions.ReadFromRequest();
 
 				// should detect automatically

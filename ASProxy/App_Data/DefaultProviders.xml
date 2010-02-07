@@ -13,8 +13,4 @@
     <add name="IHtmlProcessor" typeName="SalarSoft.ASProxy.BuiltIn.RegexHtmlProcessor, SalarSoft.ASProxy"></add>
   </provider>
 
-  <provider name="Custom">
-    <add name="" typeName=""></add>
-  </provider>
-
 </ASPorxyProviders>

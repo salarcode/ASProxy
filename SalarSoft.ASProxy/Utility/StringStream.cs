@@ -125,7 +125,8 @@ namespace SalarSoft.ASProxy
 						if (resultEncoding != htmlEncoding)
 						{
 							// Seek to fisrt
-							stream.Seek(0, SeekOrigin.Begin);
+							if (stream.CanSeek)
+								stream.Seek(0, SeekOrigin.Begin);
 
 							// Read the string
 							reader = new StreamReader(stream, htmlEncoding, true);
@@ -167,6 +168,27 @@ namespace SalarSoft.ASProxy
 		public static string GetString(Stream stream, bool ignorePageEncoding, bool detectHtmlContentType, out Encoding DetectedEncode)
 		{
 			return GetString(stream, null, ignorePageEncoding, detectHtmlContentType, out DetectedEncode);
+		}
+
+		public static string GetString(Stream stream)
+		{
+			if (stream == null)
+				return "";
+			string result = string.Empty;
+			StreamReader reader;
+
+			// Seek to beginning of the stream
+			if (stream.CanSeek)
+				stream.Seek(0, SeekOrigin.Begin);
+
+			// do not detect encoding
+			reader = new StreamReader(stream, true);
+
+			// Reading data from stream to the string
+			result = reader.ReadToEnd();
+			result.Clone();
+
+			return result;
 		}
 
 		private static string GetString_OLD(Stream stream, bool ignorePageEncoding, out Encoding DetectedEncode)

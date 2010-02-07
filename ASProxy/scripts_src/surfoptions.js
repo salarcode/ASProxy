@@ -1,5 +1,5 @@
 // ASProxy Surf page scripts
-// Last update: 2009-10-25 coded by Salar Khalilzadeh //
+// Last update: 2010-02-07 coded by Salar.Kh //
 
 // Page options
 if (typeof (_XPage) == 'undefined')
@@ -10,6 +10,7 @@ function _Page_Initialize(){
 	_XPage.DisplayImages =document.getElementById('chkDisplayImages');
 	_XPage.Forms =document.getElementById('chkForms');
 	_XPage.Compression =document.getElementById('chkCompression');
+	_XPage.ImgCompressor =document.getElementById('chkImgCompressor');
 	_XPage.Cookies =document.getElementById('chkCookies');
 	_XPage.TempCookies =document.getElementById('chkTempCookies');
 	_XPage.OrginalUrl =document.getElementById('chkOrginalUrl');
@@ -25,6 +26,7 @@ function _Page_Initialize(){
 	if(!_XPage.DisplayImages) _XPage.DisplayImages={};
 	if(!_XPage.Forms) _XPage.Forms={};
 	if(!_XPage.Compression) _XPage.Compression={};
+	if(!_XPage.ImgCompressor) _XPage.ImgCompressor={};
 	if(!_XPage.Cookies) _XPage.Cookies={};
 	if(!_XPage.TempCookies) _XPage.TempCookies={};
 	if(!_XPage.OrginalUrl) _XPage.OrginalUrl={};
@@ -37,19 +39,20 @@ function _Page_Initialize(){
 }
 function _Page_SaveOptions(){
 	var cookieOpt=_Page_CookieName+"=";
-	cookieOpt+="Links="+_XPage.ProcessLinks.checked;
-	cookieOpt+="&Images="+_XPage.DisplayImages.checked;
-	cookieOpt+="&SubmitForms="+_XPage.Forms.checked;
-	cookieOpt+="&HttpCompression="+_XPage.Compression.checked;
-	cookieOpt+="&Cookies="+_XPage.Cookies.checked;
-	cookieOpt+="&TempCookies="+_XPage.TempCookies.checked;
-	cookieOpt+="&OrginalUrl="+_XPage.OrginalUrl.checked;
-	cookieOpt+="&Frames="+_XPage.Frames.checked;
-	cookieOpt+="&PageTitle="+_XPage.PageTitle.checked;
-	cookieOpt+="&ForceEncoding="+_XPage.UTF8.checked;
-	cookieOpt+="&RemoveScripts="+_XPage.RemoveScripts.checked;
-	cookieOpt+="&EncodeUrl="+_XPage.EncodeUrl.checked;
-	cookieOpt+="&RemoveObjects="+_XPage.RemoveObjects.checked;
+	cookieOpt+="Links="+(_XPage.ProcessLinks.checked+0);
+	cookieOpt+="&Img="+(_XPage.DisplayImages.checked+0);
+	cookieOpt+="&Forms="+(_XPage.Forms.checked+0);
+	cookieOpt+="&ZIP="+(_XPage.Compression.checked+0);
+	cookieOpt+="&ImgZip="+(_XPage.ImgCompressor.checked+0);
+	cookieOpt+="&Cookies="+(_XPage.Cookies.checked+0);
+	cookieOpt+="&TempCookies="+(_XPage.TempCookies.checked+0);
+	cookieOpt+="&FloatBar="+(_XPage.OrginalUrl.checked+0);
+	cookieOpt+="&Frames="+(_XPage.Frames.checked+0);
+	cookieOpt+="&Title="+(_XPage.PageTitle.checked+0);
+	cookieOpt+="&PgEnc="+(_XPage.UTF8.checked+0);
+	cookieOpt+="&RemScript="+(_XPage.RemoveScripts.checked+0);
+	cookieOpt+="&EncUrl="+(_XPage.EncodeUrl.checked+0);
+	cookieOpt+="&RemObj="+(_XPage.RemoveObjects.checked+0);
 	
 	var dt=new Date();
 	dt.setYear(dt.getFullYear()+1);

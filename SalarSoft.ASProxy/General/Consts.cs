@@ -44,7 +44,7 @@ namespace SalarSoft.ASProxy
         /// </summary>
         public class FrontEndPresentation
         {
-            public const string UserOptionsCookieName = "ASProxyConfig";
+            public const string UserOptionsCookieName = "ASProxyCFG";
 			public const string HttpCompressEncoding = "Encoding";
 			public const string HttpCompressor = "Compression";
 
@@ -115,18 +115,18 @@ namespace SalarSoft.ASProxy
 			public const string Dir_AppData = "App_Data";
 			public const string Dir_UpdateSources = "UpdateSources";
 			public const string Dir_Plugins = Dir_AppData + "\\" + "Plugins";
+			public const string Dir_Providers = Dir_AppData + "\\" + "Providers";
+			public const string Dir_Updater = Dir_AppData + "\\" + "Updater";
 			public const string File_PluginInfoExt = "*.xml";
+			public const string File_ProviderInfoExt = "*.xml";
 
             public const string AJAXHandler = "ajax.ashx";
             public const string PageAnyType = "getany.ashx";
-            public const string PageDownload = "download.ashx";//"download.aspx";
+            public const string PageDownload = "download.ashx";
             public const string PageAuthorization = "authorization.aspx";
             public const string PageDirectHtml = "gethtml.ashx";
             public const string PageDirectJS = "getjs.ashx";
-            public const string PageImages = "images.ashx";//"images.aspx";
-            //public const string PageDefault = "surf.aspx";
-            //public const string PageDirectCSS = "getcss.ashx";
-            //public const string PageDirectData = "getdata.ashx";
+            public const string PageImages = "images.ashx";
 
 			public const string JSASProxyEncoder = Dir_Scripts + "/" + "asproxyencoder.js";
 			public const string JSBase64 = Dir_Scripts + "/" + "base64encoder.js";

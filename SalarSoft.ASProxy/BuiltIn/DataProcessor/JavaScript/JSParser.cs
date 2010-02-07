@@ -18,7 +18,22 @@ namespace SalarSoft.ASProxy.BuiltIn
 			{
 				for (int i = searchingStartIndex; i < source.Length; i++)
 				{
-					if (Char.IsWhiteSpace(source[i]) == false)
+					if (!Char.IsWhiteSpace(source[i]))
+						return i;
+				}
+				return -1;
+			}
+
+
+			/// <summary>
+			/// Locates next control space character
+			/// </summary>
+			internal static int FindNextControlCharacter(ref string source, int searchingStartIndex)
+			{
+				for (int i = searchingStartIndex; i < source.Length; i++)
+				{
+					char c = source[i];
+					if (!Char.IsWhiteSpace(c) && !char.IsLetterOrDigit(c))
 						return i;
 				}
 				return -1;
@@ -725,29 +740,69 @@ namespace SalarSoft.ASProxy.BuiltIn
 					char next = source[nextChar];
 					if (next == shouldNotStartWithChar)
 					{
-						result.End = -1;
-						return result;
+						// not more than Length!
+						if (nextChar + 1 < source.Length)
+						{
+							// the next character after next char!!
+							char afterNextChar = source[nextChar + 1];
+
+							// not expected char!
+							if (afterNextChar != shouldNotStartWithChar)
+							{
+								// oops! this is assigment operation, not as expected
+								result.End = -1;
+								return result;
+							}
+						}
+						else
+						{
+							// end of code, code has bugs!
+							result.End = -1;
+							return result;
+						}
 					}
 
+					// if next character is dot, we are in special situation
+					// this can have two meanings
+					// 1- the code is trying to get a property value and test it so after this part we
+					// should expect double equal characters (==)
+					// 2- the code is trying to assing a value to the property which means this is 
+					// not what we expect and we should ignore it.
 					if (next == dot)
 					{
 						int searchIndex = result.Start + 1;
 
-						nextChar = StringCompare.IndexOfMatchCase(ref source, shouldNotStartWithChar, searchIndex);
+						nextChar = Internal.FindNextControlCharacter(ref source, searchIndex);
+						//nextChar = StringCompare.IndexOfMatchCase(ref source, shouldNotStartWithChar, searchIndex);
 
 						if (nextChar != -1 &&
 							source[nextChar] == shouldNotStartWithChar)
 						{
+							// not more than length!
+							if (nextChar + 1 < source.Length)
+							{
+								// the next character after next char!!
+								char afterNextChar = source[nextChar + 1];
+
+								// not expected char!
+								if (afterNextChar != shouldNotStartWithChar)
+								{
+									// oops this is assigment operation, not as expected
+									result.End = -1;
+									return result;
+								}
+							}
+
 							// Test for free space between equal mark and semicolon (ex. window.location ('text'))
 							string shouldBeFreeSpace
 								= source.Substring(searchIndex, nextChar - searchIndex);
 
-							if (StringCompare.IsAlphabet(shouldBeFreeSpace))
+							// properties
+							if (!StringCompare.IsAlphabet(shouldBeFreeSpace))
 							{
 								// result.Start = result.Start;  // Same
 								result.End = -1;
 								return result;
-
 							}
 						}
 					}
@@ -897,34 +952,74 @@ namespace SalarSoft.ASProxy.BuiltIn
 				int nextChar = Internal.FindNextValidCharacter(ref source, result.Start);
 				if (nextChar != -1)
 				{
-
-					// Oops! this isn't our victim!
 					char next = source[nextChar];
 					if (next == shouldNotStartWithChar)
 					{
-						result.End = -1;
-						return result;
+						// not more than Length!
+						if (nextChar + 1 < source.Length)
+						{
+							// the next character after next char!!
+							char afterNextChar = source[nextChar + 1];
+
+							// not expected char!
+							if (afterNextChar != shouldNotStartWithChar)
+							{
+								// oops! this is assigment operation, not as expected
+								result.End = -1;
+								return result;
+							}
+						}
+						else
+						{
+							// seems this is end of codes, code has bugs!
+							result.End = -1;
+							return result;
+						}
 					}
 
+					// if next character is dot, we are in special situation
+					// this can have two meanings
+					// 1- the code is trying to get a property value and test it so after this part we
+					// should expect double equal characters (==)
+					// 2- the code is trying to assing a value to the property which means this is 
+					// not what we expect and we should ignore it.
 					if (next == dot)
 					{
 						int searchIndex = result.Start + 1;
 
-						nextChar = StringCompare.IndexOfMatchCase(ref source, shouldNotStartWithChar, searchIndex);
+						nextChar = Internal.FindNextControlCharacter(ref source, searchIndex);
+						//nextChar = StringCompare.IndexOfMatchCase(ref source, shouldNotStartWithChar, searchIndex);
 
+						// if the next char is not expected char.
 						if (nextChar != -1 &&
 							source[nextChar] == shouldNotStartWithChar)
 						{
+
+							// not more than Length!
+							if (nextChar + 1 < source.Length)
+							{
+								// the next character after next char!!
+								char afterNextChar = source[nextChar + 1];
+
+								// not expected char!
+								if (afterNextChar != shouldNotStartWithChar)
+								{
+									// oops this is assigment operation, not as expected
+									result.End = -1;
+									return result;
+								}
+							}
+
 							// Test for free space between equal mark and semicolon (ex. window.location ('text'))
 							string shouldBeFreeSpace
 								= source.Substring(searchIndex, nextChar - searchIndex);
 
-							if (StringCompare.IsAlphabet(shouldBeFreeSpace))
+							// between should be free space or alpabet which means properties
+							if (!StringCompare.IsAlphabet(shouldBeFreeSpace))
 							{
 								// result.Start = result.Start;  // Same
 								result.End = -1;
 								return result;
-
 							}
 						}
 					}
@@ -1040,6 +1135,10 @@ namespace SalarSoft.ASProxy.BuiltIn
 			return methodParameterEnd;
 		}
 
+		/// <summary>
+		/// Not used
+		/// </summary>
+		[Obsolete()]
 		private static int FindMethodParameterEndRange(
 			ref string source,
 			int methodStart,
@@ -1282,6 +1381,7 @@ namespace SalarSoft.ASProxy.BuiltIn
 		/// <summary>
 		/// Useless. Just for test.
 		/// </summary>
+		[Obsolete()]
 		private static string ReplaceChractersBetweenString(
 			string source,
 			int methodStart,

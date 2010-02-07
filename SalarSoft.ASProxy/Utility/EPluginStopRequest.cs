@@ -6,6 +6,9 @@ using System.Web;
 
 namespace SalarSoft.ASProxy
 {
+	/// <summary>
+	/// A plugin may throw this excpetion if it wants to stop the request
+	/// </summary>
 	public class EPluginStopRequest : HttpException
 	{
 		const string _message = "The operation is stopped permentyle by a plugin.";

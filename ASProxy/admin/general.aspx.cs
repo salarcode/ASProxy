@@ -68,7 +68,12 @@ public partial class Admin_General : System.Web.UI.Page
         Configurations.Pages.UILanguage = cmbUiLanguage.SelectedValue;
 
         Configurations.ImageCompressor.Enabled = chkImageCompressor.Checked;
-        Configurations.ImageCompressor.Quality = Convert.ToInt64(txtImgQuality.Text);
+        Configurations.ImageCompressor.Quality = Convert.ToInt32(txtImgQuality.Text);
+
+		// Disable ImageCompressor for the user too
+		if (!Configurations.ImageCompressor.Enabled)
+			Configurations.UserOptions.ImageCompressor.Enabled = false;
+
 
         Configurations.AutoUpdate.UpdateInfoUrl = txtUpdateInfoUrl.Text;
         Configurations.AutoUpdate.Engine = chkUpdateEngine.Checked;

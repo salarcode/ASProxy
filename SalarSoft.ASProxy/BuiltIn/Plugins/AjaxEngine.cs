@@ -9,7 +9,7 @@ using SalarSoft.ASProxy.Exposed;
 namespace SalarSoft.ASProxy.BuiltIn
 {
     /// <summary>
-    /// AJAX Engine plugin
+    /// AJAX Engine provider
     /// </summary>
     public class AjaxEngine : ASProxyEngine
     {
@@ -103,9 +103,9 @@ namespace SalarSoft.ASProxy.BuiltIn
 
         }
 
-        protected override void ApplyResponseInfo(HttpResponse httpResponse)
+        protected override void ExecuteToResponse_ApplyResponseInfo(HttpResponse httpResponse)
         {
-            base.ApplyResponseInfo(httpResponse);
+            base.ExecuteToResponse_ApplyResponseInfo(httpResponse);
         }
         public override void ExecuteHandshake()
         {
@@ -165,56 +165,6 @@ namespace SalarSoft.ASProxy.BuiltIn
         #endregion
 
         #region static methods
-        static private void GetHeadersFromRequest(HttpRequest httpRequest, NameValueCollection result)
-        {
-            string header;
-
-            // BUG:: Not supported
-            // GZip and Deflate is not supported by ASProxy yet!
-            //header = httpRequest.Headers["Accept-Encoding"];
-            //if (string.IsNullOrEmpty(header) == false)
-            //    result.Add("Accept-Encoding", header);
-
-            // BUG:: ASP.NET doesn't allow changing If-Modified-Since header directly
-            // It should change by property
-            //header = httpRequest.Headers["If-Modified-Since"];
-            //if (string.IsNullOrEmpty(header) == false)
-            //    result.Add("If-Modified-Since", header);
-
-            header = httpRequest.Headers["Accept-Language"];
-            if (string.IsNullOrEmpty(header) == false)
-                result.Add("Accept-Language", header);
-
-            header = httpRequest.Headers["Cache-Control"];
-            if (string.IsNullOrEmpty(header) == false)
-                result.Add("Cache-Control", header);
-
-            header = httpRequest.Headers["If-Match"];
-            if (string.IsNullOrEmpty(header) == false)
-                result.Add("If-Match", header);
-
-            header = httpRequest.Headers["If-None-Match"];
-            if (string.IsNullOrEmpty(header) == false)
-                result.Add("If-None-Match", header);
-
-            header = httpRequest.Headers["If-Unmodified-Since"];
-            if (string.IsNullOrEmpty(header) == false)
-                result.Add("If-Unmodified-Since", header);
-
-            header = httpRequest.Headers["Last-Modified"];
-            if (string.IsNullOrEmpty(header) == false)
-                result.Add("Last-Modified", header);
-
-            header = httpRequest.Headers["Pragma"];
-            if (string.IsNullOrEmpty(header) == false)
-                result.Add("Pragma", header);
-
-            header = httpRequest.Headers["Warning"];
-            if (string.IsNullOrEmpty(header) == false)
-                result.Add("Warning", header);
-
-        }
-
         private AJAXInfo GetAJAXInfo(NameValueCollection queryString)
         {
             AJAXInfo result = new AJAXInfo();
@@ -330,8 +280,5 @@ namespace SalarSoft.ASProxy.BuiltIn
             public string Password;
             public string Referrer;
         }
-
     }
-
-
 }

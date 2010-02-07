@@ -125,6 +125,18 @@ Users Configurations
 	</tr>
 	<tr>
 		<td>
+			Image Compressor
+			<br /><span class="field_desc">(Compresses the images by decreasing their quality specified in 'General Options' tab.<br />
+			Please note that enabling this options may cause some overhead to server. You can enable this config from 'General Options' tab.)</span></td>
+		<td style="text-align:center">
+			<asp:CheckBox ID="chkImgCompressorActive" runat="server" /> 
+		</td>
+		<td style="text-align:center">
+			<asp:CheckBox ID="chkImgCompressorChangeable" runat="server" />
+		</td>
+	</tr>
+	<tr>
+		<td>
 			Encode Url
 			<br /><span class="field_desc">(Encodes original site address and hides it. This is highly recommended option to pass the blockers on the internet connection.)</span></td>
 		<td style="text-align:center">

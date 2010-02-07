@@ -27,52 +27,52 @@ namespace SalarSoft.ASProxy.Exposed
         #endregion
 
         #region properties
-		public IWebData WebData
+		public virtual IWebData WebData
         {
             get { return _webData; }
             set { _webData = value; }
         }
 
-        public EngineRequestInfo RequestInfo
+		public virtual EngineRequestInfo RequestInfo
         {
             get { return _requestInfo; }
             set { _requestInfo = value; }
         }
-        public EngineResponseInfo ResponseInfo
+		public virtual EngineResponseInfo ResponseInfo
         {
             get { return _responseInfo; }
             set { _responseInfo = value; }
         }
-        public DataTypeToProcess DataTypeToProcess
+		public virtual DataTypeToProcess DataTypeToProcess
         {
             get { return _dataTypeToProcess; }
             set { _dataTypeToProcess = value; }
         }
 
-        public bool ApplyContentFileName
+		public virtual bool ApplyContentFileName
         {
             get { return _applyContentFileName; }
             set { _applyContentFileName = value; }
         }
 
-        public LastStatus LastStatus
+		public virtual LastStatus LastStatus
         {
             get { return _lastStatus; }
             set { _lastStatus = value; }
         }
 
-        public Exception LastException
+		public virtual Exception LastException
         {
             get { return _lastException; }
             set { _lastException = value; }
         }
 
-        public string LastErrorMessage
+		public virtual string LastErrorMessage
         {
             get { return _lastErrorMessage; }
             set { _lastErrorMessage = value; }
         }
-        public UserOptions UserOptions
+		public virtual UserOptions UserOptions
         {
             get { return _userOptions; }
             set { _userOptions = value; }
@@ -122,7 +122,7 @@ namespace SalarSoft.ASProxy.Exposed
         #endregion
 
         #region protected methods
-        protected void Redirect(string url, HttpStatusCode httpStatusCode)
+		protected virtual void Redirect(string url, HttpStatusCode httpStatusCode)
         {
             try
             {
@@ -134,7 +134,7 @@ namespace SalarSoft.ASProxy.Exposed
             catch (ThreadAbortException) { }
         }
 
-        protected void Redirect(string url, HttpStatusCode httpStatusCode, bool abortRequest)
+		protected virtual void Redirect(string url, HttpStatusCode httpStatusCode, bool abortRequest)
         {
             try
             {

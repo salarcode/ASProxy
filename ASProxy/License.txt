@@ -12,11 +12,11 @@ under the License.
 
 The Original Code is ASProxy (an ASP.NET Proxy).
 
-The Initial Developer of the Original Code is Salar Khalilzadeh (SalarSoft).
-Portions created by Salar Khalilzadeh are Copyright (C) 2009 All Rights Reserved.
+The Initial Developer of the Original Code is Salar.Kh (SalarSoft).
+Portions created by Salar.Kh are Copyright (C) 2009 All Rights Reserved.
 
 Contributor(s): 
-	Salar Khalilzadeh < salarsoftwares @ gmail.com > (original author)
+	Salar.Kh < salarsoftwares @ gmail.com > (original author)
 
 Alternatively, the contents of this file may be used under the terms
 of the the GNU General Public License Version 2 or later (the 

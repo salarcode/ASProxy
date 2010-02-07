@@ -128,14 +128,24 @@ namespace SalarSoft.ASProxy
         }
         #endregion
 
-        internal static bool IsAlphabet(string text)
-        {
-            foreach (char c in text)
-            {
-                if (!char.IsLetter(c))
-                    return false;
-            }
-            return true;
-        }
-    }
+		internal static bool IsAlphabet(string text)
+		{
+			text = text.Trim();
+			foreach (char c in text)
+			{
+				if (!char.IsLetter(c))
+					return false;
+			}
+			return true;
+		}
+		internal static bool IsMixedCharacters(string text)
+		{
+			foreach (char c in text)
+			{
+				if (!char.IsLetter(c) && !char.IsWhiteSpace(c))
+					return true;
+			}
+			return false;
+		}
+	}
 }

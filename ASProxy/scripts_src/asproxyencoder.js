@@ -1,7 +1,10 @@
 // ASProxy Dynamic Encoder
 // ASProxy encoder for dynamically created objects //
-// Last update: 2010-01-20 coded by Salar Khalilzadeh //
+// Last update: 2010-01-30 coded by Salar.Kh //
 
+// ---------------------------
+// Runtime generated information objects
+// ---------------------------
 //_userConfig={EncodeUrl:true, OrginalUrl:true, Links:true, Images:true, Forms:true, Frames:true, Cookies:true, RemScripts:false, RemObjects:false, TempCookies:false };
 
 //_reqInfo={
@@ -20,12 +23,15 @@
 // regested site url information
 //_reqInfo.location={ Hash:'#hi', Host:"site.com:8080", Hostname:"site.com", Pathname:"/dir/page.htm", Search:'?test=1', Port:"8080", Protocol:"http:" }
 
+// ---------------------------
 // ASProxy object
+// ---------------------------
 _ASProxy={
     Debug_UseAbsoluteUrl: false,
 	DynamicEncoders:true,
 	TraceCookies:false,
 	LogEnabled:false,
+	ServerSideParser:false,
 	Activities:{},
 	Pages:{
 		pgGetAny:'getany.ashx',
@@ -34,11 +40,15 @@ _ASProxy={
 		pgImages:'images.ashx',
 		pgDownload:'download.ashx',
 		pgAuthorization:'authorization.aspx',
-		pgAjax:'ajax.ashx'
+		pgAjax:'ajax.ashx',
+		pgParser:'parser.ashx'
 	},
 	ClientSideUrls:["mailto:", "file://", "javascript:", "vbscript:", "jscript:", "vbs:","ymsgr:","data:"],
 	NonVirtualUrls:["http://", "https://", "mailto:", "ftp://", "file://", "telnet://", "news://", "nntp://", "ldap://","ymsgr:", "javascript:", "vbscript:", "jscript:", "vbs:", "data:" ]
 }
+
+// required check
+if(typeof(_reqInfo)=='undefined')_reqInfo={ASProxyPageName:'surf.aspx'};
 
 _ASProxy.EncodedUrls=[_reqInfo.ASProxyPageName+"?dec=",_ASProxy.Pages.pgAjax+"?dec=",
 		_ASProxy.Pages.pgGetHtml+"?dec=",_ASProxy.Pages.pgImages+"?dec=",_ASProxy.Pages.pgGetJS+"?dec=",
@@ -50,8 +60,8 @@ document.OriginalWriteLn = document.writeln;
 window.OriginalOpen=window.open;
 window.LocationReplace=window.location.replace;
 window.LocationAssign=window.location.assign;
-window.LocationReload=window.location.reload;
-
+window.LocationReload = window.location.reload;
+window.OriginalEval = window.eval;
 
 // ---------------------------
 // UrlEncoder required methods
@@ -70,6 +80,10 @@ ENC_Frames=3;
 function __UrlEncoder(url,type,notCorrectLocalUrl,extraQuery){
 	if(_ASProxy.IsClientSideUrl(url) || _ASProxy.IsSelfBookmarkUrl(url))
 		return url;
+
+	// Check if the url is encoded before
+	if (_ASProxy.IsEncodedByASProxy(url))
+		return url;
 	
 	if(notCorrectLocalUrl!=true)
 		url=_ASProxy.CorrectLocalUrlToOrginal(url);
@@ -85,10 +99,11 @@ function __UrlEncoder(url,type,notCorrectLocalUrl,extraQuery){
 	else if(type == ENC_Frames)
 		asproxyBasePath=_ASProxy.Pages.pgGetHtml;
 	else
+		// the default surf page
 		asproxyBasePath=_reqInfo.ASProxyPageName;
 
 	// UseAbsoluteUrl, only for debug
-	if(typeof(_ASProxy.Debug_UseAbsoluteUrl)!='undefined' && _ASProxy.Debug_UseAbsoluteUrl)
+	if(_ASProxy.Debug_UseAbsoluteUrl)
 		asproxyBasePath=_reqInfo.ASProxyPath + asproxyBasePath;
 
 	// config parameters
@@ -117,8 +132,8 @@ function __UrlEncoder(url,type,notCorrectLocalUrl,extraQuery){
 // private: combine page url with base path and return full url
 // exam: in "http://test.com/sub/" site, cenverts "/page.htm" to "http://test.com/page.htm" 
 //	 and converts "page.htm" to "http://test.com/sub/page.htm"
-_ASProxy.JoinUrls = function(url,pagePath,rootUrl)
-{
+_ASProxy.JoinUrls = function(url,pagePath,rootUrl){
+	if (typeof (url) != "string") return url;
 	if(pagePath.lastIndexOf("/")!=pagePath.length-1)
 		pagePath+="/";
 
@@ -265,7 +280,7 @@ _ASProxy.B64UnknownerAdd = function(url) {
 
 // private: Removes url unknowner
 _ASProxy.B64UnknownerRemove = function(url) {
-	if (url == null) return null;
+	if (typeof(url)!= "string")return url;
 	var unknowner = _reqInfo.UrlUnknowner.toLowerCase();
 	var urlAddr = url.toLowerCase();
 	var position = urlAddr.indexOf(unknowner);
@@ -279,7 +294,7 @@ _ASProxy.B64UnknownerRemove = function(url) {
 // END
 // ---------------------------
 _ASProxy.Log=function(){
-if(_ASProxy.LogEnabled &&  typeof(console)!='undefined'){
+if(_ASProxy.LogEnabled && typeof(console)!='undefined'){
 	try{
 		console.debug('ASProxy log:');
 		var log='';
@@ -966,8 +981,61 @@ _ASProxy.ParseHtml=function(codes){
 }
 
 // parses javascript codes
-_ASProxy.ParseJs=function(codes){
+_ASProxy.ParseJs = function(codes) {
+	// for now it is server side
+	return _ASProxy.ParseServerSide(codes, 0, false);
+}
 
+// Parses codes using the server side parser
+_ASProxy.ParseServerSide = function(codes, codeType, async, asyncMethod) {
+	responseObject = { readyState: 0, responseText: '' };
+
+	var parserUrl = _ASProxy.Pages.pgParser;
+	var parseReq = '';
+	if (codeType == 0)//JavaScript
+		parseReq = 'js';
+	else if (codeType == 1)//Html
+		parseReq = 'html';
+	async = (async) ? true : false;
+
+	parserUrl += '?dec=' + (_userConfig.EncodeUrl + 0);
+	parserUrl += "&type=" + parseReq;
+
+	parserUrl += "&url=";
+	if (_userConfig.EncodeUrl)
+		parserUrl += _ASProxy.B64UnknownerAdd(_Base64_encode(_reqInfo.pageUrl));
+	else
+		parserUrl += url;
+
+
+	// Initialize AJAX object
+	// If ASProxy AJAX wrapper is present we have to use the original AJAX object
+	var ajax;
+	if (typeof (_AJAXInternal) != 'undefined')
+		ajax = new _AJAXInternal();
+	else
+		ajax = new XMLHttpRequest();
+
+	// only for async methods
+	ajax.onreadystatechange = function() {
+		if (ajax.readyState == 4) {
+			responseObject.readyState = ajax.readyState;
+			responseObject.responseText = ajax.responseText;
+
+			if (typeof (asyncMethod) != 'undefined')
+				asyncMethod(responseObject);
+		}
+	}
+
+	ajax.open("POST", parserUrl, async);
+	ajax.send(codes);
+
+	// the request wasn't async, so the result is available
+	if (!async) {
+		responseObject.readyState = ajax.readyState;
+		responseObject.responseText = ajax.responseText;
+		return responseObject;
+	}
 }
 
 // ---------------------------
@@ -1024,7 +1092,10 @@ try{
 			
 			if(attrName == 'src')
 			{
-				if(tag=='img')
+				if(_ASProxy.IsEncodedByASProxy(value)){
+					// nothing
+				}
+				else if(tag=='img')
 					value = __UrlEncoder(value ,ENC_Images);
 				else if(tag=='iframe' || tag=='frame')
 					value = __UrlEncoder(value ,ENC_Frames);
@@ -1033,18 +1104,25 @@ try{
 			}
 			else if(attrName == 'href')
 			{
-				if(tag=='a' || tag=='base')
+				if(_ASProxy.IsEncodedByASProxy(value)){
+					// nothing
+				}
+				else if(tag=='a' || tag=='base')
 					value = __UrlEncoder(value);
 				else // any other
 					value = __UrlEncoder(value ,ENC_Any); 
 			}
 			else if(attrName == 'background')
 			{
-				value = __UrlEncoder(value ,ENC_Images); 
+				if (!_ASProxy.IsEncodedByASProxy(value))
+					value = __UrlEncoder(value ,ENC_Images); 
 			}
 			else if(attrName == 'action')
 			{
-				if(tag=='form')
+				if(_ASProxy.IsEncodedByASProxy(value)){
+					// nothing
+				}
+				else if(tag=='form')
 				{
 					// the Setter_FormAction will be used instead
 					value = value;
@@ -1088,6 +1166,7 @@ try{
 		// setting done flag
 		element.OriginalSetAttribute("asproxydone","1");
 		element.OriginalSetAttribute("methodorginal" , frmMethod);
+		
 		
 		var newFrmAction;
 		
@@ -1147,87 +1226,120 @@ try{
 }
 
 // Overriding standard functions
-_ASProxy.OverrideStandardsDeclare=function(){ 
-	_ASProxy.WindowOpen=function(url,name,features,replace){
-		if(_ASProxy.IsEncodedByASProxy(url))
-			return window.OriginalOpen(url,name,features,replace);
+_ASProxy.OverrideStandardsDeclare = function() {
+
+	_ASProxy.WindowEval = function(value) {
+		if (typeof (value) == "string" && _ASProxy.ServerSideParser) {
+			var parsed = value;
+
+			var floatBarMsg = false;
+			if (typeof (_XFloatBar) != 'undefined') {
+				floatBarMsg = true;
+				ORG_MSG_("<div style='padding:5px 4px;font-size:12px;'><strong>ASProxy:</strong> <span style='color:maroon;'>A background proccess is working, please wait a few seconds...</span></div>");
+			}
+
+			// calling server side parser
+			var parsedObj = _ASProxy.ParseServerSide(value, 0, false);
+
+			// Hide the floatbar
+			if (floatBarMsg)
+				ORG_OUT_();
+
+			// if it is a success
+			if (parsedObj.readyState == 4)
+				parsed = parsedObj.responseText;
+
+			return window.OriginalEval(parsed);
+		}
+		else {
+			return window.OriginalEval(value);
+		}
+	}
+
+	_ASProxy.WindowOpen = function(url, name, features, replace) {
+		if (_ASProxy.IsEncodedByASProxy(url))
+			return window.OriginalOpen(url, name, features, replace);
 		else
-			return window.OriginalOpen(__UrlEncoder(url),name,features,replace);
+			return window.OriginalOpen(__UrlEncoder(url), name, features, replace);
 	}
 
 	_ASProxy.LocationAssign = function(url) {
 		// checking to see if it is not previously coded
-		if(_ASProxy.IsEncodedByASProxy(url))
-			window.location.href=url;
-		else
-		{
-			url=__UrlEncoder(url);
-			window.location.href=url;
+		if (_ASProxy.IsEncodedByASProxy(url))
+			window.location.href = url;
+		else {
+			url = __UrlEncoder(url);
+			window.location.href = url;
 		}
 		return url;
 	}
 
-	_ASProxy.LocationReplace=function(url){
+	_ASProxy.LocationReplace = function(url) {
 		var codedUrl;
-		if(_ASProxy.IsEncodedByASProxy(url))
-			codedUrl=url;
+		if (_ASProxy.IsEncodedByASProxy(url))
+			codedUrl = url;
 		else
-			codedUrl=__UrlEncoder(url);
+			codedUrl = __UrlEncoder(url);
 		if (window.location.replace == _ASProxy.LocationReplace)
 			return window.LocationReplace(codedUrl);
 		else
 			return window.location.replace(codedUrl);
 	}
 
-	_ASProxy.LocationReload=function(){
+	_ASProxy.LocationReload = function() {
 		if (window.location.reload == _ASProxy.LocationReload)
 			return window.LocationReload();
 		else
 			return window.location.reload();
 	}
 
-	_ASProxy.DocumentWrite=function(){
-		var text=arguments[0];
-		if(_ASProxy.ParseHtml){
-			text=_ASProxy.ParseHtml(text);
+	_ASProxy.DocumentWrite = function() {
+		var text = arguments[0];
+		if (_ASProxy.ParseHtml) {
+			text = _ASProxy.ParseHtml(text);
 			return document.OriginalWrite(text);
 		}
 	}
 
-	_ASProxy.DocumentWriteLn=function(){
-		var text=arguments[0];
-		if(_ASProxy.ParseHtml){
-			text=_ASProxy.ParseHtml(text);
+	_ASProxy.DocumentWriteLn = function() {
+		var text = arguments[0];
+		if (_ASProxy.ParseHtml) {
+			text = _ASProxy.ParseHtml(text);
 			return document.OriginalWriteLn(text);
 		}
 	}
 }
-_ASProxy.OverrideStandards=function() {
-	try{
-		document.XDomain= _WindowLocation.host;
-	}catch(e){_ASProxy.Log('document.XDOMAIN failed',e);}
-	try{
-		window.open=_ASProxy.WindowOpen;
-	}catch(e){_ASProxy.Log('OVR window.open failed',e);}
-	try{
-		document.open=_ASProxy.WindowOpen;
-	}catch(e){_ASProxy.Log('OVR document.open failed',e);}
-	try{
-		open=_ASProxy.WindowOpen;
-	}catch(e){_ASProxy.Log('OVR open failed',e);}
-	try{
-		window.location.replace=_ASProxy.LocationReplace;
-	}catch(e){_ASProxy.Log('OVR window.location failed',e);}
-	try{
-		location.replace=_ASProxy.LocationReplace;
-	}catch(e){_ASProxy.Log('OVR location.replace failed',e);}
-	
-	try{
-		document.write=_ASProxy.DocumentWrite;
-	}catch(e){_ASProxy.Log('OVR document.write failed',e);}
-	try{
-		document.writeln=_ASProxy.DocumentWriteLn;
-	}catch(e){_ASProxy.Log('OVR document.writeln failed',e);}
+_ASProxy.OverrideStandards = function() {
+	if (_ASProxy.ServerSideParser) {
+		try {
+			window.eval = _ASProxy.WindowEval;
+		} catch (e) { _ASProxy.Log('OVR window.eval failed', e); } 
+	}
+	try {
+		document.XDomain = _WindowLocation.host;
+	} catch (e) { _ASProxy.Log('document.XDOMAIN failed', e); }
+	try {
+		window.open = _ASProxy.WindowOpen;
+	} catch (e) { _ASProxy.Log('OVR window.open failed', e); }
+	try {
+		document.open = _ASProxy.WindowOpen;
+	} catch (e) { _ASProxy.Log('OVR document.open failed', e); }
+	try {
+		open = _ASProxy.WindowOpen;
+	} catch (e) { _ASProxy.Log('OVR open failed', e); }
+	try {
+		window.location.replace = _ASProxy.LocationReplace;
+	} catch (e) { _ASProxy.Log('OVR window.location failed', e); }
+	try {
+		location.replace = _ASProxy.LocationReplace;
+	} catch (e) { _ASProxy.Log('OVR location.replace failed', e); }
+
+	try {
+		document.write = _ASProxy.DocumentWrite;
+	} catch (e) { _ASProxy.Log('OVR document.write failed', e); }
+	try {
+		document.writeln = _ASProxy.DocumentWriteLn;
+	} catch (e) { _ASProxy.Log('OVR document.writeln failed', e); }
 }
 
 // ---------------------------
@@ -1261,7 +1373,8 @@ _ASProxy.Initialize=function() {
 	
 	// The replacement location object
 	_WindowLocation=new _ASProxy.LocationObject();
-	_ASProxy.ReqLocation = _WindowLocation;
+	_ASProxy.ReqLocation=_WindowLocation;
+	document._WindowLocation=_WindowLocation;
 	
 	// Apply overriding
 	_ASProxy.OverrideStandards();

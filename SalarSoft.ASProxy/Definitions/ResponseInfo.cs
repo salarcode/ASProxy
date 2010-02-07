@@ -16,7 +16,8 @@ namespace SalarSoft.ASProxy
 		public string ContentFilename;
 
 		public string HtmlDocType;
-		public string HtmlInitilizerCodes;
+		public string ExtraCodesForPage;
+		public string ExtraCodesForBody;
 		public string HtmlPageTitle;
 		public bool HtmlIsFrameSet;
 

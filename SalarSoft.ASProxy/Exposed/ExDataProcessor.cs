@@ -13,22 +13,23 @@ namespace SalarSoft.ASProxy.Exposed
 	{
 		#region variables
 		private IWebData _webData;
-		//private UserOptions _userOptions;
 		private Encoding _contentEncoding;
-		private string _pageInitializerCodes;
+		private string _extraCodesForPage;
+		private string _extraCodesForBody;
 		private LastStatus _lastStatus;
 		private Exception _lastException;
 		private string _lastErrorMessage;
 		#endregion
 
 		#region properties
-		public IWebData WebData { get { return _webData; } set { _webData = value; } }
-		//public UserOptions UserOptions { get { return _userOptions; } set { _userOptions = value; } }
-		public Encoding ContentEncoding { get { return _contentEncoding; } set { _contentEncoding = value; } }
-		public string PageInitializerCodes { get { return _pageInitializerCodes; } set { _pageInitializerCodes = value; } }
-		public LastStatus LastStatus { get { return _lastStatus; } set { _lastStatus = value; } }
-		public Exception LastException { get { return _lastException; } set { _lastException = value; } }
-		public string LastErrorMessage { get { return _lastErrorMessage; } set { _lastErrorMessage = value; } }
+		public virtual IWebData WebData { get { return _webData; } set { _webData = value; } }
+		public virtual Encoding ContentEncoding { get { return _contentEncoding; } set { _contentEncoding = value; } }
+		public virtual string ExtraCodesForPage { get { return _extraCodesForPage; } set { _extraCodesForPage = value; } }
+		public virtual string ExtraCodesForBody { get { return _extraCodesForBody; } set { _extraCodesForBody = value; } }
+
+		public virtual LastStatus LastStatus { get { return _lastStatus; } set { _lastStatus = value; } }
+		public virtual Exception LastException { get { return _lastException; } set { _lastException = value; } }
+		public virtual string LastErrorMessage { get { return _lastErrorMessage; } set { _lastErrorMessage = value; } }
 		#endregion
 
 		#region public methods

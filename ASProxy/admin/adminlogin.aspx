@@ -4,13 +4,14 @@
 <asp:Content ID="plhHead" ContentPlaceHolderID="PageHead" runat="Server">
 </asp:Content>
 <asp:Content ID="plhHeader" ContentPlaceHolderID="Header" runat="Server">
-	Administration UI User
+	<asp:Label ID="lblTitleLogin" Visible="true" runat="server" Text="Administration UI User Login" EnableViewState="false"></asp:Label>
+	<asp:Label ID="lblTitleRegister" Visible="false" runat="server" Text="Administration UI User Register" EnableViewState="false"></asp:Label>
 </asp:Content>
 <asp:Content ID="plhContent" ContentPlaceHolderID="Content" runat="Server">
 	<div class="error_list">
-		<asp:Literal ID="ltErrorsList" runat="server"></asp:Literal>
+		<asp:Literal ID="ltErrorsList" EnableViewState="false" runat="server"></asp:Literal>
 	</div>
-	<asp:Label ID="lblRegisterMessage" runat="server" Text="This is first time you are opening Administation UI. To prevent strangers from changing your ASProxy configuration you should specify an username and password." EnableViewState="false" Visible="false"></asp:Label>
+	<asp:Label ID="lblRegisterMessage" runat="server" Text="This is first time you are opening Administation UI. To prevent strangers from changing your ASProxy configuration you should specify username and password." EnableViewState="false" Visible="false"></asp:Label>
 	<asp:Label ID="lblLoginMessage" runat="server" Text="To be able to see and change the configurations you should login with administration account." EnableViewState="false" Visible="false"></asp:Label>
 	<fieldset>
 		<table style="width: 100%;">

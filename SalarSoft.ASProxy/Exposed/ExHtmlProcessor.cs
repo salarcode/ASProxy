@@ -15,9 +15,9 @@ namespace SalarSoft.ASProxy.Exposed
         #endregion
 
         #region properties
-        public string DocType { get { return _docType; } set { _docType = value; } }
-        public bool IsFrameSet { get { return _isFrameSet; } set { _isFrameSet = value; } }
-        public string PageTitle { get { return _pageTitle; } set { _pageTitle = value; } }
+		public virtual string DocType { get { return _docType; } set { _docType = value; } }
+		public virtual bool IsFrameSet { get { return _isFrameSet; } set { _isFrameSet = value; } }
+		public virtual string PageTitle { get { return _pageTitle; } set { _pageTitle = value; } }
         #endregion
     }
 }

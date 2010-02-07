@@ -8,7 +8,7 @@
 		<Date>2009-7-12</Date>
 	</info>
 
-	<update enabled="false" updateInfoUrl="http://asproxy.sourceforge.net/update/autoupdate.xml">
+	<update enabled="false" updateInfoUrl="http://localhost:3000/ASProxy/_dev/!Release/PluginUpdateInfo.xml">
 	</update>
 
 	<classType typeName="Namespace.Classname, Assembly.Name"></classType>

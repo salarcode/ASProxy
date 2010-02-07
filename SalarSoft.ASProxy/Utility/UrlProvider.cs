@@ -1,40 +1,11 @@
 using System;
 using System.Collections.Specialized;
-using System.Text;
 using System.Web;
-using SalarSoft.ASProxy.General;
 
 namespace SalarSoft.ASProxy
 {
     public class UrlProvider
     {
-        public static string UrlPathEncodeSpecial(string str)
-        {
-            str = HttpUtility.UrlPathEncode(str);
-            str = str.Replace("#", "%23");
-            return str;
-        }
-
-
-
-        public static string UrlEncodeSpecialChars(string str)
-        {
-            //str = UrlEncode(str);
-            str = str.Replace("!", "%21");
-            str = str.Replace("*", "%2A");
-            str = str.Replace("(", "%28");
-            str = str.Replace(")", "%29");
-            str = str.Replace("-", "%2D");
-            str = str.Replace(".", "%2E");
-            str = str.Replace("_", "%5F");
-            str = str.Replace(@"\", "%5C");
-            return str;
-        }
-
-
-
-
-
         public static void ParseASProxyPageUrl(NameValueCollection collection, out bool decode, out string url)
         {
             decode = true;
@@ -68,6 +39,9 @@ namespace SalarSoft.ASProxy
             }
         }
 
+		/// <summary>
+		/// Generates ASProxy navigation URL
+		/// </summary>
         public static string GetASProxyPageUrl(string asproxyPage, string url, bool encodeUrl)
         {
             if (encodeUrl)
@@ -137,12 +111,26 @@ namespace SalarSoft.ASProxy
             return false;
         }
 
-        public static bool IsJavascriptUrl(string path)
+		/// <summary>
+		/// Checks if specified url is javascript code or not
+		/// </summary>
+		public static bool IsJavascriptUrl(string path)
         {
             if (StringCompare.StartsWithMatchCase(ref path, "javascript:"))
                 return true;
             return false;
         }
+
+		/// <summary>
+		/// Checks if specified url is ftp or not
+		/// </summary>
+		public static bool IsFTPUrl(string url)
+		{
+			if (StringCompare.StartsWithIgnoreCase(ref url, "ftp://"))
+				return true;
+			return false;
+		}
+
 
         static string[] _NonVirtualUrls = new string[] { "http://", "https://", "mailto:", "ftp://", "file://", "telnet://", "news://", "nntp://", "ldap://", "ymsgr:", "javascript:", "vbscript:", "jscript:", "vbs:", "data:" };
         public static bool IsVirtualUrl(string path)
@@ -152,8 +140,6 @@ namespace SalarSoft.ASProxy
             {
                 if (StringCompare.StartsWithMatchCase(ref path, _NonVirtualUrls[i]))
                     return false;
-                //if (path.StartsWith(stdurl[i]))
-                //    return false;
             }
             return true;
         }
@@ -316,9 +302,6 @@ namespace SalarSoft.ASProxy
             result = result.Replace(' ', '+');
 
             result = UrlEncoders.DecodeFromASProxyBase64(result);
-
-            //byte[] buff = Convert.FromBase64String(result);
-            //result = Encoding.UTF8.GetString(buff);
             return result;
         }
 
@@ -328,10 +311,7 @@ namespace SalarSoft.ASProxy
         /// <param name="url">A url address</param>
         public static string EncodeUrl(string url)
         {
-            //byte[] bytes = Encoding.UTF8.GetBytes(url);
-            //string result = Convert.ToBase64String(bytes);
             string result = UrlEncoders.EncodeToASProxyBase64(url);
-
             result += Consts.Query.Base64Unknowner;
             return result;
         }
@@ -373,7 +353,6 @@ namespace SalarSoft.ASProxy
             return url.Substring(0, markpos);
         }
 
-
         public static bool GetRequestQuery(NameValueCollection collection, string key, out string result)
         {
             string r = collection[key];
@@ -388,7 +367,5 @@ namespace SalarSoft.ASProxy
                 return false;
             }
         }
-
-
     }
 }

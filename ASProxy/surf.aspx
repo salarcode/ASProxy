@@ -8,6 +8,7 @@
 	string _ToDisplayUrl = "";
 	string _ErrorMessage = "";
 	string _ResponseContent = "";
+	string _ExtraCodesForBody = "";
 	UserOptions _userOptions;
 
 	protected void Page_Load(object sender, EventArgs e)
@@ -33,7 +34,7 @@
 	{
 		if (UrlProvider.IsASProxyAddressUrlIncluded(Request.QueryString))
 		{
-			using (IEngine engine = (IEngine)Provider.GetProvider(ProviderType.IEngine))
+			using (IEngine engine = (IEngine)Providers.GetProvider(ProviderType.IEngine))
 			{
 
 				engine.UserOptions = _userOptions;
@@ -54,7 +55,7 @@
 		try
 		{
 			MimeContentType pageContentType;
-			if (!Common.IsFTPUrl(engine.RequestInfo.RequestUrl))
+			if (!UrlProvider.IsFTPUrl(engine.RequestInfo.RequestUrl))
 			{
 				engine.ExecuteHandshake();
 
@@ -135,7 +136,8 @@
 			{
 				Response.Write(engine.ResponseInfo.HtmlDocType);
 			}
-			Response.Write(engine.ResponseInfo.HtmlInitilizerCodes);
+			Response.Write(engine.ResponseInfo.ExtraCodesForPage);
+			_ExtraCodesForBody = engine.ResponseInfo.ExtraCodesForBody;
 
 			if (engine.UserOptions.PageTitle)
 			{
@@ -185,7 +187,7 @@
 .AddressBar{margin:3px 1px;}
 .AddressBar input{width:auto;height:auto;border: solid 1px silver; font:inherit; color:Black;}
 .AddressBar .Button{width:auto;height: 25px;color: black;float: none;width:auto !important;margin:0px;background-color: #ECE9D8;border: outset 2px;vertical-align: bottom;font-size: 10pt;padding: 2px 5px;}
-.AddressBar .TextBox{width:auto !important;height: auto;color: black;background-color: #FFFFFF;margin:0px;float: none;font-size: 10pt;border: solid 1px silver;padding: 3px;}
+.AddressBar .TextBox{width:auto !important;height: auto;color: black;background-color: #FFFFFF;margin:0px;float: none;font-size: 10pt;border: solid 1px silver;padding: 3px;text-align:left;}
 .ASProxyOption{background-color:#f8f8f8;height: auto !important;margin: 0px 1px;padding: 0px;float:none;color: black;font: normal normal normal 100% Tahoma;font-family: Tahoma, sans-serif;font-size: 8pt;display: inline;border-width: 0px;text-align: center;}
 .ASProxyOption input{width:auto;height:auto !important;margin:0px;background-color:#F8F8F8;display:inline;border-width: 0px;float: none;}
 .ASProxyOption label{width:auto;height:auto !important;margin:0px 2px;padding:0px;vertical-align:baseline;float: none;color: Black;font: normal normal normal 100% Tahoma;display: inline;border-width: 0px;background-color: #F8F8F8;}
@@ -209,6 +211,7 @@ _XPage.ProcessLinks.checked =<%=_userOptions.Links.ToString().ToLower() %>;
 _XPage.DisplayImages.checked =<%=_userOptions.Images.ToString().ToLower() %>;
 _XPage.Forms.checked =<%=_userOptions.SubmitForms.ToString().ToLower() %>;
 _XPage.Compression.checked =<%=_userOptions.HttpCompression.ToString().ToLower() %>;
+_XPage.ImgCompressor.checked =<%=_userOptions.ImageCompressor.ToString().ToLower() %>;
 _XPage.Cookies.checked =<%=_userOptions.Cookies.ToString().ToLower() %>;
 _XPage.TempCookies.checked =<%=_userOptions.TempCookies.ToString().ToLower() %>;
 _XPage.OrginalUrl.checked =<%=_userOptions.OrginalUrl.ToString().ToLower() %>;
@@ -226,7 +229,7 @@ _XPage.EncodeUrl.checked=<%=_userOptions.EncodeUrl.ToString().ToLower() %>;
 <div class="ASProxyMain" style="text-align:<%=Resources.Languages.TextAlign%>"><div class="AddressBar">
 <a href="." asproxydone="2" style="font-weight: bold; text-decoration: none">ASProxy <%=Consts.General.ASProxyVersion %></a>
 <!--This is ASProxy powered by SalarSoft. -->
-<input name="url" type="text" size="80" id="txtUrl" dir="ltr" style="width: 550px;" class="TextBox" onkeyup="_Page_HandleTextKey(event)" value="<%=_ToDisplayUrl%>" />
+<input name="url" type="text" size="80" id="txtUrl" dir="ltr" style="width: 550px;" class="TextBox" onkeyup="_Page_HandleTextKey(event)" value="<%=HttpUtility.HtmlEncode(_ToDisplayUrl)%>" />
 <input type="submit" value="<%=this.GetLocalResourceObject("btnDisplay")%>" id="btnASProxyDisplayButton" class="Button" />
 <a href="cookieman.aspx" target="_blank" asproxydone="2"><%=this.GetLocalResourceObject("CookieManager")%></a>
 <a href="download.aspx" target="_blank" asproxydone="2"><%=this.GetLocalResourceObject("DownloadTool")%></a>
@@ -238,6 +241,7 @@ _XPage.EncodeUrl.checked=<%=_userOptions.EncodeUrl.ToString().ToLower() %>;
 <%if (Configurations.UserOptions.Images.Changeable){ %><span class="ASProxyOption"><input id="chkDisplayImages" type="checkbox" checked="checked" onclick="_Page_SaveOptions()" /><label for="chkDisplayImages"><%=this.GetLocalResourceObject("chkDisplayImages")%></label></span> <%} %>
 <%if (Configurations.UserOptions.Cookies.Changeable){ %><span class="ASProxyOption"><input id="chkCookies" type="checkbox" checked="checked" onclick="_Page_SaveOptions()" /><label for="chkCookies"><%=this.GetLocalResourceObject("chkCookies")%></label></span> <%} %>
 <%if (Configurations.UserOptions.HttpCompression.Changeable){ %><span class="ASProxyOption"><input id="chkCompression" type="checkbox" onclick="_Page_SaveOptions()" /><label for="chkCompression"><%=this.GetLocalResourceObject("chkCompression")%></label></span> <%} %>
+<%if (Configurations.UserOptions.ImageCompressor.Changeable&&Configurations.ImageCompressor.Enabled){ %><span class="ASProxyOption"><input id="chkImgCompressor" type="checkbox" onclick="_Page_SaveOptions()" /><label for="chkImgCompressor"><%=this.GetLocalResourceObject("chkImgCompressor")%></label></span> <%} %>
 <a asproxydone="2" id="lnkMoreOpt" href="javascript:void(0);" onclick="toggleOpt(this);"><%=this.GetLocalResourceObject("lnkMoreOptions")%>...<small>&gt;</small></a>
 </div>
 <div id="MoreOptions" style="display: none;">
@@ -252,8 +256,7 @@ _XPage.EncodeUrl.checked=<%=_userOptions.EncodeUrl.ToString().ToLower() %>;
 <script type="text/javascript" asproxydone="2">
 _Page_Initialize();
 _Page_SetOptions();
-
-// Iframed, disable the form
+// iframed, hide the form
 if(window.self != window.top)document.getElementById('ASProxyFormBlock').style.display='none';
 </script>
 
@@ -262,10 +265,11 @@ if(window.self != window.top)document.getElementById('ASProxyFormBlock').style.d
 font-family: Tahoma; font-size: 10pt;">
 <%=_ErrorMessage%></div>
 <%} %>
-<noscript style="color: Maroon; font-weight: bold; font-family: Tahoma; font-size: 11pt;"><%=this.GetLocalResourceObject("JsIsDisabled")%></noscript>
+<noscript style="color: Maroon; font-weight: bold; font-family: Tahoma; font-size: 10pt;"><%=this.GetLocalResourceObject("JsIsDisabled")%></noscript>
 </div></form></body>
 </html>
 
 <div style="position: relative; left: 0px; top: 5px; width: 100%; height: auto;">
+<%=_ExtraCodesForBody%>
 <%=_ResponseContent%>
 </div>

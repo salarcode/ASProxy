@@ -228,4 +228,10 @@ for any purposes. ASProxy is not responsible for your activities.</value>
   <data name="lblRemoveObjects.Text" xml:space="preserve">
     <value>Removes embedded objects from page. Use this option to get rid of flash and embedded media in pages and save bandwidth.</value>
   </data>
+  <data name="chkImgCompressor.Text" xml:space="preserve">
+    <value>Compress images</value>
+  </data>
+  <data name="lblImgCompressor.Text" xml:space="preserve">
+    <value>Compresses the images.&lt;br /&gt;This option decreases images size by decreasing their quality.</value>
+  </data>
 </root>

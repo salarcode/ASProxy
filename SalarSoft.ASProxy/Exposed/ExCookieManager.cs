@@ -6,9 +6,6 @@ using System.Collections.Specialized;
 
 namespace SalarSoft.ASProxy.Exposed
 {
-    /// <summary>
-    /// Summary description for ExCookieManager
-    /// </summary>
     public abstract class ExCookieManager : ICookieManager
     {
 		public abstract void RestoreCookiesFromResponse(System.Net.WebResponse webResponse, bool saveAsTemporary);

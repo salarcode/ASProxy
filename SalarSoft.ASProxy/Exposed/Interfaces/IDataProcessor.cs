@@ -11,9 +11,16 @@ namespace SalarSoft.ASProxy.Exposed
 	/// </summary>
 	public interface IDataProcessor : IExeptionHandled
 	{
-		string PageInitializerCodes { get; set; }
+		/// <summary>
+		/// Extra codes that will be trasfered before the content
+		/// </summary>
+		string ExtraCodesForPage { get; set; }
+
+		/// <summary>
+		/// For html contents, extra codes which should run in the body of page
+		/// </summary>
+		string ExtraCodesForBody { get; set; }
 		Encoding ContentEncoding { get; set; }
-		//UserOptions UserOptions { get; set; }
 		IWebData WebData { get; set; }
 
 		string Execute();

@@ -87,7 +87,7 @@ public class Download : IHttpHandler, System.Web.SessionState.IReadOnlySessionSt
             int reqRangeBegin = 0;
             long reqRangeEnd = -1;
 
-            engine = (IEngine)Provider.GetProvider(ProviderType.IEngine);
+            engine = (IEngine)Providers.GetProvider(ProviderType.IEngine);
             engine.UserOptions = UserOptions.ReadFromRequest();
 
             ResumableTransfers.ParseRequestHeaderRange(context.Request, out reqRangeBegin, out reqRangeEnd, out reqRangeRequest);

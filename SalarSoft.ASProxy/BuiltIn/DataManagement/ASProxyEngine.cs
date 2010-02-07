@@ -105,7 +105,7 @@ namespace SalarSoft.ASProxy.BuiltIn
 						_webData.Dispose();
 
 					// initializing new DataCore
-					_webData = (IWebData)Provider.GetProvider(ProviderType.IWebData);
+					_webData = (IWebData)Providers.GetProvider(ProviderType.IWebData);
 					_webData.RequestInfo.RequestUrl = RequestInfo.RequestUrl;
 					_webData.RequestInfo.UserAgent = userAgent;
 				}
@@ -176,13 +176,13 @@ namespace SalarSoft.ASProxy.BuiltIn
 				case DataTypeToProcess.AutoDetect:
 					break;
 				case DataTypeToProcess.Html:
-					dataProcessor = (IDataProcessor)Provider.GetProvider(ProviderType.IHtmlProcessor);
+					dataProcessor = (IDataProcessor)Providers.GetProvider(ProviderType.IHtmlProcessor);
 					break;
 				case DataTypeToProcess.JavaScript:
-					dataProcessor = (IDataProcessor)Provider.GetProvider(ProviderType.IJSProcessor);
+					dataProcessor = (IDataProcessor)Providers.GetProvider(ProviderType.IJSProcessor);
 					break;
 				case DataTypeToProcess.Css:
-					dataProcessor = (IDataProcessor)Provider.GetProvider(ProviderType.ICssProcessor);
+					dataProcessor = (IDataProcessor)Providers.GetProvider(ProviderType.ICssProcessor);
 					break;
 				case DataTypeToProcess.AdobeFlash:
 				// still nothing
@@ -232,7 +232,8 @@ namespace SalarSoft.ASProxy.BuiltIn
 
 					ResponseInfo.HtmlPageTitle = htmlProcessor.PageTitle;
 					ResponseInfo.HtmlIsFrameSet = htmlProcessor.IsFrameSet;
-					ResponseInfo.HtmlInitilizerCodes = htmlProcessor.PageInitializerCodes;
+					ResponseInfo.ExtraCodesForPage = htmlProcessor.ExtraCodesForPage;
+					ResponseInfo.ExtraCodesForBody = htmlProcessor.ExtraCodesForBody;
 					ResponseInfo.HtmlDocType = htmlProcessor.DocType;
 				}
 
@@ -296,13 +297,13 @@ namespace SalarSoft.ASProxy.BuiltIn
 				case DataTypeToProcess.AutoDetect:
 					break;
 				case DataTypeToProcess.Html:
-					dataProcessor = (IDataProcessor)Provider.GetProvider(ProviderType.IHtmlProcessor);
+					dataProcessor = (IDataProcessor)Providers.GetProvider(ProviderType.IHtmlProcessor);
 					break;
 				case DataTypeToProcess.JavaScript:
-					dataProcessor = (IDataProcessor)Provider.GetProvider(ProviderType.IJSProcessor);
+					dataProcessor = (IDataProcessor)Providers.GetProvider(ProviderType.IJSProcessor);
 					break;
 				case DataTypeToProcess.Css:
-					dataProcessor = (IDataProcessor)Provider.GetProvider(ProviderType.ICssProcessor);
+					dataProcessor = (IDataProcessor)Providers.GetProvider(ProviderType.ICssProcessor);
 					break;
 				case DataTypeToProcess.AdobeFlash:
 				// still nothing
@@ -352,12 +353,13 @@ namespace SalarSoft.ASProxy.BuiltIn
 
 					ResponseInfo.HtmlPageTitle = htmlProcessor.PageTitle;
 					ResponseInfo.HtmlIsFrameSet = htmlProcessor.IsFrameSet;
-					ResponseInfo.HtmlInitilizerCodes = htmlProcessor.PageInitializerCodes;
+					ResponseInfo.ExtraCodesForPage = htmlProcessor.ExtraCodesForPage;
+					ResponseInfo.ExtraCodesForBody = htmlProcessor.ExtraCodesForBody;
 					ResponseInfo.HtmlDocType = htmlProcessor.DocType;
 				}
 
 				// apply response info to response
-				ApplyResponseInfo(httpResponse);
+				ExecuteToResponse_ApplyResponseInfo(httpResponse);
 
 				// 4- executing the plugins
 				if (_isPluginAvailable)
@@ -367,6 +369,12 @@ namespace SalarSoft.ASProxy.BuiltIn
 
 				// the processed content
 				httpResponse.Write(response);
+
+				// write the extra content if available
+				// the extra content should be written after the content
+				// because they should be executed carefully
+				if (!string.IsNullOrEmpty(ResponseInfo.ExtraCodesForBody))
+					httpResponse.Write(ResponseInfo.ExtraCodesForBody);
 			}
 			else
 			{
@@ -374,11 +382,11 @@ namespace SalarSoft.ASProxy.BuiltIn
 				bool ContinueNonMime = true;
 
 				// if response is a image
-				if ((Configurations.ImageCompressor.Enabled) &&
+				if ((UserOptions.ImageCompressor) &&
 					(contentMimeType == MimeContentType.image_gif || contentMimeType == MimeContentType.image_jpeg))
 				{
 					// apply response info to response
-					ApplyResponseInfo(httpResponse);
+					ExecuteToResponse_ApplyResponseInfo(httpResponse);
 
 					using (MemoryStream imgMem = ImageCompressor.CompressImage(
 						_webData.ResponseData))
@@ -407,7 +415,7 @@ namespace SalarSoft.ASProxy.BuiltIn
 					{
 
 						// apply response info to response
-						ApplyResponseInfo(httpResponse);
+						ExecuteToResponse_ApplyResponseInfo(httpResponse);
 
 						MemoryStream mem = (MemoryStream)_webData.ResponseData;
 						if (mem.Length > 0)
@@ -420,7 +428,7 @@ namespace SalarSoft.ASProxy.BuiltIn
 						const int blockSize = 1024 * 5;
 
 						// apply response info to response
-						ApplyResponseInfo(httpResponse);
+						ExecuteToResponse_ApplyResponseInfo(httpResponse);
 
 						byte[] buffer = new byte[blockSize];
 						while ((int)(readed = _webData.ResponseData.Read(buffer, 0, blockSize)) > 0)
@@ -443,7 +451,7 @@ namespace SalarSoft.ASProxy.BuiltIn
 						ResponseInfo.ContentLength = response.Length;
 
 						// apply response info to response
-						ApplyResponseInfo(httpResponse);
+						ExecuteToResponse_ApplyResponseInfo(httpResponse);
 
 						// the content
 						httpResponse.Write(response);
@@ -535,13 +543,13 @@ namespace SalarSoft.ASProxy.BuiltIn
 				case DataTypeToProcess.AutoDetect:
 					break;
 				case DataTypeToProcess.Html:
-					dataProcessor = (IDataProcessor)Provider.GetProvider(ProviderType.IHtmlProcessor);
+					dataProcessor = (IDataProcessor)Providers.GetProvider(ProviderType.IHtmlProcessor);
 					break;
 				case DataTypeToProcess.JavaScript:
-					dataProcessor = (IDataProcessor)Provider.GetProvider(ProviderType.IJSProcessor);
+					dataProcessor = (IDataProcessor)Providers.GetProvider(ProviderType.IJSProcessor);
 					break;
 				case DataTypeToProcess.Css:
-					dataProcessor = (IDataProcessor)Provider.GetProvider(ProviderType.ICssProcessor);
+					dataProcessor = (IDataProcessor)Providers.GetProvider(ProviderType.ICssProcessor);
 					break;
 				case DataTypeToProcess.AdobeFlash:
 				// still nothing
@@ -593,7 +601,8 @@ namespace SalarSoft.ASProxy.BuiltIn
 
 					ResponseInfo.HtmlPageTitle = htmlProcessor.PageTitle;
 					ResponseInfo.HtmlIsFrameSet = htmlProcessor.IsFrameSet;
-					ResponseInfo.HtmlInitilizerCodes = htmlProcessor.PageInitializerCodes;
+					ResponseInfo.ExtraCodesForPage = htmlProcessor.ExtraCodesForPage;
+					ResponseInfo.ExtraCodesForBody = htmlProcessor.ExtraCodesForBody;
 					ResponseInfo.HtmlDocType = htmlProcessor.DocType;
 				}
 
@@ -613,7 +622,7 @@ namespace SalarSoft.ASProxy.BuiltIn
 				bool ContinueNonMime = true;
 
 				// if response is a image
-				if ((Configurations.ImageCompressor.Enabled) &&
+				if ((UserOptions.ImageCompressor) &&
 					(contentMimeType == MimeContentType.image_gif || contentMimeType == MimeContentType.image_jpeg))
 				{
 					using (MemoryStream imgMem = ImageCompressor.CompressImage(
@@ -712,7 +721,7 @@ namespace SalarSoft.ASProxy.BuiltIn
 			webData.RequestInfo.RangeRequest = RequestInfo.RangeRequest;
 		}
 
-		protected virtual void ApplyResponseInfo(HttpResponse httpResponse)
+		protected virtual void ExecuteToResponse_ApplyResponseInfo(HttpResponse httpResponse)
 		{
 			// Clear the past content
 			httpResponse.ClearContent();
@@ -749,8 +758,8 @@ namespace SalarSoft.ASProxy.BuiltIn
 				httpResponse.Write(ResponseInfo.HtmlDocType);
 
 			// Write document initialize code
-			if (!string.IsNullOrEmpty(ResponseInfo.HtmlInitilizerCodes))
-				httpResponse.Write(ResponseInfo.HtmlInitilizerCodes);
+			if (!string.IsNullOrEmpty(ResponseInfo.ExtraCodesForPage))
+				httpResponse.Write(ResponseInfo.ExtraCodesForPage);
 		}
 
 		protected virtual void ApplyContentFileNameToResponse(HttpResponse response)

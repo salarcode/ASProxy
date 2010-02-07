@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.IO;
 
-namespace SalarSoft.ASProxy.General.Encoders
+namespace SalarSoft.ASProxy.Encoders
 {
     public abstract class DecoderBase
     {

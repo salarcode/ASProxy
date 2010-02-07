@@ -5,9 +5,6 @@ using System.Net;
 
 namespace SalarSoft.ASProxy.Exposed
 {
-    /// <summary>
-    /// Summary description for ExCredentialCache
-    /// </summary>
     public abstract class ExCredentialCache : ICredentialCache
     {
         #region public methods

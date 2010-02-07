@@ -282,13 +282,18 @@ namespace SalarSoft.ASProxy
 		}
 		public class ProvidersConfig : IConfigSection
 		{
-			public bool EngineCanBeOverwritten;
+			public bool ProviderExtensionsEnabled;
 			public bool PluginsEnabled;
 			public StringCollection DisabledPlugins;
+			public StringCollection DisabledProviders;
 
 			public bool IsPluginDisabled(string pluginName)
 			{
 				return DisabledPlugins.Contains(pluginName);
+			}
+			public bool IsProviderDisabled(string providerName)
+			{
+				return DisabledProviders.Contains(providerName);
 			}
 			public void SaveToXml(XmlDocument xmlDoc, XmlNode rootNode)
 			{
@@ -299,11 +304,24 @@ namespace SalarSoft.ASProxy
 				rootNode.AppendChild(activeNode);
 
 				// engine node
-				node = xmlDoc.CreateElement("engine");
+				node = xmlDoc.CreateElement("providerExtensions");
 				activeNode.AppendChild(node);
-				attribute = xmlDoc.CreateAttribute("canBeOverwritten");
-				attribute.Value = this.EngineCanBeOverwritten.ToString();
+				attribute = xmlDoc.CreateAttribute("enabled");
+				attribute.Value = this.ProviderExtensionsEnabled.ToString();
 				node.Attributes.Append(attribute);
+
+				// disabled plugins node
+				XmlNode disabledProviderNode = xmlDoc.CreateElement("disabledProviders");
+				node.AppendChild(disabledProviderNode);
+				for (int i = 0; i < DisabledProviders.Count; i++)
+				{
+					XmlNode nameNode = xmlDoc.CreateElement("provider");
+					disabledProviderNode.AppendChild(nameNode);
+
+					attribute = xmlDoc.CreateAttribute("name");
+					attribute.Value = DisabledProviders[i];
+					nameNode.Attributes.Append(attribute);
+				}
 
 				// plugins node
 				node = xmlDoc.CreateElement("plugins");
@@ -327,8 +345,16 @@ namespace SalarSoft.ASProxy
 			}
 			public void ReadFromXml(XmlNode rootNode)
 			{
-				XmlNode node = rootNode.SelectSingleNode("providers/engine");
-				this.EngineCanBeOverwritten = Convert.ToBoolean(node.Attributes["canBeOverwritten"].Value);
+				XmlNode node = rootNode.SelectSingleNode("providers/providerExtensions");
+				this.ProviderExtensionsEnabled = Convert.ToBoolean(node.Attributes["enabled"].Value);
+
+				// disabled providers list
+				node = rootNode.SelectSingleNode("providers/providerExtensions/disabledProviders");
+				this.DisabledProviders = new StringCollection();
+				foreach (XmlNode childNode in node.ChildNodes)
+				{
+					DisabledProviders.Add(childNode.Attributes["name"].Value);
+				}
 
 				// plugins
 				node = rootNode.SelectSingleNode("providers/plugins");
@@ -647,6 +673,8 @@ namespace SalarSoft.ASProxy
 				this.Users = new List<AuthenticationConfig.User>();
 				foreach (XmlNode childNode in node.ChildNodes)
 				{
+					if (childNode.NodeType == XmlNodeType.Comment) continue;
+
 					AuthenticationConfig.User user = new AuthenticationConfig.User();
 					user.UserName = childNode.Attributes["userName"].Value;
 					user.Password = childNode.Attributes["password"].Value;
@@ -670,7 +698,7 @@ namespace SalarSoft.ASProxy
 		public class ImageCompressorConfig : IConfigSection
 		{
 			public bool Enabled;
-			public long Quality;
+			public int Quality;
 
 			public void SaveToXml(XmlDocument xmlDoc, XmlNode rootNode)
 			{
@@ -692,7 +720,7 @@ namespace SalarSoft.ASProxy
 				XmlNode node = rootNode.SelectSingleNode("imageCompressor"); ;
 
 				this.Enabled = Convert.ToBoolean(node.Attributes["enabled"].Value);
-				this.Quality = Convert.ToInt64(node.Attributes["quality"].Value);
+				this.Quality = Convert.ToInt32(node.Attributes["quality"].Value);
 			}
 		}
 		public class AutoUpdateConfig : IConfigSection
@@ -958,6 +986,7 @@ namespace SalarSoft.ASProxy
 			public UserConfig RemoveScripts;
 			public UserConfig RemoveImages;
 			public UserConfig DocType;
+			public UserConfig ImageCompressor;
 
 
 			public void SaveToXml(XmlDocument xmlDoc, XmlNode rootNode)
@@ -982,6 +1011,7 @@ namespace SalarSoft.ASProxy
 				SaveConfig(xmlDoc, activeNode, SubmitForms, "SubmitForms");
 				SaveConfig(xmlDoc, activeNode, RemoveObjects, "RemoveObjects");
 				SaveConfig(xmlDoc, activeNode, HttpCompression, "HttpCompression");
+				SaveConfig(xmlDoc, activeNode, ImageCompressor, "ImageCompressor");
 				SaveConfig(xmlDoc, activeNode, EncodeUrl, "EncodeUrl");
 				SaveConfig(xmlDoc, activeNode, OrginalUrl, "OrginalUrl");
 				SaveConfig(xmlDoc, activeNode, PageTitle, "PageTitle");

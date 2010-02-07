@@ -207,17 +207,6 @@ namespace SalarSoft.ASProxy.BuiltIn
 					ProcessHtml(ref codes, pageUrl, pageUrlNoQuery, pagePath, rootUrl, ref orginalUrlRequired, pages);
 				}
 
-				// OrginalUrl additional injection html codes
-				if (orginalUrlRequired)
-				{
-					// TODO: Check necessary
-					PageInitializerCodes = Resources.STR_OrginalUrl_FloatBar;
-
-					// inject to html
-					codes = Resources.STR_OrginalUrl_Functions
-						+ codes;
-				}
-
 				// Adding dynamic encoding javascript codes
 				string jsEncoderCodes = GenerateJsEncoderCodes(pageUrl,
 							pageUrlNoQuery,
@@ -225,7 +214,17 @@ namespace SalarSoft.ASProxy.BuiltIn
 							rootUrl);
 
 				// Add jsEncoder codes to page
-				codes = jsEncoderCodes + codes;
+				ExtraCodesForPage = jsEncoderCodes + ExtraCodesForPage;
+
+				// OrginalUrl additional injection html codes
+				if (orginalUrlRequired)
+				{
+					// Inject to html, should run after body tag
+					ExtraCodesForBody = Resources.STR_OrginalUrl_Functions + ExtraCodesForBody;
+
+					// TODO: Check necessary
+					ExtraCodesForPage = Resources.STR_OrginalUrl_FloatBar + ExtraCodesForPage;
+				}
 
 				// 2- executing plugins
 				if (Plugins.IsPluginAvailable(PluginHosts.IPluginHtmlProcessor))
@@ -828,7 +827,7 @@ namespace SalarSoft.ASProxy.BuiltIn
 					{
 						// Get clear url
 						string eventCode = group.Value;
-						string eventCodeOrg = eventCode;
+						int eventCodeOrgLen = eventCode.Length;
 
 						// appy changes
 						Processors.JSProcessor.Execute(ref eventCode,
@@ -837,7 +836,8 @@ namespace SalarSoft.ASProxy.BuiltIn
 							pagePath,
 							rootUrl);
 
-						if (eventCodeOrg != eventCode)
+						// if something changed!
+						if (eventCodeOrgLen != eventCode.Length)
 						{
 							// Repace the change!
 							codes = codes.Remove(group.Index, group.Length);
@@ -1002,7 +1002,9 @@ namespace SalarSoft.ASProxy.BuiltIn
 						if (eventCode.Length == 0)
 							continue;
 
-						string eventCodeOrg = eventCode;
+						// Just save original code length, Memory saved
+						//string eventCodeOrg = eventCode;
+						int eventCodeOrgLen = eventCode.Length;
 
 						// appy changes
 						Processors.JSProcessor.Execute(ref eventCode,
@@ -1013,7 +1015,7 @@ namespace SalarSoft.ASProxy.BuiltIn
 
 						// instead of heavy but accurate (eventCodeOrg != eventCode)
 						// we use a fast and dirty check
-						if (eventCodeOrg.Length != eventCode.Length)
+						if (eventCodeOrgLen != eventCode.Length)
 						{
 							// Repace the change!
 							codes = codes.Remove(group.Index, group.Length);
@@ -1211,10 +1213,11 @@ namespace SalarSoft.ASProxy.BuiltIn
 			);
 
 			reqInfo = string.Format(Consts.ClientContent.JSEncoder_RequestInfo,
-				pageUrl,
-				pageUrlNoQuery,
-				pagePath,
-				rootUrl,
+				// V5.5b4 BUGFIX: page url should be encoded, it may contain unsecure chars.
+				HtmlTags.EncodeJavascriptString(pageUrl, true),
+				HtmlTags.EncodeJavascriptString(pageUrlNoQuery, true),
+				HtmlTags.EncodeJavascriptString(pagePath, true),
+				HtmlTags.EncodeJavascriptString(rootUrl, true),
 				Systems.CookieManager.GetCookieName(pageUrl),
 				Systems.CookieManager.GetCookieNameExt,
 				UrlProvider.JoinUrl(UrlProvider.GetAppAbsolutePath(), Consts.FilesConsts.PageDefault_Dynamic),
@@ -1282,7 +1285,7 @@ namespace SalarSoft.ASProxy.BuiltIn
 			public const string STR_IFrame_ExtraAttribute = " onload=_ASProxy.Enc.EncodeFrames() ";
 			public const string STR_OrginalUrl_TagAttributeFormat = " onmouseout=ORG_OUT_() onmouseover=ORG_IN_(this) originalurl=\"{0}\" ";
 
-			public const string STR_OrginalUrl_FloatBar = "<div id='__ASProxyOriginalURL' dir='ltr' style='display:block;font-family:verdana;color:black;font-size:11px;padding:2px 5px 2px 5px;margin:0;position:absolute;left:0px;top:0px;width:98%;background:whitesmoke none;border:solid 2px black;overflow: visible;z-index:999999999;visibility:hidden;text-align:left;line-height:100%;'></div>";
+			public const string STR_OrginalUrl_FloatBar = "<div id='__ASProxyOriginalURL' dir='ltr' style='display:block;font-family:tahoma;color:black;font-size:12px;padding:2px 5px 2px 5px;margin:0;position:absolute;left:0px;top:0px;width:98%;background:whitesmoke none;border:solid 2px black;overflow: visible;z-index:999999999;visibility:hidden;text-align:left;line-height:100%;'></div>";
 
 			// float bar scripts should appear after ASProxyEncoder scripts
 			public const string STR_OrginalUrl_Functions =
@@ -1292,16 +1295,18 @@ namespace SalarSoft.ASProxy.BuiltIn
 					"var _document=_wparent.document;" +
 					"var _XFloatBar=_document.getElementById('__ASProxyOriginalURL');" +
 					"_XFloatBar.Freeze=false; _XFloatBar.CurrentUrl=''; var ASProxyUnvisibleHide;" +
-					"function ORG_Position_(){if(!_XFloatBar)return;var topValue='0';topValue=_document.body.scrollTop+'';" +
+					"function ORG_Legible(str){if(typeof(_Base64_utf8_decode)=='undefined')return str;return _Base64_utf8_decode(unescape(str));}" +
+					"function ORG_Position_(){if(typeof(_XFloatBar)=='undefined')return;var topValue='0';topValue=_document.body.scrollTop+'';" +
 					"if(topValue=='0' || topValue=='undefined')topValue=_wparent.scrollY+'';" +
 					"if(topValue=='0' || topValue=='undefined')topValue=_document.documentElement.scrollTop+'';" +
 					"if(topValue!='undefined')_XFloatBar.style.top=topValue+'px';}" +
-					"function ORG_IN_(obj){if(!_XFloatBar || _XFloatBar.Freeze)return;ORG_Position_();var attrib=obj.attributes['originalurl'];if(attrib!=null)attrib=attrib.value; else attrib=null;if(attrib!='undefined' && attrib!='' && attrib!=null){_wparent.clearTimeout(ASProxyUnvisibleHide);_XFloatBar.CurrentUrl=''+attrib;_XFloatBar.innerHTML='URL: <span style=\"color:maroon;\">'+attrib+'</span>';_XFloatBar.style.visibility='visible';}}" +
-					"function ORG_OUT_(){if(!_XFloatBar || _XFloatBar.Freeze)return;_XFloatBar.innerHTML='URL: ';_XFloatBar.CurrentUrl='';_wparent.clearTimeout(ASProxyUnvisibleHide);ASProxyUnvisibleHide=_wparent.setTimeout(ORG_HIDE_IT,500);}" +
+					"function ORG_IN_(obj){if(!_XFloatBar||_XFloatBar.Freeze)return;ORG_Position_();var attrib=obj.attributes['originalurl'];if(attrib!=null)attrib=attrib.value; else attrib=null;if(attrib!='undefined' && attrib!='' && attrib!=null){_wparent.clearTimeout(ASProxyUnvisibleHide);_XFloatBar.CurrentUrl=''+attrib;_XFloatBar.innerHTML='URL: <span style=\"color:maroon;\">'+ORG_Legible(attrib)+'</span>';_XFloatBar.style.visibility='visible';}}" +
+					"function ORG_MSG_(msg){if(!_XFloatBar||_XFloatBar.Freeze)return;ORG_Position_();_wparent.clearTimeout(ASProxyUnvisibleHide);_XFloatBar.CurrentUrl='';_XFloatBar.innerHTML=msg;_XFloatBar.style.visibility='visible';}" +
+					"function ORG_OUT_(){if(!_XFloatBar||_XFloatBar.Freeze)return;_XFloatBar.innerHTML='URL: ';_XFloatBar.CurrentUrl='';_wparent.clearTimeout(ASProxyUnvisibleHide);ASProxyUnvisibleHide=_wparent.setTimeout(ORG_HIDE_IT,500);}" +
 					"function ORG_HIDE_IT(){if(_XFloatBar.Freeze)return;_XFloatBar.style.visibility='hidden';_XFloatBar.innerHTML='';}" +
 					"_wparent.onscroll=ORG_Position_;" +
-					"_ASProxy.AttachEvent(document,'keydown',function(aEvent){var ev = window.event ? window.event : aEvent;" +
-					"if(ev.ctrlKey && ev.shiftKey && ev.keyCode==88){" +
+					"if(typeof(_ASProxy)!='undefined')_ASProxy.AttachEvent(document,'keydown',function(aEvent){var ev = window.event ? window.event : aEvent; ORG_Position_();" +
+					"if(ev.ctrlKey && ev.shiftKey && ev.keyCode==88){if(typeof(_XFloatBar)=='undefined')return;" +
 					"if(_XFloatBar.Freeze){_XFloatBar.Freeze=false;ORG_HIDE_IT();}" +
 					"else if(_XFloatBar.CurrentUrl!=''){_XFloatBar.Freeze=true;" +
 					"_XFloatBar.innerHTML=_XFloatBar.innerHTML+\"<br /><span style='color:navy;'>Press Ctrl+Shift+X again to unfreeze this bar.<span/>\";" +

@@ -3,12 +3,10 @@ using System.Net;
 using System.Collections.Specialized;
 using System.IO;
 using System.Text;
+using System.IO.Compression;
 
 namespace SalarSoft.ASProxy.Exposed
 {
-	/// <summary>
-	/// Summary description for ExWebData 
-	/// </summary>
 	public abstract class ExWebData : IWebData
 	{
 		#region variables
@@ -24,7 +22,7 @@ namespace SalarSoft.ASProxy.Exposed
 		/// <summary>
 		/// Request information
 		/// </summary>
-		public WebDataRequestInfo RequestInfo
+		public virtual WebDataRequestInfo RequestInfo
 		{
 			get
 			{
@@ -39,7 +37,7 @@ namespace SalarSoft.ASProxy.Exposed
 		/// <summary>
 		/// Response information
 		/// </summary>
-		public WebDataResponseInfo ResponseInfo
+		public virtual WebDataResponseInfo ResponseInfo
 		{
 			get
 			{
@@ -50,24 +48,24 @@ namespace SalarSoft.ASProxy.Exposed
 				_responseInfo = value;
 			}
 		}
-		public LastStatus LastStatus
+		public virtual LastStatus LastStatus
 		{
 			get { return _lastStatus; }
 			set { _lastStatus = value; }
 		}
 
-		public Exception LastException
+		public virtual Exception LastException
 		{
 			get { return _lastException; }
 			set { _lastException = value; }
 		}
-		public string LastErrorMessage
+		public virtual string LastErrorMessage
 		{
 			get { return _lastErrorMessage; }
 			set { _lastErrorMessage = value; }
 		}
 
-		public Stream ResponseData
+		public virtual Stream ResponseData
 		{
 			get { return _responseData; }
 			set { _responseData = value; }
@@ -93,7 +91,7 @@ namespace SalarSoft.ASProxy.Exposed
 		/// Reads response content to a stream
 		/// </summary>
 		/// <param name="webResponse"></param>
-		protected Stream ReadResponseData(WebResponse webResponse)
+		protected virtual Stream ReadResponseData(WebResponse webResponse)
 		{
 			Stream responseData = null;
 			// If it is going to redirect, the content is ignored
@@ -116,6 +114,18 @@ namespace SalarSoft.ASProxy.Exposed
 						while ((int)(readed = readStream.Read(buffer, 0, maxBlockReadFromWeb)) > 0)
 						{
 							responseData.Write(buffer, 0, readed);
+#if DEBUG
+							// If local proxy is enabled some oprations is required ot be sure
+							// This is only for JAP/JonDo proxy
+							//if (Configurations.NetProxy.Mode != Configurations.NetProxyConfig.NetProxyMode.Direct)
+							//{
+							//    // When local proxy is enabled, the request needed be delayed if data is not ready
+							//    if (readed < maxBlockReadFromWeb)
+							//        System.Threading.Thread.Sleep(1000);
+							//    else
+							//        System.Threading.Thread.Sleep(500);
+							//}
+#endif
 						}
 					}
 
@@ -123,6 +133,12 @@ namespace SalarSoft.ASProxy.Exposed
 					// So I correct it here
 					if ((responseData is MemoryStream))
 						((MemoryStream)responseData).Capacity = (int)(responseData.Length);
+
+					// Checks if response is compressed, then apply the desigred compressor
+					Stream decStream = GetDecompressStreamIfRequired(webResponse, responseData);
+					if (decStream != null)
+						responseData = decStream;
+
 				}
 				else
 				{
@@ -133,9 +149,54 @@ namespace SalarSoft.ASProxy.Exposed
 					// just get the data stream
 					responseData = webResponse.GetResponseStream();
 
+					// Checks if response is compressed, then apply the desigred compressor
+					Stream decStream = GetDecompressStreamIfRequired(webResponse, responseData);
+					if (decStream != null)
+						responseData = decStream;
 				}
 			}
 			return responseData;
+		}
+
+		/// <summary>
+		/// Checks if Content-Encoding served with Gzip or Deflate compression methods
+		/// </summary>
+		/// <returns>Null if there is no decompressor</returns>
+		protected virtual Stream GetDecompressStreamIfRequired(WebResponse webResponse, Stream dataStream)
+		{
+			// Only Http provides compression
+			if (webResponse is HttpWebResponse)
+			{
+				HttpWebResponse httpResponse = (webResponse as HttpWebResponse);
+				if (!string.IsNullOrEmpty(httpResponse.ContentEncoding))
+				{
+					string encoding = httpResponse.ContentEncoding.ToLower();
+
+					// for gzip and x-gzip
+					if (encoding.Contains("gzip"))
+					{
+						// go to the beginning of the stream
+						if (dataStream.CanSeek)
+							dataStream.Seek(0, SeekOrigin.Begin);
+
+						return new GZipStream(dataStream, CompressionMode.Decompress);
+					}
+					// for deflate and x-deflate
+					else if (encoding.Contains("deflate"))
+					{
+						// go to the beginning of the stream
+						if (dataStream.CanSeek)
+							dataStream.Seek(0, SeekOrigin.Begin);
+
+						return new DeflateStream(dataStream, CompressionMode.Decompress);
+					}
+				}
+				// nothing!
+				return null;
+			}
+
+			// nothing!
+			return null;
 		}
 
 		/// <summary>
