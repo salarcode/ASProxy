@@ -25,8 +25,16 @@ namespace SalarSoft.ASProxy
             return Type.GetType("Mono.Runtime") != null;
         }
 
+        /// <summary>
+        /// Checks if the application is running on dotNetFramework 4.0
+        /// </summary>
+        public static bool IsRunningOnDotNet4()
+        {
+			return Environment.Version.Major == 4;
+        }
+
 		/// <summary>
-		/// Compares ASProxy version numbers, (5.5 > 5.5b1) and (5.5b3 > 5.5b1) and so.
+		/// Compares ASProxy version numbers, (5.5 > 5.5b1) and (5.5b3 > 5.5b1) and so on.
 		/// The results would be (version1>version2)==1 , (version2>version1)==-1 , (version1=version2)==0
 		/// </summary>
 		public static int CompareASProxyVersions(string version1, string version2)
@@ -182,6 +190,46 @@ namespace SalarSoft.ASProxy
             return userAgent.Trim() + " " + Consts.BackEndConenction.ASProxyAgentVersion;
         }
 
+		/// <summary>
+		/// Implements fast string replacing algorithm for CS
+		/// </summary>
+		public static string ReplaceStrEx(string original, string pattern, string replacement, StringComparison comparisonType)
+		{
+			if (original == null)
+			{
+				return null;
+			}
+
+			if (String.IsNullOrEmpty(pattern))
+			{
+				return original;
+			}
+
+			int lenPattern = pattern.Length;
+			int idxPattern = -1;
+			int idxLast = 0;
+
+			StringBuilder result = new StringBuilder();
+
+			while (true)
+			{
+				idxPattern = original.IndexOf(pattern, idxPattern + 1, comparisonType);
+
+				if (idxPattern < 0)
+				{
+					result.Append(original, idxLast, original.Length - idxLast);
+
+					break;
+				}
+
+				result.Append(original, idxLast, idxPattern - idxLast);
+				result.Append(replacement);
+
+				idxLast = idxPattern + lenPattern;
+			}
+
+			return result.ToString();
+		}
 
         /// <summary>
         /// Generates string of a name-value collection

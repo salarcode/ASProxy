@@ -118,30 +118,30 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="btnClearCookies.Text" xml:space="preserve">
-    <value>Delete All</value>
+    <value>Удалить Все</value>
   </data>
   <data name="btnDelete.Text" xml:space="preserve">
-    <value>Delete</value>
+    <value>Удалить</value>
   </data>
   <data name="lblHeaderDetails.Text" xml:space="preserve">
-    <value>Details</value>
+    <value>Значение</value>
   </data>
   <data name="lblHeaderOptions.Text" xml:space="preserve">
-    <value>Options</value>
+    <value>Операции</value>
   </data>
   <data name="lblMainDesc.Text" xml:space="preserve">
-    <value>Warning, if the number of ASProxy cookies increases, ASProxy may not be able to load,&lt;br /&gt;In this case remove the cookies.</value>
+    <value>ВНИМАНИЕ! Число загружаемых cookies ограничено, увеличение их числа блокирует нормальную работу ASProxy.&lt;br /&gt;Удалите ненужные cookies в форме ниже.</value>
   </data>
   <data name="lblMainTitle.Text" xml:space="preserve">
-    <value>Cookie Manager</value>
+    <value>Менеджер Cookies ASProxy</value>
   </data>
   <data name="Page.Title" xml:space="preserve">
-    <value>Manage stored cookies by ASProxy in your PC</value>
+    <value>Менеджер Cookies ASProxy</value>
   </data>
   <data name="tdName.Text" xml:space="preserve">
-    <value>Name</value>
+    <value>Параметр</value>
   </data>
   <data name="tdValue.Text" xml:space="preserve">
-    <value>Value</value>
+    <value>Значение</value>
   </data>
 </root>

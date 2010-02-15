@@ -18,11 +18,11 @@ namespace SalarSoft.ASProxy
 		public string PageDefault;
 		public string PageHtml;
 		public string PageAnyType;
-		//public string PageCss;
 		public string PageJS;
 		public string PageImage;
-		//public string PageData;
 		public string PageDownload;
+		//public string PageCss;
+		//public string PageData;
 		#endregion
 
 		private void GeneratePages()
@@ -38,7 +38,6 @@ namespace SalarSoft.ASProxy
 			//PageCss = string.Format(pagesFormat, Consts.FilesConsts.PageDirectCSS, "{0}");
 			PageImage = string.Format(pagesFormat, Consts.FilesConsts.PageImages, "{0}");
 			PageJS = string.Format(pagesFormat, Consts.FilesConsts.PageDirectJS, "{0}");
-
 		}
 	}
 }

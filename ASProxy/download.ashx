@@ -60,10 +60,10 @@ public class Download : IHttpHandler, System.Web.SessionState.IReadOnlySessionSt
     private string GetRedirectEncodedUrlForASProxyPages(string asproxyPage, string currentRequest, bool encodeUrl)
     {
         // Encode redirect page if needed
-        if (encodeUrl)
-        {
-            currentRequest = UrlProvider.EncodeUrl(currentRequest);
-        }
+		if (encodeUrl)
+			currentRequest = UrlProvider.EncodeUrl(currentRequest);
+		else
+			currentRequest = UrlProvider.EscapeUrlQuery(currentRequest);
 
         // Apply current page as referrer url for redirect url
         asproxyPage = UrlBuilder.AddUrlQuery(asproxyPage, Consts.Query.UrlAddress, currentRequest);

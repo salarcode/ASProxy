@@ -34,10 +34,12 @@ namespace SalarSoft.ASProxy.BuiltIn
 		protected const int intExpireDateTempMinutes = 30;
 		protected const string strCookieNameExt = "_ASPX";
 		protected static readonly bool IsRunningOnMicrosoftCLR;
+		protected static readonly bool IsRunningOnDotNet4;
 
 		static CookieManager()
 		{
 			IsRunningOnMicrosoftCLR = !Common.IsRunningOnMono();
+			IsRunningOnDotNet4 = Common.IsRunningOnDotNet4();
 		}
 
 		public override string GetCookieNameExt { get { return strCookieNameExt; } }
@@ -130,7 +132,8 @@ namespace SalarSoft.ASProxy.BuiltIn
 
 
 				// Only for Micosoft .NET Framework
-				if (IsRunningOnMicrosoftCLR)
+				// Bug is fixed in .NET 4.0
+				if (IsRunningOnMicrosoftCLR && !IsRunningOnDotNet4)
 					// BUGFIX: CookieContainer has a bug, here is its bugfix
 					// To get around this bug, the domains should start with a DOT
 					BugFix_CookieContaierFix(container);
@@ -281,7 +284,8 @@ namespace SalarSoft.ASProxy.BuiltIn
 
 
 			// Only for Micosoft .NET Framework
-			if (IsRunningOnMicrosoftCLR)
+			// Bug is fixed in .NET 4.0
+			if (IsRunningOnMicrosoftCLR && !IsRunningOnDotNet4)
 				// BUGFIX: CookieContainer has a bug
 				BugFix_CookieContaierFix(webRequest.CookieContainer);
 		}
@@ -316,7 +320,8 @@ namespace SalarSoft.ASProxy.BuiltIn
 			ApplyRequestCookiesToCookieContainer(httpWebRequest.CookieContainer, userRequest, requestUrl);
 
 			// Only for Micosoft .NET Framework
-			if (IsRunningOnMicrosoftCLR)
+			// Bug is fixed in .NET 4.0
+			if (IsRunningOnMicrosoftCLR && !IsRunningOnDotNet4)
 				// BUGFIX: CookieContainer has a bug
 				// Here is its bugfix
 				// To get around this bug, the domains should start with a DOT
@@ -424,7 +429,8 @@ namespace SalarSoft.ASProxy.BuiltIn
 			}
 
 			// Only for Micosoft .NET Framework
-			if (IsRunningOnMicrosoftCLR)
+			// Bug is fixed in .NET 4.0
+			if (IsRunningOnMicrosoftCLR && !IsRunningOnDotNet4)
 				// BUGFIX: CookieContainer has a bug, here is its bugfix
 				// To get around this bug, the domains should start with a DOT
 				BugFix_CookieContaierFix(container);

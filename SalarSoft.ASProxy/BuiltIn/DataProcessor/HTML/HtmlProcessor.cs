@@ -464,8 +464,8 @@ namespace SalarSoft.ASProxy.BuiltIn
 			// ASProxy encoder 
 			result.Append(Resources.ASProxyJavaScriptTag("", Consts.FilesConsts.JSASProxyEncoder));
 
-			// AJAX wrapper core
-			result.Append(Resources.ASProxyJavaScriptTag("", Consts.FilesConsts.JSAJAXWrapperCore));
+			// AJAX wrapper core, Usless since v5.5b4
+			// result.Append(Resources.ASProxyJavaScriptTag("", Consts.FilesConsts.JSAJAXWrapperCore));
 
 			return result.ToString();
 		}

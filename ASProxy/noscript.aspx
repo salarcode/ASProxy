@@ -11,6 +11,7 @@ void ReadFromUserOptions(UserOptions opt)
 	chkRemoveScripts.Checked = opt.RemoveScripts;
 	chkDisplayImages.Checked = opt.Images;
 	chkCompression.Checked = opt.HttpCompression;
+	chkImgCompressor.Checked = opt.ImageCompressor;
 	chkCookies.Checked = opt.Cookies;
 	chkUTF8.Checked = opt.ForceEncoding;
 	chkOrginalUrl.Checked = opt.OrginalUrl;
@@ -31,6 +32,9 @@ UserOptions ApplyToUserOptions(UserOptions defaultOptions)
 
 	if (userOptions.HttpCompression.Changeable)
 		opt.HttpCompression = chkCompression.Checked;
+
+	if (userOptions.ImageCompressor.Changeable && Configurations.ImageCompressor.Enabled)
+		opt.ImageCompressor = chkImgCompressor.Checked;
 
 	if (userOptions.Cookies.Changeable)
 		opt.Cookies = chkCookies.Checked;
@@ -159,7 +163,7 @@ void GetResults(IEngine engine)
 
 		if (engine.UserOptions.PageTitle)
 		{
-			Page.Title = Consts.General.ASProxyName + ": " + engine.ResponseInfo.HtmlPageTitle;
+			Page.Title = engine.ResponseInfo.HtmlPageTitle + " - [" + Consts.General.ASProxyName + "]";
 		}
 		if (engine.ResponseInfo.HtmlIsFrameSet)
 		{
@@ -205,6 +209,19 @@ void ProccessRequest()
 
 protected void btnDisplay_Click(object sender, EventArgs e)
 {
+	if (Configurations.Authentication.Enabled)
+	{
+		if (!Configurations.Authentication.HasPermission(User.Identity.Name, Configurations.AuthenticationConfig.UserPermission.Pages))
+		{
+			string _ErrorMessage = "Access denied!";
+			_ErrorMessage += "<br />You do not have access to browse pages. Ask site administrator to grant permission.";
+
+			lblErrorMsg.Text = _ErrorMessage;
+			lblErrorMsg.Visible = true;
+			ltrHtmlBody.Text = "";
+			return;
+		}
+	}
 	txtUrl.Text = UrlProvider.CorrectInputUrl(txtUrl.Text);
 
 	_userOptions = ApplyToUserOptions(_userOptions);
@@ -288,7 +305,7 @@ var _ASProxyVersion="<%=Consts.General.ASProxyVersion %>";
 <%if (Configurations.UserOptions.Images.Changeable){ %><span class="ASProxyOption"><asp:CheckBox runat="server" id="chkDisplayImages" /><label for="chkDisplayImages"><%=this.GetLocalResourceObject("chkDisplayImages")%></label></span> <%} %>
 <%if (Configurations.UserOptions.Cookies.Changeable){ %><span class="ASProxyOption"><asp:CheckBox runat="server" id="chkCookies" /><label for="chkCookies"><%=this.GetLocalResourceObject("chkCookies")%></label></span> <%} %>
 <%if (Configurations.UserOptions.HttpCompression.Changeable){ %><span class="ASProxyOption"><asp:CheckBox runat="server" id="chkCompression" /><label for="chkCompression"><%=this.GetLocalResourceObject("chkCompression")%></label></span> <%} %>
-<%if (Configurations.UserOptions.ImageCompressor.Changeable&&Configurations.ImageCompressor.Enabled){ %><span class="ASProxyOption"><input id="chkImgCompressor" type="checkbox" onclick="_Page_SaveOptions()" /><label for="chkImgCompressor"><%=this.GetLocalResourceObject("chkImgCompressor")%></label></span> <%} %>
+<%if (Configurations.UserOptions.ImageCompressor.Changeable&&Configurations.ImageCompressor.Enabled){ %><span class="ASProxyOption"><asp:CheckBox id="chkImgCompressor" runat="server"/><label for="chkImgCompressor"><%=this.GetLocalResourceObject("chkImgCompressor")%></label></span> <%} %>
 </div></div>
 <script type="text/javascript" asproxydone="2">
 // iframes, hide the form

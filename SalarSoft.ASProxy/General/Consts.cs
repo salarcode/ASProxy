@@ -131,7 +131,8 @@ namespace SalarSoft.ASProxy
 			public const string JSASProxyEncoder = Dir_Scripts + "/" + "asproxyencoder.js";
 			public const string JSBase64 = Dir_Scripts + "/" + "base64encoder.js";
 
-			public const string JSAJAXWrapperCore = Dir_Scripts + "/" + "ajaxwrapper.js";
+			// Usless since v5.5b4
+			//public const string JSAJAXWrapperCore = Dir_Scripts + "/" + "ajaxwrapper.js";
 
             public const string PageCustomErrors = "error_page.htm";
         }

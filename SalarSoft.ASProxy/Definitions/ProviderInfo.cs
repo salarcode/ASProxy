@@ -13,6 +13,7 @@ namespace SalarSoft.ASProxy
 		public string Author;
 		public string Version;
 		public string Description;
+		public string ConfigUiUrl;
 		public bool UpdateEnabled;
 		public bool Disabled;
 		public bool Loaded;
@@ -30,6 +31,7 @@ namespace SalarSoft.ASProxy
 			result.Author = infoNode.SelectSingleNode("Author").InnerText;
 			result.Version = infoNode.SelectSingleNode("Version").InnerText;
 			result.Description = infoNode.SelectSingleNode("Description").InnerText;
+			result.ConfigUiUrl = infoNode.SelectSingleNode("ConfigUiUrl").InnerText;
 
 			// update
 			XmlNode updateNode = rootNode.SelectSingleNode("update");

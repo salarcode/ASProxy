@@ -584,13 +584,14 @@ namespace SalarSoft.ASProxy.BuiltIn
 
 							//===== If another site url, has bookmark
 							if (matchValue.IndexOf('#') != -1)
-								matchValue = UrlProvider.RemoveUrlBookmark(matchValue, out bookmarkPart);
+								matchValue = UrlBuilder.RemoveUrlBookmark(matchValue, out bookmarkPart);
 
 							//====== Encode url to make it unknown ======
 							if (encodeUrl)
-							{
 								matchValue = UrlProvider.EncodeUrl(matchValue);
-							}
+							else
+								// just url safe
+								matchValue = UrlProvider.EscapeUrlQuery(matchValue);
 
 							//====== Add it to our url ======
 							matchValue = string.Format(newPageFormat, matchValue);
@@ -604,6 +605,7 @@ namespace SalarSoft.ASProxy.BuiltIn
 						}
 						else
 						{
+							// parse the javascript url
 							if (UrlProvider.IsJavascriptUrl(matchValue))
 							{
 								// execute
@@ -730,14 +732,16 @@ namespace SalarSoft.ASProxy.BuiltIn
 
 							//===== If another site url, has bookmark
 							if (matchValue.IndexOf('#') != -1)
-								matchValue = UrlProvider.RemoveUrlBookmark(matchValue, out bookmarkPart);
+								matchValue = UrlBuilder.RemoveUrlBookmark(matchValue, out bookmarkPart);
 
 
 							//====== Encode url to make it unknown ======
 							if (encodeUrl)
-							{
 								matchValue = UrlProvider.EncodeUrl(matchValue);
-							}
+							else
+								// just url safe
+								matchValue = UrlProvider.EscapeUrlQuery(matchValue);
+
 
 							//====== Add it to our url ======
 							matchValue = string.Format(newPageFormat, matchValue);
@@ -1107,13 +1111,14 @@ namespace SalarSoft.ASProxy.BuiltIn
 
 								//===== If another site url, has bookmark
 								if (matchValue.IndexOf('#') != -1)
-									matchValue = UrlProvider.RemoveUrlBookmark(matchValue, out bookmarkPart);
+									matchValue = UrlBuilder.RemoveUrlBookmark(matchValue, out bookmarkPart);
 
 								//====== Encode url to make it unknown ======
 								if (encodeUrl)
-								{
 									matchValue = UrlProvider.EncodeUrl(matchValue);
-								}
+								else
+									// just url safe
+									matchValue = UrlProvider.EscapeUrlQuery(matchValue);
 
 								//====== Add it to our url ======
 								matchValue = string.Format(newPageFormat, matchValue);
@@ -1262,8 +1267,8 @@ namespace SalarSoft.ASProxy.BuiltIn
 			// ASProxy encoder 
 			result.Append(Resources.ASProxyJavaScriptTag("", Consts.FilesConsts.JSASProxyEncoder));
 
-			// AJAX wrapper core
-			result.Append(Resources.ASProxyJavaScriptTag("", Consts.FilesConsts.JSAJAXWrapperCore));
+			// AJAX wrapper core, Usless since v5.5b4
+			//result.Append(Resources.ASProxyJavaScriptTag("", Consts.FilesConsts.JSAJAXWrapperCore));
 
 			return result.ToString();
 		}

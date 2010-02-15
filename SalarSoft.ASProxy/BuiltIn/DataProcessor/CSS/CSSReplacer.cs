@@ -132,16 +132,18 @@ namespace SalarSoft.ASProxy.BuiltIn
 
 					//===== If another site url, has bookmark=====
 					if (StringCompare.IndexOfMatchCase(ref oldValue, '#') != -1)
-						oldValue = UrlProvider.RemoveUrlBookmark(oldValue, out bookmarkPart);
+						oldValue = UrlBuilder.RemoveUrlBookmark(oldValue, out bookmarkPart);
 
 					//==== Make it clear=========
 					oldValue = HttpUtility.HtmlDecode(oldValue);
 
 					//====== Encode url to make it unknown ======
 					if (encodeUrl)
-					{
 						oldValue = UrlProvider.EncodeUrl(oldValue);
-					}
+					else
+						// just url safe
+						oldValue = UrlProvider.EscapeUrlQuery(oldValue);
+
 
 					//====== Add it to our url ======
 					newValue = string.Format(newUrl, oldValue);

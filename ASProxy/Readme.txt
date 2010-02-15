@@ -37,19 +37,20 @@ Changing interface:
 ****************************************
 Version History
 
-Version 5.5 Beta4 2010/02/07
+Version 5.5 Beta4 2010/02/09
 * New: Plugins and Providers autoupdate feature is available.
 * New: Plugins and Providers manual update check.
-* New: Compressed (gzip, deflate) reponse detection.
+* New: Compressed (gzip, deflate) response detection.
 * New: Image compressor option is added to user options in default page.
 * New: Russian translation is added. Thanks to Alexey Agapov <agapov@amigors.com>.
 * Improved: ASProxy engine autoupdate.
 * Improved: Providers installation made easy.
 * Improved: Javascript encoder.
 * Improved: noscript.aspx is redesigned and bugs fixed.
-* Improved: More friendly address in float bar to display origonal URLs.
-* Fixed: Serveral javascript parser issues.
+* Improved: More friendly addresses in float bar to display original URLs.
+* Fixed: Several javascript parser issues.
 * Fixed: ASProxy login remember me check.
+* Fixed: Minor issue with urls which have parameters, when encode url option is disabled.
 * Fixed: Several minor bugs.
 
 Version 5.5 Beta3 2009/12/23

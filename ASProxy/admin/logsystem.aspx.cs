@@ -112,15 +112,6 @@ public partial class Admin_Logsystem : System.Web.UI.Page
 
 
 
-
-
-
-
-
-
-
-
-
     protected void btnAView_Click(object sender, EventArgs e)
     {
         string logFile = GetActivityLogSelectedLog();
@@ -191,11 +182,6 @@ public partial class Admin_Logsystem : System.Web.UI.Page
             }
         }
     }
-
-
-
-
-
 
 
     protected void btnEView_Click(object sender, EventArgs e)

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading;
 using System.IO;
 using ICSharpCode.SharpZipLib.Zip;
@@ -150,7 +149,7 @@ namespace SalarSoft.ASProxy.Update
 		/// <summary>
 		/// Download the provider update package and install it
 		/// </summary>
-		public static bool Install(ProviderUpdateInfo providerInfo, string providerName)
+		public static bool Install(ProviderUpdateInfo providerInfo)
 		{
 			string tempFile = Path.GetTempFileName();
 			try
@@ -186,7 +185,7 @@ namespace SalarSoft.ASProxy.Update
 			// Check if update is required
 			if (Common.CompareASProxyVersions(updateInfo.Version, provider.Version) == 1)
 				// Download the package and install it
-				return Install(updateInfo, providerName);
+				return Install(updateInfo);
 			return false;
 		}
 
@@ -203,7 +202,7 @@ namespace SalarSoft.ASProxy.Update
 				// Check if update is required
 				if (Common.CompareASProxyVersions(updateInfo.Version, provider.Version) == 1)
 					// Download and install the provider
-					Install(updateInfo, provider.Name);
+					Install(updateInfo);
 			}
 		}
 
@@ -223,7 +222,7 @@ namespace SalarSoft.ASProxy.Update
 			}
 			finally
 			{
-
+				package.Close();
 			}
 		}
 	}

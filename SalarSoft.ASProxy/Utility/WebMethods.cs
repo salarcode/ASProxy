@@ -54,8 +54,6 @@ namespace SalarSoft.ASProxy
 			for (int i = 0; i < method.Length; i++)
 			{
 				char c = method[i];
-                //if (char.IsLetterOrDigit(c))
-                //    strBuilder.Append(c);
                 if (char.IsLetter(c))
                     strBuilder.Append(c);
             }

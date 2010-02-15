@@ -24,7 +24,7 @@ namespace SalarSoft.ASProxy.BuiltIn
 					Configurations.ImageCompressor.Quality);
 
 				// trying to find original image codec
-				codecInfo = FindImageCodecInfo(img.RawFormat);
+				codecInfo = FindImageCodecInfo(img);
 
 				// if nothing found, try to use own codec
 				if (codecInfo == null)
@@ -99,12 +99,21 @@ namespace SalarSoft.ASProxy.BuiltIn
 		private static MethodInfo _imageFormatFindEncoder = typeof(ImageFormat).GetMethod("FindEncoder", BindingFlags.Instance | BindingFlags.NonPublic);
 
 		/// <summary>
+		/// Warning, dirty hack! Image codec detector for Mono
+		/// </summary>
+		private static MethodInfo _monoImageFormatFindEncoder = typeof(Image).GetMethod("findEncoderForFormat", BindingFlags.Instance | BindingFlags.NonPublic);
+
+		/// <summary>
 		/// Returns image format's native image codec using a dirty hack
 		/// </summary>
 		/// <returns>if something found returns ImageCodecInfo, otherwise returns null</returns>
-		private static ImageCodecInfo FindImageCodecInfo(ImageFormat imageFormat)
+		private static ImageCodecInfo FindImageCodecInfo(Image image)
 		{
-			return (ImageCodecInfo)_imageFormatFindEncoder.Invoke(imageFormat, null);
+			if (_imageFormatFindEncoder != null)
+				return (ImageCodecInfo)_imageFormatFindEncoder.Invoke(image.RawFormat, null);
+			else if(_monoImageFormatFindEncoder!=null)
+				return (ImageCodecInfo)_monoImageFormatFindEncoder.Invoke(image, new object[] { image.RawFormat });
+			return null;
 		}
 
 		/// <summary>

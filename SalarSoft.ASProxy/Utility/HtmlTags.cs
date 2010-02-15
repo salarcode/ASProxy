@@ -1,4 +1,5 @@
 using System;
+using System.Web;
 
 namespace SalarSoft.ASProxy
 {
@@ -258,7 +259,7 @@ namespace SalarSoft.ASProxy
 		}
 
 		/// <summary>
-		/// Encodes quote in string
+		/// Encodes quote for javascript string
 		/// </summary>
 		public static string EncodeJavascriptString(string pageUrl, bool quote)
 		{
@@ -306,6 +307,24 @@ namespace SalarSoft.ASProxy
 		public static bool IsFramesetHtml(ref string html)
 		{
 			return (StringCompare.IndexOfIgnoreCase(ref  html, "<frameset", 0) != -1);
+		}
+
+		/// <summary>
+		/// Hyperlink tag
+		/// </summary>
+		public static string LinkTag(string text, string url)
+		{
+			url = HttpUtility.HtmlEncode(url);
+			return "<a href='" + url + "'>" + text + "</a>";
+		}
+
+		/// <summary>
+		/// Hyperlink tag
+		/// </summary>
+		public static string LinkTag(string text, string url, string title)
+		{
+			url = HttpUtility.HtmlEncode(url);
+			return "<a href='" + url + "' title='" + title + "'>" + text + "</a>";
 		}
 
 		public static string ImgTag(string img)

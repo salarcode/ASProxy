@@ -95,8 +95,10 @@
 			<ItemTemplate>
 				<tr class="option">
 					<td class="name">
-						<%#((ProviderInfo)Container.DataItem).Name%>
-						<%#((ProviderInfo)Container.DataItem).Version%>
+						<%#string.IsNullOrEmpty(((ProviderInfo)Container.DataItem).ConfigUiUrl)==false
+							?HtmlTags.LinkTag(((ProviderInfo)Container.DataItem).Name+" "+((ProviderInfo)Container.DataItem).Version,
+								this.ResolveUrl(((ProviderInfo)Container.DataItem).ConfigUiUrl),"Config this provider")
+							: ((ProviderInfo)Container.DataItem).Name + " " + ((ProviderInfo)Container.DataItem).Version%>
 					</td>
 					<td class="desc">
 						<%#((ProviderInfo)Container.DataItem).Description%>
@@ -174,8 +176,10 @@
 			<ItemTemplate>
 				<tr class="option">
 					<td class="name">
-						<%#((PluginInfo)Container.DataItem).Name%>
-						<%#((PluginInfo)Container.DataItem).Version%>
+						<%#string.IsNullOrEmpty(((PluginInfo)Container.DataItem).ConfigUiUrl) == false
+							? HtmlTags.LinkTag(((PluginInfo)Container.DataItem).Name + " " + ((PluginInfo)Container.DataItem).Version,
+								this.ResolveUrl(((PluginInfo)Container.DataItem).ConfigUiUrl), "Config this plugin")
+							: ((PluginInfo)Container.DataItem).Name + " " + ((PluginInfo)Container.DataItem).Version%>
 					</td>
 					<td class="desc">
 						<%#((PluginInfo)Container.DataItem).Description%>

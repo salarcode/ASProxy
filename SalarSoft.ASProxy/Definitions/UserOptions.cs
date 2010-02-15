@@ -52,7 +52,7 @@ namespace SalarSoft.ASProxy
 			_defaultOptions.ForceEncoding = config.ForceEncoding.Enabled;
 			_defaultOptions.Frames = config.Frames.Enabled;
 			_defaultOptions.HttpCompression = config.HttpCompression.Enabled;
-			_defaultOptions.HttpCompression = config.ImageCompressor.Enabled;
+			_defaultOptions.ImageCompressor = config.ImageCompressor.Enabled;
 			_defaultOptions.Images = config.Images.Enabled;
 			_defaultOptions.Links = config.Links.Enabled;
 			_defaultOptions.OrginalUrl = config.OrginalUrl.Enabled;

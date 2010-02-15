@@ -141,7 +141,7 @@
 
 			if (engine.UserOptions.PageTitle)
 			{
-				Page.Title = Consts.General.ASProxyName + ": " + engine.ResponseInfo.HtmlPageTitle;
+				Page.Title = engine.ResponseInfo.HtmlPageTitle + " - [" + Consts.General.ASProxyName + "]";
 			}
 			if (engine.ResponseInfo.HtmlIsFrameSet)
 			{
@@ -179,25 +179,22 @@
 <script src="scripts/base64encoder.js" type="text/javascript" asproxydone="2"></script>
 <!-- Surf the web invisibly using ASProxy power. A Powerfull web proxy is in your hands. -->
 <style type="text/css" asproxydone="2">
-.ASProxyBlock,.AddressBar,.FastOptions,#MoreOptions{background-color: #f8f8f8;height: auto !important;margin: 0px 2px;padding: 0px;float: inherit;display: inherit;color: black;font: normal normal normal 100% Tahoma;font-family: Tahoma, sans-serif;font-size: 10pt;}
-.ASProxyBlock{background-color:white;width: 99.5%;display: block;padding: 1px;margin: 0px;border: 2px solid #000000;height: auto !important;float: none;}
-.ASProxyForm{display:block;padding: 0px;margin: 0px;width: auto;height: auto;}
-.ASProxyMain{color:black;padding: 2px;margin: 0px;border: 1px solid #C0C0C0;background-color: #f8f8f8;background-image: none;font-weight: normal;font-style: normal;line-height: normal;visibility: visible;table-layout: auto;white-space: normal;word-spacing: normal;float: none;}
-.ASProxyMain a,.ASProxyMain a:link,.ASProxyMain a:hover,.ASProxyMain a:visited,.ASProxyMain a:active{font: normal normal normal 100% Tahoma;font-family: Tahoma, sans-serif;color: #000099;text-decoration: underline;}
-.AddressBar{margin:3px 1px;}
-.AddressBar input{width:auto;height:auto;border: solid 1px silver; font:inherit; color:Black;}
-.AddressBar .Button{width:auto;height: 25px;color: black;float: none;width:auto !important;margin:0px;background-color: #ECE9D8;border: outset 2px;vertical-align: bottom;font-size: 10pt;padding: 2px 5px;}
-.AddressBar .TextBox{width:auto !important;height: auto;color: black;background-color: #FFFFFF;margin:0px;float: none;font-size: 10pt;border: solid 1px silver;padding: 3px;text-align:left;}
-.ASProxyOption{background-color:#f8f8f8;height: auto !important;margin: 0px 1px;padding: 0px;float:none;color: black;font: normal normal normal 100% Tahoma;font-family: Tahoma, sans-serif;font-size: 8pt;display: inline;border-width: 0px;text-align: center;}
-.ASProxyOption input{width:auto;height:auto !important;margin:0px;background-color:#F8F8F8;display:inline;border-width: 0px;float: none;}
-.ASProxyOption label{width:auto;height:auto !important;margin:0px 2px;padding:0px;vertical-align:baseline;float: none;color: Black;font: normal normal normal 100% Tahoma;display: inline;border-width: 0px;background-color: #F8F8F8;}
+.ASPXBlock,.AddrBar,.FastOpts,#MoreOpts{background-color:#f8f8f8;height:auto !important;margin:0 2px;padding:0;float:inherit;display:inherit;color:black;font: normal normal normal 100% Tahoma;font-family:Tahoma,sans-serif;font-size:10pt;}
+.ASPXBlock{background-color:white;width:99.5%;display: block;padding:1px;margin:0;border:2px solid #000000;height:auto !important;float:none;}
+.ASPXMain{color:black;padding:2px;margin:0;border:1px solid #C0C0C0;background-color:#f8f8f8;background-image:none;font-weight:normal;font-style:normal;line-height:normal;visibility:visible;table-layout:auto;white-space:normal;word-spacing:normal;float:none;}
+.ASPXMain a,.ASPXMain a:link,.ASPXMain a:hover,.ASPXMain a:visited,.ASPXMain a:active{font:normal normal normal 100% Tahoma;font-family:Tahoma,sans-serif;color:#000099;text-decoration:underline;}
+.AddrBar{margin:3px 1px;}
+.AddrBar input{width:auto;height:auto;border:solid 1px silver;font:inherit;color:Black;}
+.AddrBar .Button{width:auto;height:25px;color:black;float:none;width:auto !important;margin:0;background-color:#ECE9D8;border:outset 2px;vertical-align:bottom;font-size:10pt;padding:2px 5px;}
+.AddrBar .TextBox{width:auto !important;height:auto;color:black;background-color:white;margin:0;float:none;font-size:10pt;border:solid 1px silver;padding:3px;text-align:left;}
+.ASPXOpt{background-color:#f8f8f8;height: auto !important;margin:0 1px;padding:0;float:none;color:black;font:normal normal normal 100% Tahoma;font-family:Tahoma,sans-serif;font-size:8pt;display:inline;border-width:0;text-align:center;}
+.ASPXOpt input{width:auto;height:auto !important;margin:0;background-color:#F8F8F8;display:inline;border-width:0;float: none;}
+.ASPXOpt label{width:auto;height:auto !important;margin:0 2px;padding:0;vertical-align:baseline;float:none;color:Black;font:normal normal normal 100% Tahoma;display:inline;border-width:0;background-color:#F8F8F8;}
 </style>
-</head>
-<body>
-
+</head><body>
 <script asproxydone="2" type="text/javascript">
 var _ASProxyVersion="<%=Consts.General.ASProxyVersion %>";
-function toggleOpt(lnk){var trMoreOpt=document.getElementById('MoreOptions'); if (trMoreOpt.style.display=='none'){trMoreOpt.style.display='';lnk.innerHTML='<%=this.GetLocalResourceObject("lnkMoreOptions")%>...<small>&lt;</small>';
+function toggleOpt(lnk){var trMoreOpt=document.getElementById('MoreOpts'); if (trMoreOpt.style.display=='none'){trMoreOpt.style.display='';lnk.innerHTML='<%=this.GetLocalResourceObject("lnkMoreOptions")%>...<small>&lt;</small>';
 }else{trMoreOpt.style.display='none';lnk.innerHTML='<%=this.GetLocalResourceObject("lnkMoreOptions")%>...<small>&gt;</small>';}}
 </script>
 <script asproxydone="2" src="scripts/surfoptions.js" type="text/javascript"></script>
@@ -224,34 +221,33 @@ _XPage.EncodeUrl.checked=<%=_userOptions.EncodeUrl.ToString().ToLower() %>;
 }
 </script>
 
-<form asproxydone="2" onsubmit="return _PageOnSubmit();" method="post" class="ASProxyForm">
-<div id="ASProxyFormBlock" class="ASProxyBlock" dir="<%=Resources.Languages.TextDirection%>">
-<div class="ASProxyMain" style="text-align:<%=Resources.Languages.TextAlign%>"><div class="AddressBar">
-<a href="." asproxydone="2" style="font-weight: bold; text-decoration: none">ASProxy <%=Consts.General.ASProxyVersion %></a>
+<div id="ASProxyFormBlock" class="ASPXBlock" dir="<%=Resources.Languages.TextDirection%>">
+<div class="ASPXMain" style="text-align:<%=Resources.Languages.TextAlign%>"><div class="AddrBar">
+<a href="." asproxydone="2" style="font-weight:bold;text-decoration:none">ASProxy <%=Consts.General.ASProxyVersion %></a>
 <!--This is ASProxy powered by SalarSoft. -->
-<input name="url" type="text" size="80" id="txtUrl" dir="ltr" style="width: 550px;" class="TextBox" onkeyup="_Page_HandleTextKey(event)" value="<%=HttpUtility.HtmlEncode(_ToDisplayUrl)%>" />
-<input type="submit" value="<%=this.GetLocalResourceObject("btnDisplay")%>" id="btnASProxyDisplayButton" class="Button" />
+<input name="url" type="text" size="80" id="txtUrl" dir="ltr" style="width:550px;" class="TextBox" onkeyup="_Page_HandleTextKey(event)" value="<%=HttpUtility.HtmlEncode(_ToDisplayUrl)%>" />
+<input type="button" onclick="_Page_SubmitForm()" value="<%=this.GetLocalResourceObject("btnDisplay")%>" id="btnASProxyDisplayButton" class="Button" />
 <a href="cookieman.aspx" target="_blank" asproxydone="2"><%=this.GetLocalResourceObject("CookieManager")%></a>
 <a href="download.aspx" target="_blank" asproxydone="2"><%=this.GetLocalResourceObject("DownloadTool")%></a>
 </div>
-<div class="FastOptions">
-<%if (Configurations.UserOptions.ForceEncoding.Changeable){ %><span class="ASProxyOption"><input id="chkUTF8" type="checkbox" onclick="_Page_SaveOptions()" /><label for="chkUTF8"><%=this.GetLocalResourceObject("chkUTF8")%></label></span> <%} %>
-<%if (Configurations.UserOptions.OrginalUrl.Changeable){ %><span class="ASProxyOption"><input id="chkOrginalUrl" type="checkbox" checked="checked" onclick="_Page_SaveOptions()" /><label for="chkOrginalUrl"><%=this.GetLocalResourceObject("chkOrginalUrl")%></label></span> <%} %>
-<%if (Configurations.UserOptions.RemoveScripts.Changeable){ %><span class="ASProxyOption"><input id="chkRemoveScripts" type="checkbox" onclick="_Page_SaveOptions()" /><label for="chkRemoveScripts"><%=this.GetLocalResourceObject("chkRemoveScripts")%></label></span> <%} %>
-<%if (Configurations.UserOptions.Images.Changeable){ %><span class="ASProxyOption"><input id="chkDisplayImages" type="checkbox" checked="checked" onclick="_Page_SaveOptions()" /><label for="chkDisplayImages"><%=this.GetLocalResourceObject("chkDisplayImages")%></label></span> <%} %>
-<%if (Configurations.UserOptions.Cookies.Changeable){ %><span class="ASProxyOption"><input id="chkCookies" type="checkbox" checked="checked" onclick="_Page_SaveOptions()" /><label for="chkCookies"><%=this.GetLocalResourceObject("chkCookies")%></label></span> <%} %>
-<%if (Configurations.UserOptions.HttpCompression.Changeable){ %><span class="ASProxyOption"><input id="chkCompression" type="checkbox" onclick="_Page_SaveOptions()" /><label for="chkCompression"><%=this.GetLocalResourceObject("chkCompression")%></label></span> <%} %>
-<%if (Configurations.UserOptions.ImageCompressor.Changeable&&Configurations.ImageCompressor.Enabled){ %><span class="ASProxyOption"><input id="chkImgCompressor" type="checkbox" onclick="_Page_SaveOptions()" /><label for="chkImgCompressor"><%=this.GetLocalResourceObject("chkImgCompressor")%></label></span> <%} %>
+<div class="FastOpts">
+<%if (Configurations.UserOptions.ForceEncoding.Changeable){ %><span class="ASPXOpt"><input id="chkUTF8" type="checkbox" onclick="_Page_SaveOptions()" /><label for="chkUTF8"><%=this.GetLocalResourceObject("chkUTF8")%></label></span> <%} %>
+<%if (Configurations.UserOptions.OrginalUrl.Changeable){ %><span class="ASPXOpt"><input id="chkOrginalUrl" type="checkbox" checked="checked" onclick="_Page_SaveOptions()" /><label for="chkOrginalUrl"><%=this.GetLocalResourceObject("chkOrginalUrl")%></label></span> <%} %>
+<%if (Configurations.UserOptions.RemoveScripts.Changeable){ %><span class="ASPXOpt"><input id="chkRemoveScripts" type="checkbox" onclick="_Page_SaveOptions()" /><label for="chkRemoveScripts"><%=this.GetLocalResourceObject("chkRemoveScripts")%></label></span> <%} %>
+<%if (Configurations.UserOptions.Cookies.Changeable){ %><span class="ASPXOpt"><input id="chkCookies" type="checkbox" checked="checked" onclick="_Page_SaveOptions()" /><label for="chkCookies"><%=this.GetLocalResourceObject("chkCookies")%></label></span> <%} %>
+<%if (Configurations.UserOptions.HttpCompression.Changeable){ %><span class="ASPXOpt"><input id="chkCompression" type="checkbox" onclick="_Page_SaveOptions()" /><label for="chkCompression"><%=this.GetLocalResourceObject("chkCompression")%></label></span> <%} %>
+<%if (Configurations.UserOptions.ImageCompressor.Changeable&&Configurations.ImageCompressor.Enabled){ %><span class="ASPXOpt"><input id="chkImgCompressor" type="checkbox" onclick="_Page_SaveOptions()" /><label for="chkImgCompressor"><%=this.GetLocalResourceObject("chkImgCompressor")%></label></span> <%} %>
 <a asproxydone="2" id="lnkMoreOpt" href="javascript:void(0);" onclick="toggleOpt(this);"><%=this.GetLocalResourceObject("lnkMoreOptions")%>...<small>&gt;</small></a>
 </div>
-<div id="MoreOptions" style="display: none;">
-<%if (Configurations.UserOptions.EncodeUrl.Changeable){ %><span class="ASProxyOption"><input id="chkEncodeUrl" type="checkbox" checked="checked" onclick="_Page_SaveOptions()"/><label for="chkEncodeUrl"><%=this.GetLocalResourceObject("chkEncodeUrl")%></label></span> <%} %>
-<%if (Configurations.UserOptions.Frames.Changeable){ %><span class="ASProxyOption"><input id="chkFrames" type="checkbox" checked="checked" onclick="_Page_SaveOptions()"/><label for="chkFrames"><%=this.GetLocalResourceObject("chkFrames")%></label></span> <%} %>
-<%if (Configurations.UserOptions.PageTitle.Changeable){ %><span class="ASProxyOption"><input id="chkPageTitle" type="checkbox" checked="checked" onclick="_Page_SaveOptions()" /><label for="chkPageTitle"><%=this.GetLocalResourceObject("chkPageTitle")%></label></span> <%} %>
-<%if (Configurations.UserOptions.SubmitForms.Changeable){ %><span class="ASProxyOption"><input id="chkForms" type="checkbox" checked="checked" onclick="_Page_SaveOptions()" /><label for="chkForms"><%=this.GetLocalResourceObject("chkForms")%></label></span> <%} %>
-<%if (Configurations.UserOptions.RemoveObjects.Changeable){ %><span class="ASProxyOption"><input id="chkRemoveObjects" type="checkbox" checked="checked" onclick="_Page_SaveOptions()" /><label for="chkRemoveObjects"><%=this.GetLocalResourceObject("chkRemoveObjects")%></label></span> <%} %>
-<%if (Configurations.UserOptions.Links.Changeable){ %><span class="ASProxyOption"><input id="chkProcessLinks" type="checkbox" checked="checked" onclick="_Page_SaveOptions()" /><label for="chkProcessLinks"><%=this.GetLocalResourceObject("chkProcessLinks")%></label></span> <%} %>
-<%if (Configurations.UserOptions.TempCookies.Changeable){ %><span class="ASProxyOption"><input id="chkTempCookies" type="checkbox" checked="checked" onclick="_Page_SaveOptions()" /><label for="chkTempCookies"><%=this.GetLocalResourceObject("chkTempCookies")%></label></span> <%} %>
+<div id="MoreOpts" style="display:none;">
+<%if (Configurations.UserOptions.EncodeUrl.Changeable){ %><span class="ASPXOpt"><input id="chkEncodeUrl" type="checkbox" checked="checked" onclick="_Page_SaveOptions()"/><label for="chkEncodeUrl"><%=this.GetLocalResourceObject("chkEncodeUrl")%></label></span> <%} %>
+<%if (Configurations.UserOptions.Frames.Changeable){ %><span class="ASPXOpt"><input id="chkFrames" type="checkbox" checked="checked" onclick="_Page_SaveOptions()"/><label for="chkFrames"><%=this.GetLocalResourceObject("chkFrames")%></label></span> <%} %>
+<%if (Configurations.UserOptions.PageTitle.Changeable){ %><span class="ASPXOpt"><input id="chkPageTitle" type="checkbox" checked="checked" onclick="_Page_SaveOptions()" /><label for="chkPageTitle"><%=this.GetLocalResourceObject("chkPageTitle")%></label></span> <%} %>
+<%if (Configurations.UserOptions.SubmitForms.Changeable){ %><span class="ASPXOpt"><input id="chkForms" type="checkbox" checked="checked" onclick="_Page_SaveOptions()" /><label for="chkForms"><%=this.GetLocalResourceObject("chkForms")%></label></span> <%} %>
+<%if (Configurations.UserOptions.RemoveObjects.Changeable){ %><span class="ASPXOpt"><input id="chkRemoveObjects" type="checkbox" checked="checked" onclick="_Page_SaveOptions()" /><label for="chkRemoveObjects"><%=this.GetLocalResourceObject("chkRemoveObjects")%></label></span> <%} %>
+<%if (Configurations.UserOptions.Links.Changeable){ %><span class="ASPXOpt"><input id="chkProcessLinks" type="checkbox" checked="checked" onclick="_Page_SaveOptions()" /><label for="chkProcessLinks"><%=this.GetLocalResourceObject("chkProcessLinks")%></label></span> <%} %>
+<%if (Configurations.UserOptions.Images.Changeable){ %><span class="ASPXOpt"><input id="chkDisplayImages" type="checkbox" checked="checked" onclick="_Page_SaveOptions()" /><label for="chkDisplayImages"><%=this.GetLocalResourceObject("chkDisplayImages")%></label></span> <%} %>
+<%if (Configurations.UserOptions.TempCookies.Changeable){ %><span class="ASPXOpt"><input id="chkTempCookies" type="checkbox" checked="checked" onclick="_Page_SaveOptions()" /><label for="chkTempCookies"><%=this.GetLocalResourceObject("chkTempCookies")%></label></span> <%} %>
 </div></div>
 <script type="text/javascript" asproxydone="2">
 _Page_Initialize();
@@ -261,12 +257,11 @@ if(window.self != window.top)document.getElementById('ASProxyFormBlock').style.d
 </script>
 
 <%if (_HasError){ %>
-<div title="Error message" style="text-align: center; color: Red; font-weight: bold;
-font-family: Tahoma; font-size: 10pt;">
+<div title="Error message" style="text-align:center;color:Red;font-weight:bold;font-family:Tahoma;font-size:10pt;">
 <%=_ErrorMessage%></div>
 <%} %>
-<noscript style="color: Maroon; font-weight: bold; font-family: Tahoma; font-size: 10pt;"><%=this.GetLocalResourceObject("JsIsDisabled")%></noscript>
-</div></form></body>
+<noscript style="color:Maroon;font-weight:bold;font-family:Tahoma;font-size:10pt;"><%=this.GetLocalResourceObject("JsIsDisabled")%></noscript>
+</div></body>
 </html>
 
 <div style="position: relative; left: 0px; top: 5px; width: 100%; height: auto;">

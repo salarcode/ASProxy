@@ -136,10 +136,10 @@
     <value>Фреймы</value>
   </data>
   <data name="chkOrginalUrl" xml:space="preserve">
-    <value>Панель адреса</value>
+    <value>Панель ссылок</value>
   </data>
   <data name="chkPageTitle" xml:space="preserve">
-    <value>Display page title</value>
+    <value>Заголовок страницы</value>
   </data>
   <data name="chkProcessLinks" xml:space="preserve">
     <value>Кодирование ссылок</value>
@@ -148,36 +148,36 @@
     <value>Удалять скрипты</value>
   </data>
   <data name="chkTempCookies" xml:space="preserve">
-    <value>Save Cookies as Temp</value>
+    <value>Временное хранение Cookies</value>
   </data>
   <data name="chkUTF8" xml:space="preserve">
-    <value>Кодировать в UTF-8</value>
+    <value>Перевод в UTF-8</value>
   </data>
   <data name="CookieManager" xml:space="preserve">
-    <value>Менеджер Cookie</value>
+    <value>Менеджер Cookies</value>
   </data>
   <data name="DownloadTool" xml:space="preserve">
     <value>Менеджер загрузок</value>
   </data>
   <data name="JsIsDisabled" xml:space="preserve">
-    <value>Warning, JavaScript is disabled and this form will not perform any more.&lt;br /&gt;Please enable JavaScript or &lt;a asproxydone="2" href="noscript.aspx"&gt;use this page instead&lt;/a&gt;.</value>
+    <value>ВНИМАНИЕ! JavaScript отключен, некоторые опции недоступны.&lt;br /&gt;Пожалуйста включите JavaScript или используйте &lt;a asproxydone="2" href="noscript.aspx"&gt;эту страницу&lt;/a&gt;.</value>
   </data>
   <data name="lnkMoreOptions" xml:space="preserve">
     <value>Настройки</value>
   </data>
   <data name="Page.Title" xml:space="preserve">
-    <value>Surf the web with ASProxy</value>
+    <value>Анонимайзер ASProxy</value>
   </data>
   <data name="UrlIsEmpty" xml:space="preserve">
-    <value>Пожалуйста, введите адрес сайта.</value>
+    <value>Введите адрес веб-сайта.</value>
   </data>
   <data name="chkEncodeUrl" xml:space="preserve">
-    <value>Encode URLs</value>
+    <value>Кодировать адрес</value>
   </data>
   <data name="chkRemoveObjects" xml:space="preserve">
-    <value>Remove Objects</value>
+    <value>Удалять объекты</value>
   </data>
   <data name="chkImgCompressor" xml:space="preserve">
-    <value>Compress images</value>
+    <value>Сжимать картинки</value>
   </data>
 </root>

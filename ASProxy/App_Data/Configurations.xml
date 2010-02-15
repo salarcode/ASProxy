@@ -11,7 +11,7 @@
 				<provider name="TemplateProvider" />
 			</disabledProviders>
 		</providerExtensions>
-    
+
 		<!--Enables plugins-->
 		<plugins enabled="true">
 			<disabledPlugins>
@@ -21,13 +21,13 @@
 	</providers>
 
 	<pages uiLanguage="en-us" />
-	
+
 	<webData maxContentLength="-1"
 			requestTimeout="60000"
 			requestReadWriteTimeOut="70000"
 			sendSignature="true"
 			preferredLocalEncoding="windows-1256">
-		
+
 		<downloader resumeSupport="true"
 					forceResumeSupport="true"
 					maxContentLength="-1"
@@ -35,7 +35,7 @@
 					requestReadWriteTimeOut="300000" />
 		<userAgent mode="Default" custom="ASProxy (compatible; Mozilla/5.0;)" />
 	</webData>
-  
+
 	<!--Used in private proxy feature to prevent the strangers to access the proxy-->
 	<authentication enabled="false">
 		<!--<user userName="admin" password="admin" pages="true" images="true" downloads="true"></user>-->
@@ -44,7 +44,7 @@
 	<!--Image compressor config-->
 	<imageCompressor enabled="true" quality="14">
 	</imageCompressor>
-	
+
 	<userAccessControl enabled="false">
 		<blocked>
 			<!--<ip value="127.0.0.1" />-->
@@ -84,30 +84,30 @@
 		</custom>
 	</netProxy>
 
-  <!-- Users default options -->
-  <userOptions>
-    <options>
-      <ForceEncoding changeable="true">False</ForceEncoding>
-      <RemoveScripts changeable="true">False</RemoveScripts>
-      <RemoveImages changeable="true">False</RemoveImages>
-      <HttpCompression changeable="true">False</HttpCompression>
+	<!-- Users default options -->
+	<userOptions>
+		<options>
+			<ForceEncoding changeable="true">False</ForceEncoding>
+			<RemoveScripts changeable="true">False</RemoveScripts>
+			<RemoveImages changeable="true">False</RemoveImages>
+			<HttpCompression changeable="true">False</HttpCompression>
 			<ImageCompressor changeable="true">False</ImageCompressor>
-      <EncodeUrl changeable="true">True</EncodeUrl>
-      <Cookies changeable="true">True</Cookies>
-      <TempCookies changeable="true">False</TempCookies>
-      <Images changeable="true">True</Images>
-      <Links changeable="true">True</Links>
-      <Frames changeable="false">True</Frames>
-      <SubmitForms changeable="false">True</SubmitForms>
-      <RemoveObjects changeable="false">False</RemoveObjects>
-      <OrginalUrl changeable="true">True</OrginalUrl>
-      <PageTitle changeable="true">True</PageTitle>
-      <DocType changeable="false">True</DocType>
-    </options>
-  </userOptions>
-  
+			<EncodeUrl changeable="true">True</EncodeUrl>
+			<Cookies changeable="true">True</Cookies>
+			<TempCookies changeable="true">False</TempCookies>
+			<Images changeable="true">True</Images>
+			<Links changeable="true">True</Links>
+			<Frames changeable="false">True</Frames>
+			<SubmitForms changeable="false">True</SubmitForms>
+			<RemoveObjects changeable="false">False</RemoveObjects>
+			<OrginalUrl changeable="true">True</OrginalUrl>
+			<PageTitle changeable="true">True</PageTitle>
+			<DocType changeable="false">True</DocType>
+		</options>
+	</userOptions>
+
 	<customConfig>
 		<!--<config name="" value=""></config>-->
 	</customConfig>
-  
+
 </Configurations>

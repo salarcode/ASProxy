@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using System.IO;
 using System.Threading;
 using ICSharpCode.SharpZipLib.Zip;
@@ -155,7 +154,7 @@ namespace SalarSoft.ASProxy.Update
 		/// <summary>
 		/// Download the plugin update package and install it
 		/// </summary>
-		public static bool Install(PluginUpdateInfo pluginInfo, string pluginName)
+		public static bool Install(PluginUpdateInfo pluginInfo)
 		{
 			string tempFile = Path.GetTempFileName();
 			try
@@ -191,7 +190,7 @@ namespace SalarSoft.ASProxy.Update
 			// Check if update is required
 			if (Common.CompareASProxyVersions(updateInfo.Version, plugin.Version) == 1)
 				// Download the package and install it
-				return Install(updateInfo, pluginName);
+				return Install(updateInfo);
 			return false;
 		}
 
@@ -208,7 +207,7 @@ namespace SalarSoft.ASProxy.Update
 				// Check if update is required
 				if (Common.CompareASProxyVersions(updateInfo.Version, plugin.Version) == 1)
 					// Download and install the plugin
-					Install(updateInfo, plugin.Name);
+					Install(updateInfo);
 			}
 		}
 

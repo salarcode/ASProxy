@@ -835,6 +835,14 @@ namespace SalarSoft.ASProxy.BuiltIn
 				if (!string.IsNullOrEmpty(referrer))
 					referrer = UrlProvider.EncodeUrl(referrer);
 			}
+			else
+			{
+				// just make it url safe
+				destination = UrlProvider.EscapeUrlQuery(destination);
+				
+				if (!string.IsNullOrEmpty(referrer))
+					referrer = UrlProvider.EscapeUrlQuery(referrer);
+			}
 
 			// If address exists in current page address it will automatically replaced
 			asproxyPage = UrlBuilder.AddUrlQuery(asproxyPage, Consts.Query.UrlAddress, destination);

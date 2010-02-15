@@ -45,7 +45,7 @@
 		if (userOptions.HttpCompression.Changeable)
 			opt.HttpCompression = chkCompression.Checked;
 
-		if (userOptions.ImageCompressor.Changeable)
+		if (userOptions.ImageCompressor.Changeable && Configurations.ImageCompressor.Enabled)
 			opt.ImageCompressor = chkImgCompressor.Checked;
 
 		if (userOptions.Cookies.Changeable)

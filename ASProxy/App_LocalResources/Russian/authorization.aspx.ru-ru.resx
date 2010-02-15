@@ -118,20 +118,20 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="btnASProxyDisplayButton.Text" xml:space="preserve">
-    <value>Display</value>
+    <value>Перейти</value>
   </data>
   <data name="btnASProxyDisplayButton.ToolTip" xml:space="preserve">
     <value />
   </data>
   <data name="lblDesc.Text" xml:space="preserve">
-    <value>The requested resource requires authentication. Please enter username and password.&lt;br /&gt;
-The entered username and password will store in memory and wll not be available after this session.</value>
+    <value>Запрашиваемый ресурс требует авторизации. Введите логин и пароль.&lt;br /&gt;
+Вводимые данные будут сохранены в памяти браузера и не будут доступны после закрытия браузера.</value>
   </data>
   <data name="lblErrorMsg.Text" xml:space="preserve">
-    <value>Error message</value>
+    <value>Ошибка!</value>
   </data>
   <data name="lblErrorMsg.ToolTip" xml:space="preserve">
-    <value>Error message</value>
+    <value>Ошибка!</value>
   </data>
   <data name="lblRequestedUrl.Text" xml:space="preserve">
     <value />
@@ -140,7 +140,7 @@ The entered username and password will store in memory and wll not be available 
     <value />
   </data>
   <data name="Page.Title" xml:space="preserve">
-    <value>Authorization is required for this site</value>
+    <value>Вход в систему</value>
   </data>
   <data name="txtUrl.Text" xml:space="preserve">
     <value />
@@ -152,7 +152,7 @@ The entered username and password will store in memory and wll not be available 
     <value />
   </data>
   <data name="wcLogin.FailureText" xml:space="preserve">
-    <value>Your login attempt was not successful. Please try again.</value>
+    <value>Неверный логин или пароль. Повторите попытку ввода.</value>
   </data>
   <data name="wcLogin.HelpPageText" xml:space="preserve">
     <value />
@@ -161,30 +161,30 @@ The entered username and password will store in memory and wll not be available 
     <value />
   </data>
   <data name="wcLogin.LoginButtonText" xml:space="preserve">
-    <value>Log In</value>
+    <value>Вход в систему</value>
   </data>
   <data name="wcLogin.PasswordLabelText" xml:space="preserve">
-    <value>Password:</value>
+    <value>Пароль:</value>
   </data>
   <data name="wcLogin.PasswordRecoveryText" xml:space="preserve">
     <value />
   </data>
   <data name="wcLogin.PasswordRequiredErrorMessage" xml:space="preserve">
-    <value>Password is required.</value>
+    <value>Введите пароль.</value>
   </data>
   <data name="wcLogin.RememberMeText" xml:space="preserve">
-    <value>Remember me next time.</value>
+    <value>Запомнить меня</value>
   </data>
   <data name="wcLogin.TitleText" xml:space="preserve">
-    <value>Log In to authorization required site</value>
+    <value>Авторизация</value>
   </data>
   <data name="wcLogin.ToolTip" xml:space="preserve">
     <value />
   </data>
   <data name="wcLogin.UserNameLabelText" xml:space="preserve">
-    <value>User Name:</value>
+    <value>Логин:</value>
   </data>
   <data name="wcLogin.UserNameRequiredErrorMessage" xml:space="preserve">
-    <value>User Name is required.</value>
+    <value>Введите логин.</value>
   </data>
 </root>

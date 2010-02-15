@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading;
 using System.IO;
-using ICSharpCode.SharpZipLib.Zip;
+using System.Threading;
 
 namespace SalarSoft.ASProxy.Update
 {

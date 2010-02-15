@@ -243,7 +243,7 @@ public partial class Admin_Providers : System.Web.UI.Page
 			{
 				lblUpProviderStatus.Text = "Update is not available.";
 				lblUpProviderStatus.ForeColor = Color.Red;
-				btnUpProviderUpdate.Enabled = true;
+				btnUpProviderUpdate.Enabled = false;
 			}
 		}
 
@@ -310,7 +310,7 @@ public partial class Admin_Providers : System.Web.UI.Page
 			{
 				lblUpPluginStatus.Text = "Update is not available.";
 				lblUpPluginStatus.ForeColor = Color.Red;
-				btnUpPluginUpdate.Enabled = true;
+				btnUpPluginUpdate.Enabled = false;
 			}
 		}
 		if (!string.IsNullOrEmpty(message))
@@ -331,7 +331,7 @@ public partial class Admin_Providers : System.Web.UI.Page
 					ProviderUpdateInfo updateInfo = ProvidersUpdater.DownloadProviderUpdateInfo(info);
 
 					// download package and install it
-					if (ProvidersUpdater.Install(updateInfo, pvName))
+					if (ProvidersUpdater.Install(updateInfo))
 					{
 						DisplayProviderUpdate(updateInfo, info, true, null);
 					}
@@ -362,7 +362,7 @@ public partial class Admin_Providers : System.Web.UI.Page
 				try
 				{
 					PluginUpdateInfo updateInfo = PluginsUpdater.DownloadPluginUpdateInfo(info);
-					if (PluginsUpdater.Install(updateInfo, pvName))
+					if (PluginsUpdater.Install(updateInfo))
 						DisplayPluginUpdate(updateInfo, info, true, null);
 					else
 						DisplayPluginUpdate(null, info, false, "Update installation failed!");

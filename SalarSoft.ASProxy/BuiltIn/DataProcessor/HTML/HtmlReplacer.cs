@@ -88,7 +88,7 @@ namespace SalarSoft.ASProxy.BuiltIn
 
 						//===== If another site url, has bookmark
 						if (oldValue.IndexOf('#') != -1)
-							oldValue = UrlProvider.RemoveUrlBookmark(oldValue, out bookmarkPart);
+							oldValue = UrlBuilder.RemoveUrlBookmark(oldValue, out bookmarkPart);
 
 
 						//====== Get desigred url addrress
@@ -96,9 +96,10 @@ namespace SalarSoft.ASProxy.BuiltIn
 
 						//====== Encode url to make it unknown ======
 						if (encodeUrl)
-						{
 							oldValue = UrlProvider.EncodeUrl(oldValue);
-						}
+						else
+							// just url safe
+							oldValue = UrlProvider.EscapeUrlQuery(oldValue);
 
 						//====== Add it to our url ======
 						newValue = string.Format(newPageFormat, oldValue);
@@ -210,7 +211,7 @@ namespace SalarSoft.ASProxy.BuiltIn
 
 					//===== If another site url, has bookmark=====
 					if (actionSrc.IndexOf('#') != -1)
-						actionSrc = UrlProvider.RemoveUrlBookmark(actionSrc, out tmp);
+						actionSrc = UrlBuilder.RemoveUrlBookmark(actionSrc, out tmp);
 
 					// Get clear url
 					actionSrc = HttpUtility.HtmlDecode(actionSrc);
@@ -218,6 +219,9 @@ namespace SalarSoft.ASProxy.BuiltIn
 					//====== Encode url to make it unknown ======
 					if (encodeUrl)
 						actionSrc = UrlProvider.EncodeUrl(actionSrc);
+					else
+						// just url safe
+						actionSrc = UrlProvider.EscapeUrlQuery(actionSrc);
 
 					//====== Add it to our url ======
 					actionSrc = string.Format(newPageFormat, actionSrc);
@@ -291,6 +295,9 @@ namespace SalarSoft.ASProxy.BuiltIn
 					//====== Encode url to make it unknown ======
 					if (encodeUrl)
 						actionSrc = UrlProvider.EncodeUrl(actionSrc);
+					else
+						// just url safe
+						actionSrc = UrlProvider.EscapeUrlQuery(actionSrc);
 
 					//====== Add it to our url ======
 					actionSrc = string.Format(newValueFormat, actionSrc);
@@ -527,7 +534,7 @@ namespace SalarSoft.ASProxy.BuiltIn
 
 						//===== If another site url, has bookmark=====
 						if (actionSrc.IndexOf('#') != -1)
-							actionSrc = UrlProvider.RemoveUrlBookmark(actionSrc, out tmp);
+							actionSrc = UrlBuilder.RemoveUrlBookmark(actionSrc, out tmp);
 
 						//=====Get desired address=======
 						actionSrc = HttpUtility.HtmlDecode(actionSrc);
@@ -535,6 +542,9 @@ namespace SalarSoft.ASProxy.BuiltIn
 						//====== Encode url to make unknown it ======
 						if (encodeUrl)
 							actionSrc = UrlProvider.EncodeUrl(actionSrc);
+						else
+							// just url safe
+							actionSrc = UrlProvider.EscapeUrlQuery(actionSrc);
 
 						//====== Add it to our url ======
 						actionSrc = string.Format(newPageFormat, actionSrc);
@@ -659,7 +669,7 @@ namespace SalarSoft.ASProxy.BuiltIn
 
 					// If there is a bookmark
 					if (actionSrc.IndexOf('#') != -1)
-						actionSrc = UrlProvider.RemoveUrlBookmark(actionSrc, out tmp);
+						actionSrc = UrlBuilder.RemoveUrlBookmark(actionSrc, out tmp);
 
 					// Get clear url
 					actionSrc = HttpUtility.HtmlDecode(actionSrc);
@@ -667,6 +677,9 @@ namespace SalarSoft.ASProxy.BuiltIn
 					// Encode url to make it unknown
 					if (encodeUrl)
 						actionSrc = UrlProvider.EncodeUrl(actionSrc);
+					else
+						// just url safe
+						actionSrc = UrlProvider.EscapeUrlQuery(actionSrc);
 
 					// Add it to our url
 					actionSrc = string.Format(newPageFormat, actionSrc);

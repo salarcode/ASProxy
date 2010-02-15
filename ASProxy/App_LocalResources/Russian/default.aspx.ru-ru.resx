@@ -118,111 +118,106 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="btnASProxyDisplayButton.Text" xml:space="preserve">
-    <value>Display</value>
+    <value>ПЕРЕЙТИ</value>
   </data>
   <data name="chkCompression.Text" xml:space="preserve">
-    <value>Compress response</value>
+    <value>Сжатие страницы</value>
   </data>
   <data name="chkCookies.Text" xml:space="preserve">
     <value>Cookies</value>
   </data>
   <data name="chkDisplayImages.Text" xml:space="preserve">
-    <value>Images</value>
+    <value>Изображения</value>
   </data>
   <data name="chkEncodeUrl.Text" xml:space="preserve">
-    <value>Encode URLs</value>
+    <value>Кодировать адрес</value>
   </data>
   <data name="chkForms.Text" xml:space="preserve">
-    <value>Process forms</value>
+    <value>Формы</value>
   </data>
   <data name="chkFrames.Text" xml:space="preserve">
-    <value>Frames</value>
+    <value>Фреймы</value>
   </data>
   <data name="chkOrginalUrl.Text" xml:space="preserve">
-    <value>Original URLs</value>
+    <value>Панель ссылок</value>
   </data>
   <data name="chkPageTitle.Text" xml:space="preserve">
-    <value>Display page title</value>
+    <value>Заголовок страницы</value>
   </data>
   <data name="chkProcessLinks.Text" xml:space="preserve">
-    <value>Links</value>
+    <value>Кодирование ссылок</value>
   </data>
   <data name="chkRemoveObjects.Text" xml:space="preserve">
-    <value>Remove Objects</value>
+    <value>Удалять объекты</value>
   </data>
   <data name="chkRemoveScripts.Text" xml:space="preserve">
-    <value>Remove Scripts</value>
+    <value>Удалять скрипты</value>
   </data>
   <data name="chkTempCookies.Text" xml:space="preserve">
-    <value>Save Cookies as Temp</value>
+    <value>Временное хранение Cookies</value>
   </data>
   <data name="chkUTF8.Text" xml:space="preserve">
-    <value>Force UTF-8</value>
+    <value>Перевод в UTF-8</value>
   </data>
   <data name="lblCompression.Text" xml:space="preserve">
-    <value>Compresses the responded page.&lt;br /&gt;This is a recommended option but it is not compatible with all hosting servers.</value>
+    <value>Сжатие загружаемых веб-страниц.&lt;br /&gt;Использование этой функции рекомендуется для ускорения загрузки страниц, однако она может не поддерживаться хостингом.</value>
   </data>
   <data name="lblCookies.Text" xml:space="preserve">
-    <value>Enables cookie support.</value>
+    <value>Включение поддержки Cookies (сессий).</value>
   </data>
   <data name="lblDisplayImages.Text" xml:space="preserve">
-    <value>Displays images.</value>
+    <value>Отображение изображений.</value>
   </data>
   <data name="lblEncodeUrl.Text" xml:space="preserve">
-    <value>Encodes original site address and hides it.</value>
+    <value>Кодирование адреса открываемой веб-страницы.</value>
   </data>
   <data name="lblForms.Text" xml:space="preserve">
-    <value>Processes submit forms.</value>
+    <value>Обработка элементов отправки веб-форм.</value>
   </data>
   <data name="lblFrames.Text" xml:space="preserve">
-    <value>Enables inline frames.</value>
+    <value>Обработка фреймовых веб-страниц.</value>
   </data>
   <data name="lblMainTitle.Text" xml:space="preserve">
-    <value>What is ASProxy?</value>
+    <value>ASProxy - это...</value>
   </data>
   <data name="lblOptions.Text" xml:space="preserve">
-    <value>Options</value>
+    <value>НАСТРОЙКИ</value>
   </data>
   <data name="lblOrginalUrl.Text" xml:space="preserve">
-    <value>Displays original URL address in a float bar on the top of page.&lt;br /&gt;Note that this option can increase page size.&lt;br /&gt;(Tip: To copy the address that the float bar shows press Ctrl+Shift+X keys)</value>
+    <value>Отображение веб-адреса вверху страницы при наведение на ссылки.&lt;br /&gt;Включение данной опции увеличивает размер страницы.&lt;br /&gt;(Для копирования ссылки, необходимо при наведение курсора на ссылку нажать сочетание клавиш: Ctrl+Shift+X)</value>
   </data>
   <data name="lblPageTitle.Text" xml:space="preserve">
-    <value>Displays page title in browser title.</value>
+    <value>Отображение заголовка загружаемой страницы в веб-браузере.</value>
   </data>
   <data name="lblProcessLinks.Text" xml:space="preserve">
-    <value>Processes links and encodes them.</value>
+    <value>Обрабатывать переходы по ссылкам и кодировать ссылки при загрузке страницы.</value>
   </data>
   <data name="lblRemoveObjects.Text" xml:space="preserve">
-    <value>Removes embedded objects from page. Use this option to get rid of flash and embedded media in pages and save bandwidth.</value>
+    <value>Удаление внедренных на страницу объектов. К объектам относятся flash-анимация и различная мультимедиа. Удаление таких объектов позволит увеличить скорость загрузки страниц.</value>
   </data>
   <data name="lblRemoveScripts.Text" xml:space="preserve">
-    <value>Removes scripts from page. This option increases anonymity but may loose some functionalities.</value>
+    <value>Удаление скриптов на загружаемых страницах. Включение этой опции повышает анонимность, однако многие функции загружаемого веб-сайта могут оказаться недоступными.</value>
   </data>
   <data name="lblTempCookies.Text" xml:space="preserve">
-    <value>Saves cookies only for current session, and they will not be available after browser is closed.</value>
+    <value>Сохранение информации о Cookies только на вермя действия текущей сессии. После закрытия браузера все созданные Cookies будут недействительны.</value>
   </data>
   <data name="lblUrl.Text" xml:space="preserve">
-    <value>Enter URL:</value>
+    <value>Веб-адрес:</value>
   </data>
   <data name="lblUTF8.Text" xml:space="preserve">
-    <value>Uses UTF-8 encoding for pages.&lt;br /&gt;Suitable for non-English sites that contains non-ASCII characters.</value>
+    <value>Использовать UTF-8 для кодирования веб-страниц.&lt;br /&gt;Включение опции полезно для не английских веб-сайтов, использующих не ASCII символы.</value>
   </data>
   <data name="ltrMainDesc.Text" xml:space="preserve">
-    <value>ASProxy is an open-source web proxy service which allows the user to surf the net anonymously. When using
-ASProxy, not only is your identity hidden but you will be able to escape filters
-and firewalls from an internet connection.
-&lt;br /&gt;In most cases your job, school, or even your country may prevent you from accessing
-your favorite websites. ASProxy will circumvent this.&lt;br /&gt;
-The purpose of ASProxy is spreading freedom on the net, but this proxy can be used
-for any purposes. ASProxy is not responsible for your activities.</value>
+    <value>ASProxy - открытый свободнораспространяемый анонимайзер с поддержкой протоколов: HTTP, HTTPS и FTP. Веб-прокси ASProxy может быть использован для ускорения загрузки веб-сайтов, тестирования онлайн-сервисов, обхода ограничений Администратора локальной сети учреждения (школы, колледжа, ВУЗа, офиса) на доступ к определенным адресам веб-сайтов, сокрытия реального IP-адреса и анонимного доступа к веб-сайтам, получения доступа к веб-сайтам закрытым для просмотра пользователями определенных стран.
+&lt;br /&gt;Разработчики ASProxy не несут ответственности за ваши действия.</value>
   </data>
   <data name="Page.Title" xml:space="preserve">
-    <value>Surf the web with ASProxy</value>
+    <value>Анонимайзер ASProxy</value>
   </data>
   <data name="chkImgCompressor.Text" xml:space="preserve">
-    <value>Compress images</value>
+    <value>Сжимать картинки</value>
   </data>
   <data name="lblImgCompressor.Text" xml:space="preserve">
-    <value>Compresses the images.&lt;br /&gt;This option decreases images size by decreasing their quality.</value>
+    <value>Сжатие загружаемых изображений..&lt;br /&gt;Включение этой опции уменьшает размер загружаемых изображений использованием сжатия с потерей качества.</value>
   </data>
 </root>

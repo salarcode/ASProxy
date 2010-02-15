@@ -121,7 +121,7 @@
     <value />
   </data>
   <data name="aspLogin.FailureText" xml:space="preserve">
-    <value>Your login attempt was not successful. Please try again.</value>
+    <value>Неверный логин или пароль. Повторите попытку ввода.</value>
   </data>
   <data name="aspLogin.HelpPageText" xml:space="preserve">
     <value />
@@ -130,33 +130,33 @@
     <value />
   </data>
   <data name="aspLogin.LoginButtonText" xml:space="preserve">
-    <value>Log In</value>
+    <value>Вход в систему</value>
   </data>
   <data name="aspLogin.PasswordLabelText" xml:space="preserve">
-    <value>Password:</value>
+    <value>Пароль:</value>
   </data>
   <data name="aspLogin.PasswordRecoveryText" xml:space="preserve">
     <value />
   </data>
   <data name="aspLogin.PasswordRequiredErrorMessage" xml:space="preserve">
-    <value>Password is required.</value>
+    <value>Введите пароль.</value>
   </data>
   <data name="aspLogin.RememberMeText" xml:space="preserve">
-    <value>Remember me next time.</value>
+    <value>Запомнить меня</value>
   </data>
   <data name="aspLogin.TitleText" xml:space="preserve">
-    <value>Please login to get access</value>
+    <value>Авторизация</value>
   </data>
   <data name="aspLogin.ToolTip" xml:space="preserve">
     <value />
   </data>
   <data name="aspLogin.UserNameLabelText" xml:space="preserve">
-    <value>User Name:</value>
+    <value>Логин:</value>
   </data>
   <data name="aspLogin.UserNameRequiredErrorMessage" xml:space="preserve">
-    <value>User Name is required.</value>
+    <value>Введите логин.</value>
   </data>
   <data name="Page.Title" xml:space="preserve">
-    <value>Please login to get access</value>
+    <value>Авторизация</value>
   </data>
 </root>

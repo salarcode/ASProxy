@@ -6,6 +6,7 @@
 		<Version>1.0</Version>
 		<Description>This is a template provider</Description>
 		<Date>2010-01-24</Date>
+		<ConfigUiUrl></ConfigUiUrl>
 	</info>
 
 	<update enabled="false" updateInfoUrl="http://localhost:3000/ASProxy/_dev/!Release/ProviderUpdateInfo.xml">

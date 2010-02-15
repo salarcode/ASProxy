@@ -118,30 +118,30 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="lblFootSlogan1.Text" xml:space="preserve">
-    <value>Have your own</value>
+    <value>Используйте</value>
   </data>
   <data name="lblFootSlogan2.Text" xml:space="preserve">
-    <value>It's free.</value>
+    <value>бесплатно!</value>
   </data>
   <data name="lblLogo2.Text" xml:space="preserve">
-    <value>Surf the web with</value>
+    <value>Анонимайзер</value>
   </data>
   <data name="mnuASProxy.Text" xml:space="preserve">
-    <value>ASProxy Page</value>
+    <value>ASProxy</value>
   </data>
   <data name="mnuCookie.Text" xml:space="preserve">
-    <value>Cookie Manager</value>
+    <value>Менеджер Cookies</value>
   </data>
   <data name="mnuDownload.Text" xml:space="preserve">
-    <value>Download Tool</value>
+    <value>Менеджер загрузок</value>
   </data>
   <data name="mnuFootCookie.Text" xml:space="preserve">
-    <value>Cookie Manager</value>
+    <value>Менеджер Cookies</value>
   </data>
   <data name="mnuFootDownload.Text" xml:space="preserve">
-    <value>Download Tool</value>
+    <value>Менеджер загрузок</value>
   </data>
   <data name="mnuHome.Text" xml:space="preserve">
-    <value>Home</value>
+    <value>на главную</value>
   </data>
 </root>

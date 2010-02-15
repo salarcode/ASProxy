@@ -118,35 +118,34 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="btnDisplay.Text" xml:space="preserve">
-    <value>Download it</value>
+    <value>СКАЧАТЬ</value>
   </data>
   <data name="lblAutoPrompt.Text" xml:space="preserve">
     <value>&lt;script type="text/javascript"&gt;window.onload=function(){{window.location="{0}";}}&lt;/script&gt;</value>
   </data>
   <data name="lblErrorMsg.Text" xml:space="preserve">
-    <value>Error message</value>
+    <value>Ошибка!</value>
   </data>
   <data name="lblErrorMsg.ToolTip" xml:space="preserve">
-    <value>Error message</value>
+    <value>Ошибка!</value>
   </data>
   <data name="lblMainTitle.Text" xml:space="preserve">
-    <value>Download tool</value>
+    <value>Менеджер загрузок ASProxy</value>
   </data>
   <data name="lblPrompt.Text" xml:space="preserve">
-    <value>If your borwser does not prompt download dialog click the link below.</value>
+    <value>Если ваш браузер не поддерживает автоматическую загрузку, нажмите ссылку ниже.</value>
   </data>
   <data name="lblUrl.Text" xml:space="preserve">
-    <value>Enter URL:</value>
+    <value>Веб-адрес:</value>
   </data>
   <data name="lnkDownload.Text" xml:space="preserve">
-    <value>Download link</value>
+    <value>Скачать файл</value>
   </data>
   <data name="ltrMainDesc.Text" xml:space="preserve">
-    <value>Here you can everything you want. You can download files, html pages, images, ftp
-files, and etc.&lt;br /&gt;
-The download will be resume support and fresh.</value>
+    <value>Благодаря этому менеджеру вы можете скачивать файлы, HTML-страницы, изображения, FTP-ресурсы и т.д.&lt;br /&gt;
+Загрузка файлов с возможностью докачки!</value>
   </data>
   <data name="Page.Title" xml:space="preserve">
-    <value>Download your file with ASProxy</value>
+    <value>Менеджер загрузок ASProxy</value>
   </data>
 </root>
