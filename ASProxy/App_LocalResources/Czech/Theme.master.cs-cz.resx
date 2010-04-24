@@ -124,10 +124,10 @@
     <value>Je zdarma.</value>
   </data>
   <data name="lblLogo2.Text" xml:space="preserve">
-    <value>Surf the web with</value>
+    <value>Surfujte svobodně po internetu</value>
   </data>
   <data name="mnuASProxy.Text" xml:space="preserve">
-    <value>ASProxy Page</value>
+    <value>ASProxy stránka</value>
   </data>
   <data name="mnuCookie.Text" xml:space="preserve">
     <value>Správce cookies</value>
@@ -142,6 +142,6 @@
     <value>Stahovací nástroj</value>
   </data>
   <data name="mnuHome.Text" xml:space="preserve">
-    <value>Home</value>
+    <value>Domů</value>
   </data>
 </root>

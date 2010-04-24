@@ -117,34 +117,46 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="btnDisplay.Text" xml:space="preserve">
-    <value>Stáhnout</value>
+  <data name="aspLogin.CreateUserText" xml:space="preserve">
+    <value />
   </data>
-  <data name="lblAutoPrompt.Text" xml:space="preserve">
-    <value>&lt;script type="text/javascript"&gt;window.onload=function(){{window.location="{0}";}}&lt;/script&gt;</value>
+  <data name="aspLogin.FailureText" xml:space="preserve">
+    <value>Ihr Login Versuch war nicht erfolgreich! Bitte versuchen Sie es erneut.</value>
   </data>
-  <data name="lblErrorMsg.Text" xml:space="preserve">
-    <value>Chybová zpráva</value>
+  <data name="aspLogin.HelpPageText" xml:space="preserve">
+    <value />
   </data>
-  <data name="lblErrorMsg.ToolTip" xml:space="preserve">
-    <value>Chybová zpráva</value>
+  <data name="aspLogin.InstructionText" xml:space="preserve">
+    <value />
   </data>
-  <data name="lblMainTitle.Text" xml:space="preserve">
-    <value>Stahovací nástroj</value>
+  <data name="aspLogin.LoginButtonText" xml:space="preserve">
+    <value>Anmelden</value>
   </data>
-  <data name="lblPrompt.Text" xml:space="preserve">
-    <value>V případě, že Váš internetový prohlížeč nezobrazí dialog pro stahování, klikněte na odkaz níže.</value>
+  <data name="aspLogin.PasswordLabelText" xml:space="preserve">
+    <value>Passwort:</value>
   </data>
-  <data name="lnkDownload.Text" xml:space="preserve">
-    <value>Odkaz ke stažení</value>
+  <data name="aspLogin.PasswordRecoveryText" xml:space="preserve">
+    <value />
   </data>
-  <data name="ltrMainDesc.Text" xml:space="preserve">
-    <value>Zde můžete stáhnout cokoli co potřebujete. Soubory, html stránky, obrázky, soubory na ftp, atd.</value>
+  <data name="aspLogin.PasswordRequiredErrorMessage" xml:space="preserve">
+    <value>Das Feld Passwort darf nicht leer sein.</value>
+  </data>
+  <data name="aspLogin.RememberMeText" xml:space="preserve">
+    <value>Angemeldet bleiben.</value>
+  </data>
+  <data name="aspLogin.TitleText" xml:space="preserve">
+    <value>Bitte melden Sie sich an</value>
+  </data>
+  <data name="aspLogin.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="aspLogin.UserNameLabelText" xml:space="preserve">
+    <value>Benutzername:</value>
+  </data>
+  <data name="aspLogin.UserNameRequiredErrorMessage" xml:space="preserve">
+    <value>Das Feld Benutzername darf nicht leer sein.</value>
   </data>
   <data name="Page.Title" xml:space="preserve">
-    <value>Stahovaní vlastních souborů s ASProxy</value>
-  </data>
-  <data name="lblUrl.Text" xml:space="preserve">
-    <value>Vložte URL:</value>
+    <value>Bitte melden Sie sich an</value>
   </data>
 </root>

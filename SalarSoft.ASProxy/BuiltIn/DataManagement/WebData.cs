@@ -569,11 +569,11 @@ namespace SalarSoft.ASProxy.BuiltIn
 
 
 			// If server has configured to pass through a proxy
-			if (Configurations.NetProxy.WebProxyEnabled)
-			{
+			//if (Configurations.NetProxy.WebProxyEnabled)
+			//{
 				// Use configured settings
 				webRequest.Proxy = Configurations.NetProxy.GenerateWebProxy();
-			}
+			//}
 
 			// add custom headers to request
 			if (RequestInfo.CustomHeaders != null)

@@ -927,25 +927,20 @@ namespace SalarSoft.ASProxy
 				this.Authentication_Username = node.Attributes["userName"].Value;
 				this.Authentication_Password = node.Attributes["password"].Value;
 			}
-			public bool WebProxyEnabled
-			{
-				get
-				{
-					return (Mode == NetProxyMode.Custom || Mode == NetProxyMode.SystemDefault);
-				}
-			}
+
 			public IWebProxy GenerateWebProxy()
 			{
 				if (_webProxy == null)
 				{
 					switch (Mode)
 					{
-						case NetProxyMode.Direct:
-							_webProxy = new WebProxy();
-							break;
-
 						case NetProxyMode.SystemDefault:
 							_webProxy = HttpWebRequest.DefaultWebProxy;
+							break;
+
+						case NetProxyMode.Direct:
+							//_webProxy = new WebProxy();
+							_webProxy = GlobalProxySelection.GetEmptyWebProxy();
 							break;
 
 						case NetProxyMode.Custom:

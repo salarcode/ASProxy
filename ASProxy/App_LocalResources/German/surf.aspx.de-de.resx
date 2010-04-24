@@ -117,34 +117,67 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="btnDisplay.Text" xml:space="preserve">
-    <value>Stáhnout</value>
+  <data name="btnDisplay" xml:space="preserve">
+    <value>Anzeigen</value>
   </data>
-  <data name="lblAutoPrompt.Text" xml:space="preserve">
-    <value>&lt;script type="text/javascript"&gt;window.onload=function(){{window.location="{0}";}}&lt;/script&gt;</value>
+  <data name="chkCompression" xml:space="preserve">
+    <value>Seite komprimieren</value>
   </data>
-  <data name="lblErrorMsg.Text" xml:space="preserve">
-    <value>Chybová zpráva</value>
+  <data name="chkCookies" xml:space="preserve">
+    <value>Cookies</value>
   </data>
-  <data name="lblErrorMsg.ToolTip" xml:space="preserve">
-    <value>Chybová zpráva</value>
+  <data name="chkDisplayImages" xml:space="preserve">
+    <value>Bilder anzeigen</value>
   </data>
-  <data name="lblMainTitle.Text" xml:space="preserve">
-    <value>Stahovací nástroj</value>
+  <data name="chkForms" xml:space="preserve">
+    <value>Formulare anzeigen</value>
   </data>
-  <data name="lblPrompt.Text" xml:space="preserve">
-    <value>V případě, že Váš internetový prohlížeč nezobrazí dialog pro stahování, klikněte na odkaz níže.</value>
+  <data name="chkFrames" xml:space="preserve">
+    <value>Frames anzeigen</value>
   </data>
-  <data name="lnkDownload.Text" xml:space="preserve">
-    <value>Odkaz ke stažení</value>
+  <data name="chkOrginalUrl" xml:space="preserve">
+    <value>Original URLs anzeigen</value>
   </data>
-  <data name="ltrMainDesc.Text" xml:space="preserve">
-    <value>Zde můžete stáhnout cokoli co potřebujete. Soubory, html stránky, obrázky, soubory na ftp, atd.</value>
+  <data name="chkPageTitle" xml:space="preserve">
+    <value>Seitentitel anzeigen</value>
+  </data>
+  <data name="chkProcessLinks" xml:space="preserve">
+    <value>Links anzeigen</value>
+  </data>
+  <data name="chkRemoveScripts" xml:space="preserve">
+    <value>Scripts entfernen</value>
+  </data>
+  <data name="chkTempCookies" xml:space="preserve">
+    <value>Cookies nur temporär speichern</value>
+  </data>
+  <data name="chkUTF8" xml:space="preserve">
+    <value>UTF-8 Kodierung erzwingen</value>
+  </data>
+  <data name="CookieManager" xml:space="preserve">
+    <value>Cookies</value>
+  </data>
+  <data name="DownloadTool" xml:space="preserve">
+    <value>Downloader</value>
+  </data>
+  <data name="JsIsDisabled" xml:space="preserve">
+    <value>Warnung, Sie haben JavaScript deaktiviert.&lt;br /&gt;Bitte Aktivieren Sie JavaScript oder &lt;a asproxydone="2" href="noscript.aspx"&gt;benutzen Sie diese Seite&lt;/a&gt;.</value>
+  </data>
+  <data name="lnkMoreOptions" xml:space="preserve">
+    <value>Optionen</value>
   </data>
   <data name="Page.Title" xml:space="preserve">
-    <value>Stahovaní vlastních souborů s ASProxy</value>
+    <value>Mit ASProxy im Web surfen</value>
   </data>
-  <data name="lblUrl.Text" xml:space="preserve">
-    <value>Vložte URL:</value>
+  <data name="UrlIsEmpty" xml:space="preserve">
+    <value>Bitte geben Sie eine URL ein.</value>
+  </data>
+  <data name="chkEncodeUrl" xml:space="preserve">
+    <value>URLs verschlüsseln</value>
+  </data>
+  <data name="chkRemoveObjects" xml:space="preserve">
+    <value>Objekte entfernen</value>
+  </data>
+  <data name="chkImgCompressor" xml:space="preserve">
+    <value>Bilder komprimieren</value>
   </data>
 </root>

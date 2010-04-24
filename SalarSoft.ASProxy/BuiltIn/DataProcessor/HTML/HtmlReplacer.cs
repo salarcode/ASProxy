@@ -266,7 +266,10 @@ namespace SalarSoft.ASProxy.BuiltIn
 					if (tmpRelType.Trim().ToLower() != attr1Value.Trim().ToLower())
 					{
 						if (attr1Result.Start != -1)
+						{
 							cursorPos = attr1Result.Start;
+							attr2Result.Start = attr1Result.Start;
+						}
 						continue;
 					}
 				}

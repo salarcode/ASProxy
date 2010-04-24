@@ -145,6 +145,7 @@
 	</fieldset>
 	<fieldset>
 		<legend>Network proxy</legend>
+		<span class="field_desc">(Any changes requires website restart.)</span>
 		<table style="width: 100%;">
 			<tr>
 				<td>Enabled

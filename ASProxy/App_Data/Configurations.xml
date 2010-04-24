@@ -78,7 +78,7 @@
 	If web server is behind a network proxy or firewall, you should config it here to pass
 	direct, SystemDefault, Custom
 	-->
-	<netProxy mode="Direct">
+	<netProxy mode="SystemDefault">
 		<custom address="0.0.0.0" port="8080" authentication="false">
 			<authentication userName="" password="" />
 		</custom>

@@ -81,7 +81,10 @@
 					if (WebMethods.IsMethod(engine.RequestInfo.RequestMethod, WebMethods.DefaultMethods.GET))
 						Response.Redirect(UrlProvider.GetASProxyPageUrl(Consts.FilesConsts.PageDownload, engine.RequestInfo.RequestUrl, _userOptions.EncodeUrl), false);
 					else
-						Response.Redirect(UrlBuilder.AppendAntoherQueries(Consts.FilesConsts.PageDownload, engine.RequestInfo.PostDataString), false);
+					{
+						string postUrl = UrlBuilder.AppendAntoherQueries(engine.RequestInfo.RequestUrl, engine.RequestInfo.PostDataString);
+						Response.Redirect(UrlProvider.GetASProxyPageUrl(Consts.FilesConsts.PageDownload, postUrl, _userOptions.EncodeUrl), false);
+					}
 					return;
 				case MimeContentType.image_gif:
 				case MimeContentType.image_jpeg:
@@ -174,23 +177,24 @@
 		// quit
 		HttpContext.Current.ApplicationInstance.CompleteRequest();
 	}
+
+	string FloatDirection(bool inPageDirection)
+	{
+		if (inPageDirection)
+			return Resources.Languages.TextAlign;
+		else
+		{
+			if (Resources.Languages.TextAlign.ToLower() == "left")
+				return "right";
+			else
+				return "left";
+		}
+	}
 </script>
 <head runat="server"><title runat="server">Surf the web with ASProxy</title>
 <script src="scripts/base64encoder.js" type="text/javascript" asproxydone="2"></script>
 <!-- Surf the web invisibly using ASProxy power. A Powerfull web proxy is in your hands. -->
-<style type="text/css" asproxydone="2">
-.ASPXBlock,.AddrBar,.FastOpts,#MoreOpts{background-color:#f8f8f8;height:auto !important;margin:0 2px;padding:0;float:inherit;display:inherit;color:black;font: normal normal normal 100% Tahoma;font-family:Tahoma,sans-serif;font-size:10pt;}
-.ASPXBlock{background-color:white;width:99.5%;display: block;padding:1px;margin:0;border:2px solid #000000;height:auto !important;float:none;}
-.ASPXMain{color:black;padding:2px;margin:0;border:1px solid #C0C0C0;background-color:#f8f8f8;background-image:none;font-weight:normal;font-style:normal;line-height:normal;visibility:visible;table-layout:auto;white-space:normal;word-spacing:normal;float:none;}
-.ASPXMain a,.ASPXMain a:link,.ASPXMain a:hover,.ASPXMain a:visited,.ASPXMain a:active{font:normal normal normal 100% Tahoma;font-family:Tahoma,sans-serif;color:#000099;text-decoration:underline;}
-.AddrBar{margin:3px 1px;}
-.AddrBar input{width:auto;height:auto;border:solid 1px silver;font:inherit;color:Black;}
-.AddrBar .Button{width:auto;height:25px;color:black;float:none;width:auto !important;margin:0;background-color:#ECE9D8;border:outset 2px;vertical-align:bottom;font-size:10pt;padding:2px 5px;}
-.AddrBar .TextBox{width:auto !important;height:auto;color:black;background-color:white;margin:0;float:none;font-size:10pt;border:solid 1px silver;padding:3px;text-align:left;}
-.ASPXOpt{background-color:#f8f8f8;height: auto !important;margin:0 1px;padding:0;float:none;color:black;font:normal normal normal 100% Tahoma;font-family:Tahoma,sans-serif;font-size:8pt;display:inline;border-width:0;text-align:center;}
-.ASPXOpt input{width:auto;height:auto !important;margin:0;background-color:#F8F8F8;display:inline;border-width:0;float: none;}
-.ASPXOpt label{width:auto;height:auto !important;margin:0 2px;padding:0;vertical-align:baseline;float:none;color:Black;font:normal normal normal 100% Tahoma;display:inline;border-width:0;background-color:#F8F8F8;}
-</style>
+<link rel="Stylesheet" href="theme/style/surfstyle.css" type="text/css" asproxydone="2"/>
 </head><body>
 <script asproxydone="2" type="text/javascript">
 var _ASProxyVersion="<%=Consts.General.ASProxyVersion %>";
@@ -229,6 +233,7 @@ _XPage.EncodeUrl.checked=<%=_userOptions.EncodeUrl.ToString().ToLower() %>;
 <input type="button" onclick="_Page_SubmitForm()" value="<%=this.GetLocalResourceObject("btnDisplay")%>" id="btnASProxyDisplayButton" class="Button" />
 <a href="cookieman.aspx" target="_blank" asproxydone="2"><%=this.GetLocalResourceObject("CookieManager")%></a>
 <a href="download.aspx" target="_blank" asproxydone="2"><%=this.GetLocalResourceObject("DownloadTool")%></a>
+<a href="javascript:_Page_HideASProxyBlock()" asproxydone="2" title="Close this bar"><span style="font-size:smaller;float:<%=FloatDirection(false)%>">(X)</span></a>
 </div>
 <div class="FastOpts">
 <%if (Configurations.UserOptions.ForceEncoding.Changeable){ %><span class="ASPXOpt"><input id="chkUTF8" type="checkbox" onclick="_Page_SaveOptions()" /><label for="chkUTF8"><%=this.GetLocalResourceObject("chkUTF8")%></label></span> <%} %>
@@ -253,7 +258,7 @@ _XPage.EncodeUrl.checked=<%=_userOptions.EncodeUrl.ToString().ToLower() %>;
 _Page_Initialize();
 _Page_SetOptions();
 // iframed, hide the form
-if(window.self != window.top)document.getElementById('ASProxyFormBlock').style.display='none';
+if(window.self != window.top)_Page_HideASProxyBlock();
 </script>
 
 <%if (_HasError){ %>
@@ -264,7 +269,7 @@ if(window.self != window.top)document.getElementById('ASProxyFormBlock').style.d
 </div></body>
 </html>
 
-<div style="position: relative; left: 0px; top: 5px; width: 100%; height: auto;">
+<div id="__ASProxyContainer" style="position: relative; left: 0px; top: 5px; width: 100%; height: auto;">
 <%=_ExtraCodesForBody%>
 <%=_ResponseContent%>
 </div>

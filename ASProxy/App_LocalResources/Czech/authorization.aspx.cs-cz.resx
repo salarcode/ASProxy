@@ -124,14 +124,14 @@
     <value />
   </data>
   <data name="lblDesc.Text" xml:space="preserve">
-    <value>Požadovaný zdroj vyžaduje ověření. Prosím vložte uživatelské jméno a heslo.
+    <value>Požadovaný zdroj vyžaduje ověření. Vložte prosím uživatelské jméno a heslo.
 	&lt;br/&gt;Vložené uživatelské jméno a heslo budou uloženy do paměti a nebudou dostupné po ukončení této relace.</value>
   </data>
   <data name="lblErrorMsg.Text" xml:space="preserve">
-    <value>Error message</value>
+    <value>Chybová zpráva</value>
   </data>
   <data name="lblErrorMsg.ToolTip" xml:space="preserve">
-    <value>Error message</value>
+    <value>Chybová zpráva</value>
   </data>
   <data name="lblRequestedUrl.Text" xml:space="preserve">
     <value />
@@ -176,7 +176,7 @@
     <value>Zapamatovat si mě pro příště.</value>
   </data>
   <data name="wcLogin.TitleText" xml:space="preserve">
-    <value>Přihlásit ke stránce vyžadující oprávnění</value>
+    <value>Přihlásit se ke stránce vyžadující oprávnění</value>
   </data>
   <data name="wcLogin.ToolTip" xml:space="preserve">
     <value />

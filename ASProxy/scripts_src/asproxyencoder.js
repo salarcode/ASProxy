@@ -1,6 +1,6 @@
 // ASProxy Dynamic Encoder
 // ASProxy encoder for dynamically created objects //
-// Last update: 2010-02-10 coded by Salar.Kh //
+// Last update: 2010-04-23 coded by Salar.Kh //
 
 // ---------------------------
 // Runtime generated information objects
@@ -1726,7 +1726,10 @@ Object.extend(XMLHttpRequest.prototype, {
 
 			if (encoded != "") {
 				// decode the url, and use it as request url
-				encoded = _Base64_decode(_ASProxy.B64UnknownerRemove(encoded));
+				if(_userConfig.EncodeUrl)
+					encoded = _Base64_decode(_ASProxy.B64UnknownerRemove(encoded));
+				else
+					encoded = unescape(encoded);
 				url = encoded;
 			}
 		}

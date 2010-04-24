@@ -34,7 +34,7 @@ namespace SalarSoft.ASProxy
 		/// <summary>
 		/// All installed providers, includes disabled and failed to load providers
 		/// </summary>
-		internal static List<ProviderInfo> InstalledProviders
+		public static List<ProviderInfo> InstalledProviders
 		{
 			get
 			{

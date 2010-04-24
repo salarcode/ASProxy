@@ -1399,113 +1399,119 @@ namespace SalarSoft.ASProxy.BuiltIn
 			int countSemicolon = 0;
 			StringBuilder result = new StringBuilder(source);
 			int methodParameterEnd = 0;
-
-			for (i = methodStart; i < source.Length; i++)
+			try
 			{
-				// If serching reached to end, break the loop.
-				if (i > serachEndRange) break;
-
-				// Set previous character
-				previous = current;
-
-				// Get current character
-				current = source[i];
-
-				switch (current)
+				for (i = methodStart; i < source.Length; i++)
 				{
-					case ('\''):// Apostrophe
-						if (countQuote % 2 != 0)
-						{
-							result[i] = replaceCharacter;
-							//countApostrophe = 0;
-						}
-						else
-						{
-							if (previous == '\\')
+					// If serching reached to end, break the loop.
+					if (i > serachEndRange) break;
+
+					// Set previous character
+					previous = current;
+
+					// Get current character
+					current = source[i];
+
+					switch (current)
+					{
+						case ('\''):// Apostrophe
+							if (countQuote % 2 != 0)
 							{
-								if (countQuote % 2 != 0 || countApostrophe % 2 != 0)
-									result[i] = replaceCharacter;
+								result[i] = replaceCharacter;
+								//countApostrophe = 0;
+							}
+							else
+							{
+								if (previous == '\\')
+								{
+									if (countQuote % 2 != 0 || countApostrophe % 2 != 0)
+										result[i] = replaceCharacter;
+									else
+										countApostrophe++;
+								}
 								else
 									countApostrophe++;
 							}
-							else
-								countApostrophe++;
-						}
-						break;
+							break;
 
 
-					case ('\"'): // Quote
+						case ('\"'): // Quote
 
-						if (countApostrophe % 2 != 0)
-						{
-							result[i] = replaceCharacter;
-							//countQuote = 0;
-						}
-						else
-						{
-							if (previous == '\\')
+							if (countApostrophe % 2 != 0)
 							{
-								if (countQuote % 2 != 0 || countApostrophe % 2 != 0)
-									result[i] = replaceCharacter;
+								result[i] = replaceCharacter;
+								//countQuote = 0;
+							}
+							else
+							{
+								if (previous == '\\')
+								{
+									if (countQuote % 2 != 0 || countApostrophe % 2 != 0)
+										result[i] = replaceCharacter;
+									else
+										countQuote++;
+								}
 								else
 									countQuote++;
 							}
+							break;
+
+
+						case (','):// Virgule
+
+							if ((countQuote % 2 == 0) && (countApostrophe % 2 == 0) && (countStartParenthesis == countEndParenthesis))
+							{
+								methodParameterEnd = i;
+								//break; // OOPs this break exits from switch
+
+								// Exit from For loop
+								return result.ToString();
+							}
 							else
-								countQuote++;
-						}
-						break;
+								result[i] = replaceCharacter;
+
+							break;
 
 
-					case (','):// Virgule
+						case ('('):// StartParenthesis
 
-						if ((countQuote % 2 == 0) && (countApostrophe % 2 == 0) && (countStartParenthesis == countEndParenthesis))
-						{
-							methodParameterEnd = i;
-							//break; // OOPs this break exits from switch
-
-							// Exit from For loop
-							return result.ToString();
-						}
-						else
-							result[i] = replaceCharacter;
-
-						break;
+							if (countQuote % 2 != 0 || countApostrophe % 2 != 0)
+							{
+								result[i] = replaceCharacter;
+							}
+							else
+								countStartParenthesis++;
+							break;
 
 
-					case ('('):// StartParenthesis
+						case (')'):// EndParenthesis
 
-						if (countQuote % 2 != 0 || countApostrophe % 2 != 0)
-						{
-							result[i] = replaceCharacter;
-						}
-						else
-							countStartParenthesis++;
-						break;
-
-
-					case (')'):// EndParenthesis
-
-						if (countQuote % 2 != 0 || countApostrophe % 2 != 0)
-						{
-							result[i] = replaceCharacter;
-						}
-						else
-							countEndParenthesis++;
-						break;
+							if (countQuote % 2 != 0 || countApostrophe % 2 != 0)
+							{
+								result[i] = replaceCharacter;
+							}
+							else
+								countEndParenthesis++;
+							break;
 
 
-					case (';'):// Semicolon
+						case (';'):// Semicolon
 
-						if (countQuote % 2 != 0 || countApostrophe % 2 != 0)
-						{
-							result[i] = replaceCharacter;
-						}
-						else
-							countSemicolon++;
-						break;
+							if (countQuote % 2 != 0 || countApostrophe % 2 != 0)
+							{
+								result[i] = replaceCharacter;
+							}
+							else
+								countSemicolon++;
+							break;
+					}
 				}
+				return result.ToString();
 			}
-			return result.ToString();
+			finally
+			{
+				result.Length = 0;
+			}
 		}
 
 		#endregion

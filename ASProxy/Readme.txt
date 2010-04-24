@@ -1,6 +1,6 @@
 ****************************************
-ASProxy       :version 5.5b4
-Last update   :2010/02/07
+ASProxy       :version 5.5b5
+Last update   :2010/04/23
 Official site :http://asproxy.sourceforge.net/
 
 ASProxy is an ASP.NET Web Proxy.
@@ -37,7 +37,15 @@ Changing interface:
 ****************************************
 Version History
 
-Version 5.5 Beta4 2010/02/09
+Version 5.5b5 2010/04/23
+* New: Small close button on top of the surf.aspx page to close the bar immediatly.
+* Fixed: NetProxy default configuration.
+* Fixed: Minor issue with urls which have parameters, when encode url option is disabled.
+* Fixed: Invalid chars in download file name caused download to fail.(4shared.com, hotfile.com, ...)
+* Fixed: Some encoded url detection is fixed. Caused ASP.NET Ajax to fail.
+* Fixed: ASP.NET ViewState value detection due to preventing crashes.
+
+Version 5.5 Beta4 2010/02/15
 * New: Plugins and Providers autoupdate feature is available.
 * New: Plugins and Providers manual update check.
 * New: Compressed (gzip, deflate) response detection.

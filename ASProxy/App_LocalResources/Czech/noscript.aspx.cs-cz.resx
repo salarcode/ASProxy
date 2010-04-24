@@ -136,7 +136,7 @@
     <value>Vložené rámy</value>
   </data>
   <data name="chkOrginalUrl" xml:space="preserve">
-    <value>Původní URLs</value>
+    <value>Původní URL adresy</value>
   </data>
   <data name="chkPageTitle" xml:space="preserve">
     <value>Zobrazit titulek stránky</value>
@@ -148,7 +148,7 @@
     <value>Odstranit skripty</value>
   </data>
   <data name="chkTempCookies" xml:space="preserve">
-    <value>Save Cookies as Temp</value>
+    <value>Dočasně uložit Cookies</value>
   </data>
   <data name="chkUTF8" xml:space="preserve">
     <value>Vynutit UTF-8</value>
@@ -160,24 +160,28 @@
     <value>Stahovací nástroj</value>
   </data>
   <data name="JsIsDisabled" xml:space="preserve">
-    <value>Warning, the JavaScript is disabled so this form will not perform any more.&lt;br /&gt;Please enable JavaScript or &lt;a asproxydone="2" href="noscript.aspx"&gt;use this page&lt;/a&gt;.</value>
+    <value>Upozornění, JavaScript is vypnutý, tudíž tento formulář nemůže být zpracován.&lt;br /&gt;Povolte JavaScript, nebo &lt;a asproxydone="2" href="noscript.aspx"&gt;použijte tuto stránku&lt;/a&gt;.</value>
   </data>
   <data name="lnkMoreOptions" xml:space="preserve">
     <value>Nastavení</value>
   </data>
   <data name="Page.Title" xml:space="preserve">
-    <value>Surf the web with ASProxy</value>
+    <value>Surfujte po webu s ASProxy</value>
   </data>
   <data name="UrlIsEmpty" xml:space="preserve">
-    <value>Please enter the url.</value>
+    <value>Vložte prosím URL.</value>
   </data>
   <data name="chkEncodeUrl" xml:space="preserve">
-    <value>Encode URLs</value>
+    <value>Zakódovat URL adresy</value>
   </data>
   <data name="chkRemoveObjects" xml:space="preserve">
-    <value>Remove Objects</value>
+    <value>Odstranit objekty</value>
   </data>
   <data name="chkImgCompressor" xml:space="preserve">
-    <value>Compress images</value>
+    <value>Komprimovat obrázky</value>
+  </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="surf.aspx.cs-cz" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>surf.aspx.cs-cz.resx;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
   </data>
 </root>

@@ -1258,19 +1258,27 @@ namespace SalarSoft.ASProxy.BuiltIn
 			);
 
 			StringBuilder result = new StringBuilder();
-			// ASProxy encoder variables
-			result.Append(Resources.ASProxyJavaScriptTag(userConfig + reqInfo + locationObject + cookieNames, ""));
+			try
+			{
+				// ASProxy encoder variables
+				result.Append(Resources.ASProxyJavaScriptTag(userConfig + reqInfo + locationObject + cookieNames, ""));
 
-			// Base64 encoder 
-			result.Append(Resources.ASProxyJavaScriptTag("", Consts.FilesConsts.JSBase64));
+				// Base64 encoder 
+				result.Append(Resources.ASProxyJavaScriptTag("", Consts.FilesConsts.JSBase64));
 
-			// ASProxy encoder 
-			result.Append(Resources.ASProxyJavaScriptTag("", Consts.FilesConsts.JSASProxyEncoder));
+				// ASProxy encoder 
+				result.Append(Resources.ASProxyJavaScriptTag("", Consts.FilesConsts.JSASProxyEncoder));
 
-			// AJAX wrapper core, Usless since v5.5b4
-			//result.Append(Resources.ASProxyJavaScriptTag("", Consts.FilesConsts.JSAJAXWrapperCore));
+				// AJAX wrapper core, Usless since v5.5b4
+				//result.Append(Resources.ASProxyJavaScriptTag("", Consts.FilesConsts.JSAJAXWrapperCore));
 
-			return result.ToString();
+				return result.ToString();
+			}
+			finally
+			{
+				// release the memory of stringBuilder
+				result.Length = 0;
+			}
 		}
 
 		/// <summary>
@@ -1290,11 +1298,11 @@ namespace SalarSoft.ASProxy.BuiltIn
 			public const string STR_IFrame_ExtraAttribute = " onload=_ASProxy.Enc.EncodeFrames() ";
 			public const string STR_OrginalUrl_TagAttributeFormat = " onmouseout=ORG_OUT_() onmouseover=ORG_IN_(this) originalurl=\"{0}\" ";
 
-			public const string STR_OrginalUrl_FloatBar = "<div id='__ASProxyOriginalURL' dir='ltr' style='display:block;font-family:tahoma;color:black;font-size:12px;padding:2px 5px 2px 5px;margin:0;position:absolute;left:0px;top:0px;width:98%;background:whitesmoke none;border:solid 2px black;overflow: visible;z-index:999999999;visibility:hidden;text-align:left;line-height:100%;'></div>";
+			public const string STR_OrginalUrl_FloatBar = "<div id='__ASProxyOriginalURL' dir='ltr'></div>";
 
 			// float bar scripts should appear after ASProxyEncoder scripts
 			public const string STR_OrginalUrl_Functions =
-					"<script language='javascript' type='text/javascript'>" +
+					"<script language='javascript' type='text/javascript' asproxydone='2'>" +
 					"var _wparent=window.top ? window.top : window.parent;" +
 					"_wparent=_wparent ? _wparent : window;" +
 					"var _document=_wparent.document;" +
@@ -1314,7 +1322,7 @@ namespace SalarSoft.ASProxy.BuiltIn
 					"if(ev.ctrlKey && ev.shiftKey && ev.keyCode==88){if(typeof(_XFloatBar)=='undefined')return;" +
 					"if(_XFloatBar.Freeze){_XFloatBar.Freeze=false;ORG_HIDE_IT();}" +
 					"else if(_XFloatBar.CurrentUrl!=''){_XFloatBar.Freeze=true;" +
-					"_XFloatBar.innerHTML=_XFloatBar.innerHTML+\"<br /><span style='color:navy;'>Press Ctrl+Shift+X again to unfreeze this bar.<span/>\";" +
+					"_XFloatBar.innerHTML+=\"<br /><span style='color:navy;'>Press Ctrl+Shift+X again to unfreeze this bar.<span/>\";" +
 					"}}});" +
 					"</script>";
 

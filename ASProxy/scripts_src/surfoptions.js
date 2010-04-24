@@ -1,9 +1,13 @@
 // ASProxy Surf page scripts
-// Last update: 2010-02-07 coded by Salar.Kh //
+// Last update: 2010-04-22 coded by Salar.Kh //
 
 // Page options
 if (typeof (_XPage) == 'undefined')
 	_XPage = {};
+function _Page_HideASProxyBlock(){
+	document.getElementById('ASProxyFormBlock').style.display = 'none';
+	document.getElementById('__ASProxyContainer').style.position = '';
+}
 function _Page_Initialize(){
 	_XPage.UrlBox =document.getElementById('txtUrl');
 	_XPage.ProcessLinks =document.getElementById('chkProcessLinks');
@@ -91,7 +95,7 @@ function _Page_Navigate(url){
 	    navUrl+=_Base64_encode(_XPage.UrlBox.value)+_Page_B64Unknowner;
 	} else {
 		navUrl+='?dec='+'0'+'&url=';
-	    navUrl+=_XPage.UrlBox.value;
+	    navUrl+=escape(_XPage.UrlBox.value);
 	}
 	document.location=navUrl;
 }

@@ -250,10 +250,7 @@ namespace SalarSoft.ASProxy.Update
 			using (WebClient client = new WebClient())
 			{
 				// Use a proxy server between ASProxy and web
-				if (Configurations.NetProxy.WebProxyEnabled)
-				{
-					client.Proxy = Configurations.NetProxy.GenerateWebProxy();
-				}
+				client.Proxy = Configurations.NetProxy.GenerateWebProxy();
 
 				client.DownloadFile(url, destFilename);
 			}
@@ -264,10 +261,7 @@ namespace SalarSoft.ASProxy.Update
 			using (WebClient client = new WebClient())
 			{
 				// Use a proxy server between ASProxy and web
-				if (Configurations.NetProxy.WebProxyEnabled)
-				{
-					client.Proxy = Configurations.NetProxy.GenerateWebProxy();
-				}
+				client.Proxy = Configurations.NetProxy.GenerateWebProxy();
 
 				byte[] data = client.DownloadData(url);
 				return data;

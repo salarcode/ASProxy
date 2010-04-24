@@ -55,7 +55,7 @@ namespace SalarSoft.ASProxy
         /// <summary>
         /// All installed plugins, includes disabled and failed to load plugins
         /// </summary>
-        internal static List<PluginInfo> InstalledPlugins
+        public static List<PluginInfo> InstalledPlugins
         {
             get
             {

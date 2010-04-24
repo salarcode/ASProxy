@@ -1,0 +1,13 @@
+﻿/* Styles for surf.aspx */
+#__ASProxyOriginalURL{display:block;font-family:tahoma;color:black;font-size:12px;padding:2px 5px 2px 5px;margin:0;position:absolute;left:0px;top:0px;width:98%;background:whitesmoke none;border:solid 2px black;overflow: visible;z-index:999999999;visibility:hidden;text-align:left;line-height:100%;}
+.ASPXBlock,.AddrBar,.FastOpts,#MoreOpts{background-color:#f8f8f8;height:auto !important;margin:0 2px;padding:0;float:inherit;display:inherit;color:black;font: normal normal normal 100% Tahoma;font-family:Tahoma,sans-serif;font-size:10pt;}
+.ASPXBlock{background-color:white;width:99.5%;display: block;padding:1px;margin:0;border:2px solid #000000;height:auto !important;float:none;}
+.ASPXMain{color:black;padding:2px;margin:0;border:1px solid #C0C0C0;background-color:#f8f8f8;background-image:none;font-weight:normal;font-style:normal;line-height:normal;visibility:visible;table-layout:auto;white-space:normal;word-spacing:normal;float:none;}
+.ASPXMain a,.ASPXMain a:link,.ASPXMain a:hover,.ASPXMain a:visited,.ASPXMain a:active{font:normal normal normal 100% Tahoma;font-family:Tahoma,sans-serif;color:#000099;text-decoration:underline;}
+.AddrBar{margin:3px 1px;}
+.AddrBar input{width:auto;height:auto;border:solid 1px silver;font:inherit;color:Black;}
+.AddrBar .Button{width:auto;height:25px;color:black;float:none;width:auto !important;margin:0;background-color:#ECE9D8;border:outset 2px;vertical-align:bottom;font-size:10pt;padding:2px 5px;}
+.AddrBar .TextBox{width:auto !important;height:auto;color:black;background-color:white;margin:0;float:none;font-size:10pt;border:solid 1px silver;padding:3px;text-align:left;}
+.ASPXOpt{background-color:#f8f8f8;height: auto !important;margin:0 1px;padding:0;float:none;color:black;font:normal normal normal 100% Tahoma;font-family:Tahoma,sans-serif;font-size:8pt;display:inline;border-width:0;text-align:center;}
+.ASPXOpt input{width:auto;height:auto !important;margin:0;background-color:#F8F8F8;display:inline;border-width:0;float: none;}
+.ASPXOpt label{width:auto;height:auto !important;margin:0 2px;padding:0;vertical-align:baseline;float:none;color:Black;font:normal normal normal 100% Tahoma;display:inline;border-width:0;background-color:#F8F8F8;}

@@ -118,16 +118,16 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="btnClearCookies.Text" xml:space="preserve">
-    <value>Delete All</value>
+    <value>Smazat vše</value>
   </data>
   <data name="btnClearCookies.ToolTip" xml:space="preserve">
-    <value />
+    <value>Smazat vše</value>
   </data>
   <data name="btnDelete.Text" xml:space="preserve">
     <value>Smazat</value>
   </data>
   <data name="btnDelete.ToolTip" xml:space="preserve">
-    <value />
+    <value>Smazat</value>
   </data>
   <data name="lblFootSlogan1.Text" xml:space="preserve">
     <value>Mějte svou vlastní</value>
@@ -142,40 +142,40 @@
     <value>Nastavení</value>
   </data>
   <data name="lblLogo2.Text" xml:space="preserve">
-    <value>Surfuje to internetu s</value>
+    <value>Surfuje to internetu</value>
   </data>
   <data name="lblMainDesc.Text" xml:space="preserve">
-    <value>Upozornění, ASProxy se nemusí načíst v případě, že Vaše uložené cookies budou příliš velké.&lt;br /&gt;
-			Pak je třeba odstranit uložené ASProxy cookies z Vašeho internetového prohlížeče.</value>
+    <value>Upozornění, ASProxy se nemusí načíst v případě, že Vaše uložené Cookies budou příliš velké.&lt;br /&gt;
+			Pak je třeba odstranit uložené ASProxy Cookies z Vašeho internetového prohlížeče.</value>
   </data>
   <data name="lblMainTitle.Text" xml:space="preserve">
-    <value>Správce cookies</value>
+    <value>Správce Cookies</value>
   </data>
   <data name="mnuASProxy.Text" xml:space="preserve">
-    <value>ASProxy Page</value>
+    <value>ASProxy stránka</value>
   </data>
   <data name="mnuCookie.Text" xml:space="preserve">
-    <value>Správce cookies</value>
+    <value>Správce Cookies</value>
   </data>
   <data name="mnuDownload.Text" xml:space="preserve">
     <value>Stahovací nástroj</value>
   </data>
   <data name="mnuFootCookie.Text" xml:space="preserve">
-    <value>Správce cookies</value>
+    <value>Správce Cookies</value>
   </data>
   <data name="mnuFootDownload.Text" xml:space="preserve">
     <value>Stahovací nástroj</value>
   </data>
   <data name="mnuHome.Text" xml:space="preserve">
-    <value>Home</value>
+    <value>Domů</value>
   </data>
   <data name="Page.Title" xml:space="preserve">
-    <value>Správa uložených ASProxy cookies ve Vašem počítači</value>
+    <value>Správa uložených ASProxy Cookies ve Vašem počítači</value>
   </data>
   <data name="tdName.Text" xml:space="preserve">
-    <value>Name</value>
+    <value>Jméno</value>
   </data>
   <data name="tdValue.Text" xml:space="preserve">
-    <value>Value</value>
+    <value>Hodnota</value>
   </data>
 </root>

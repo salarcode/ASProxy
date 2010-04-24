@@ -136,7 +136,7 @@
     <value>Vložené rámy</value>
   </data>
   <data name="chkOrginalUrl.Text" xml:space="preserve">
-    <value>Původní URLs</value>
+    <value>Původní URL adresy</value>
   </data>
   <data name="chkPageTitle.Text" xml:space="preserve">
     <value>Zobrazit titulek stránky</value>
@@ -148,19 +148,19 @@
     <value>Odstranit skripty</value>
   </data>
   <data name="chkTempCookies.Text" xml:space="preserve">
-    <value>Save Cookies as Temp</value>
+    <value>Dočasně uložit Cookies</value>
   </data>
   <data name="chkUTF8.Text" xml:space="preserve">
     <value>Vynutit UTF-8</value>
   </data>
   <data name="lblCompression.Text" xml:space="preserve">
-    <value>Compresses the responded page.&lt;br /&gt;This is a recommended option but it is not compatible with all hosting servers.</value>
+    <value>Komprimovat odpověď na stránku.&lt;br /&gt;Toto je doporučené nastavení. Není kompatibilní se všemi  webhostingy.</value>
   </data>
   <data name="lblCookies.Text" xml:space="preserve">
-    <value>Enables cookie support.</value>
+    <value>Povolit podporu Cookie.</value>
   </data>
   <data name="lblDisplayImages.Text" xml:space="preserve">
-    <value>Displays images.</value>
+    <value>Zobrazit obrázky.</value>
   </data>
   <data name="lblFootSlogan1.Text" xml:space="preserve">
     <value>Mějte svou vlastní</value>
@@ -169,69 +169,65 @@
     <value>Je zdarma.</value>
   </data>
   <data name="lblForms.Text" xml:space="preserve">
-    <value>Processes submit forms.</value>
+    <value>Zpracovat odeslání dat formuláře.</value>
   </data>
   <data name="lblFrames.Text" xml:space="preserve">
-    <value>Enables inline frames.</value>
+    <value>Povolit vložené rámy.</value>
   </data>
   <data name="lblLogo2.Text" xml:space="preserve">
-    <value>Surfuje to internetu s</value>
+    <value>Surfuje po internetu s ASProxy</value>
   </data>
   <data name="lblMainTitle.Text" xml:space="preserve">
-    <value>What is ASProxy?</value>
+    <value>Co je ASProxy?</value>
   </data>
   <data name="lblOptions.Text" xml:space="preserve">
     <value>Nastavení</value>
   </data>
   <data name="lblOrginalUrl.Text" xml:space="preserve">
-    <value>Displays original URL address in a float bar on the top of page.&lt;br /&gt;Note that this option can increase page size.&lt;br /&gt;(Tip: To copy the address that the float bar shows press Ctrl+Shift+X keys)</value>
+    <value>Zobrazit URL adresu v plovoucím boxu nahoře na stránce.&lt;br /&gt;Toto nastavení může způsobit větší velikost stránky.&lt;br /&gt;(Tip: Pro zkopírování obsahu boxu použijte klávesovou zkratku Ctrl+Shift+X)</value>
   </data>
   <data name="lblPageTitle.Text" xml:space="preserve">
-    <value>Displays page title in browser title.</value>
+    <value>Zobrazit titulek stránky v titulku prohlížeče.</value>
   </data>
   <data name="lblProcessLinks.Text" xml:space="preserve">
-    <value>Processes links and encodes them.</value>
+    <value>Zpracovat a zakódovat odkazy.</value>
   </data>
   <data name="lblRemoveScripts.Text" xml:space="preserve">
-    <value>Removes scripts from page. This option increases anonymity but may loose some functionalities.</value>
+    <value>Odstranit skripty ze stránky. Toto nastavení zvýší anonimitu. Může být příčinou ztráty funkčnosti.</value>
   </data>
   <data name="lblTempCookies.Text" xml:space="preserve">
-    <value>Saves cookies only for current session, and they will not be available after browser is closed.</value>
+    <value>Uložit Cookies pouze pro toto sezení. Po uzavření prohlížeče již nebudou dostupné.</value>
   </data>
   <data name="lblUrl.Text" xml:space="preserve">
-    <value>Enter URL:</value>
+    <value>Vložte URL:</value>
   </data>
   <data name="lblUTF8.Text" xml:space="preserve">
-    <value>Uses UTF-8 encoding for pages.&lt;br /&gt;Suitable for non-English sites that contains non-ASCII characters.</value>
+    <value>Použít UTF-8 enkódování pro stránky.&lt;br /&gt;Vhodné pro stránky, které obsahují nejen ASCII znaky.</value>
   </data>
   <data name="ltrMainDesc.Text" xml:space="preserve">
-    <value>ASProxy is an open-source service which allows the user to surf the net anonymously. When using
-ASProxy, not only is your identity hidden but you will be able to escape filters
-and firewalls from an internet connection.
-&lt;br /&gt;In most cases your job, school, or even your country may prevent you from accessing
-your favorite websites. ASProxy will circumvent this.&lt;br /&gt;
-The purpose of ASProxy is spreading freedom on the net, but this proxy can be used
-for any purposes. ASProxy is not responsible for your activities.</value>
+    <value>ASProxy je open-source služba, která umožnuje uživatelům pohybovat se anonymně po internetu. Nejen že vám umožní skrýt Vaší identitu ale také Vám umožní vyhnout se filtrům a nastavení firewallu
+&lt;br /&gt;Ve většině případů Vám Vaše práce, škola nebo dokonce Vaše země může bráni v přístupu na Vaše oblíbené stránky. ASProxy Vám umožní obejít tato omezení.&lt;br /&gt;
+Účelem ASProxy je šíření svobody na internetu nicméně tato proxy může být použita pro jakýkoli účel. ASProxy není zodpovědna za Vaše činy.</value>
   </data>
   <data name="Page.Title" xml:space="preserve">
-    <value>Surf the web with ASProxy</value>
+    <value>Surfujte svobodně po internetu</value>
   </data>
   <data name="chkEncodeUrl.Text" xml:space="preserve">
-    <value>Encode URLs</value>
+    <value>Kódovat URL adresy</value>
   </data>
   <data name="lblEncodeUrl.Text" xml:space="preserve">
-    <value>Encodes original site address and hides it. This is highly recommended option to pass the blockers on the internet connection.</value>
+    <value>Zakódovat původní adresu stránky a skrýt ji. Toto je doporučené nastavení pro obejití blokovaní na internetu.</value>
   </data>
   <data name="chkRemoveObjects.Text" xml:space="preserve">
-    <value>Remove Objects</value>
+    <value>Odstranit objekty</value>
   </data>
   <data name="lblRemoveObjects.Text" xml:space="preserve">
-    <value>Removes embedded objects from page. Use this option to get rid of flash and embedded media in pages and save bandwidth.</value>
+    <value>Odstranit vložené objekty ze stránky. Toto nastavení je vhodné pro odstranění Flashe a vložených médií na stránkách a k omezení velikosti přenášených dat.</value>
   </data>
   <data name="chkImgCompressor.Text" xml:space="preserve">
-    <value>Compress images</value>
+    <value>Komprimovat obrázky</value>
   </data>
   <data name="lblImgCompressor.Text" xml:space="preserve">
-    <value>Compresses the images.&lt;br /&gt;This option decreases images size by decreasing their quality.</value>
+    <value>Komprimovat obrázky.&lt;br /&gt;Toto nastavení zmenší velikost obrázku zhoršením jeho kvality.</value>
   </data>
 </root>

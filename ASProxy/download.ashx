@@ -137,7 +137,7 @@ public class Download : IHttpHandler, System.Web.SessionState.IReadOnlySessionSt
                 if (!string.IsNullOrEmpty(engine.ResponseInfo.ContentFilename))
                     resFilename = engine.ResponseInfo.ContentFilename;
                 else
-                    resFilename = Path.GetFileName(engine.RequestInfo.RequestUrl);
+					resFilename = UrlProvider.GetFileNameForHttpHeader(engine.RequestInfo.RequestUrl);
 
                 ResumableResponseData responseData = new ResumableResponseData(engine.WebData.ResponseData, resFilename);
 

@@ -51,6 +51,32 @@
 			OnClick="btnSaveProviders_Click" />
 	</fieldset>
 	<fieldset>
+		<legend><strong>ASProxy Update</strong></legend><span class="field_desc">(Here you can
+			check for ASProxy updates, instead of waiting for autoupdate (if enabled). The update
+			url is specified in 'General Configurations' tab which is asproxy website by default.)</span>
+		<fieldset runat="server" id="pgUpdateASProxy" visible="false">
+			<legend>Updating ASProxy</legend>
+			<asp:Label ID="lblUpASProxyStatus" runat="server" Text="Update status"></asp:Label>
+			<br />
+			Update version:
+			<asp:Label ID="lblUpASProxyVersion" runat="server" Text=""></asp:Label>
+			<br />
+			<asp:Button ID="btnUpASProxyUpdate" CssClass="submit_button" runat="server" Text="Update" />
+			<asp:Button ID="btnUpASProxyDismiss" CssClass="submit_button" runat="server" Text="Dismiss" />
+		</fieldset>
+		<table cellpadding="0" cellspacing="0" class="options_table">
+			<tr>
+				<td>
+					Manual check for update
+				</td>
+				<td>
+					<asp:Button CssClass="button" ID="btnProviderUpdateCheck" runat="server" Text="Update"
+						CommandName="Update" Enabled="true" />
+				</td>
+			</tr>
+		</table>
+	</fieldset>
+	<fieldset>
 		<legend><strong>Providers</strong></legend>
 		<fieldset runat="server" id="pgUpdateProvider" visible="false">
 			<legend>Updating a provider</legend>
@@ -62,10 +88,10 @@
 			Update version:
 			<asp:Label ID="lblUpProviderVersion" runat="server" Text=""></asp:Label>
 			<br />
-			<asp:Button ID="btnUpProviderUpdate" CssClass="submit_button" runat="server" 
-				Text="Update" onclick="btnUpProviderUpdate_Click" />
-			<asp:Button ID="btnUpProviderDismiss" CssClass="submit_button" runat="server" 
-				Text="Dismiss" onclick="btnUpProviderDismiss_Click" />
+			<asp:Button ID="btnUpProviderUpdate" CssClass="submit_button" runat="server" Text="Update"
+				OnClick="btnUpProviderUpdate_Click" />
+			<asp:Button ID="btnUpProviderDismiss" CssClass="submit_button" runat="server" Text="Dismiss"
+				OnClick="btnUpProviderDismiss_Click" />
 		</fieldset>
 		<span class="field_desc">(Here is installed providers. You can enable or disable them
 			easily from here. Each change requires restart.)</span>
@@ -119,8 +145,9 @@
 							Text="Disable" />
 					</td>
 					<td class="desc">
-						<asp:Button CssClass="button" ID="btnProviderUpdateCheck" runat="server" Text="Update" OnClick="btnProviderUpdateCheckClick"
-							CommandName="Update" CommandArgument="<%# ((ProviderInfo)Container.DataItem).Name%>" Enabled="<%#((ProviderInfo)Container.DataItem).UpdateEnabled %>"/>
+						<asp:Button CssClass="button" ID="btnProviderUpdateCheck" runat="server" Text="Update"
+							OnClick="btnProviderUpdateCheckClick" CommandName="Update" CommandArgument="<%# ((ProviderInfo)Container.DataItem).Name%>"
+							Enabled="<%#((ProviderInfo)Container.DataItem).UpdateEnabled %>" />
 					</td>
 				</tr>
 			</ItemTemplate>
@@ -142,14 +169,13 @@
 			Update version:
 			<asp:Label ID="lblUpPluginVersion" runat="server" Text=""></asp:Label>
 			<br />
-			<asp:Button ID="btnUpPluginUpdate" CssClass="submit_button" runat="server" 
-				Text="Update" onclick="btnUpPluginUpdate_Click" />
-			<asp:Button ID="btnUpPluginDismiss" CssClass="submit_button" runat="server" 
-				Text="Dismiss" onclick="btnUpPluginDismiss_Click" />
+			<asp:Button ID="btnUpPluginUpdate" CssClass="submit_button" runat="server" Text="Update"
+				OnClick="btnUpPluginUpdate_Click" />
+			<asp:Button ID="btnUpPluginDismiss" CssClass="submit_button" runat="server" Text="Dismiss"
+				OnClick="btnUpPluginDismiss_Click" />
 		</fieldset>
-		
-		<span class="field_desc">(Here is all installed
-			plugins list. You can enable or disable them easily from here.)</span>
+		<span class="field_desc">(Here is all installed plugins list. You can enable or disable
+			them easily from here.)</span>
 		<asp:Repeater ID="rptPlugins" runat="server" OnItemDataBound="rptPlugins_ItemDataBound">
 			<HeaderTemplate>
 				<table cellpadding="0" cellspacing="0" class="tblOptions">
@@ -198,8 +224,9 @@
 							Text="Disable" />
 					</td>
 					<td class="desc">
-						<asp:Button CssClass="button" ID="btnPluginUpdateCheck" runat="server" Text="Update" OnClick="btnPluginUpdateCheckClick"
-						CommandName="Update" CommandArgument="<%# ((PluginInfo)Container.DataItem).Name%>"  Enabled="<%#((PluginInfo)Container.DataItem).UpdateEnabled %>"/>
+						<asp:Button CssClass="button" ID="btnPluginUpdateCheck" runat="server" Text="Update"
+							OnClick="btnPluginUpdateCheckClick" CommandName="Update" CommandArgument="<%# ((PluginInfo)Container.DataItem).Name%>"
+							Enabled="<%#((PluginInfo)Container.DataItem).UpdateEnabled %>" />
 				</tr>
 			</ItemTemplate>
 		</asp:Repeater>

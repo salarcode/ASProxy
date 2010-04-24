@@ -33,10 +33,11 @@ public partial class Admin_Providers : System.Web.UI.Page
 
 	private void LoadProvidersList()
 	{
-		Type providerType = typeof(Providers);
+		//Type providerType = typeof(Providers);
+		//PropertyInfo asproxyProvidersInfo = providerType.GetProperty("InstalledProviders", BindingFlags.NonPublic | BindingFlags.Static);
+		//_installedProviders = (List<ProviderInfo>)asproxyProvidersInfo.GetValue(null, null);
 
-		PropertyInfo asproxyProvidersInfo = providerType.GetProperty("InstalledProviders", BindingFlags.NonPublic | BindingFlags.Static);
-		_installedProviders = (List<ProviderInfo>)asproxyProvidersInfo.GetValue(null, null);
+		_installedProviders = Providers.InstalledProviders;
 		if (_installedProviders != null)
 		{
 			rptProviders.DataSource = _installedProviders;
@@ -51,10 +52,11 @@ public partial class Admin_Providers : System.Web.UI.Page
 
 	private void LoadPluginsList()
 	{
-		Type pluginsType = typeof(Plugins);
-
-		PropertyInfo asproxyPluginsInfo = pluginsType.GetProperty("InstalledPlugins", BindingFlags.NonPublic | BindingFlags.Static);
-		_availablePlugins = (List<PluginInfo>)asproxyPluginsInfo.GetValue(null, null);
+		//Type pluginsType = typeof(Plugins);
+		//PropertyInfo asproxyPluginsInfo = pluginsType.GetProperty("InstalledPlugins", BindingFlags.NonPublic | BindingFlags.Static);
+		//_availablePlugins = (List<PluginInfo>)asproxyPluginsInfo.GetValue(null, null);
+		
+		_availablePlugins = Plugins.InstalledPlugins;
 		if (_availablePlugins != null)
 		{
 			rptPlugins.DataSource = _availablePlugins;

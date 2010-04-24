@@ -117,34 +117,31 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="btnDisplay.Text" xml:space="preserve">
-    <value>Stáhnout</value>
+  <data name="lblFootSlogan1.Text" xml:space="preserve">
+    <value>Laden Sie ihren eigene Kopie herunter</value>
   </data>
-  <data name="lblAutoPrompt.Text" xml:space="preserve">
-    <value>&lt;script type="text/javascript"&gt;window.onload=function(){{window.location="{0}";}}&lt;/script&gt;</value>
+  <data name="lblFootSlogan2.Text" xml:space="preserve">
+    <value>Es ist kostenlos.</value>
   </data>
-  <data name="lblErrorMsg.Text" xml:space="preserve">
-    <value>Chybová zpráva</value>
+  <data name="lblLogo2.Text" xml:space="preserve">
+    <value>Surfen Sie im Web mit ASProxy</value>
   </data>
-  <data name="lblErrorMsg.ToolTip" xml:space="preserve">
-    <value>Chybová zpráva</value>
+  <data name="mnuASProxy.Text" xml:space="preserve">
+    <value>ASProxy Homepage</value>
   </data>
-  <data name="lblMainTitle.Text" xml:space="preserve">
-    <value>Stahovací nástroj</value>
+  <data name="mnuCookie.Text" xml:space="preserve">
+    <value>Cookie Manager</value>
   </data>
-  <data name="lblPrompt.Text" xml:space="preserve">
-    <value>V případě, že Váš internetový prohlížeč nezobrazí dialog pro stahování, klikněte na odkaz níže.</value>
+  <data name="mnuDownload.Text" xml:space="preserve">
+    <value>Download Tool</value>
   </data>
-  <data name="lnkDownload.Text" xml:space="preserve">
-    <value>Odkaz ke stažení</value>
+  <data name="mnuFootCookie.Text" xml:space="preserve">
+    <value>Cookie Manager</value>
   </data>
-  <data name="ltrMainDesc.Text" xml:space="preserve">
-    <value>Zde můžete stáhnout cokoli co potřebujete. Soubory, html stránky, obrázky, soubory na ftp, atd.</value>
+  <data name="mnuFootDownload.Text" xml:space="preserve">
+    <value>Download Tool</value>
   </data>
-  <data name="Page.Title" xml:space="preserve">
-    <value>Stahovaní vlastních souborů s ASProxy</value>
-  </data>
-  <data name="lblUrl.Text" xml:space="preserve">
-    <value>Vložte URL:</value>
+  <data name="mnuHome.Text" xml:space="preserve">
+    <value>Startseite</value>
   </data>
 </root>

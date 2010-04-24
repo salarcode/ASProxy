@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Specialized;
 using System.Web;
+using System.IO;
 
 namespace SalarSoft.ASProxy
 {
@@ -55,6 +56,36 @@ namespace SalarSoft.ASProxy
 					   Convert.ToSByte(encodeUrl),
 					   Consts.Query.UrlAddress,
 					   url);
+		}
+
+
+		public static string GetFileNameForHttpHeader(string fileName)
+		{
+			if (string.IsNullOrEmpty(fileName))
+				return fileName;
+
+			try
+			{
+				fileName = Path.GetFileName(fileName);
+				fileName = Common.ReplaceStrEx(fileName, " ", "_", StringComparison.CurrentCulture);
+				return fileName;
+			}
+			catch (Exception)
+			{
+				// the name contains illegal characters
+				foreach (char c in Path.GetInvalidFileNameChars())
+				{
+					fileName = Common.ReplaceStrEx(fileName, c, "");
+				}
+				
+				// try to get the file name again
+				try
+				{
+					fileName = Path.GetFileName(fileName);
+				}
+				catch { }
+				return fileName;				
+			}
 		}
 
 		/// <summary>
