@@ -95,7 +95,7 @@
     </div>
     <div id="footer">
         <p>
-            @2009 ASProxy
+            @2010 ASProxy
             <%=Consts.General.ASProxyVersion %>: powered by SalarSoft</p>
     </div>
     <asp:Label ID="lblAutoPrompt" runat="server" Text='<script type="text/javascript">window.location="{0}";</script>'

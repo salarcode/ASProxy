@@ -1,5 +1,6 @@
 // ASProxy Surf page scripts
 // Last update: 2010-04-22 coded by Salar.Kh //
+// Licende: MPL 1.1 License agreement.
 
 // Page options
 if (typeof (_XPage) == 'undefined')

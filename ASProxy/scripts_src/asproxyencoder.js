@@ -1,6 +1,7 @@
 // ASProxy Dynamic Encoder
 // ASProxy encoder for dynamically created objects //
 // Last update: 2010-04-23 coded by Salar.Kh //
+// Licende: MPL 1.1 License agreement.
 
 // ---------------------------
 // Runtime generated information objects

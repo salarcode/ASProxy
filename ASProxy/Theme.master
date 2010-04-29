@@ -132,7 +132,7 @@
 <a asproxydone="2" href="surf.aspx?dec=1&url=uh4QwdELmSfPwhjLyhAKwSZRwC0BtCZOtSoKvCpQmM==B6X!" target="_blank" rel="nofollow">ASProxy</a>.
 <asp:Literal ID="lblFootSlogan2" EnableViewState="False" runat="server" meta:resourcekey="lblFootSlogan2" Text="It's free."></asp:Literal>
 </p></div>
-<div id="footer"><p>@2009 ASProxy <%=Consts.General.ASProxyVersion %>: powered by SalarSoft</p></div>
+<div id="footer"><p>@2010 ASProxy <%=Consts.General.ASProxyVersion %>: powered by SalarSoft</p></div>
 </form>
 </body>
 </html>

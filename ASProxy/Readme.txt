@@ -38,7 +38,7 @@ Changing interface:
 Version History
 
 Version 5.5b5 2010/04/23
-* New: Small close button on top of the surf.aspx page to close the bar immediatly.
+* New: Small close button on top of the surf.aspx page to close the bar immediately.
 * Fixed: NetProxy default configuration.
 * Fixed: Minor issue with urls which have parameters, when encode url option is disabled.
 * Fixed: Invalid chars in download file name caused download to fail.(4shared.com, hotfile.com, ...)
