@@ -622,7 +622,7 @@ namespace SalarSoft.ASProxy.BuiltIn
 							//====== Add it to our url ======
 							matchValue = string.Format(newPageFormat, matchValue);
 
-							//===== Add bookmark to last url =====
+							//===== Add bookmark to the end of url =====
 							if (bookmarkPart.Length > 0)
 							{
 								matchValue += bookmarkPart;
@@ -717,7 +717,7 @@ namespace SalarSoft.ASProxy.BuiltIn
 					// ISSUE: ***********************
 					// The bottleneck starts here. 
 					// sometime this "for" block runs about 2500 time per a request and it takes about 30 seconds.
-					// There should be a way to rid of this issue
+					// There should be a way to get rid of this issue
 					// ISSUE: ***********************
 
 					addNewAttribute = hasNewAttribute;
@@ -859,14 +859,14 @@ namespace SalarSoft.ASProxy.BuiltIn
 						string eventCode = group.Value;
 						int eventCodeOrgLen = eventCode.Length;
 
-						// appy changes
+						// apply changes
 						Processors.JSProcessor.Execute(ref eventCode,
 							pageUrl,
 							pageUrlNoQuery,
 							pagePath,
 							rootUrl);
 
-						// if something changed!
+						// if it is changed, then rplace it 
 						if (eventCodeOrgLen != eventCode.Length)
 						{
 							// Repace the change!
@@ -915,7 +915,7 @@ namespace SalarSoft.ASProxy.BuiltIn
 						string eventCode = group.Value;
 						string eventCodeOrg = eventCode;
 
-						// appy changes
+						// apply changes
 						Processors.CssProcessor.Execute(ref eventCode,
 							pageUrl,
 							pageUrlNoQuery,
@@ -970,7 +970,7 @@ namespace SalarSoft.ASProxy.BuiltIn
 						string eventCode = group.Value;
 						string eventCodeOrg = eventCode;
 
-						// appy changes
+						// apply changes
 						Processors.CssProcessor.Execute(ref eventCode,
 							pageUrl,
 							pageUrlNoQuery,
@@ -1036,7 +1036,7 @@ namespace SalarSoft.ASProxy.BuiltIn
 						//string eventCodeOrg = eventCode;
 						int eventCodeOrgLen = eventCode.Length;
 
-						// appy changes
+						// apply changes
 						Processors.JSProcessor.Execute(ref eventCode,
 							pageUrl,
 							pageUrlNoQuery,
@@ -1328,7 +1328,7 @@ namespace SalarSoft.ASProxy.BuiltIn
 
 			// float bar scripts should appear after ASProxyEncoder scripts
 			public const string STR_OrginalUrl_Functions =
-					"<script language='javascript' type='text/javascript' asproxydone='2'>" +
+					"<script language='javascript' type='text/javascript' " + Consts.ClientContent.attrAlreadyEncodedAttributeIgnore + ">" +
 					"var _wparent=window.top ? window.top : window.parent;" +
 					"_wparent=_wparent ? _wparent : window;" +
 					"var _document=_wparent.document;" +

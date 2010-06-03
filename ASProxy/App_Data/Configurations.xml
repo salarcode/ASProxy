@@ -56,7 +56,7 @@
 	</userAccessControl>
 
 	<!--Enables auto update-->
-	<autoUpdate updateInfoUrl="http://asproxy.sourceforge.net/update/autoupdate.xml"
+	<autoUpdate updateInfoUrl="https://sourceforge.net/projects/asproxy/files/Updates/ASProxyEngine/EngineUpdateInfo.xml/download"
 			  engine="false" providers="false" plugins="false">
 	</autoUpdate>
 

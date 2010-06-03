@@ -175,7 +175,7 @@ namespace SalarSoft.ASProxy.BuiltIn
 				// Or else we no need to use container earlier to do this.
 				// Container is design for easy to us to get the suitable cookies in the current domain and path + expiracy management.
 				// However Microsoft should add .GetAllCookies() method in case of this issue.
-				CookieCollection allCookies = GetAllCookies(container);
+				CookieCollection allCookies = GetAllCookies(container, responseUrl);
 
 				// SalarSoft:
 				// Ok, we have all cookies, we should not just get them all,
@@ -468,14 +468,12 @@ namespace SalarSoft.ASProxy.BuiltIn
 		/// </summary>
 		private Cookie ParseASProxyCookieHeader(string cookieHeader, Uri webUri)
 		{
-			// New cookie
-			Cookie cookieObj;
+			// a new cookie
+			Cookie cookieObj = new Cookie();
 
 			// cookie properties seperated by ;
 			string[] cookieProperties = cookieHeader.Trim().Split(';');
 
-			// a new cookie
-			cookieObj = new Cookie();
 
 			foreach (string cookieProperty in cookieProperties)
 			{
@@ -582,42 +580,52 @@ namespace SalarSoft.ASProxy.BuiltIn
 		/// Returns all cookies stored in CookieContainer
 		/// </summary>
 		/// <returns>Collection of all cookies</returns>
-		private CookieCollection GetAllCookies(CookieContainer cc)
+		private CookieCollection GetAllCookies(CookieContainer cc, Uri urlCookies)
 		{
-			if (IsRunningOnMicrosoftCLR)
+			try
 			{
-				CookieCollection lstCookies = new CookieCollection();
-				Hashtable table = (Hashtable)_cookieContainerType.InvokeMember("m_domainTable",
-												 BindingFlags.NonPublic | BindingFlags.GetField | BindingFlags.Instance,
-												 null,
-												 cc,
-												 new object[] { });
-				foreach (object pathList in table.Values)
+				if (IsRunningOnMicrosoftCLR)
 				{
-					SortedList lstCookieCol = (SortedList)_pathListType.InvokeMember("m_list",
-															  BindingFlags.NonPublic | BindingFlags.GetField | BindingFlags.Instance,
-															  null,
-															  pathList,
-															  new object[] { });
-					foreach (CookieCollection colCookies in lstCookieCol.Values)
-						foreach (Cookie c in colCookies)
-						{
-							lstCookies.Add(c);
-						}
+					CookieCollection lstCookies = new CookieCollection();
+					Hashtable table = (Hashtable)_cookieContainerType.InvokeMember("m_domainTable",
+													 BindingFlags.NonPublic | BindingFlags.GetField | BindingFlags.Instance,
+													 null,
+													 cc,
+													 new object[] { });
+					foreach (object pathList in table.Values)
+					{
+						SortedList lstCookieCol = (SortedList)_pathListType.InvokeMember("m_list",
+																  BindingFlags.NonPublic | BindingFlags.GetField | BindingFlags.Instance,
+																  null,
+																  pathList,
+																  new object[] { });
+						foreach (CookieCollection colCookies in lstCookieCol.Values)
+							foreach (Cookie c in colCookies)
+							{
+								lstCookies.Add(c);
+							}
+					}
+					return lstCookies;
 				}
-				return lstCookies;
-			}
-			else
-			{
-				// For Mono
-				// the cookies list is stored in a private CookieCollection variable which is called "cookies"
+				else
+				{
+					// For Mono
+					// the cookies list is stored in a private CookieCollection variable which is called "cookies"
 
-				CookieCollection lstCookies = (CookieCollection)_cookieContainerType.InvokeMember("cookies",
-												 BindingFlags.NonPublic | BindingFlags.GetField | BindingFlags.Instance,
-												 null,
-												 cc,
-												 new object[] { });
-				return lstCookies;
+					CookieCollection lstCookies = (CookieCollection)_cookieContainerType.InvokeMember("cookies",
+													 BindingFlags.NonPublic | BindingFlags.GetField | BindingFlags.Instance,
+													 null,
+													 cc,
+													 new object[] { });
+					return lstCookies;
+				}
+			}
+			catch (FieldAccessException)
+			{
+				// Falling back to the old method
+				// BUFIX for partial trust and medium trust environments!
+				// The cookie container bug for .NET framework 2.0 will still remain here
+				return cc.GetCookies(urlCookies);
 			}
 		}
 

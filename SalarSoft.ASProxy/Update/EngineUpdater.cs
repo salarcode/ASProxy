@@ -127,11 +127,26 @@ namespace SalarSoft.ASProxy.Update
 			return info;
 		}
 
+		//static void Save()
+		//{
+		//    var serializer = new System.Xml.Serialization.XmlSerializer(typeof(EngineUpdateInfo));
+		//    using (var ff = File.OpenWrite("f:\\temp.xml"))
+		//    {
+		//        var en = new EngineUpdateInfo()
+		//        {
+		//            UpdateVersion = "a213.234.12",
+		//            UpdatePackageUrl = "asdsad",
+		//            Date = DateTime.Now
+		//        };
+		//        serializer.Serialize(ff, en);
+		//    }
+		//}
+
 
 		/// <summary>
 		/// Download the engine update package and install it
 		/// </summary>
-		public static void Install(EngineUpdateInfo updateInfo)
+		public static bool Install(EngineUpdateInfo updateInfo)
 		{
 			string tempFile = Path.GetTempFileName();
 			try
@@ -141,9 +156,12 @@ namespace SalarSoft.ASProxy.Update
 
 				// apply the downloaded package
 				ApplyPackage(updateInfo, tempFile);
+
+				return true;
 			}
 			catch (Exception)
 			{
+				return false;
 			}
 			finally
 			{
@@ -155,7 +173,7 @@ namespace SalarSoft.ASProxy.Update
 		/// <summary>
 		/// Download and update the package
 		/// </summary>
-		public static void Install()
+		public static bool Install()
 		{
 			// Download the engine update info
 			EngineUpdateInfo updateInfo = DownloadEngineUpdateInfo();
@@ -163,7 +181,9 @@ namespace SalarSoft.ASProxy.Update
 			// Check if update is required
 			if (Common.CompareASProxyVersions(updateInfo.UpdateVersion, Consts.General.ASProxyVersion) == 1)
 				// Download the package and install it
-				Install(updateInfo);
+				return Install(updateInfo);
+
+			return false;
 		}
 
 

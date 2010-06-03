@@ -61,8 +61,10 @@
 			Update version:
 			<asp:Label ID="lblUpASProxyVersion" runat="server" Text=""></asp:Label>
 			<br />
-			<asp:Button ID="btnUpASProxyUpdate" CssClass="submit_button" runat="server" Text="Update" />
-			<asp:Button ID="btnUpASProxyDismiss" CssClass="submit_button" runat="server" Text="Dismiss" />
+			<asp:Button ID="btnUpASProxyUpdate" CssClass="submit_button" runat="server" 
+				Text="Update" onclick="btnUpASProxyUpdate_Click" />
+			<asp:Button ID="btnUpASProxyDismiss" CssClass="submit_button" runat="server" 
+				Text="Dismiss" onclick="btnUpASProxyDismiss_Click" />
 		</fieldset>
 		<table cellpadding="0" cellspacing="0" class="options_table">
 			<tr>
@@ -70,8 +72,8 @@
 					Manual check for update
 				</td>
 				<td>
-					<asp:Button CssClass="button" ID="btnProviderUpdateCheck" runat="server" Text="Update"
-						CommandName="Update" Enabled="true" />
+					<asp:Button CssClass="button" ID="btnUpASProxyUpdateCheck" runat="server" Text="Update Check"
+						CommandName="Update" Enabled="true" onclick="btnUpASProxyUpdateCheck_Click" />
 				</td>
 			</tr>
 		</table>
@@ -145,7 +147,7 @@
 							Text="Disable" />
 					</td>
 					<td class="desc">
-						<asp:Button CssClass="button" ID="btnProviderUpdateCheck" runat="server" Text="Update"
+						<asp:Button CssClass="button" ID="btnProviderUpdateCheck" runat="server" Text="Check"
 							OnClick="btnProviderUpdateCheckClick" CommandName="Update" CommandArgument="<%# ((ProviderInfo)Container.DataItem).Name%>"
 							Enabled="<%#((ProviderInfo)Container.DataItem).UpdateEnabled %>" />
 					</td>
@@ -224,7 +226,7 @@
 							Text="Disable" />
 					</td>
 					<td class="desc">
-						<asp:Button CssClass="button" ID="btnPluginUpdateCheck" runat="server" Text="Update"
+						<asp:Button CssClass="button" ID="btnPluginUpdateCheck" runat="server" Text="Check"
 							OnClick="btnPluginUpdateCheckClick" CommandName="Update" CommandArgument="<%# ((PluginInfo)Container.DataItem).Name%>"
 							Enabled="<%#((PluginInfo)Container.DataItem).UpdateEnabled %>" />
 				</tr>

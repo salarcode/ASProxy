@@ -37,8 +37,6 @@ namespace SalarSoft.ASProxy.Update
 		private string _pluginName;
 		private string _version;
 		private DateTime _date;
-		private String _asproxyMinVersion;
-		private String _asproxyMaxVersion;
 		private int _updateSize;
 		private List<UpdateFileInfo> _pluginFiles;
 		private List<UpdateFileInfo> _assemblyFiles;
@@ -58,16 +56,6 @@ namespace SalarSoft.ASProxy.Update
 		{
 			get { return _date; }
 			set { _date = value; }
-		}
-		public String ASProxyMinVersion
-		{
-			get { return _asproxyMinVersion; }
-			set { _asproxyMinVersion = value; }
-		}
-		public String ASProxyMaxVersion
-		{
-			get { return _asproxyMaxVersion; }
-			set { _asproxyMaxVersion = value; }
 		}
 		public int UpdateSize
 		{

@@ -81,7 +81,7 @@ public partial class Admin_Providers : System.Web.UI.Page
 		//Type pluginsType = typeof(Plugins);
 		//PropertyInfo asproxyPluginsInfo = pluginsType.GetProperty("InstalledPlugins", BindingFlags.NonPublic | BindingFlags.Static);
 		//_availablePlugins = (List<PluginInfo>)asproxyPluginsInfo.GetValue(null, null);
-		
+
 		_availablePlugins = Plugins.InstalledPlugins;
 		if (_availablePlugins != null)
 		{
@@ -407,4 +407,85 @@ public partial class Admin_Providers : System.Web.UI.Page
 	{
 		pgUpdatePlugin.Visible = false;
 	}
+	private void DisplayEngineUpdate(EngineUpdateInfo updateInfo, bool installed, string message)
+	{
+		pgUpdateASProxy.Visible = true;
+		lblUpASProxyVersion.Text = Consts.General.ASProxyVersionFull;
+
+		if (installed)
+		{
+			lblUpASProxyStatus.Text = "Update was successful";
+			lblUpASProxyStatus.ForeColor = Color.Green;
+			btnUpASProxyUpdate.Enabled = false;
+		}
+		else if (updateInfo == null)
+		{
+			lblUpASProxyStatus.Text = "Unable to check for update.";
+			lblUpASProxyStatus.ForeColor = Color.Red;
+			btnUpASProxyUpdate.Enabled = false;
+		}
+		else
+		{
+			lblUpASProxyVersion.Text = updateInfo.UpdateVersion;
+			if (Common.CompareASProxyVersions(updateInfo.UpdateVersion, Consts.General.ASProxyVersionFull) == 1)
+			{
+				lblUpASProxyStatus.Text = "Update is available.";
+				lblUpASProxyStatus.ForeColor = Color.Green;
+				btnUpASProxyUpdate.Enabled = true;
+			}
+			else
+			{
+				lblUpASProxyStatus.Text = "Update is not available.";
+				lblUpASProxyStatus.ForeColor = Color.Red;
+				btnUpASProxyUpdate.Enabled = false;
+			}
+		}
+		if (!string.IsNullOrEmpty(message))
+			lblUpASProxyStatus.Text = message;
+	}
+	protected void btnUpASProxyUpdateCheck_Click(object sender, EventArgs e)
+	{
+		Button btn = (Button)sender;
+
+		if (btn.CommandName == "Update")
+		{
+			string pvName = btn.CommandArgument;
+
+			try
+			{
+				EngineUpdateInfo updateInfo = EngineUpdater.DownloadEngineUpdateInfo();
+				DisplayEngineUpdate(updateInfo, false, null);
+			}
+			catch
+			{
+				DisplayEngineUpdate(null, false, null);
+			}
+		}
+	}
+	protected void btnUpASProxyUpdate_Click(object sender, EventArgs e)
+	{
+		try
+		{
+			EngineUpdateInfo updateInfo = EngineUpdater.DownloadEngineUpdateInfo();
+			DisplayEngineUpdate(updateInfo, false, null);
+
+			// download package and install it
+			if (EngineUpdater.Install(updateInfo))
+			{
+				DisplayEngineUpdate(updateInfo, true, null);
+			}
+			else
+				DisplayEngineUpdate(null, false, "Update installation failed!");
+
+		}
+		catch
+		{
+			DisplayEngineUpdate(null, false, null);
+		}
+	}
+	protected void btnUpASProxyDismiss_Click(object sender, EventArgs e)
+	{
+		pgUpdateASProxy.Visible = false;
+	}
+ 
 }

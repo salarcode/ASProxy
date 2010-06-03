@@ -1,6 +1,6 @@
 ****************************************
 ASProxy       :version 5.5b5
-Last update   :2010/04/23
+Last update   :2010/06/03
 Official site :http://asproxy.sourceforge.net/
 
 ASProxy is an ASP.NET Web Proxy.
@@ -30,20 +30,23 @@ Applying language:
 	* AdminUI: Go to "/admin/general.aspx", in the "UI Language" section choice desired language and press "Save" button.
 	* Manual: Open "/App_Data/Configurations.xml" file in an editor. Locate "pages" section and change the "uiLanguage" value.
 
-Changing interface:
-	If you don't like default interface, there is some. Go and get them right here: http://asproxy.sourceforge.net/download.html
-	To install an interface, please read instructions in the package. It is easy.
-
 ****************************************
 Version History
 
-Version 5.5b5 2010/04/23
+Version 5.5b5 2010/06/03
 * New: Small close button on top of the surf.aspx page to close the bar immediately.
+* New: Manual update check from Administration UI page. Update your asproxy whenever you want without any problems. 
+* Improved: The original url displyer float bar style now is placed in separate style-sheet file called "surfstyle.css".
+	The style of surf.aspx page has migrated to that style-sheet file too.
+* Improved: The solution for CookieContainer bug doesn't work in partial trust environments,
+	so a fallback mechanism is added.
+	Then the cookies will work on such servers, but buggy.
 * Fixed: NetProxy default configuration.
 * Fixed: Minor issue with urls which have parameters, when encode url option is disabled.
 * Fixed: Invalid chars in download file name caused download to fail.(4shared.com, hotfile.com, ...)
 * Fixed: Some encoded url detection is fixed. Caused ASP.NET Ajax to fail.
 * Fixed: ASP.NET ViewState value detection due to preventing crashes.
+* Fixed: [for mono] Fixed wrong directory separator character for Linux servers.
 
 Version 5.5 Beta4 2010/02/15
 * New: Plugins and Providers autoupdate feature is available.

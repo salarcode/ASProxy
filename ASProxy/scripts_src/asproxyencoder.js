@@ -350,7 +350,8 @@ try{
 		try{ o["on" + evType] = f; }catch(e){_ASProxy.Log('AttachEvent"on"',e);}
 	}
 }catch(e){_ASProxy.Log('AttachEvent',e);}
-}
+
+}
 
 _ASProxy.StrTrimLeft = function(str) {
 	return str.replace(/^\s*/, "");

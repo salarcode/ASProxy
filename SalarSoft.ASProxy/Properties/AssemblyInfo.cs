@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using SalarSoft.ASProxy;
 
 [assembly: AssemblyTitle("Surf the web with ASProxy")]
 [assembly: AssemblyDescription("This is a free and open source tool for humanity.")]
@@ -9,7 +10,7 @@
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
-[assembly: AssemblyVersion("5.5.0.*")]
+[assembly: AssemblyVersion(Consts.General.ASProxyVersionFull)]
 [assembly: AssemblyDelaySign(false)]
 [assembly: AssemblyKeyFile("")]
 [assembly: AssemblyKeyName("")]
