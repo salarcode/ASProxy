@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<plugin>
+	<info ASProxyVersion="5.*">
+		<Name>CountryBlocker</Name>
+		<Author>SalarSoft</Author>
+		<Version>1.0</Version>
+		<Description>Limit users to your desire location.</Description>
+		<Date>2009-7-12</Date>
+		<ConfigUiUrl>~/admin/CountryBlocker.aspx</ConfigUiUrl>
+	</info>
+	
+	<update enabled="true" updateInfoUrl="https://sourceforge.net/projects/asproxy/files/Updates/Plugins/CountryBlocker/CountryBlockerUpdateInfo.xml/download">
+	</update>
+
+	<classType typeName="ASProxy.Plugin.CountryBlocker.BlockerPluginHost, ASProxy.Plugin.CountryBlocker"></classType>
+</plugin>

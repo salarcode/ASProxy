@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<CountryBlocker>
+	<blocked>
+		<!--<country code="US" />-->
+		<!--<country code="US" />-->
+	</blocked>
+	
+	<!--If you specify allowed list, the blocked list will be ignored
+			and only people from allowed list will be able to use the proxy.-->
+	<allowed>
+		<!--<country code="" />-->
+	</allowed>
+</CountryBlocker>

@@ -1,0 +1,27 @@
+﻿CountryBlocker 2010-06-10
+
+# Installing from package
+Just copy the "upload" folder contents to asproxy folder in your server. Then restart the app.
+To restart the app you can use Administration UI.
+
+
+# Manually install
+1- Copy the "ASProxy.Plugin.CountryBlocker.dll" file to asproxy's "bin" folder.
+2- Copy the "CountryBlocker" folder to asproxy's "App_Data" folder.
+3- Copy the "CountryBlocker.xml" file to "App_Data" folder.
+4- Restart the website. You can use ASProxy's administration UI to restart
+   or you can upload the "web.config" again which forces the website to restart.
+
+# Updating country defination file
+1- Navigate to MaxMind website then go to GeoLite page here:
+	http://www.maxmind.com/app/geolitecountry
+2- Download "latest GeoLite Country Binary Format" which is avilable in "Binary Format" section.
+	the direct link is below but it may change in future:
+	http://geolite.maxmind.com/download/geoip/database/GeoLiteCountry/GeoIP.dat.gz
+3- Unzip the package and rename the ".dat" file to "GeoIP.dat".
+4- Replace the old "GeoIP.dat" with new one in the ASProxy folder right here: "App_Data/CountryBlocker".
+5- Restart the website.
+
+
+# Source Codes
+In order to use the source code you should have a refrence to SalarSoft.ASProxy.dll which is delivered with ASProxy sources package.
