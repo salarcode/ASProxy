@@ -41,8 +41,8 @@ namespace SalarSoft.ASProxy
 		public class General
 		{
 			public const string ASProxyName = "ASProxy";
-			public const string ASProxyVersion = "5.5b5";
-			public const string ASProxyVersionFull = "5.5.0.5";
+			public const string ASProxyVersion = "5.5.0";
+			public const string ASProxyVersionFull = "5.5.0.6";
 
 			public const string ContextUserOptionsKey = "ContextUserOptions";
 		}
@@ -117,8 +117,9 @@ namespace SalarSoft.ASProxy
 			public const string JSEncoder_ASProxyEncoderMethodName = "__UrlEncoder";
 			public const string JSEncoder_ASProxySetCookieMethodName = "__CookieSet";
 			public const string JSEncoder_ASProxyGetCookieMethodName = "__CookieGet";
-			public const string JSEncoder_ASProxyWindowLocOverrider = "_WindowLocation";
-			public const string JSEncoder_ASProxyWindowLocHostName = "_WindowLocation.host";
+			public const string JSEncoder_ASProxyWindowLocOverrider = "__XUrl";
+			public const string JSEncoder_ASProxyWindowLocHref = "__XUrl.href";
+			public const string JSEncoder_ASProxyWindowLocHostName = "__XUrl.host";
 			public const string JSEncoder_ASProxyLocationXDomain = "document.XDomain";
 
 			public const string attrAlreadyEncodedAttribute = "asproxydone";

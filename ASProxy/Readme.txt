@@ -1,6 +1,6 @@
 ****************************************
-ASProxy       :version 5.5b5
-Last update   :2010/06/03
+ASProxy       :version 5.5.0 pre
+Last update   :2010/07/11
 Official site :http://asproxy.sourceforge.net/
 
 ASProxy is an ASP.NET Web Proxy.
@@ -33,7 +33,11 @@ Applying language:
 ****************************************
 Version History
 
-Version 5.5b5 2010/06/03
+Version 5.5.0 2010/07/11
+* Fixed: document.URL replacement issue is fixed. This causes the whole javascript to fail.
+* Fixed: Minor javascript parser issues.
+
+Version 5.5 Beta5 2010/06/03
 * New: Small close button on top of the surf.aspx page to close the bar immediately.
 * New: Manual update check from Administration UI page. Update your asproxy whenever you want without any problems. 
 * Improved: The original url displyer float bar style now is placed in separate style-sheet file called "surfstyle.css".

@@ -319,7 +319,7 @@ namespace SalarSoft.ASProxy
 		#region Generate html tags
 		public static string JavascriptTag(string content, string src)
 		{
-			string result = "<script language='javascript' ";
+			string result = "<script ";
 			if (!string.IsNullOrEmpty(src))
 				result += "src='" + src + "'";
 			result += "type='text/javascript'>" + content + "</script>";

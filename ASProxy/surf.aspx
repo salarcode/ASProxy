@@ -227,13 +227,13 @@ _XPage.EncodeUrl.checked=<%=_userOptions.EncodeUrl.ToString().ToLower() %>;
 
 <div id="ASProxyFormBlock" class="ASPXBlock" dir="<%=Resources.Languages.TextDirection%>">
 <div class="ASPXMain" style="text-align:<%=Resources.Languages.TextAlign%>"><div class="AddrBar">
+<a href="javascript:_Page_HideASProxyBlock()" asproxydone="2" title="Close this bar"><span style="font-size:smaller; height:0px;;float:<%=FloatDirection(false)%>">(X)</span></a>
 <a href="." asproxydone="2" style="font-weight:bold;text-decoration:none">ASProxy <%=Consts.General.ASProxyVersion %></a>
 <!--This is ASProxy powered by SalarSoft. -->
 <input name="url" type="text" size="80" id="txtUrl" dir="ltr" style="width:550px;" class="TextBox" onkeyup="_Page_HandleTextKey(event)" value="<%=HttpUtility.HtmlEncode(_ToDisplayUrl)%>" />
 <input type="button" onclick="_Page_SubmitForm()" value="<%=this.GetLocalResourceObject("btnDisplay")%>" id="btnASProxyDisplayButton" class="Button" />
 <a href="cookieman.aspx" target="_blank" asproxydone="2"><%=this.GetLocalResourceObject("CookieManager")%></a>
 <a href="download.aspx" target="_blank" asproxydone="2"><%=this.GetLocalResourceObject("DownloadTool")%></a>
-<a href="javascript:_Page_HideASProxyBlock()" asproxydone="2" title="Close this bar"><span style="font-size:smaller;float:<%=FloatDirection(false)%>">(X)</span></a>
 </div>
 <div class="FastOpts">
 <%if (Configurations.UserOptions.ForceEncoding.Changeable){ %><span class="ASPXOpt"><input id="chkUTF8" type="checkbox" onclick="_Page_SaveOptions()" /><label for="chkUTF8"><%=this.GetLocalResourceObject("chkUTF8")%></label></span> <%} %>

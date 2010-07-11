@@ -1,6 +1,6 @@
 // ASProxy Dynamic Encoder
 // ASProxy encoder for dynamically created objects //
-// Last update: 2010-04-23 coded by Salar.Kh //
+// Last update: 2010-07-11 coded by Salar.Kh //
 // Licende: MPL 1.1 License agreement.
 
 // ---------------------------
@@ -1314,7 +1314,7 @@ _ASProxy.OverrideStandards = function() {
 		} catch (e) { _ASProxy.Log('OVR window.eval failed', e); } 
 	}
 	try {
-		document.XDomain = _WindowLocation.host;
+		document.XDomain = __XUrl.host;
 	} catch (e) { _ASProxy.Log('document.XDOMAIN failed', e); }
 	try {
 		window.open = _ASProxy.WindowOpen;
@@ -1797,9 +1797,9 @@ _ASProxy.Initialize=function() {
 	_ASProxy.OverrideStandardsDeclare();
 	
 	// The replacement location object
-	_WindowLocation=new _ASProxy.LocationObject();
-	_ASProxy.ReqLocation=_WindowLocation;
-	document._WindowLocation=_WindowLocation;
+	__XUrl=new _ASProxy.LocationObject();
+	_ASProxy.ReqLocation=__XUrl;
+	document.__XUrl=__XUrl;
 	
 	// Apply overriding
 	_ASProxy.OverrideStandards();

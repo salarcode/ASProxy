@@ -526,7 +526,7 @@ namespace SalarSoft.ASProxy.BuiltIn
 
 			public const string STR_OrginalUrl_FloatBar = "<div id='__ASProxyOriginalURL' dir='ltr'></div>";
 			public const string STR_OrginalUrl_Functions =
-					"<script language='javascript' type='text/javascript' " + Consts.ClientContent.attrAlreadyEncodedAttributeIgnore + ">" +
+					"<script type='text/javascript' " + Consts.ClientContent.attrAlreadyEncodedAttributeIgnore + ">" +
 					"var _wparent=window.top ? window.top : window.parent;" +
 					"_wparent=_wparent ? _wparent : window;" +
 					"var _document=_wparent.document;" +

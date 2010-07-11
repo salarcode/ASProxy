@@ -242,8 +242,10 @@ namespace SalarSoft.ASProxy.BuiltIn
         /// </summary>
         public static void AddEncoderMethodToPropertySet(ref string jsCode, string[] propertiesFullName, string encoderMethodName)
         {
-            foreach (string propertyName in propertiesFullName)
-                AddEncoderMethodToPropertySet(ref jsCode, propertyName, encoderMethodName);
+			for (int i = 0; i < propertiesFullName.Length; i++)
+				AddEncoderMethodToPropertySet(ref jsCode, 
+                    propertiesFullName[i], 
+                    encoderMethodName);
         }
 
 		/// <summary>

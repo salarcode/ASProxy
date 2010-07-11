@@ -913,7 +913,7 @@ namespace SalarSoft.ASProxy.BuiltIn
 					{
 						// Get clear url
 						string eventCode = group.Value;
-						string eventCodeOrg = eventCode;
+						int eventCodeOrgLen = eventCode.Length;
 
 						// apply changes
 						Processors.CssProcessor.Execute(ref eventCode,
@@ -922,7 +922,7 @@ namespace SalarSoft.ASProxy.BuiltIn
 							pagePath,
 							rootUrl);
 
-						if (eventCodeOrg != eventCode)
+						if (eventCodeOrgLen != eventCode.Length)
 						{
 							// Repace the change!
 							codes = codes.Remove(group.Index, group.Length);
@@ -968,7 +968,7 @@ namespace SalarSoft.ASProxy.BuiltIn
 					{
 						// Get clear url
 						string eventCode = group.Value;
-						string eventCodeOrg = eventCode;
+						int eventCodeOrgLen = eventCode.Length;
 
 						// apply changes
 						Processors.CssProcessor.Execute(ref eventCode,
@@ -977,7 +977,7 @@ namespace SalarSoft.ASProxy.BuiltIn
 							pagePath,
 							rootUrl);
 
-						if (eventCodeOrg != eventCode)
+						if (eventCodeOrgLen != eventCode.Length)
 						{
 							// Repace the changes!
 							codes = codes.Remove(group.Index, group.Length);
@@ -1328,7 +1328,7 @@ namespace SalarSoft.ASProxy.BuiltIn
 
 			// float bar scripts should appear after ASProxyEncoder scripts
 			public const string STR_OrginalUrl_Functions =
-					"<script language='javascript' type='text/javascript' " + Consts.ClientContent.attrAlreadyEncodedAttributeIgnore + ">" +
+					"<script type='text/javascript' " + Consts.ClientContent.attrAlreadyEncodedAttributeIgnore + ">" +
 					"var _wparent=window.top ? window.top : window.parent;" +
 					"_wparent=_wparent ? _wparent : window;" +
 					"var _document=_wparent.document;" +
