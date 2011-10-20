@@ -26,8 +26,6 @@ Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "ASProxy", "ASProxy\", "{772
 		StartServerOnDebug = "false"
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ASProxy.Plugin.DownloadLeecher", "Plugins\ASProxy.Plugin.DownloadLeecher\ASProxy.Plugin.DownloadLeecher.csproj", "{6356DA91-1CF1-4B16-9ABF-0DB7C794F792}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ASProxy.Plugin.CountryBlocker", "Plugins\ASProxy.Plugin.CountryBlocker\ASProxy.Plugin.CountryBlocker.csproj", "{84320025-9920-4D92-AED4-ACFC7D1A124E}"
 EndProject
 Global
@@ -72,21 +70,6 @@ Global
 		{77259228-316C-4500-8C64-D9E332438EA6}.Trace|Any CPU.ActiveCfg = Debug|.NET
 		{77259228-316C-4500-8C64-D9E332438EA6}.Trace|Mixed Platforms.ActiveCfg = Debug|.NET
 		{77259228-316C-4500-8C64-D9E332438EA6}.Trace|Mixed Platforms.Build.0 = Debug|.NET
-		{6356DA91-1CF1-4B16-9ABF-0DB7C794F792}.Debug|.NET.ActiveCfg = Debug|Any CPU
-		{6356DA91-1CF1-4B16-9ABF-0DB7C794F792}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6356DA91-1CF1-4B16-9ABF-0DB7C794F792}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6356DA91-1CF1-4B16-9ABF-0DB7C794F792}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{6356DA91-1CF1-4B16-9ABF-0DB7C794F792}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{6356DA91-1CF1-4B16-9ABF-0DB7C794F792}.Release|.NET.ActiveCfg = Release|Any CPU
-		{6356DA91-1CF1-4B16-9ABF-0DB7C794F792}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6356DA91-1CF1-4B16-9ABF-0DB7C794F792}.Release|Any CPU.Build.0 = Release|Any CPU
-		{6356DA91-1CF1-4B16-9ABF-0DB7C794F792}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{6356DA91-1CF1-4B16-9ABF-0DB7C794F792}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{6356DA91-1CF1-4B16-9ABF-0DB7C794F792}.Trace|.NET.ActiveCfg = Release|Any CPU
-		{6356DA91-1CF1-4B16-9ABF-0DB7C794F792}.Trace|Any CPU.ActiveCfg = Release|Any CPU
-		{6356DA91-1CF1-4B16-9ABF-0DB7C794F792}.Trace|Any CPU.Build.0 = Release|Any CPU
-		{6356DA91-1CF1-4B16-9ABF-0DB7C794F792}.Trace|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{6356DA91-1CF1-4B16-9ABF-0DB7C794F792}.Trace|Mixed Platforms.Build.0 = Release|Any CPU
 		{84320025-9920-4D92-AED4-ACFC7D1A124E}.Debug|.NET.ActiveCfg = Debug|Any CPU
 		{84320025-9920-4D92-AED4-ACFC7D1A124E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{84320025-9920-4D92-AED4-ACFC7D1A124E}.Debug|Any CPU.Build.0 = Debug|Any CPU
