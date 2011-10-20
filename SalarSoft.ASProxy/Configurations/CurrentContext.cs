@@ -26,6 +26,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 using System.Web;
 
@@ -73,14 +74,14 @@ namespace SalarSoft.ASProxy
 		/// <returns>Full physical path</returns>
 		public static string MapAppPath(string path)
 		{
-			if (path == "" || path == null)
+			if (string.IsNullOrEmpty(path))
 				return path;
 			string apppath = AppPhysicalPath;
 			string result = path;
-			if (result[0] == '\\' || result[0] == '/')
+			if (result[0] == Path.DirectorySeparatorChar)
 				result = result.Remove(0, 1);
-			if (apppath[apppath.Length - 1] != '\\')
-				result = apppath + "\\" + path;
+			if (apppath[apppath.Length - 1] != Path.DirectorySeparatorChar)
+				result = apppath + Path.DirectorySeparatorChar + path;
 			else
 				result = apppath + path;
 			return result;
