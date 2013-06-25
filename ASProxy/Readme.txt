@@ -1,6 +1,6 @@
 ****************************************
-ASProxy       :version 5.5.0 pre
-Last update   :2010/07/11
+ASProxy       :version 5.5.0
+Last update   :2010/07/13
 Official site :http://asproxy.sourceforge.net/
 
 ASProxy is an ASP.NET Web Proxy.
@@ -33,7 +33,9 @@ Applying language:
 ****************************************
 Version History
 
-Version 5.5.0 2010/07/11
+Version 5.5.0 2010/07/13
+* New: Standard event listeners are supported for Ajax wrapped object XMLHttpRequest.
+* Fixed: Doing multiply ajax requests causes some issues.
 * Fixed: document.URL replacement issue is fixed. This causes the whole javascript to fail.
 * Fixed: Minor javascript parser issues.
 

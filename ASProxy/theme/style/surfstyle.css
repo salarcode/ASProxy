@@ -1,5 +1,6 @@
 ﻿/* Styles for surf.aspx */
-#__ASProxyOriginalURL{display:block;font-family:tahoma;color:black;font-size:12px;padding:2px 5px 2px 5px;margin:0;position:absolute;left:0px;top:0px;width:98%;background:whitesmoke none;border:solid 2px black;overflow: visible;z-index:999999999;visibility:hidden;text-align:left;line-height:100%;}
+#__ASProxyOriginalURL{display:block;font-family:tahoma;color:black;font-size:12px;padding:2px 5px 2px 5px;margin:0;left:0px;top:0px;width:98%;background:whitesmoke none;border:solid 2px black;overflow: visible;z-index:999999999;visibility:hidden;text-align:left;line-height:100%;
+position:fixed;_position:absolute;/* IE6 trick */}
 .ASPXBlock,.AddrBar,.FastOpts,#MoreOpts{background-color:#f8f8f8;height:auto !important;margin:0 2px;padding:0;float:inherit;display:inherit;color:black;font: normal normal normal 100% Tahoma;font-family:Tahoma,sans-serif;font-size:10pt;}
 .ASPXBlock{background-color:white;width:99.5%;display: block;padding:1px;margin:0;border:2px solid #000000;height:auto !important;float:none;}
 .ASPXMain{color:black;padding:2px;margin:0;border:1px solid #C0C0C0;background-color:#f8f8f8;background-image:none;font-weight:normal;font-style:normal;line-height:normal;visibility:visible;table-layout:auto;white-space:normal;word-spacing:normal;float:none;}

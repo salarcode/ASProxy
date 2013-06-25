@@ -46,7 +46,20 @@ namespace SalarSoft.ASProxy.Encoders
         //public const string CodeTable = "+-0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
         public const string CodeTable = "abcdefghijkml012345nopqrstuvwxyz6789ABCDEFGHIJKLMNOPQRSTUVWXYZ+/";
         public static readonly byte[] DecodeTable;// = new byte[128];
-    }
+
+
+
+		public static string EncodeToASProxyBase64(string input)
+		{
+			var encoder = new ASProxyEncoderBase64();
+			return encoder.Encode(input);
+		}
+		public static string DecodeFromASProxyBase64(string b64Input)
+		{
+			var decoder = new ASProxyDecoderBase64();
+			return decoder.DecodeString(b64Input);
+		}
+	}
 
     public class ASProxyDecoderBase64 : Decoder3To4
     {

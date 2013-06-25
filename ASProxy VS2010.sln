@@ -1,6 +1,6 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SalarSoft.ASProxy", "SalarSoft.ASProxy\SalarSoft.ASProxy.csproj", "{B3B14BA8-D028-4B01-92B6-36D2E7F6CCB5}"
 EndProject
 Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "ASProxy", "ASProxy\", "{77259228-316C-4500-8C64-D9E332438EA6}"
@@ -56,20 +56,21 @@ Global
 		{B3B14BA8-D028-4B01-92B6-36D2E7F6CCB5}.Trace|Any CPU.Build.0 = Trace|Any CPU
 		{B3B14BA8-D028-4B01-92B6-36D2E7F6CCB5}.Trace|Mixed Platforms.ActiveCfg = Trace|Any CPU
 		{B3B14BA8-D028-4B01-92B6-36D2E7F6CCB5}.Trace|Mixed Platforms.Build.0 = Trace|Any CPU
-		{77259228-316C-4500-8C64-D9E332438EA6}.Debug|.NET.ActiveCfg = Debug|.NET
-		{77259228-316C-4500-8C64-D9E332438EA6}.Debug|.NET.Build.0 = Debug|.NET
+		{77259228-316C-4500-8C64-D9E332438EA6}.Debug|.NET.ActiveCfg = Debug|Any CPU
 		{77259228-316C-4500-8C64-D9E332438EA6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{77259228-316C-4500-8C64-D9E332438EA6}.Debug|Mixed Platforms.ActiveCfg = Debug|.NET
-		{77259228-316C-4500-8C64-D9E332438EA6}.Release|.NET.ActiveCfg = Debug|.NET
-		{77259228-316C-4500-8C64-D9E332438EA6}.Release|.NET.Build.0 = Debug|.NET
-		{77259228-316C-4500-8C64-D9E332438EA6}.Release|Any CPU.ActiveCfg = Debug|.NET
-		{77259228-316C-4500-8C64-D9E332438EA6}.Release|Mixed Platforms.ActiveCfg = Debug|.NET
-		{77259228-316C-4500-8C64-D9E332438EA6}.Release|Mixed Platforms.Build.0 = Debug|.NET
-		{77259228-316C-4500-8C64-D9E332438EA6}.Trace|.NET.ActiveCfg = Debug|.NET
-		{77259228-316C-4500-8C64-D9E332438EA6}.Trace|.NET.Build.0 = Debug|.NET
-		{77259228-316C-4500-8C64-D9E332438EA6}.Trace|Any CPU.ActiveCfg = Debug|.NET
-		{77259228-316C-4500-8C64-D9E332438EA6}.Trace|Mixed Platforms.ActiveCfg = Debug|.NET
-		{77259228-316C-4500-8C64-D9E332438EA6}.Trace|Mixed Platforms.Build.0 = Debug|.NET
+		{77259228-316C-4500-8C64-D9E332438EA6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{77259228-316C-4500-8C64-D9E332438EA6}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{77259228-316C-4500-8C64-D9E332438EA6}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{77259228-316C-4500-8C64-D9E332438EA6}.Release|.NET.ActiveCfg = Debug|Any CPU
+		{77259228-316C-4500-8C64-D9E332438EA6}.Release|Any CPU.ActiveCfg = Debug|Any CPU
+		{77259228-316C-4500-8C64-D9E332438EA6}.Release|Any CPU.Build.0 = Debug|Any CPU
+		{77259228-316C-4500-8C64-D9E332438EA6}.Release|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{77259228-316C-4500-8C64-D9E332438EA6}.Release|Mixed Platforms.Build.0 = Debug|Any CPU
+		{77259228-316C-4500-8C64-D9E332438EA6}.Trace|.NET.ActiveCfg = Debug|Any CPU
+		{77259228-316C-4500-8C64-D9E332438EA6}.Trace|Any CPU.ActiveCfg = Debug|Any CPU
+		{77259228-316C-4500-8C64-D9E332438EA6}.Trace|Any CPU.Build.0 = Debug|Any CPU
+		{77259228-316C-4500-8C64-D9E332438EA6}.Trace|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{77259228-316C-4500-8C64-D9E332438EA6}.Trace|Mixed Platforms.Build.0 = Debug|Any CPU
 		{84320025-9920-4D92-AED4-ACFC7D1A124E}.Debug|.NET.ActiveCfg = Debug|Any CPU
 		{84320025-9920-4D92-AED4-ACFC7D1A124E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{84320025-9920-4D92-AED4-ACFC7D1A124E}.Debug|Any CPU.Build.0 = Debug|Any CPU

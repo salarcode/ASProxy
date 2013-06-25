@@ -1,6 +1,6 @@
 // ASProxy Dynamic Encoder
 // ASProxy encoder for dynamically created objects //
-// Last update: 2010-07-11 coded by Salar.Kh //
+// Last update: 2010-08-21 coded by Salar.Kh //
 // Licende: MPL 1.1 License agreement.
 
 // ---------------------------
@@ -23,6 +23,13 @@
 
 // regested site url information
 //_reqInfo.location={ Hash:'#hi', Host:"site.com:8080", Hostname:"site.com", Pathname:"/dir/page.htm", Search:'?test=1', Port:"8080", Protocol:"http:" }
+
+// This varable is used to prevent this script from running twice!
+if (typeof (_ASProxyLoaded) != 'undefined') 
+	_ASProxyLoaded = false;
+else
+	_ASProxyLoaded = true;
+
 
 // ---------------------------
 // ASProxy object
@@ -289,6 +296,13 @@ _ASProxy.B64UnknownerRemove = function(url) {
 	else
 		return url;
 }
+_ASProxy.HasB64Unknowner = function(url) {
+	if (typeof (url) != "string") return url;
+	var unknowner=_reqInfo.UrlUnknowner.toLowerCase();
+	var urlAddr=url.toLowerCase();
+	
+	return _ASProxy.StrEndsWith(urlAddr,unknowner);
+}
 
 // ---------------------------
 // END
@@ -319,8 +333,9 @@ _ASProxy.IsEncodedByASProxy = function(url){
 }
 
 // private: return bookmark only if the link is for current page
-_ASProxy.GetBookmarkOnlyForCurrentPage=function(url){
-	var currUrl=document.location.href.toLowerCase();
+_ASProxy.GetBookmarkOnlyForCurrentPage = function (url) {
+	if (typeof (url) != "string") return url;
+	var currUrl = document.location.href.toLowerCase();
 	var reqUrl=url.toLowerCase();
 	
 	var markPos=url.indexOf("#",0);
@@ -350,8 +365,22 @@ try{
 		try{ o["on" + evType] = f; }catch(e){_ASProxy.Log('AttachEvent"on"',e);}
 	}
 }catch(e){_ASProxy.Log('AttachEvent',e);}
-
 }
+_ASProxy.DetachEvent = function (o, evType, f, capture) {
+	try {
+		if (o == null) { return false; }
+		if (o.removeEventListener) {
+			o.removeEventListener(evType, f, capture);
+			return true;
+		} else if (o.detachEvent) {
+			var r = o.detachEvent("on" + evType, f);
+			return r;
+		} else {
+			try { delete o["on" + evType] } catch (e) { _ASProxy.Log('DetachEvent"on"', e); }
+		}
+	} catch (e) { _ASProxy.Log('DetachEvent', e); }
+}
+
 
 _ASProxy.StrTrimLeft = function(str) {
 	return str.replace(/^\s*/, "");
@@ -371,15 +400,34 @@ _ASProxy.StrEndsWith = function(str, check) {
 	return (str.substr(str.length - check.length) == check);
 }
 
-_ASProxy.GetUrlParamValue = function(name, url) {
-	if (url == null || name == null) return "";
-	name = name.replace(/[\[]/, "\\\[").replace(/[\]]/, "\\\]");
-	var regexS = "[\\?&]" + name + "=([^&#]*)";
-	var regex = new RegExp(regexS);
-	var results = regex.exec(url);
-	if (results == null)
+_ASProxy.GetUrlParamValue = function (name, url) {
+	try {
+		if (url == null || name == null) return "";
+		name = name.replace(/[\[]/, "\\\[").replace(/[\]]/, "\\\]");
+		var regexS = "[\\?&]" + name + "=([^&#]*)";
+		var regex = new RegExp(regexS);
+		var results = regex.exec(url);
+		if (results == null)
+			return "";
+		return results[1];
+	} catch (e) {
+		_ASProxy.Log('GetUrlParamValue failed!', e);
 		return "";
-	return results[1];
+	}
+}
+
+_ASProxy.DecodeASProxyUrl = function (url) {
+	if(typeof(url)!="string") return url;
+	if (!_ASProxy.IsEncodedByASProxy(url))
+		return url;
+	var encoded = _ASProxy.GetUrlParamValue("url", url) + "";
+	if (encoded == "") // no luck
+		return url;
+
+	if (_ASProxy.HasB64Unknowner(url))
+		return _Base64_decode(_ASProxy.B64UnknownerRemove(encoded));
+	else
+		return unescape(encoded);
 }
   
 // ---------------------------
@@ -402,7 +450,7 @@ for(i=0;i<elementsArray.length;i++){
 	// get element value
 	var propValue=item.attributes[propName];
 	var propValueFull=item[propName];
-	
+
 	if(propValue!=null)
 		propValue=propValue.value;
 	else
@@ -412,7 +460,7 @@ for(i=0;i<elementsArray.length;i++){
 	if(_ASProxy.IsEncodedByASProxy(propValue)==false){
 
 		var applyEncoding=false;
-		
+
 		// checking for condition supplied
 		if(conditionProp!=null && conditionValue!=null){
 			var cValue=item.attributes[conditionProp];
@@ -425,7 +473,7 @@ for(i=0;i<elementsArray.length;i++){
 					continue;
 			}
 		}
-		
+
 		// status of ecoded by asproxy before
 		var isDone=item.attributes["asproxydone"];
 		if(isDone==null || (isDone.value!="1" && isDone.value!="2"))
@@ -435,19 +483,19 @@ for(i=0;i<elementsArray.length;i++){
 		else if( isDone.value=="1"){
 			// last encodec url address
 			var orgEncodedUrl=item.attributes["encodedurl"];
-			if(orgEncodedUrl==null){	
-				_ASProxy.CallOriginalSetAttr(item,"encodedurl",propValue);
-				
+			if(orgEncodedUrl==null){
+				_ASProxy.CallOrgSetAttrib(item, "encodedurl", propValue);
+
 				// if frames is proccessing and additional key is available
 				if(contentType==3 && additionalKey){
-					_ASProxy.CallOriginalSetAttr(item,additionalKey,additionalValue);
+					_ASProxy.CallOrgSetAttrib(item, additionalKey, additionalValue);
 				}
-				
+
 				applyEncoding=true;
 				//continue; // commented v5.0. do not ignore, proccess it!
 			}
 			else orgEncodedUrl=orgEncodedUrl.value;
-			
+
 			// checking previous address
 			if(propValue!=orgEncodedUrl){
 				if(propValue==window.location)
@@ -461,16 +509,16 @@ for(i=0;i<elementsArray.length;i++){
 			// corrects address to site original address
 			var newValue = _ASProxy.CorrectLocalUrlToOrginalCheck(propValue);
 			propValueFull=_ASProxy.CorrectLocalUrlToOrginalCheck(propValueFull);
-			
+
 			// set encoding done flag
-			_ASProxy.CallOriginalSetAttr(item,"asproxydone","1");
-			
+			_ASProxy.CallOrgSetAttrib(item,"asproxydone","1");
+
 			// set original address
-			_ASProxy.CallOriginalSetAttr(item,"originalurl",_ASProxy.GetBookmarkOnlyForCurrentPage(propValueFull));
+			_ASProxy.CallOrgSetAttrib(item,"originalurl",_ASProxy.GetBookmarkOnlyForCurrentPage(propValueFull));
 
 			// if frames is proccessing and additional key is available
 			if(contentType==3 && additionalKey){
-				_ASProxy.CallOriginalSetAttr(item,additionalKey,additionalValue);
+				_ASProxy.CallOrgSetAttrib(item,additionalKey,additionalValue);
 			}
 
 			// set float bar variables
@@ -487,11 +535,11 @@ for(i=0;i<elementsArray.length;i++){
 				newValue= __UrlEncoder(newValue,contentType,true,null);
 			
 			// apply new value
-			_ASProxy.CallOriginalSetAttr(item, propName , newValue);
+			_ASProxy.CallOrgSetAttrib(item, propName , newValue);
 			item[propName] = newValue;
 			
 			//Saving base64 coded url to monitor changes
-			_ASProxy.CallOriginalSetAttr(item, "encodedurl" , newValue);
+			_ASProxy.CallOrgSetAttrib(item, "encodedurl" , newValue);
 		}
 	}
 }}
@@ -548,14 +596,14 @@ for(i=0;i<document.forms.length;i++)
 		}
 
 		if(applyEncoding){
-			_ASProxy.CallOriginalSetAttr(frm,"asproxydone","1");
-			_ASProxy.CallOriginalSetAttr(frm,"methodorginal" , frmMethod);
+			_ASProxy.CallOrgSetAttrib(frm,"asproxydone","1");
+			_ASProxy.CallOrgSetAttrib(frm,"methodorginal" , frmMethod);
 
 			// encodes action
 			var newFrmAction=__UrlEncoder(frmAction,ENC_Page,false,"method="+frmMethod);
 
-			_ASProxy.CallOriginalSetAttr(frm,"action", newFrmAction);
-			_ASProxy.CallOriginalSetAttr(frm,"encodedurl", newFrmAction);
+			_ASProxy.CallOrgSetAttrib(frm,"action", newFrmAction);
+			_ASProxy.CallOrgSetAttrib(frm,"encodedurl", newFrmAction);
 
 			//override from method
 			frm.method="POST";
@@ -1041,13 +1089,23 @@ _ASProxy.ParseServerSide = function(codes, codeType, async, asyncMethod) {
 // ---------------------------
 
 // private: calls original setter attribute
-_ASProxy.CallOriginalSetAttr=function(element,attr,value){
-if(element==null) return;
-if (typeof element.OriginalSetAttribute == 'undefined')
-	element.setAttribute(attr,value);
-else
-	element.OriginalSetAttribute(attr,value);
+_ASProxy.CallOrgSetAttrib = function (element, attr, value) {
+	if (element == null) return;
+	if (typeof element.OrgSetAttrib == 'undefined')
+		element.setAttribute(attr, value);
+	else
+		element.OrgSetAttrib(attr, value);
 }
+
+// private: calls original getter attribute
+_ASProxy.CallOrgGetAttrib = function (element, attr) {
+	if (element == null) return "";
+	if (typeof element.OrgGetAttrib == 'undefined')
+		return element.getAttribute(attr) + "";
+	else
+		return element.OrgGetAttrib(attr) + "";
+}
+
 
 // private: overrides html elements setter
 _ASProxy.OverrideHtmlSetters=function(){
@@ -1146,9 +1204,27 @@ try{
 				value = _EncodeSetAttributeValue(attr, value, this.tagName);
 
 				// call original method
-				this.OriginalSetAttribute(attr, value);
+				this.OrgSetAttrib(attr, value);
 			}
 		}catch(e){_ASProxy.Log('_ASProxy.SetAttribute',e);}
+	};
+	
+	// this function tries to retrive the original value by decoding the encoding one~!
+	_ASProxy.GetAttribute = function(attr,tag){
+		try {
+			if (tag==null) 
+				tag=this;
+			if (typeof tag.OrgGetAttrib == 'undefined')
+				return tag.getAttribute(attr);
+			if (attr == null) return tag.OrgGetAttrib(attr);
+
+			var encoded=tag.OrgGetAttrib(attr);
+			var decoded=_ASProxy.DecodeASProxyUrl(encoded);
+			if (encoded == decoded)
+				return encoded;
+			else
+				return decoded;
+		} catch (e) { _ASProxy.Log('_ASProxy.GetAttribute', e); }
 	};
 	
 	// changes the form element and dosn't need any action
@@ -1162,8 +1238,8 @@ try{
 			frmMethod = element.method;// FORM method value
 			
 		// setting done flag
-		element.OriginalSetAttribute("asproxydone","1");
-		element.OriginalSetAttribute("methodorginal" , frmMethod);
+		element.OrgSetAttrib("asproxydone","1");
+		element.OrgSetAttrib("methodorginal" , frmMethod);
 		
 		
 		var newFrmAction;
@@ -1177,29 +1253,36 @@ try{
 
 		// overriding the element
 		//element.action=newFrmAction;
-		element.OriginalSetAttribute("action", newFrmAction);
+		element.OrgSetAttrib("action", newFrmAction);
 		element.method="POST";
 
 		//Saving encoded url to monitor the changes
-		element.OriginalSetAttribute("encodedurl", newFrmAction);
+		element.OrgSetAttrib("encodedurl", newFrmAction);
 	};
 	
 	// Element setters
-	_ASProxy.Setter_Src = function(value){this.OriginalSetAttribute('src',_EncodeSetAttributeValue('src',value,this.tagName));};
-	_ASProxy.Setter_Href = function(value){this.OriginalSetAttribute('href',_EncodeSetAttributeValue('href',value,this.tagName));};
-	_ASProxy.Setter_Background = function(value){this.OriginalSetAttribute('background',_EncodeSetAttributeValue('background',value,this.tagName));};
-	_ASProxy.Setter_InnerHtml = function(value){this.OriginalSetAttribute('innerHtml',_EncodeSetAttributeValue('innerHtml',value,this.tagName));};
+	_ASProxy.Setter_Src = function(value){this.OrgSetAttrib('src',_EncodeSetAttributeValue('src',value,this.tagName));};
+	_ASProxy.Setter_Href = function(value){this.OrgSetAttrib('href',_EncodeSetAttributeValue('href',value,this.tagName));};
+	_ASProxy.Setter_Background = function(value){this.OrgSetAttrib('background',_EncodeSetAttributeValue('background',value,this.tagName));};
+	_ASProxy.Setter_InnerHtml = function(value){this.OrgSetAttrib('innerHtml',_EncodeSetAttributeValue('innerHtml',value,this.tagName));};
 	_ASProxy.Setter_Action = function(value){
 		try{ 
 			if(this.tagName.toLowerCase()=='form'){
 				_ASProxy.Setter_FormAction(this,value);
 				// no any other action required
 			}else{
-				this.OriginalSetAttribute('action',_EncodeSetAttributeValue('action',value,this.tagName));
+				this.OrgSetAttrib('action',_EncodeSetAttributeValue('action',value,this.tagName));
 			}
 		}catch(e){_ASProxy.Log('Setter_Action',e);}
 	};
-	
+
+	// Element getters
+	_ASProxy.Getter_Src = function () { return _ASProxy.GetAttribute('src', this) };
+	_ASProxy.Getter_Href = function () { return _ASProxy.GetAttribute('href', this) };
+	_ASProxy.Getter_Background = function () { return _ASProxy.GetAttribute('background', this) };
+	_ASProxy.Getter_Action = function () { return _ASProxy.GetAttribute('action', this) };
+
+
 	// overriding elements properties
 	for( i=0; i< interfaces.length ;i++ ){
 		// element definition
@@ -1209,16 +1292,25 @@ try{
 		if(elm==null) continue;
 		
 		// overridding element 'setAttribute' method
-		elm.OriginalSetAttribute = elm.setAttribute;
+		elm.OrgSetAttrib = elm.setAttribute;
 		elm.setAttribute = _ASProxy.SetAttribute;
 
-		// overridding element properties
+		// overridding element 'getAttribute' method
+		elm.OrgGetAttrib = elm.getAttribute;
+		elm.getAttribute = _ASProxy.GetAttribute;
+
+		// overridding element setter properties
 		elm.__defineSetter__('src', _ASProxy.Setter_Src);
 		elm.__defineSetter__('action', _ASProxy.Setter_Action);
 		elm.__defineSetter__('href', _ASProxy.Setter_Href);
 		elm.__defineSetter__('background', _ASProxy.Setter_Background);
 		elm.__defineSetter__('innerHtml', _ASProxy.Setter_InnerHtml);
 
+		// overridding element getter properties
+		elm.__defineGetter__('src', _ASProxy.Getter_Src);
+		elm.__defineGetter__('action', _ASProxy.Getter_Action);
+		elm.__defineGetter__('href', _ASProxy.Getter_Href);
+		elm.__defineGetter__('background', _ASProxy.Getter_Background);
 	}
 }catch(e){_ASProxy.Log('OverrideHtmlSetters ALL',e);}
 }
@@ -1375,313 +1467,371 @@ _AJAXInternal = function() {
 };
 
 // overriding XMLHttpRequest object
-XMLHttpRequest = function() { };
+XMLHttpRequest = function () {
+	// reference objects should be created here *everytime*!!
+
+	// internal ajax object
+	this._ajax= new _AJAXInternal();
+
+	// here we initialize arrays
+	this._headers = new Array();
+
+	// private: Events cache
+	this._onreadystatechange = new Array();
+	this._onload = new Array();
+	this._onerror = new Array();
+	this._onprogress = new Array();
+	this._onabort = new Array();
+	this._ontimeout = new Array();
+	this._onuploadprogress = new Array();
+	this._onloadstart = new Array();
+};
 
 Object.extend(XMLHttpRequest.prototype, {
-    // internal ajax object
-    _ajax: new _AJAXInternal()
-}, true);
+	//---Internal uses---
 
-Object.extend(XMLHttpRequest.prototype, {
-    //---Internal uses---
-
-    _headers: new Array()
+	// Save async parameter 
+	_async: false
 	,
 
-    // Save async parameter 
-    _async: false
+	// Save request url
+	_reqUrl: ''
 	,
 
-    // Save request url
-    _reqUrl: ''
+	// a reference to caller instance
+	_caller: null
 	,
 
-    // a reference to caller instance
-    _caller: null
+	_refresh: function () {
+		_caller = this;
+		this._attachAllEvent();
+		//this._updateProperties();
+	},
+
+	// attaches events to ajax object
+	_attachAllEvent: function () {
+		try {
+			// BUGFIX: wrapper should always implement onreadystatechange
+			this._ajax.onreadystatechange = this._readystatechange;
+		} catch (e) { }
+
+		try {
+			// BUGFIX: wrapper should always implement onload
+			this._ajax.onload = this._load;
+		} catch (e) { }
+
+		try {
+			if (this.onerror != null || this._onerror.length > 0)
+				this._ajax.onerror = this._error;
+		} catch (e) { }
+
+		try {
+			if (this.onprogress != null || this._onprogress.length > 0)
+				this._ajax.onprogress = this._progress;
+		} catch (e) { }
+
+		try {
+			if (this.onabort != null || this._onabort.length > 0)
+				this._ajax.onabort = this._abort;
+		} catch (e) { }
+
+		try {
+			if (this.ontimeout != null || this._ontimeout.length > 0)
+				this._ajax.ontimeout = this._timeout;
+		} catch (e) { }
+
+		try {
+			if (this.onuploadprogress != null || this._onuploadprogress.length > 0)
+				this._ajax.onuploadprogress = this._uploadprogress;
+		} catch (e) { }
+
+		try {
+			if (this.onloadstart != null || this._onloadstart.length > 0)
+				this._ajax.onloadstart = this._loadstart;
+		} catch (e) { }
+	},
+
+	// this will update properties after any change
+	_updateProperties: function () {
+		try { this.responseText = this._ajax.responseText; } catch (e) { }
+		try { this.responseXML = this._ajax.responseXML; } catch (e) { }
+		try { this.status = this._ajax.status; } catch (e) { }
+		try { this.statusText = this._ajax.statusText; } catch (e) { }
+		try { this.readyState = this._ajax.readyState; } catch (e) { }
+		try { this.responseBody = this._ajax.responseBody; } catch (e) { }
+		try { this.multipart = this._ajax.multipart; } catch (e) { }
+		//try{ this.channel		= this._ajax.channel;		}catch(e){}	
+	},
+
+	//---Internal events------------------------
+	_readystatechange: function (eventArgs) {
+		if (_caller != null && typeof _caller._updateProperties != 'undefined') {
+			_caller._updateProperties();
+
+			// BUGFIX: ajax wrapper raises two useless states event
+			//if(this.readyState==0 || this.readyState==1)
+			//{
+			//	// Ignore these states only for HTTP requests
+			//	if(_ASProxy.IsClientSideUrl(_caller._reqUrl)==false)
+			//		return;
+			//}
+
+			if (_caller.onreadystatechange != null)
+				_caller.onreadystatechange(eventArgs);
+			_caller._fireEventListeners(_caller._onreadystatechange, eventArgs);
+		}
+	},
+
+	_load: function (eventArgs) {
+		if (_caller != null && typeof _caller._updateProperties != 'undefined') {
+			_caller._updateProperties();
+			if (_caller.onload != null)
+				_caller.onload(eventArgs);
+			_caller._fireEventListeners(_caller._onload, eventArgs);
+		}
+	},
+
+	_error: function (eventArgs) {
+		if (_caller != null && typeof _caller._updateProperties != 'undefined') {
+			_caller._updateProperties();
+			if (_caller.onerror != null)
+				_caller.onerror(eventArgs);
+			_caller._fireEventListeners(_caller._onerror, eventArgs);
+		}
+	},
+
+	_progress: function (eventArgs) {
+		if (_caller != null && typeof _caller._updateProperties != 'undefined') {
+			_caller._updateProperties();
+			if (_caller.onprogress != null)
+				_caller.onprogress(eventArgs);
+			_caller._fireEventListeners(_caller._onprogress, eventArgs);
+		}
+	},
+
+	_abort: function (eventArgs) {
+		if (_caller != null && typeof _caller._updateProperties != 'undefined') {
+			_caller._updateProperties();
+			if (_caller.onabort != null)
+				_caller.onabort(eventArgs);
+			_caller._fireEventListeners(_caller._onabort, eventArgs);
+		}
+	},
+
+	_timeout: function (eventArgs) {
+		if (_caller != null && typeof _caller._updateProperties != 'undefined') {
+			_caller._updateProperties();
+			if (_caller.ontimeout != null)
+				_caller.ontimeout(eventArgs);
+			_caller._fireEventListeners(_caller._ontimeout, eventArgs);
+		}
+	},
+
+	_uploadprogress: function (eventArgs) {
+		if (_caller != null && typeof _caller._updateProperties != 'undefined') {
+			_caller._updateProperties();
+			if (_caller.onuploadprogress != null)
+				_caller.onuploadprogress(eventArgs);
+			_caller._fireEventListeners(_caller._onuploadprogress, eventArgs);
+		}
+	},
+
+	_loadstart: function (eventArgs) {
+		if (_caller != null && typeof _caller._updateProperties != 'undefined') {
+			_caller._updateProperties();
+			if (_caller.onloadstart != null)
+				_caller.onloadstart(eventArgs);
+			_caller._fireEventListeners(_caller._onloadstart, eventArgs);
+		}
+	},
+
+	_fireEventListeners: function (eventArr, eventArgs) {
+		if (typeof eventArr != 'object') return;
+		for (var arrKey in eventArr) {
+			var arrEv = eventArr[arrKey];
+			try {
+				arrEv(eventArgs);
+			} catch (e) { }
+		}
+	},
+
+	//---Constants----------------------------
+	UNSENT: 0,
+	OPENED: 1,
+	HEADERS_RECEIVED: 2,
+	LOADING: 3,
+	DONE: 4,
+
+	// Error codes for XMLHttpRequest Level 2
+	SECURITY_ERR: 18,
+	NETWORK_ERR: 19,
+	ABORT_ERR: 20,
+
+	//---Methods-------------------------------
+	//Cancels the current request.
+	abort: function () {
+		this._refresh();
+		this._ajax.abort();
+		this._updateProperties();
+	},
+
+	//Returns the complete set of HTTP headers as a string.
+	getAllResponseHeaders: function () {
+		this._refresh();
+		this._updateProperties();
+		return this._ajax.getAllResponseHeaders();
+	},
+
+	//Returns the value of the specified HTTP header.
+	getResponseHeader: function (headerName) {
+		this._refresh();
+		this._updateProperties();
+		return this._ajax.getResponseHeader(headerName);
+	},
+
+	//Specifies the method, URL, and other optional attributes of a request. 
+	open: function (method, URL, async, userName, password) {
+
+		// When async parameter value is ommited, use true as default
+		if (arguments.length < 3)
+			async = true;
+
+		this._reqUrl = URL;
+
+		URL = this._EncodeAJAXUrl(method, URL, userName, password);
+		method = this._ASProxyEncodeAJAXMethod(method);
+
+		this._async = async;
+		//this._ajax.multipart=this._multipart;
+
+		this._refresh();
+		this._ajax.open(method, URL, async, userName, password);
+		this._updateProperties();
+	},
+
+	// Sends the request. content can be a string or reference to a document.
+	send: function (content) {
+		var asproxyAJAXH = this._EncodeArray(this._headers);
+		this._ajax.setRequestHeader("X-ASProxy-AJAX-Headers", asproxyAJAXH);
+		this._ajax.setRequestHeader("X-ASProxy-AJAX-Referrer", _reqInfo.pageUrl);
+
+		// BUGFIX: Safari - fails sending documents created/modified dynamically, so an explicit serialization required
+		// BUGFIX: IE - rewrites any custom mime-type to "text/xml" in case an XMLNode is sent
+		// BUGFIX: Gecko - fails sending Element (this is up to the implementation either to standard)
+		if (content && content.nodeType) {
+			content = window.XMLSerializer ? new window.XMLSerializer().serializeToString(content) : content.xml;
+			if (!this._headers["Content-Type"])
+				this._ajax.setRequestHeader("Content-Type", "application/xml");
+		}
+
+		this._refresh();
+		this._ajax.send(content);
+		this._updateProperties();
+	},
+
+	// A variant of the send() method that sends binary data.
+	sendAsBinary: function (content) {
+		var asproxyAJAXH = this._EncodeArray(this._headers);
+		this._ajax.setRequestHeader("X-ASProxy-AJAX-Headers", asproxyAJAXH);
+		this._ajax.setRequestHeader("X-ASProxy-AJAX-Referrer", _reqInfo.pageUrl);
+
+		this._refresh();
+		this._ajax.sendAsBinary(content);
+		this._updateProperties();
+	},
+
+	// Adds a label/value pair to the HTTP header to be sent.
+	setRequestHeader: function (label, value) {
+		_ArrayAdd(this._headers, label, value);
+
+		this._refresh();
+		this._ajax.setRequestHeader(label, value);
+		this._updateProperties();
+	},
+
+	// Overrides the MIME type returned by the server. This method must be called before send().
+	overrideMimeType: function (mimetype) {
+		this._refresh();
+		this._ajax.overrideMimeType(mimetype);
+		this._updateProperties();
+	},
+
+	toString: function () {
+		return '[' + "XMLHttpRequest" + ']';
+	},
+
+	//---Event listener methods----
+	addEventListener: function (type, listener, useCapture) {
+		var arrname = "_on" + type;
+		var fname = listener.toString() + useCapture.valueOf();
+		var array = this[arrname];
+		if (array != null) {
+			_ArrayAdd(this[arrname], fname, listener);
+		
+			// indicates that the array have events binded
+			this[arrname].push(function () { });
+		} 
+		else
+			// fallback to the original ajax object
+			_ASProxy.AttachEvent(this._ajax, type, listener, useCapture);
+	},
+
+	removeEventListener: function (type, listener, useCapture) {
+		var arrname = "_on" + type;
+		var fname = listener.toString() + useCapture.valueOf();
+		var arr = this[arrname];
+		if (array != null)
+			delete arr[fname];
+		else
+			_ASProxy.DetachEvent(this._ajax, type, listener, useCapture);
+	},
+
+	dispatchEvent: function (event) {
+		this._ajax.dispatchEvent(event);
+	},
+
+	//---Properties---
+	readyState: 0
+	,
+	//Returns the response as a string.
+	responseText: ""
+	,
+	//Returns the response as XML.
+	responseXML: null
+	,
+	//Returns the response as a binary encoded string
+	responseBody: 0
+	,
+	//Returns the HTTP status code as a number 
+	status: 0
+	,
+	//Returns the status as a string (e.g. "Not Found" or "OK").
+	statusText: ""
+	,
+	channel: null
+	,
+	multipart: false
 	,
 
-    _refresh: function() {
-        _caller = this;
-        this._attachAllEvent();
-        //this._updateProperties();
-    },
+	//---Events---
+	// Specifies a reference to an event handler for an event that fires at every state change
+	onreadystatechange: null
 
-    // attaches events to ajax object
-    _attachAllEvent: function() {
-        try {
-            // BUGFIX: wrapper should always implement onreadystatechange
-            this._ajax.onreadystatechange = this._readystatechange;
-        } catch (e) { }
-
-        try {
-            // BUGFIX: wrapper should always implement onload
-            this._ajax.onload = this._load;
-        } catch (e) { }
-
-        try {
-            if (this.onerror != null)
-                this._ajax.onerror = this._error;
-        } catch (e) { }
-
-        try {
-            if (this.onprogress != null)
-                this._ajax.onprogress = this._progress;
-        } catch (e) { }
-
-        try {
-            if (this.onabort != null)
-                this._ajax.onabort = this._abort;
-        } catch (e) { }
-
-        try {
-            if (this.ontimeout != null)
-                this._ajax.ontimeout = this._timeout;
-        } catch (e) { }
-
-        try {
-            if (this.onuploadprogress != null)
-                this._ajax.onuploadprogress = this._uploadprogress;
-        } catch (e) { }
-
-        try {
-            if (this.onloadstart != null)
-                this._ajax.onloadstart = this._loadstart;
-        } catch (e) { }
-    },
-
-    // this will update properties after any change
-    _updateProperties: function() {
-        try { this.responseText = this._ajax.responseText; } catch (e) { }
-        try { this.responseXML = this._ajax.responseXML; } catch (e) { }
-        try { this.status = this._ajax.status; } catch (e) { }
-        try { this.statusText = this._ajax.statusText; } catch (e) { }
-        try { this.readyState = this._ajax.readyState; } catch (e) { }
-        try { this.responseBody = this._ajax.responseBody; } catch (e) { }
-        try { this.multipart = this._ajax.multipart; } catch (e) { }
-        //try{ this.channel		= this._ajax.channel;		}catch(e){}	
-    },
-
-    //---Internal events------------------------
-    _readystatechange: function(eventArgs) {
-        if (_caller != null && typeof _caller._updateProperties != 'undefined') {
-            _caller._updateProperties();
-
-            // BUGFIX: ajax wrapper raises two useless states event
-            //if(this.readyState==0 || this.readyState==1)
-            //{
-            //	// Ignore these states only for HTTP requests
-            //	if(_ASProxy.IsClientSideUrl(_caller._reqUrl)==false)
-            //		return;
-            //}
-
-            if (_caller.onreadystatechange != null)
-                _caller.onreadystatechange(eventArgs);
-        }
-    },
-
-    _load: function(eventArgs) {
-        if (_caller != null && typeof _caller._updateProperties != 'undefined') {
-            _caller._updateProperties();
-            if (_caller.onload != null)
-                _caller.onload(eventArgs);
-        }
-    },
-
-    _error: function(eventArgs) {
-        if (_caller != null && typeof _caller._updateProperties != 'undefined') {
-            _caller._updateProperties();
-            if (_caller.onerror != null)
-                _caller.onerror(eventArgs);
-        }
-    },
-
-    _progress: function(eventArgs) {
-        if (_caller != null && typeof _caller._updateProperties != 'undefined') {
-            _caller._updateProperties();
-            if (_caller.onprogress != null)
-                _caller.onprogress(eventArgs);
-        }
-    },
-
-    _abort: function(eventArgs) {
-        if (_caller != null && typeof _caller._updateProperties != 'undefined') {
-            _caller._updateProperties();
-            if (_caller.onabort != null)
-                _caller.onabort(eventArgs);
-        }
-    },
-
-    _timeout: function(eventArgs) {
-        if (_caller != null && typeof _caller._updateProperties != 'undefined') {
-            _caller._updateProperties();
-            if (_caller.ontimeout != null)
-                _caller.ontimeout(eventArgs);
-        }
-    },
-
-    _uploadprogress: function(eventArgs) {
-        if (_caller != null && typeof _caller._updateProperties != 'undefined') {
-            _caller._updateProperties();
-            if (_caller.onuploadprogress != null)
-                _caller.onuploadprogress(eventArgs);
-        }
-    },
-
-    _loadstart: function(eventArgs) {
-        if (_caller != null && typeof _caller._updateProperties != 'undefined') {
-            _caller._updateProperties();
-            if (_caller.onloadstart != null)
-                _caller.onloadstart(eventArgs);
-        }
-    },
-
-    //---Constants----------------------------
-    UNSENT: 0,
-    OPENED: 1,
-    HEADERS_RECEIVED: 2,
-    LOADING: 3,
-    DONE: 4,
-
-    // Error codes for XMLHttpRequest Level 2
-    SECURITY_ERR: 18,
-    NETWORK_ERR: 19,
-    ABORT_ERR: 20,
-
-    //---Methods-------------------------------
-    //Cancels the current request.
-    abort: function() {
-        this._refresh();
-        this._ajax.abort();
-        this._updateProperties();
-    },
-
-    //Returns the complete set of HTTP headers as a string.
-    getAllResponseHeaders: function() {
-        this._refresh();
-        this._updateProperties();
-        return this._ajax.getAllResponseHeaders();
-    },
-
-    //Returns the value of the specified HTTP header.
-    getResponseHeader: function(headerName) {
-        this._refresh();
-        this._updateProperties();
-        return this._ajax.getResponseHeader(headerName);
-    },
-
-    //Specifies the method, URL, and other optional attributes of a request. 
-    open: function(method, URL, async, userName, password) {
-
-        // When async parameter value is ommited, use true as default
-        if (arguments.length < 3)
-            async = true;
-
-        this._reqUrl = URL;
-
-        URL = this._EncodeAJAXUrl(method, URL, userName, password);
-        method = this._ASProxyEncodeAJAXMethod(method);
-
-        this._async = async;
-        //this._ajax.multipart=this._multipart;
-
-        this._refresh();
-        this._ajax.open(method, URL, async, userName, password);
-        this._updateProperties();
-    },
-
-    // Sends the request. content can be a string or reference to a document.
-    send: function(content) {
-        var asproxyAJAXH = this._EncodeArray(this._headers);
-        this._ajax.setRequestHeader("X-ASProxy-AJAX-Headers", asproxyAJAXH);
-        this._ajax.setRequestHeader("X-ASProxy-AJAX-Referrer", _reqInfo.pageUrl);
-
-        // BUGFIX: Safari - fails sending documents created/modified dynamically, so an explicit serialization required
-        // BUGFIX: IE - rewrites any custom mime-type to "text/xml" in case an XMLNode is sent
-        // BUGFIX: Gecko - fails sending Element (this is up to the implementation either to standard)
-        if (content && content.nodeType) {
-            content = window.XMLSerializer ? new window.XMLSerializer().serializeToString(content) : content.xml;
-            if (!this._headers["Content-Type"])
-                this._ajax.setRequestHeader("Content-Type", "application/xml");
-        }
-
-        this._refresh();
-        this._ajax.send(content);
-        this._updateProperties();
-    },
-
-    // A variant of the send() method that sends binary data.
-    sendAsBinary: function(content) {
-        var asproxyAJAXH = this._EncodeArray(this._headers);
-        this._ajax.setRequestHeader("X-ASProxy-AJAX-Headers", asproxyAJAXH);
-        this._ajax.setRequestHeader("X-ASProxy-AJAX-Referrer", _reqInfo.pageUrl);
-
-        this._refresh();
-        this._ajax.sendAsBinary(content);
-        this._updateProperties();
-    },
-
-    // Adds a label/value pair to the HTTP header to be sent.
-    setRequestHeader: function(label, value) {
-        _ArrayAdd(this._headers, label, value);
-
-        this._refresh();
-        this._ajax.setRequestHeader(label, value);
-        this._updateProperties();
-    },
-
-    // Overrides the MIME type returned by the server. This method must be called before send().
-    overrideMimeType: function(mimetype) {
-        this._refresh();
-        this._ajax.overrideMimeType(mimetype);
-        this._updateProperties();
-    },
-
-    toString: function() {
-        return '[' + "XMLHttpRequest" + ']';
-    },
-
-    //---Properties---
-    readyState: 0
+	// Events for XMLHttpRequest Level 2
 	,
-    //Returns the response as a string.
-    responseText: ""
+	onload: null
 	,
-    //Returns the response as XML.
-    responseXML: null
+	onerror: null
 	,
-    //Returns the response as a binary encoded string
-    responseBody: 0
+	onprogress: null
 	,
-    //Returns the HTTP status code as a number 
-    status: 0
+	onabort: null
 	,
-    //Returns the status as a string (e.g. "Not Found" or "OK").
-    statusText: ""
+	ontimeout: null
 	,
-    channel: null
+	onuploadprogress: null
 	,
-    multipart: false
-	,
-
-    //---Events---
-    // Specifies a reference to an event handler for an event that fires at every state change
-    onreadystatechange: null
-
-    // Events for XMLHttpRequest Level 2
-	,
-    onload: null
-	,
-    onerror: null
-	,
-    onprogress: null
-	,
-    onabort: null
-	,
-    ontimeout: null
-	,
-    onuploadprogress: null
-	,
-    onloadstart: null
+	onloadstart: null
 }, true);
 
 
@@ -1812,5 +1962,6 @@ _ASProxy.Initialize=function() {
 		_ASProxy.StartupDynamicEncoders();
 }
 
-// start immediately
-_ASProxy.Initialize();
+if (_ASProxyLoaded == false)
+	// start immediately if not started before
+	_ASProxy.Initialize();

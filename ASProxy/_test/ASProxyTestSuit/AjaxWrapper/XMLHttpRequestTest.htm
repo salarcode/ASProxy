@@ -19,6 +19,31 @@
 	}
 	</script>
 	<!-- ================================================ -->
+	<h3>Test6: addEventListener test</h3>
+	<div id="lblTest6Event"></div>
+	<script type="text/javascript">
+		function Test6Async() {
+			document.getElementById("lblTest6Event").innerHTML = "";
+			var ajax = new XMLHttpRequest();
+
+			var ev = function () {
+				//if(ajax.readyState==4)
+				Display("lblTest6Event", "onReadyStateChange  readyState==" + ajax.readyState + " TEST 6!!!", true);
+			};
+			ajax.addEventListener('readystatechange', ev, false);
+			
+			var loadEv=function () {
+				Display("lblTest6Event", "onload  readyState==" + ajax.readyState + " TEST 6!!! ", true);
+			};
+			ajax.addEventListener('load', loadEv, false);
+
+			ajax.open("GET", "JQueryAjaxTest/Internal/ajax-test.html", true);
+			ajax.send(null);
+		}
+	</script>
+	<button onclick="Test6Async()">AJAX Test 6</button> 
+
+	<!-- ================================================ -->
 	<h3>Test3: Async request event test</h3>
 	<div id="lblTest3Event"></div>
 	<script type="text/javascript">

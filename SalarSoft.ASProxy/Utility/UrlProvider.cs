@@ -185,7 +185,7 @@ namespace SalarSoft.ASProxy
 		/// <summary>
 		/// Gets URL site base path. E.G. http://www.site.com/dir1/dir2/page.ht?hi=1 returns only: http://www.site.com/dir1/dir2/
 		/// </summary>
-		/// <returns>E.G. http://www.site.com/dir1/dir2/page.ht?hi=1 returns only: http://www.site.com/dir1/dir2/</returns>
+		/// <returns>E.G. http://www.site.com/dir1/dir2/page.ht?hi=1 returns only: http://www.site.com/dir1/dir2/ </returns>
 		public static string GetPagePath(string url)
 		{
 			Uri address = new Uri(url);
