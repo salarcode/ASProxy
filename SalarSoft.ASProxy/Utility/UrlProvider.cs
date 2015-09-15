@@ -374,7 +374,13 @@ namespace SalarSoft.ASProxy
 
 				// if "page" is a base url like this: /Test/default.aspx
 				if (query[0] == '/')
+				{
+					// BUGFIX: if the url is like this //testing.google.com/page
+					if (query.StartsWith("//", StringComparison.Ordinal))
+						return (new Uri(siteBasePath).Scheme) + ":" + query;
+
 					return siteBasePath + '.' + query;
+				}
 
 				// if "page" is a virtual url like this: SalarSoft/default.aspx
 				return pageBasePath + query;

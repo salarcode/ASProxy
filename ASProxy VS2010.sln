@@ -1,6 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2012
+# Visual Studio 14
+VisualStudioVersion = 14.0.23107.0
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SalarSoft.ASProxy", "SalarSoft.ASProxy\SalarSoft.ASProxy.csproj", "{B3B14BA8-D028-4B01-92B6-36D2E7F6CCB5}"
 EndProject
 Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "ASProxy", "ASProxy\", "{77259228-316C-4500-8C64-D9E332438EA6}"
@@ -23,7 +25,8 @@ Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "ASProxy", "ASProxy\", "{772
 		Release.AspNetCompiler.Debug = "False"
 		VWDPort = "3000"
 		VWDDynamicPort = "false"
-		StartServerOnDebug = "false"
+		SlnRelativePath = "ASProxy\"
+		StartServerOnDebug = "true"
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ASProxy.Plugin.CountryBlocker", "Plugins\ASProxy.Plugin.CountryBlocker\ASProxy.Plugin.CountryBlocker.csproj", "{84320025-9920-4D92-AED4-ACFC7D1A124E}"

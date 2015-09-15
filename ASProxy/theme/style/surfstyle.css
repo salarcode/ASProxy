@@ -8,7 +8,7 @@ position:fixed;_position:absolute;/* IE6 trick */}
 .AddrBar{margin:3px 1px;}
 .AddrBar input{width:auto;height:auto;border:solid 1px silver;font:inherit;color:Black;}
 .AddrBar .Button{width:auto;height:25px;color:black;float:none;width:auto !important;margin:0;background-color:#ECE9D8;border:outset 2px;vertical-align:bottom;font-size:10pt;padding:2px 5px;}
-.AddrBar .TextBox{width:auto !important;height:auto;color:black;background-color:white;margin:0;float:none;font-size:10pt;border:solid 1px silver;padding:3px;text-align:left;}
+.AddrBar .TextBox{width:auto !important;height:auto;color:black;background-color:white;margin:0;float:none;font-size:10pt;border:solid 1px silver;padding:3px;text-align:left;display: inline-block;}
 .ASPXOpt{background-color:#f8f8f8;height: auto !important;margin:0 1px;padding:0;float:none;color:black;font:normal normal normal 100% Tahoma;font-family:Tahoma,sans-serif;font-size:8pt;display:inline;border-width:0;text-align:center;}
 .ASPXOpt input{width:auto;height:auto !important;margin:0;background-color:#F8F8F8;display:inline;border-width:0;float: none;}
 .ASPXOpt label{width:auto;height:auto !important;margin:0 2px;padding:0;vertical-align:baseline;float:none;color:Black;font:normal normal normal 100% Tahoma;display:inline;border-width:0;background-color:#F8F8F8;}
