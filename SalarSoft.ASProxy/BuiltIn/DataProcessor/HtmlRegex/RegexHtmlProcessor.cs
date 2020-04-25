@@ -24,18 +24,20 @@
 //
 //**************************************************************************
 
-using System;
-using System.Text;
 using SalarSoft.ASProxy.Exposed;
+using System;
+using System.Collections.Specialized;
+using System.Text;
 using System.Text.RegularExpressions;
 using System.Web;
-using System.Collections.Specialized;
 
 namespace SalarSoft.ASProxy.BuiltIn
 {
 	public class RegexHtmlProcessor : ExHtmlProcessor
 	{
 		private UserOptions _UserOptions;
+		const string RegexIntegirityAttribPattern = @"(?<Prop>integrity)\s?=\s?['""]?(?:\\w |[-+\\/])*['""]?";
+		const string AttributeDisabledSuffix = "_X";
 
 		public RegexHtmlProcessor()
 		{
@@ -197,7 +199,8 @@ namespace SalarSoft.ASProxy.BuiltIn
 								rootUrl,
 								pages.PageJS,
 								_UserOptions.EncodeUrl,
-								null);
+								null,
+				 				disableAttributePattern: RegexIntegirityAttribPattern);
 
 							// apply processed part
 							codes = codes.Remove(match.Index, match.Length);
@@ -274,6 +277,7 @@ namespace SalarSoft.ASProxy.BuiltIn
 		private void ProcessHtml(ref string codes, string pageUrl, string pageUrlNoQuery, string pagePath, string rootUrl, ref bool orginalUrlRequired, ASProxyPagesFormat pages)
 		{
 			string regexPattarn;
+			
 
 			// HttpRefresh
 			// replaces <meta http-equiv="refresh" content=1;url=HttpRefresh.htm>
@@ -288,6 +292,7 @@ namespace SalarSoft.ASProxy.BuiltIn
 				rootUrl,
 				pages.PageDefault,
 				_UserOptions.EncodeUrl,
+				null,
 				null);
 
 
@@ -317,7 +322,8 @@ namespace SalarSoft.ASProxy.BuiltIn
 					rootUrl,
 					pages.PageDefault,
 					_UserOptions.EncodeUrl,
-					extraAttib);
+					extraAttib,
+					null);
 			}
 			else
 			{
@@ -338,7 +344,8 @@ namespace SalarSoft.ASProxy.BuiltIn
 					rootUrl,
 					"{0}",
 					_UserOptions.EncodeUrl,
-					extraAttib);
+					extraAttib,
+					null);
 			}
 
 			if (_UserOptions.Images)
@@ -353,6 +360,7 @@ namespace SalarSoft.ASProxy.BuiltIn
 					rootUrl,
 					pages.PageAnyType,
 					_UserOptions.EncodeUrl,
+					null,
 					null);
 
 				// Replace embedded styles
@@ -388,7 +396,8 @@ namespace SalarSoft.ASProxy.BuiltIn
 					rootUrl,
 					pages,
 					_UserOptions.EncodeUrl,
-					null);
+					null,
+				 	disableAttributePattern: RegexIntegirityAttribPattern);
 
 			// Tags events
 			// Replaces tags events using RegEx
@@ -419,7 +428,8 @@ namespace SalarSoft.ASProxy.BuiltIn
 					rootUrl,
 					pages.PageHtml,
 					_UserOptions.EncodeUrl,
-					extraAttib);
+					extraAttib,
+					null);
 			}
 
 			// Object tags 
@@ -529,7 +539,8 @@ namespace SalarSoft.ASProxy.BuiltIn
 			string rootUrl,
 			ASProxyPagesFormat pages,
 			bool encodeUrl,
-			string extraAttributeFormat)
+			string extraAttributeFormat,
+			string disableAttributePattern)
 		{
 			try
 			{
@@ -668,6 +679,25 @@ namespace SalarSoft.ASProxy.BuiltIn
 						// Replace the tag
 						codes = codes.Remove(group.Index, group.Length);
 						codes = codes.Insert(group.Index, matchValue);
+
+						if (disableAttributePattern != null)
+						{
+							var searchIndex = group.Index + matchValue.Length;
+							var patternCodeSource = codes.Substring(searchIndex);
+
+							var attribMatch = Regex.Match(patternCodeSource,
+							  disableAttributePattern,
+							  RegexOptions.IgnoreCase |
+							  RegexOptions.Compiled);
+
+							if (attribMatch.Success && attribMatch.Groups.Count > 0)
+							{
+								var propNameGroup = attribMatch.Groups["Prop"];
+								var start = propNameGroup.Index + propNameGroup.Length + searchIndex;
+
+								codes = codes.Insert(start, AttributeDisabledSuffix);
+							}
+						}
 					}
 				}
 			}
@@ -693,7 +723,8 @@ namespace SalarSoft.ASProxy.BuiltIn
 			string rootUrl,
 			string newPageFormat,
 			bool encodeUrl,
-			string extraAttributeFormat)
+			string extraAttributeFormat,
+			string disableAttributePattern)
 		{
 			try
 			{
@@ -817,6 +848,25 @@ namespace SalarSoft.ASProxy.BuiltIn
 						// Replace the tag
 						codes = codes.Remove(group.Index, group.Length);
 						codes = codes.Insert(group.Index, matchValue);
+
+						if (disableAttributePattern != null)
+						{
+							var searchIndex = group.Index + matchValue.Length;
+							var patternCodeSource = codes.Substring(searchIndex);
+
+							var attribMatch = Regex.Match(patternCodeSource,
+							  disableAttributePattern,
+							  RegexOptions.IgnoreCase |
+							  RegexOptions.Compiled);
+
+							if (attribMatch.Success && attribMatch.Groups.Count > 0)
+							{
+								var propNameGroup = attribMatch.Groups["Prop"];
+								var start = propNameGroup.Index + propNameGroup.Length + searchIndex;
+
+								codes = codes.Insert(start, AttributeDisabledSuffix);
+							}
+						}
 					}
 				}
 			}
@@ -1274,13 +1324,13 @@ namespace SalarSoft.ASProxy.BuiltIn
 			// Page uri
 			Uri pageUri = new Uri(pageUrl);
 			locationObject = string.Format(Consts.ClientContent.JSEncoder_RequestLocation,
-				pageUri.Fragment,	// Hash
-				pageUri.Authority,	// Host
-				pageUri.Host,		// Hostname
+				pageUri.Fragment,   // Hash
+				pageUri.Authority,  // Host
+				pageUri.Host,       // Hostname
 				pageUri.AbsolutePath,// Pathname
-				pageUri.Query,		// Search
-				pageUri.Port,		// Port
-				pageUri.Scheme		// Protocol
+				pageUri.Query,      // Search
+				pageUri.Port,       // Port
+				pageUri.Scheme      // Protocol
 			);
 
 			StringBuilder result = new StringBuilder();

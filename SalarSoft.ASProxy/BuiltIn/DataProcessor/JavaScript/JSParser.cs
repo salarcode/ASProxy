@@ -1347,6 +1347,7 @@ namespace SalarSoft.ASProxy.BuiltIn
 						break;
 
 
+					case (':'):
 					case (';'):// Semicolon
 
 						if (countQuote % 2 == 0 && countApostrophe % 2 == 0
