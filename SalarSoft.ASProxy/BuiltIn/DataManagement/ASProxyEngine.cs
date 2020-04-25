@@ -16,11 +16,11 @@
 // 
 // The Original Code is ASProxy (an ASP.NET Proxy).
 // 
-// The Initial Developer of the Original Code is Salar.Kh (SalarSoft).
+// The Initial Developer of the Original Code is Salar.K.
 // Portions created by Salar.Kh are Copyright (C) 2010 All Rights Reserved.
 // 
 // Contributor(s): 
-// Salar.Kh < salarsoftwares [@] gmail[.]com > (original author)
+// Salar.K https://github.com/salarcode (original author)
 //
 //**************************************************************************
 
@@ -1027,7 +1027,7 @@ namespace SalarSoft.ASProxy.BuiltIn
 				if (tmpBool)
 					url = UrlProvider.DecodeUrl(url);
 
-				RequestInfo.RequestUrl = url;
+				RequestInfo.RequestUrl = UrlProvider.CorrectInputUrl(url);
 			}
 
 			url = httpRequest.QueryString[Consts.Query.Redirect];

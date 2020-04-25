@@ -16,18 +16,18 @@
 // 
 // The Original Code is ASProxy (an ASP.NET Proxy).
 // 
-// The Initial Developer of the Original Code is Salar.Kh (SalarSoft).
+// The Initial Developer of the Original Code is Salar.K.
 // Portions created by Salar.Kh are Copyright (C) 2010 All Rights Reserved.
 // 
 // Contributor(s): 
-// Salar.Kh < salarsoftwares [@] gmail[.]com > (original author)
+// Salar.K https://github.com/salarcode (original author)
 //
 //**************************************************************************
 
 using System;
 using System.Collections.Specialized;
-using System.Web;
 using System.IO;
+using System.Web;
 
 namespace SalarSoft.ASProxy
 {
@@ -103,14 +103,14 @@ namespace SalarSoft.ASProxy
 				{
 					fileName = Common.ReplaceStrEx(fileName, c, "");
 				}
-				
+
 				// try to get the file name again
 				try
 				{
 					fileName = Path.GetFileName(fileName);
 				}
 				catch { }
-				return fileName;				
+				return fileName;
 			}
 		}
 
@@ -221,8 +221,15 @@ namespace SalarSoft.ASProxy
 		/// </summary>
 		public static string CorrectInputUrl(string url)
 		{
+			if (url == null)
+				return url;
+
 			if (url.IndexOf("://") == -1)
 				url = "http://" + url;
+
+			if (url.StartsWith("file:"))
+				url = "http:" + url.Remove(0, "file:".Length);
+
 			return url;
 		}
 
