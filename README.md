@@ -10,10 +10,9 @@ Watch [installation tutorial in youtube](http://www.youtube.com/watch?v=21GP1iS3
 Latest updates
 -----------
 
-### Last version of ASProxy 5.5 is here
+### Last version of ASProxy 5.6 is here
 
-Version 5.5 is the last version of ASProxy to be released. It includes lots of bugfixes in parsers and javascript dynamic encoder. It also introduces autoupdate and manual update for plugins and providers.
-
+Version 5.6 provides some important fixes.
 
 ### Version 5.6 2020/04/25
 
