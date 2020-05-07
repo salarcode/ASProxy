@@ -14,13 +14,12 @@ Latest updates
 
 Version 5.5 is the last version of ASProxy to be released. It includes lots of bugfixes in parsers and javascript dynamic encoder. It also introduces autoupdate and manual update for plugins and providers.
 
-### Hot new features will arrive with version 5.5
 
-*   Plugin support. Customize ASProxy easily. \[done\]
-*   Extension support. Write your own engine for ASProxy. \[done\]
-*   Administration UI. Config your ASProxy easily from everywhere. \[done\]
-*   Easier mulitlanguage support. \[done\]
-*   Image compressor. Reduce bandwidth usage. \[done\]
+### Version 5.6 2020/04/25
+
+*   Fixed an issue in Javascript parsing
+*   Fixed an issue related to js variable _XUrl
+*   Bypassing stylesheet and link tags integrity check
 
 ### Version 5.5.0 2010/07/13
 
