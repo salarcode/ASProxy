@@ -270,7 +270,8 @@ protected void Page_Load(object sender, EventArgs e)
 </script>
 <head runat="server">
 <title runat="server">Surf the web with ASProxy</title>
-<!-- Surf the web invisibly using ASProxy power. A Powerfull web proxy is in your hands. -->
+<%if(ltrHtmlBody.Text.Length>1) {%><meta name="robots" content="noindex, nofollow"><%} %>
+<!-- Surf the web invisibly using ASProxy power. A Powerful web proxy is in your hands. -->
 <style type="text/css" asproxydone="2">
 .ASProxyBlock,.AddressBar,.FastOptions,#MoreOptions{background-color: #f8f8f8;height: auto !important;margin: 0px 2px;padding: 0px;float: inherit;display: inherit;color: black;font: normal normal normal 100% Tahoma;font-family: Tahoma, sans-serif;font-size: 10pt;}
 .ASProxyBlock{background-color:white;width: 99.5%;display: block;padding: 1px;margin: 0px;border: 2px solid #000000;height: auto !important;float: none;}

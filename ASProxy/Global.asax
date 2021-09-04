@@ -1,4 +1,5 @@
 ﻿<%@ Application Language="C#" %>
+<%@ Import Namespace="System.Net" %>
 <%@ Import Namespace="SalarSoft.ASProxy" %>
 
 <script RunAt="server">
@@ -7,8 +8,11 @@
 	{
 		// Since V5.1, Some sites didn't implement Expect 100-Continue behavior .
 		// The Expect 100-Continue behavior is fully described in IETF RFC 2616 Section 10.1.1. 
-		System.Net.ServicePointManager.Expect100Continue = false;
-
+		ServicePointManager.Expect100Continue = false;
+		ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls
+		                                       | SecurityProtocolType.Tls11
+		                                       | SecurityProtocolType.Tls12
+		                                       | SecurityProtocolType.Ssl3;
 		// auto update reminder
 		if (Configurations.AutoUpdate.Plugins)
 			SalarSoft.ASProxy.Update.PluginsUpdater.StartWaiter();

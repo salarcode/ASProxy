@@ -30,10 +30,11 @@
 			lblErrorMsg.Visible = true;
 		}
 	}
+
 </script>
 
 <asp:Content ContentPlaceHolderID="plhHeadMeta" Runat="Server">
-<title>Download your file with ASProxy</title>
+<title>Download your file with ASProxy</title><%if(lblAutoPrompt.Visible) {%><meta name="robots" content="noindex, nofollow"><%} %>
 </asp:Content>
 
 

@@ -104,7 +104,7 @@
 					Text="Download Tool"></asp:Literal>
 			</a></li>
 	<li id="mnuASProxy"><a asproxydone="2" href="surf.aspx?dec=1&amp;url=uh4QwdELmSfPwhjLyhAKwSZRwC0BtCZOtSoKvCpQmM==B6X!"
-		target="_blank" accesskey="4" rel="nofollow">
+		target="_blank" accesskey="4" rel="noopener noreferrer nofollow">
 		<asp:Literal EnableViewState="False" runat="server" meta:resourcekey="mnuASProxy"
 			Text="ASProxy Page"></asp:Literal>
 	</a></li>

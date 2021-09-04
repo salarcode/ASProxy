@@ -191,7 +191,7 @@
 		}
 	}
 </script>
-<head runat="server"><title runat="server">Surf the web with ASProxy</title>
+<head runat="server"><title runat="server">Surf the web with ASProxy</title><%if(_ResponseContent.Length>1) {%><meta name="robots" content="noindex, nofollow"><%} %>
 <script src="scripts/base64encoder.js" type="text/javascript" asproxydone="2"></script>
 <!-- Surf the web invisibly using ASProxy power. A Powerfull web proxy is in your hands. -->
 <link rel="Stylesheet" href="theme/style/surfstyle.css" type="text/css" asproxydone="2"/>
